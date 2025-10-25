@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-slider&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/slider.js"></script>
+    <style>
+      .slider-stack {
+        display: grid;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .slider-label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.95rem;
+        color: rgba(15, 23, 42, 0.75);
+      }
+
+      .slider-vertical-demo {
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+        align-items: flex-end;
+      }
+
+      .slider-vertical-demo wc-slider {
+        --wc-slider-width: 32px;
+        --wc-slider-height: 180px;
+        --wc-slider-track-size: 4px;
+        --wc-slider-thumb-radius: 999px;
+      }
+
+      .slider-range-output {
+        font-variant-numeric: tabular-nums;
+        font-size: 0.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Volume control</h3>
+            <p>Drag or use the arrow keys to adjust the output level. The slider mirrors the native range input events.</p>
+            <div class="slider-stack">
+              <div class="slider-label-row">
+                <label id="slider-volume-label" for="slider-volume">Output volume</label>
+                <output id="slider-volume-output" for="slider-volume">50%</output>
+              </div>
+              <wc-slider
+                id="slider-volume"
+                aria-labelledby="slider-volume-label"
+                thumb-labels="Volume"
+                value="50"
+                max="100"
+                step="1"
+                name="volume"
+              ></wc-slider>
+            </div>
+          </div>
+
+          <div class="example-card">
+            <h3>Price range filter</h3>
+            <p>Two thumbs define the minimum and maximum price. Form submissions receive one entry per thumb.</p>
+            <form id="slider-price-form" class="slider-stack" onsubmit="event.preventDefault();">
+              <div class="slider-label-row">
+                <span id="slider-price-label">Price range</span>
+                <output class="slider-range-output" id="slider-price-output">$20 – $80</output>
+              </div>
+              <wc-slider
+                id="slider-price"
+                aria-labelledby="slider-price-label"
+                thumb-labels="Minimum,Maximum"
+                value="20 80"
+                min="0"
+                max="100"
+                step="5"
+                min-steps-between-thumbs="2"
+                name="price"
+              ></wc-slider>
+              <button type="submit">Apply filters</button>
+            </form>
+            <pre class="log" id="slider-price-log">Awaiting submission…</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="example-card">
+          <h3>Vertical light intensity</h3>
+          <p>Orientation and inversion attributes adapt the track while keeping keyboard controls intuitive.</p>
+          <div class="slider-vertical-demo">
+            <div>
+              <strong>Left panel</strong>
+              <wc-slider
+                id="slider-panel-left"
+                orientation="vertical"
+                value="40"
+                thumb-labels="Left panel"
+                aria-label="Left light"
+                step="5"
+              ></wc-slider>
+            </div>
+            <div>
+              <strong>Right panel</strong>
+              <wc-slider
+                id="slider-panel-right"
+                orientation="vertical"
+                inverted
+                value="70"
+                thumb-labels="Right panel"
+                aria-label="Right light"
+                step="5"
+              ></wc-slider>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const volumeSlider = document.getElementById('slider-volume');
+      const volumeOutput = document.getElementById('slider-volume-output');
+      if (volumeSlider && volumeOutput) {
+        const updateVolume = () => {
+          const value = volumeSlider.value[0] ?? 0;
+          volumeOutput.textContent = `${value}%`;
+        };
+        volumeSlider.addEventListener('input', updateVolume);
+        updateVolume();
+      }
+
+      const priceSlider = document.getElementById('slider-price');
+      const priceOutput = document.getElementById('slider-price-output');
+      const priceForm = document.getElementById('slider-price-form');
+      const priceLog = document.getElementById('slider-price-log');
+      if (priceSlider && priceOutput) {
+        const updatePrice = () => {
+          const [min = 0, max = 0] = priceSlider.value;
+          priceOutput.textContent = `$${min} – $${max}`;
+        };
+        priceSlider.addEventListener('input', updatePrice);
+        updatePrice();
+      }
+
+      if (priceForm && priceLog) {
+        priceForm.addEventListener('submit', () => {
+          const data = new FormData(priceForm);
+          const entries = Array.from(data.getAll('price'));
+          priceLog.textContent = `Submitted with price=${entries.join(' & ')}.`;
+        });
+      }
+    </script>
+  </body>
+</html>

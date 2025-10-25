@@ -186,14 +186,22 @@
     #isReflecting = false;
     /** @type {boolean} */
     #loop = true;
+    /** @type {() => void} */
+    #boundHandleSlotChange;
+    /** @type {(event: KeyboardEvent) => void} */
+    #boundHandleKeydown;
 
     constructor() {
       super();
       this.#root = this.attachShadow({ mode: 'open' });
       this.#root.append(template.content.cloneNode(true));
       this.#slot = /** @type {HTMLSlotElement} */ (this.#root.querySelector('slot'));
-      this.#handleSlotChange = this.#handleSlotChange.bind(this);
-      this.#handleKeydown = this.#handleKeydown.bind(this);
+      this.#boundHandleSlotChange = () => {
+        this.#handleSlotChange();
+      };
+      this.#boundHandleKeydown = (event) => {
+        this.#handleKeydown(event);
+      };
     }
 
     connectedCallback() {
@@ -201,8 +209,8 @@
         this.setAttribute('role', 'presentation');
       }
 
-      this.#slot.addEventListener('slotchange', this.#handleSlotChange);
-      this.addEventListener('keydown', this.#handleKeydown);
+      this.#slot.addEventListener('slotchange', this.#boundHandleSlotChange);
+      this.addEventListener('keydown', this.#boundHandleKeydown);
 
       if (!this.hasAttribute('type')) {
         this.setAttribute('type', 'single');
@@ -219,8 +227,8 @@
     }
 
     disconnectedCallback() {
-      this.#slot.removeEventListener('slotchange', this.#handleSlotChange);
-      this.removeEventListener('keydown', this.#handleKeydown);
+      this.#slot.removeEventListener('slotchange', this.#boundHandleSlotChange);
+      this.removeEventListener('keydown', this.#boundHandleKeydown);
       this.#items.forEach((item) => this.#teardownItem(item));
       this.#items = [];
     }

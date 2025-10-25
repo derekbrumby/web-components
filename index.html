@@ -7,9 +7,15 @@
     <script type="module" src="./src/otp-field.js"></script>
     <script type="module" src="./src/accordion.js"></script>
     <script type="module" src="./src/alert-dialog.js"></script>
+    <script type="module" src="./src/dialog.js"></script>
     <script type="module" src="./src/aspect-ratio.js"></script>
     <script type="module" src="./src/avatar.js"></script>
     <script type="module" src="./src/hover-card.js"></script>
+    <script type="module" src="./src/dropdown-menu.js"></script>
+    <script type="module" src="./src/form.js"></script>
+    <script type="module" src="./src/context-menu.js"></script>
+    <script type="module" src="./src/collapsible.js"></script>
+    <script type="module" src="./src/checkbox.js"></script>
     <style>
       :root {
         color-scheme: light dark;
@@ -89,6 +95,24 @@
         gap: 1.5rem;
       }
 
+      .checkbox-stack {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .checkbox-list {
+        display: grid;
+        gap: 0.5rem;
+        margin-inline-start: 1.5rem;
+      }
+
+      .checkbox-inline-note {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #475569;
+        line-height: 1.6;
+      }
+
       .avatar-row {
         display: flex;
         flex-wrap: wrap;
@@ -132,6 +156,94 @@
         margin: 0.35rem 0 0;
         color: #4338ca;
         line-height: 1.6;
+      }
+
+      .dropdown-demo {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+      }
+
+      .dropdown-help {
+        max-width: 260px;
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      .dropdown-help strong {
+        display: block;
+        font-weight: 600;
+        color: #312e81;
+        margin-bottom: 0.25rem;
+      }
+
+      .menu-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-radius: 999px;
+        border: none;
+        background: #4f46e5;
+        color: #ffffff;
+        font-size: 1.5rem;
+        box-shadow: 0 20px 36px -20px rgba(79, 70, 229, 0.75);
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease;
+      }
+
+      .menu-trigger:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 26px 40px -18px rgba(79, 70, 229, 0.85);
+      }
+
+      .menu-trigger:active {
+        transform: translateY(1px);
+      }
+
+      .menu-trigger:focus-visible {
+        outline: 3px solid rgba(165, 180, 252, 0.85);
+        outline-offset: 3px;
+      .collapsible-demo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+
+      .collapsible-callout {
+        flex: 1 1 280px;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .collapsible-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+
+      .collapsible-card strong {
+        font-weight: 600;
+        color: #312e81;
+      }
+
+      .collapsible-supporting {
+        max-width: 360px;
+        display: grid;
+        gap: 0.75rem;
+        color: #4338ca;
+      }
+
+      .collapsible-supporting p {
+        margin: 0;
+        line-height: 1.7;
       }
 
       @media (min-width: 900px) {
@@ -325,6 +437,81 @@
         height: 1.15rem;
         accent-color: #38bdf8;
       }
+
+      .dialog-form {
+        display: grid;
+        gap: 1rem;
+        margin: 0;
+      }
+
+      .dialog-field {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .dialog-label {
+        font-weight: 600;
+        color: #312e81;
+      }
+
+      .dialog-input {
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        border-radius: 0.65rem;
+        padding: 0.65rem 0.75rem;
+        font: inherit;
+        background: rgba(255, 255, 255, 0.85);
+        color: #0f172a;
+        transition: border-color 150ms ease, box-shadow 150ms ease;
+      }
+
+      .dialog-input:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      }
+
+      .dialog-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .dialog-meta {
+        display: grid;
+        gap: 0.75rem;
+        margin: 0;
+      }
+
+      .dialog-meta dt {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #64748b;
+        margin: 0;
+      }
+
+      .dialog-meta dd {
+        margin: 0.25rem 0 0;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .dialog-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .dialog-pill {
+        background: rgba(56, 189, 248, 0.16);
+        color: #0369a1;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
+      }
     </style>
   </head>
   <body>
@@ -333,6 +520,66 @@
         <h1>Web Component Playground</h1>
         <p>Drop-in friendly, dependency-free elements ready for CDN delivery.</p>
       </header>
+
+      <section>
+        <header>
+          <h2>&lt;wc-form&gt;</h2>
+          <p>Collect validated contact requests with inline messaging and fully managed focus states.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Inline validation with native constraints</h3>
+            <wc-form id="wc-form-demo"></wc-form>
+            <pre class="log" id="wc-form-log">Fill out the form and submit to see emitted events.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Simulated server-side validation</h3>
+            <wc-form id="wc-form-server" submit-label="Send question"></wc-form>
+            <button id="wc-form-server-error" class="ghost-button">Trigger server errors</button>
+            <pre class="log" id="wc-form-server-log">Click "Trigger server errors" to simulate API feedback.</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <header>
+          <h2>&lt;wc-checkbox&gt;</h2>
+          <p>Tri-state checkbox control with built-in form association, focus management, and themable parts.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Consent agreement</h3>
+            <form id="checkbox-consent" class="checkbox-stack" onsubmit="event.preventDefault();">
+              <wc-checkbox id="checkbox-consent-control" name="terms" value="accepted" required>
+                Accept terms and conditions.
+              </wc-checkbox>
+              <p class="checkbox-inline-note">
+                Required before continuing. Toggle the checkbox to see how form submission reflects the current state.
+              </p>
+              <button type="submit">Continue</button>
+            </form>
+            <pre class="log" id="checkbox-consent-log">Awaiting interaction…</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Bulk selection with indeterminate state</h3>
+            <div class="checkbox-stack">
+              <wc-checkbox id="checkbox-master" indeterminate>
+                Notify me about workspace updates
+              </wc-checkbox>
+              <div class="checkbox-list" id="checkbox-items">
+                <wc-checkbox class="checkbox-item" value="product" checked>Product announcements</wc-checkbox>
+                <wc-checkbox class="checkbox-item" value="security" checked>Security advisories</wc-checkbox>
+                <wc-checkbox class="checkbox-item" value="news">Community highlights</wc-checkbox>
+              </div>
+            </div>
+            <pre class="log" id="checkbox-selection-log">All options pending…</pre>
+          </div>
+        </div>
+      </section>
 
       <section>
         <header>
@@ -503,6 +750,52 @@
             <p>
               Customize side, alignment, offsets, and surface variables to match brand palettes or dock the panel to
               complex layouts.
+          <h2>&lt;wc-collapsible&gt;</h2>
+          <p>Build expandable summaries with optional preview content and animated icons.</p>
+        </header>
+
+        <div class="collapsible-demo">
+          <div class="collapsible-callout">
+            <h3>Starred repositories</h3>
+            <wc-collapsible
+              style="
+                --collapsible-width: min(100%, 320px);
+                --collapsible-background: linear-gradient(135deg, #312e81, #1e1b4b);
+                --collapsible-summary-color: #ede9fe;
+                --collapsible-trigger-background: #ffffff;
+                --collapsible-trigger-color: #5b21b6;
+                --collapsible-preview-background: rgba(255, 255, 255, 0.98);
+                --collapsible-preview-color: #312e81;
+                --collapsible-content-background: rgba(255, 255, 255, 0.98);
+                --collapsible-content-color: #312e81;
+              "
+            >
+              <span slot="summary">@peduarte starred 3 repositories</span>
+              <div slot="peek" class="collapsible-card">
+                <span>@radix-ui/primitives</span>
+                <strong>+24 ★</strong>
+              </div>
+              <div class="collapsible-card">
+                <span>@radix-ui/colors</span>
+                <strong>+12 ★</strong>
+              </div>
+              <div class="collapsible-card">
+                <span>@radix-ui/themes</span>
+                <strong>+9 ★</strong>
+              </div>
+            </wc-collapsible>
+          </div>
+
+          <div class="collapsible-supporting">
+            <h3>Highlights</h3>
+            <p>
+              Slots let you compose summary text, preview content, and the collapsible body without extra
+              wrappers. The trigger syncs aria attributes and responds to keyboard events.
+            </p>
+            <p>
+              Listen for the <code>openchange</code> event to sync analytics or control sibling UI. You can
+              also call <code>show()</code>, <code>hide()</code>, or <code>toggle()</code> to manage state
+              imperatively.
             </p>
           </div>
         </div>
@@ -627,6 +920,174 @@
 
       <section>
         <header>
+          <h2>&lt;wc-dropdown-menu&gt;</h2>
+          <p>
+            Radix-inspired dropdown menus with nested fly-outs, checkboxes, radio groups, and full keyboard support.
+            Style everything with CSS custom properties and <code>::part</code> selectors.
+          </p>
+        </header>
+
+        <div class="example-card">
+          <h3>Browser actions menu</h3>
+          <div class="dropdown-demo">
+            <wc-dropdown-menu
+              id="dropdown-demo"
+              style="
+                --wc-dropdown-width: 240px;
+                --wc-dropdown-background: #ffffff;
+                --wc-dropdown-border-color: rgba(148, 163, 184, 0.28);
+                --wc-dropdown-shadow: 0 28px 60px -32px rgba(15, 23, 42, 0.4);
+                --wc-dropdown-item-background-hover: rgba(79, 70, 229, 0.14);
+                --wc-dropdown-item-background-active: rgba(79, 70, 229, 0.2);
+                --wc-dropdown-item-shortcut-color: #64748b;
+                --wc-dropdown-focus-outline: 2px solid #4f46e5;
+              "
+            >
+              <button slot="trigger" class="menu-trigger" aria-label="Open actions menu">
+                <span aria-hidden="true">☰</span>
+              </button>
+
+              <wc-dropdown-item shortcut="⌘+T">New Tab</wc-dropdown-item>
+              <wc-dropdown-item shortcut="⌘+N">New Window</wc-dropdown-item>
+              <wc-dropdown-item shortcut="⇧+⌘+N" disabled>New Private Window</wc-dropdown-item>
+
+              <wc-dropdown-submenu>
+                More Tools
+                <wc-dropdown-item slot="submenu" shortcut="⌘+S">Save Page As…</wc-dropdown-item>
+                <wc-dropdown-item slot="submenu">Create Shortcut…</wc-dropdown-item>
+                <wc-dropdown-item slot="submenu">Name Window…</wc-dropdown-item>
+                <wc-dropdown-separator slot="submenu"></wc-dropdown-separator>
+                <wc-dropdown-item slot="submenu">Developer Tools</wc-dropdown-item>
+              </wc-dropdown-submenu>
+
+              <wc-dropdown-separator></wc-dropdown-separator>
+              <wc-dropdown-checkbox-item shortcut="⌘+B" checked>Show Bookmarks</wc-dropdown-checkbox-item>
+              <wc-dropdown-checkbox-item>Show Full URLs</wc-dropdown-checkbox-item>
+
+              <wc-dropdown-separator></wc-dropdown-separator>
+              <wc-dropdown-label>People</wc-dropdown-label>
+              <wc-dropdown-radio-group value="pedro">
+                <wc-dropdown-radio-item value="pedro">Pedro Duarte</wc-dropdown-radio-item>
+                <wc-dropdown-radio-item value="colm">Colm Tuite</wc-dropdown-radio-item>
+              </wc-dropdown-radio-group>
+            </wc-dropdown-menu>
+
+            <div class="dropdown-help">
+              <strong>Keyboard friendly</strong>
+              <p>
+                Press <kbd>Enter</kbd> or <kbd>Space</kbd> to open, then explore with arrow keys. Submenus open with
+                <kbd>→</kbd> and close with <kbd>←</kbd>.
+              </p>
+            </div>
+          </div>
+          <pre class="log" id="dropdown-log">Interact with the menu to see emitted events.</pre>
+          <h2>&lt;wc-dialog&gt;</h2>
+          <p>
+            General-purpose dialogs that can run modally or as lightweight, non-modal panels. Manage focus,
+            labelling, and styling entirely with slots and CSS properties.
+          </p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Profile editor (modal)</h3>
+            <wc-dialog
+              id="dialog-profile"
+              style="
+                --dialog-width: min(500px, 90vw);
+                --dialog-background: rgba(248, 250, 252, 0.98);
+                --dialog-overlay-background: rgba(15, 23, 42, 0.45);
+                --dialog-shadow: 0 32px 64px -32px rgba(15, 23, 42, 0.5);
+                --dialog-close-background: rgba(148, 163, 184, 0.25);
+              "
+            >
+              <button slot="trigger">Edit profile</button>
+              <span slot="title">Edit profile</span>
+              <span slot="description">
+                Make changes to your public details. Save the form when you're done.
+              </span>
+              <form class="dialog-form" id="dialog-profile-form">
+                <label class="dialog-field">
+                  <span class="dialog-label">Name</span>
+                  <input
+                    class="dialog-input"
+                    type="text"
+                    name="name"
+                    value="Pedro Duarte"
+                    autocomplete="name"
+                  />
+                </label>
+                <label class="dialog-field">
+                  <span class="dialog-label">Username</span>
+                  <input
+                    class="dialog-input"
+                    type="text"
+                    name="username"
+                    value="@peduarte"
+                    autocomplete="username"
+                  />
+                </label>
+              </form>
+              <div slot="footer" class="dialog-footer">
+                <button type="button" class="ghost-button" data-dialog-close="true">Cancel</button>
+                <button type="submit" form="dialog-profile-form">Save changes</button>
+              </div>
+            </wc-dialog>
+            <pre class="log" id="dialog-profile-log">Dialog closed. Click “Edit profile” to open.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Inline inspector (non-modal)</h3>
+            <wc-dialog
+              id="dialog-inspector"
+              modal="false"
+              open
+              style="
+                --dialog-width: min(360px, 90vw);
+                --dialog-padding: 1.25rem;
+                --dialog-background: rgba(255, 255, 255, 0.96);
+                --dialog-overlay-background: transparent;
+                --dialog-shadow: 0 24px 48px -28px rgba(15, 23, 42, 0.35);
+                --dialog-close-background: rgba(148, 163, 184, 0.25);
+              "
+            >
+              <button slot="trigger" class="ghost-button">Toggle inspector</button>
+              <span slot="title">Component inspector</span>
+              <span slot="description">
+                Non-modal dialogs keep the rest of the interface interactive.
+              </span>
+              <dl class="dialog-meta">
+                <div>
+                  <dt>Element</dt>
+                  <dd>&lt;wc-avatar&gt;</dd>
+                </div>
+                <div>
+                  <dt>Slots used</dt>
+                  <dd class="dialog-pill-row">
+                    <span class="dialog-pill">fallback</span>
+                    <span class="dialog-pill">default</span>
+                    <span class="dialog-pill">trigger</span>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Recent action</dt>
+                  <dd>Avatar updated 2 minutes ago</dd>
+                </div>
+              </dl>
+              <div slot="footer" class="dialog-footer">
+                <button type="button" class="ghost-button" data-dialog-close="true">Close panel</button>
+              </div>
+            </wc-dialog>
+            <p>
+              Because <code>modal="false"</code> is set, the dialog stays visible while you continue interacting
+              with the rest of the page.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <header>
           <h2>&lt;wc-alert-dialog&gt;</h2>
           <p>
             Modal confirmation dialogs with focus trapping, accessible labelling, and customizable styling hooks.
@@ -685,6 +1146,47 @@
               <button slot="action" class="button-soft">Archive</button>
             </wc-alert-dialog>
             <pre class="log" id="alert-dialog-async-log">Archive to simulate an asynchronous workflow.</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <header>
+          <h2>&lt;wc-context-menu&gt;</h2>
+          <p>
+            Display pointer-anchored menus with submenus, checkboxes, radios, and keyboard support. Works with
+            right-clicks, the context-menu key, and long-press on touch devices.
+          </p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Default interaction log</h3>
+            <wc-context-menu id="context-menu-demo"></wc-context-menu>
+            <pre class="log" id="context-menu-log">Right-click or long-press to try it.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Themable surface</h3>
+            <wc-context-menu
+              id="context-menu-themed"
+              style="
+                --context-menu-trigger-width: 280px;
+                --context-menu-trigger-background: linear-gradient(135deg, rgba(236, 72, 153, 0.55), rgba(14, 165, 233, 0.55));
+                --context-menu-trigger-border: 2px dashed rgba(255, 255, 255, 0.6);
+                --context-menu-trigger-color: #0f172a;
+                --context-menu-background: rgba(15, 23, 42, 0.95);
+                --context-menu-color: #e0e7ff;
+                --context-menu-shadow: 0 22px 40px -24px rgba(14, 116, 144, 0.65);
+                --context-menu-item-highlight: rgba(236, 72, 153, 0.35);
+                --context-menu-separator-color: rgba(59, 130, 246, 0.4);
+                --context-menu-indicator-color: #fbbf24;
+              "
+            ></wc-context-menu>
+            <p>
+              Override the exposed CSS variables to adapt the trigger, surface, indicators, and highlighted state to
+              your brand palette.
+            </p>
           </div>
         </div>
       </section>
@@ -767,6 +1269,137 @@
     </main>
 
     <script>
+      const demoForm = document.getElementById('wc-form-demo');
+      const demoFormLog = document.getElementById('wc-form-log');
+      if (demoForm && demoFormLog) {
+        demoForm.addEventListener('wc-form-data', (event) => {
+          const data = Object.entries(event.detail || {})
+            .map(([key, value]) => `${key}: ${value}`)
+            .join('\n');
+          demoFormLog.textContent = data ? `Current values:\n${data}` : 'Form cleared.';
+        });
+        demoForm.addEventListener('wc-form-submit', (event) => {
+          if (event.detail instanceof FormData) {
+            const objectData = Object.fromEntries(event.detail.entries());
+            demoFormLog.textContent = `Submitted payload:\n${JSON.stringify(objectData, null, 2)}`;
+          }
+        });
+      }
+
+      const serverForm = document.getElementById('wc-form-server');
+      const serverFormLog = document.getElementById('wc-form-server-log');
+      const serverErrorButton = document.getElementById('wc-form-server-error');
+      if (serverForm && serverFormLog) {
+        serverForm.addEventListener('wc-form-submit', () => {
+          serverFormLog.textContent = 'Submitting…';
+          window.setTimeout(() => {
+            if (typeof serverForm.setCustomError === 'function') {
+              serverForm.setCustomError('email', 'That email is already associated with a ticket.');
+              serverForm.setCustomError('question', 'Please add more detail so we can help faster.');
+            }
+            serverFormLog.textContent = 'Server responded with validation errors.';
+          }, 400);
+        });
+
+        serverForm.addEventListener('wc-form-data', (event) => {
+          const data = Object.entries(event.detail || {})
+            .map(([key, value]) => `${key}: ${value}`)
+            .join('\n');
+          serverFormLog.textContent = data
+            ? `Client-side values:\n${data}`
+            : 'Form cleared. Click "Trigger server errors" to add failures.';
+        });
+      }
+
+      if (serverForm && serverErrorButton && serverFormLog) {
+        serverErrorButton.addEventListener('click', () => {
+          if (typeof serverForm.setCustomError === 'function') {
+            serverForm.setCustomError('email', 'That email is already associated with a ticket.');
+            serverForm.setCustomError('question', 'Please add more detail so we can help faster.');
+          }
+          serverFormLog.textContent = 'Injected server-side errors. Start typing to clear them.';
+        });
+      const checkboxConsentForm = document.getElementById('checkbox-consent');
+      const checkboxConsentControl = document.getElementById('checkbox-consent-control');
+      const checkboxConsentLog = document.getElementById('checkbox-consent-log');
+
+      if (checkboxConsentForm && checkboxConsentControl && checkboxConsentLog) {
+        checkboxConsentControl.addEventListener('change', () => {
+          checkboxConsentLog.textContent = checkboxConsentControl.checked
+            ? 'Consent granted. The form can now be submitted.'
+            : 'Consent withdrawn. Submission is blocked until accepted again.';
+        });
+
+        checkboxConsentForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (!checkboxConsentControl.checked) {
+            checkboxConsentLog.textContent = 'Cannot submit: terms must be accepted first.';
+            return;
+          }
+          const formData = new FormData(checkboxConsentForm);
+          checkboxConsentLog.textContent = `Submitted with terms=${formData.get('terms')}.`;
+        });
+      }
+
+      const checkboxMaster = document.getElementById('checkbox-master');
+      const checkboxItemsContainer = document.getElementById('checkbox-items');
+      const checkboxSelectionLog = document.getElementById('checkbox-selection-log');
+
+      if (checkboxMaster && checkboxItemsContainer && checkboxSelectionLog) {
+        const checkboxItems = Array.from(
+          checkboxItemsContainer.querySelectorAll('wc-checkbox.checkbox-item')
+        );
+
+        const updateMasterState = () => {
+          const checkedCount = checkboxItems.filter((item) => item.checked).length;
+          if (checkedCount === 0) {
+            checkboxMaster.checked = false;
+            checkboxMaster.indeterminate = false;
+          } else if (checkedCount === checkboxItems.length) {
+            checkboxMaster.checked = true;
+            checkboxMaster.indeterminate = false;
+          } else {
+            checkboxMaster.checked = false;
+            checkboxMaster.indeterminate = true;
+          }
+        };
+
+        const updateSelectionLog = () => {
+          const selected = checkboxItems
+            .filter((item) => item.checked)
+            .map((item) => (item.textContent || '').trim())
+            .filter(Boolean);
+          const state = checkboxMaster.indeterminate
+            ? 'indeterminate'
+            : checkboxMaster.checked
+              ? 'checked'
+              : 'unchecked';
+          checkboxSelectionLog.textContent =
+            selected.length > 0
+              ? `Master is ${state}. Selected: ${selected.join(', ')}.`
+              : `Master is ${state}. No notifications selected.`;
+        };
+
+        checkboxMaster.addEventListener('change', () => {
+          const shouldCheck = checkboxMaster.checked;
+          checkboxMaster.indeterminate = false;
+          checkboxItems.forEach((item) => {
+            item.checked = shouldCheck;
+          });
+          updateSelectionLog();
+        });
+
+        checkboxItems.forEach((item) => {
+          item.addEventListener('change', () => {
+            updateMasterState();
+            updateSelectionLog();
+          });
+        });
+
+        updateMasterState();
+        updateSelectionLog();
+      }
+
       const otpForm = document.getElementById('otp-demo');
       const otpLog = document.getElementById('otp-log');
       const otpAdvanced = document.getElementById('otp-advanced');
@@ -805,6 +1438,65 @@
           const values = event.detail?.values || [];
           accordionMultiLog.textContent = `Open values: ${values.join(', ') || 'none'}`;
         });
+      }
+
+      const dropdownMenu = document.getElementById('dropdown-demo');
+      const dropdownLog = document.getElementById('dropdown-log');
+      if (dropdownMenu && dropdownLog) {
+        const entries = [];
+        const updateLog = () => {
+          dropdownLog.textContent = entries.slice(-4).join('\n') || 'Interact with the menu to see emitted events.';
+        };
+
+        const describeItem = (item) => {
+          if (!(item instanceof HTMLElement)) return 'Unknown item';
+          if (item.shadowRoot) {
+            const slot = item.shadowRoot.querySelector('slot:not([name])');
+            if (slot instanceof HTMLSlotElement) {
+              const label = slot
+                .assignedNodes({ flatten: true })
+                .map((node) => (node.textContent || '').trim())
+                .join(' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+              if (label) return label;
+            }
+          }
+          const text = item.textContent || '';
+          return text.replace(/\s+/g, ' ').trim();
+        };
+
+        dropdownMenu.addEventListener('wc-dropdown-toggle', (event) => {
+          entries.push(event.detail?.open ? 'Menu opened.' : 'Menu closed.');
+          updateLog();
+        });
+
+        dropdownMenu.addEventListener('wc-dropdown-select', (event) => {
+          const item = event.detail?.item;
+          const tagName = item?.tagName || '';
+          if (tagName.includes('CHECKBOX') || tagName.includes('RADIO')) {
+            return;
+          }
+          entries.push(`Selected: ${describeItem(item)}`);
+          updateLog();
+        });
+
+        dropdownMenu.addEventListener('wc-dropdown-checkbox-change', (event) => {
+          const { item, checked } = event.detail || {};
+          let state = 'unchecked';
+          if (checked === true) state = 'checked';
+          else if (checked === 'indeterminate') state = 'indeterminate';
+          entries.push(`Checkbox ${describeItem(item)} → ${state}`);
+          updateLog();
+        });
+
+        dropdownMenu.addEventListener('wc-dropdown-radio-change', (event) => {
+          const { value } = event.detail || {};
+          entries.push(`Radio selection: ${value || 'unknown'}`);
+          updateLog();
+        });
+
+        updateLog();
       }
 
       const alertDestructive = document.getElementById('alert-dialog-destructive');
@@ -866,6 +1558,115 @@
             }
             alertAsyncTimer = 0;
           }, 1200);
+        });
+      }
+
+      const dialogProfile = document.getElementById('dialog-profile');
+      const dialogProfileForm = document.getElementById('dialog-profile-form');
+      const dialogProfileLog = document.getElementById('dialog-profile-log');
+      let profileSaveTimer = 0;
+      if (dialogProfile && dialogProfileForm instanceof HTMLFormElement && dialogProfileLog) {
+        const profileClosedText = 'Dialog closed. Click “Edit profile” to open.';
+        const profileOpenText = 'Dialog open. Update fields and save.';
+        const updateProfileLog = () => {
+          const desired = dialogProfile.hasAttribute('open') ? profileOpenText : profileClosedText;
+          if (dialogProfile.hasAttribute('open')) {
+            dialogProfileLog.textContent = desired;
+            return;
+          }
+          const current = dialogProfileLog.textContent || '';
+          if (current === profileClosedText || current === profileOpenText) {
+            dialogProfileLog.textContent = desired;
+          }
+        };
+        dialogProfileLog.textContent = profileClosedText;
+        updateProfileLog();
+        const observer = new MutationObserver(updateProfileLog);
+        observer.observe(dialogProfile, { attributes: true, attributeFilter: ['open'] });
+
+        dialogProfileForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (profileSaveTimer) {
+            window.clearTimeout(profileSaveTimer);
+            profileSaveTimer = 0;
+          }
+          dialogProfileLog.textContent = 'Saving changes…';
+          const formData = new FormData(dialogProfileForm);
+          const nameValue = String(formData.get('name') || '').trim();
+          const usernameValue = String(formData.get('username') || '').trim();
+          profileSaveTimer = window.setTimeout(() => {
+            const summary = nameValue || 'Profile';
+            const usernameSuffix = usernameValue ? ` (${usernameValue})` : '';
+            dialogProfileLog.textContent = `Saved ${summary}${usernameSuffix}.`;
+            if (typeof dialogProfile.hide === 'function') {
+              dialogProfile.hide();
+            } else {
+              dialogProfile.removeAttribute('open');
+            }
+            profileSaveTimer = 0;
+          }, 700);
+        });
+      }
+
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        if (target.dataset.dialogClose === 'true') {
+          const host = target.closest('wc-dialog');
+          if (!host) return;
+          event.preventDefault();
+          if (host.id === 'dialog-profile' && dialogProfileLog) {
+            if (profileSaveTimer) {
+              window.clearTimeout(profileSaveTimer);
+              profileSaveTimer = 0;
+            }
+            dialogProfileLog.textContent = 'Changes discarded.';
+          }
+          if (typeof host.hide === 'function') {
+            host.hide();
+          } else {
+            host.removeAttribute('open');
+          }
+        }
+      });
+      const contextMenuDemo = document.getElementById('context-menu-demo');
+      const contextMenuLog = document.getElementById('context-menu-log');
+      if (contextMenuDemo && contextMenuLog) {
+        const commandLabels = {
+          back: 'Back',
+          forward: 'Forward',
+          reload: 'Reload',
+          'save-page': 'Save Page As…',
+          'create-shortcut': 'Create Shortcut…',
+          'name-window': 'Name Window…',
+          'dev-tools': 'Developer Tools',
+        };
+        const checkboxLabels = {
+          bookmarks: 'Show Bookmarks',
+          urls: 'Show Full URLs',
+        };
+        const personLabels = {
+          pedro: 'Pedro Duarte',
+          colm: 'Colm Tuite',
+        };
+
+        contextMenuDemo.addEventListener('select', (event) => {
+          const command = event.detail?.command || 'unknown';
+          const label = commandLabels[command] || command.replace(/-/g, ' ');
+          contextMenuLog.textContent = `Selected action: ${label}.`;
+        });
+
+        contextMenuDemo.addEventListener('toggle', (event) => {
+          const detail = event.detail || {};
+          if (detail.type === 'checkbox') {
+            const name = detail.name || 'option';
+            const label = checkboxLabels[name] || name;
+            contextMenuLog.textContent = `${label} ${detail.checked ? 'enabled' : 'disabled'}.`;
+          } else if (detail.type === 'radio') {
+            const value = detail.value || '';
+            const person = personLabels[value] || value;
+            contextMenuLog.textContent = `Primary person set to ${person}.`;
+          }
         });
       }
     </script>

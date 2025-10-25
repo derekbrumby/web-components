@@ -10,6 +10,7 @@
     <script type="module" src="./src/dialog.js"></script>
     <script type="module" src="./src/aspect-ratio.js"></script>
     <script type="module" src="./src/avatar.js"></script>
+    <script type="module" src="./src/hover-card.js"></script>
     <script type="module" src="./src/dropdown-menu.js"></script>
     <script type="module" src="./src/form.js"></script>
     <script type="module" src="./src/context-menu.js"></script>
@@ -310,6 +311,127 @@
         color: #0f172a;
       }
 
+      .hover-card-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: #ffffff;
+        border-radius: 999px;
+        padding: 0.35rem;
+        box-shadow: 0 18px 32px -20px rgba(15, 23, 42, 0.45);
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease;
+        font-weight: 600;
+        color: #4338ca;
+        text-decoration: none;
+      }
+
+      .hover-card-trigger:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 28px 48px -28px rgba(79, 70, 229, 0.65);
+      }
+
+      .hover-card-trigger:focus-visible {
+        outline: 2px solid #6366f1;
+        outline-offset: 4px;
+      }
+
+      .hover-card-trigger.link {
+        background: rgba(99, 102, 241, 0.12);
+        color: #312e81;
+        padding-inline: 1rem;
+        padding-block: 0.5rem;
+      }
+
+      .hover-card-trigger-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 999px;
+        display: block;
+      }
+
+      .hover-card-content {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .hover-card-content.compact {
+        gap: 0.5rem;
+      }
+
+      .hover-card-avatar-large {
+        width: 64px;
+        height: 64px;
+        border-radius: 999px;
+        box-shadow: 0 18px 40px -26px rgba(15, 23, 42, 0.55);
+      }
+
+      .hover-card-identity {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .hover-card-name {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1rem;
+        color: #111827;
+      }
+
+      .hover-card-handle {
+        margin: 0.1rem 0 0;
+        color: #64748b;
+        font-size: 0.95rem;
+      }
+
+      .hover-card-description {
+        margin: 0;
+        color: #475569;
+        line-height: 1.55;
+      }
+
+      .hover-card-stats {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        color: #1e293b;
+      }
+
+      .hover-card-stats > div {
+        display: flex;
+        gap: 0.45rem;
+        align-items: baseline;
+      }
+
+      .hover-card-stat-number {
+        font-weight: 600;
+        font-size: 1rem;
+      }
+
+      .hover-card-stat-label {
+        font-size: 0.95rem;
+        color: #64748b;
+      }
+
+      .hover-card-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .hover-card-list {
+        margin: 0;
+        padding-left: 1.1rem;
+        display: grid;
+        gap: 0.25rem;
+        color: inherit;
+      }
+
+      .hover-card-list li {
+        line-height: 1.5;
+      }
+
       .dialog-check input {
         width: 1.15rem;
         height: 1.15rem;
@@ -534,6 +656,100 @@
 
       <section>
         <header>
+          <h2>&lt;wc-hover-card&gt;</h2>
+          <p>Preview link destinations and people cards with configurable delays, placement, and arrows.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Radix UI preview</h3>
+            <wc-hover-card
+              open-delay="150"
+              close-delay="150"
+              side="right"
+              style="
+                --hover-card-surface: #ffffff;
+                --hover-card-shadow: 0 32px 60px -40px rgba(15, 23, 42, 0.6);
+                --hover-card-border: 1px solid rgba(148, 163, 184, 0.28);
+                --hover-card-padding: 1.5rem;
+                --hover-card-gap: 0.85rem;
+              "
+            >
+              <button slot="trigger" type="button" class="hover-card-trigger" aria-label="Open Radix UI hover card">
+                <img
+                  class="hover-card-trigger-avatar"
+                  src="https://pbs.twimg.com/profile_images/1337055608613253126/r_eiMp2H_400x400.png"
+                  alt="Radix UI avatar"
+                />
+              </button>
+              <div slot="content" class="hover-card-content">
+                <img
+                  class="hover-card-avatar-large"
+                  src="https://pbs.twimg.com/profile_images/1337055608613253126/r_eiMp2H_400x400.png"
+                  alt="Radix UI"
+                />
+                <div class="hover-card-identity">
+                  <div>
+                    <p class="hover-card-name">Radix</p>
+                    <p class="hover-card-handle">@radix_ui</p>
+                  </div>
+                  <p class="hover-card-description">
+                    Components, icons, colors, and templates for building high-quality, accessible UI. Free and
+                    open-source.
+                  </p>
+                  <div class="hover-card-stats">
+                    <div>
+                      <span class="hover-card-stat-number">0</span>
+                      <span class="hover-card-stat-label">Following</span>
+                    </div>
+                    <div>
+                      <span class="hover-card-stat-number">2,900</span>
+                      <span class="hover-card-stat-label">Followers</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </wc-hover-card>
+            <p>
+              The card appears on hover with a short delay, positioning itself to the right of the trigger while
+              keeping focus and Escape-to-close behavior intact.
+            </p>
+          </div>
+
+          <div class="example-card">
+            <h3>Product quick look</h3>
+            <wc-hover-card
+              open-delay="0"
+              close-delay="180"
+              side="top"
+              align="start"
+              side-offset="12"
+              align-offset="8"
+              style="
+                --hover-card-surface: #0f172a;
+                --hover-card-color: #f8fafc;
+                --hover-card-arrow-shadow: none;
+                --hover-card-border: 1px solid rgba(148, 163, 184, 0.35);
+              "
+            >
+              <a slot="trigger" class="hover-card-trigger link" href="https://radix-ui.com" target="_blank" rel="noreferrer">
+                Learn more
+              </a>
+              <div slot="content" class="hover-card-content compact">
+                <strong class="hover-card-title">Radix Primitives</strong>
+                <p class="hover-card-description">
+                  Unstyled, accessible primitives for building high-quality design systems and web apps.
+                </p>
+                <ul class="hover-card-list">
+                  <li>Focus-aware interactions</li>
+                  <li>Collision-adjusted positioning</li>
+                  <li>Theme agnostic styling hooks</li>
+                </ul>
+              </div>
+            </wc-hover-card>
+            <p>
+              Customize side, alignment, offsets, and surface variables to match brand palettes or dock the panel to
+              complex layouts.
           <h2>&lt;wc-collapsible&gt;</h2>
           <p>Build expandable summaries with optional preview content and animated icons.</p>
         </header>

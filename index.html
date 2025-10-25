@@ -149,7 +149,8 @@
       <div class="demo-layout">
         <nav class="demo-nav" aria-label="Component demos">
           <ol>
-            <li><button type="button" class="is-active" aria-current="page" data-demo-target="wc-menubar">&lt;wc-menubar&gt;</button></li>
+            <li><button type="button" class="is-active" aria-current="page" data-demo-target="wc-navigation-menu">&lt;wc-navigation-menu&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-menubar">&lt;wc-menubar&gt;</button></li>
             <li><button type="button" aria-current="false" data-demo-target="wc-label">&lt;wc-label&gt;</button></li>
             <li><button type="button" aria-current="false" data-demo-target="wc-form">&lt;wc-form&gt;</button></li>
             <li><button type="button" aria-current="false" data-demo-target="wc-checkbox">&lt;wc-checkbox&gt;</button></li>
@@ -170,7 +171,23 @@
           <noscript>
             <p class="demo-noscript">Enable JavaScript to switch between component previews.</p>
           </noscript>
-          <section data-demo-id="wc-menubar">
+          <section data-demo-id="wc-navigation-menu">
+            <header>
+              <h2>&lt;wc-navigation-menu&gt;</h2>
+              <p>Animated navigation with viewport-driven content panels, keyboard focus management, and active indicators.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-navigation-menu&gt; demo"
+                src="./demos/wc-navigation-menu.html"
+                loading="lazy"
+                height="520"
+              ></iframe>
+            </div>
+          </section>
+
+          <section data-demo-id="wc-menubar" hidden>
             <header>
               <h2>&lt;wc-menubar&gt;</h2>
               <p>Desktop-style menus with nested submenus, checkable items, and roving keyboard focus.</p>

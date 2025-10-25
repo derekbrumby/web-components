@@ -37,6 +37,37 @@
         background: rgba(255, 255, 255, 0.65);
         box-shadow: 0 32px 64px -36px rgba(15, 23, 42, 0.35);
         backdrop-filter: blur(16px);
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 4rem);
+        overflow: hidden;
+      }
+
+      .demo-nav wc-scroll-area {
+        flex: 1;
+        display: block;
+        height: 100%;
+      }
+
+      .demo-nav-sections {
+        display: grid;
+        gap: 1.75rem;
+        padding-right: 0.35rem;
+      }
+
+      .demo-nav section {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .demo-nav-section-title {
+        margin: 0;
+        font-size: 0.8rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: inherit;
+        opacity: 0.7;
       }
 
       .demo-nav ol {
@@ -124,6 +155,15 @@
         .demo-nav {
           position: static;
           padding: 0.75rem;
+          height: auto;
+        }
+
+        .demo-nav wc-scroll-area {
+          height: auto;
+        }
+
+        .demo-nav-sections {
+          padding-right: 0;
         }
 
         .demo-nav ol {
@@ -148,49 +188,74 @@
 
       <div class="demo-layout">
         <nav class="demo-nav" aria-label="Component demos">
-          <ol>
-            <li><button type="button" class="is-active" aria-current="page" data-demo-target="wc-markdown-viewer">&lt;wc-markdown-viewer&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-code-viewer">&lt;wc-code-viewer&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-navigation-menu">&lt;wc-navigation-menu&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-sidebar">&lt;wc-sidebar&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-menubar">&lt;wc-menubar&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-label">&lt;wc-label&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-separator">&lt;wc-separator&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-form">&lt;wc-form&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-checkbox">&lt;wc-checkbox&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-switch">&lt;wc-switch&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-toggle-group">&lt;wc-toggle-group&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-radio-group">&lt;wc-radio-group&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-avatar">&lt;wc-avatar&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-spinner">&lt;wc-spinner&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-skeleton">&lt;wc-skeleton&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-badge">&lt;wc-badge&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-hover-card">&lt;wc-hover-card&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-tooltip">&lt;wc-tooltip&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-popover">&lt;wc-popover&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-calendar">&lt;wc-calendar&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-date-picker">&lt;wc-date-picker&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-data-table">&lt;wc-data-table&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-collapsible">&lt;wc-collapsible&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-aspect-ratio">&lt;wc-aspect-ratio&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-slider">&lt;wc-slider&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-resizable-group">&lt;wc-resizable-group&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-scroll-area">&lt;wc-scroll-area&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-password-toggle-field">&lt;wc-password-toggle-field&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-toggle">&lt;wc-toggle&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-toolbar">&lt;wc-toolbar&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-progress">&lt;wc-progress&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-otp-field">&lt;wc-otp-field&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-dropdown-menu">&lt;wc-dropdown-menu&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-select">&lt;wc-select&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-dialog">&lt;wc-dialog&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-drawer">&lt;wc-drawer&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-alert-dialog">&lt;wc-alert-dialog&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-context-menu">&lt;wc-context-menu&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-toast">&lt;wc-toast&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-accordion">&lt;wc-accordion&gt;</button></li>
-            <li><button type="button" aria-current="false" data-demo-target="wc-tabs">&lt;wc-tabs&gt;</button></li>
-          </ol>
+          <wc-scroll-area class="demo-nav-scroll">
+            <div class="demo-nav-sections">
+              <section>
+                <h2 class="demo-nav-section-title">Content &amp; Data</h2>
+                <ol>
+                  <li><button type="button" class="is-active" aria-current="page" data-demo-target="wc-markdown-viewer">&lt;wc-markdown-viewer&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-code-viewer">&lt;wc-code-viewer&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-avatar">&lt;wc-avatar&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-spinner">&lt;wc-spinner&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-skeleton">&lt;wc-skeleton&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-badge">&lt;wc-badge&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-progress">&lt;wc-progress&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-data-table">&lt;wc-data-table&gt;</button></li>
+                </ol>
+              </section>
+
+              <section>
+                <h2 class="demo-nav-section-title">Navigation &amp; Structure</h2>
+                <ol>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-navigation-menu">&lt;wc-navigation-menu&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-sidebar">&lt;wc-sidebar&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-menubar">&lt;wc-menubar&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-toolbar">&lt;wc-toolbar&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-separator">&lt;wc-separator&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-collapsible">&lt;wc-collapsible&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-accordion">&lt;wc-accordion&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-tabs">&lt;wc-tabs&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-aspect-ratio">&lt;wc-aspect-ratio&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-resizable-group">&lt;wc-resizable-group&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-scroll-area">&lt;wc-scroll-area&gt;</button></li>
+                </ol>
+              </section>
+
+              <section>
+                <h2 class="demo-nav-section-title">Forms &amp; Inputs</h2>
+                <ol>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-form">&lt;wc-form&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-label">&lt;wc-label&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-checkbox">&lt;wc-checkbox&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-switch">&lt;wc-switch&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-toggle">&lt;wc-toggle&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-toggle-group">&lt;wc-toggle-group&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-radio-group">&lt;wc-radio-group&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-password-toggle-field">&lt;wc-password-toggle-field&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-otp-field">&lt;wc-otp-field&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-slider">&lt;wc-slider&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-calendar">&lt;wc-calendar&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-date-picker">&lt;wc-date-picker&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-select">&lt;wc-select&gt;</button></li>
+                </ol>
+              </section>
+
+              <section>
+                <h2 class="demo-nav-section-title">Menus &amp; Overlays</h2>
+                <ol>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-dropdown-menu">&lt;wc-dropdown-menu&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-context-menu">&lt;wc-context-menu&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-hover-card">&lt;wc-hover-card&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-tooltip">&lt;wc-tooltip&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-popover">&lt;wc-popover&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-dialog">&lt;wc-dialog&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-drawer">&lt;wc-drawer&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-alert-dialog">&lt;wc-alert-dialog&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-toast">&lt;wc-toast&gt;</button></li>
+                </ol>
+              </section>
+            </div>
+          </wc-scroll-area>
         </nav>
 
         <div class="demo-display">
@@ -893,6 +958,8 @@
     </main>
 
     <script type="module">
+      import './src/scroll-area.js';
+
       const nav = document.querySelector('.demo-nav');
       const buttons = Array.from(nav.querySelectorAll('button[data-demo-target]'));
       const demos = Array.from(document.querySelectorAll('section[data-demo-id]'));

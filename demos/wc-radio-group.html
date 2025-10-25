@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-radio-group&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/radio-group.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>View density</h3>
+            <p>
+              The group is form-associated, so the selected value is posted automatically.
+            </p>
+            <form id="radio-density-form" onsubmit="event.preventDefault();">
+              <wc-radio-group id="radio-density" name="density" default-value="comfortable">
+                <wc-radio-group-item value="default">Default</wc-radio-group-item>
+                <wc-radio-group-item value="comfortable">Comfortable</wc-radio-group-item>
+                <wc-radio-group-item value="compact">Compact</wc-radio-group-item>
+              </wc-radio-group>
+              <button type="submit">Save preference</button>
+            </form>
+            <pre class="log" id="radio-density-log">Choose a density to preview submission.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Workspace theme</h3>
+            <p>
+              Horizontal orientation with looping disabled showcases keyboard navigation tweaks.
+            </p>
+            <wc-radio-group id="radio-theme" orientation="horizontal" loop="false" default-value="system">
+              <wc-radio-group-item value="light">Light</wc-radio-group-item>
+              <wc-radio-group-item value="dark">Dark</wc-radio-group-item>
+              <wc-radio-group-item value="system">System</wc-radio-group-item>
+              <wc-radio-group-item value="high-contrast" disabled>High contrast</wc-radio-group-item>
+            </wc-radio-group>
+            <p class="checkbox-inline-note">
+              <strong>Tip:</strong> Use arrow keys to move focus between options. Disabled items are skipped.
+            </p>
+            <pre class="log" id="radio-theme-log">System theme inherits the OS preference.</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const densityForm = document.getElementById('radio-density-form');
+      const densityGroup = document.getElementById('radio-density');
+      const densityLog = document.getElementById('radio-density-log');
+      const themeGroup = document.getElementById('radio-theme');
+      const themeLog = document.getElementById('radio-theme-log');
+
+      if (densityForm && densityGroup && densityLog) {
+        densityGroup.addEventListener('wc-radio-group-value-change', (event) => {
+          densityLog.textContent = `Density set to "${event.detail.value}" via ${event.detail.origin}.`;
+        });
+
+        densityForm.addEventListener('submit', () => {
+          const formData = new FormData(densityForm);
+          densityLog.textContent = `Submitted density: ${formData.get('density')}.`;
+        });
+      }
+
+      if (themeGroup && themeLog) {
+        const updateThemeLog = (value, origin) => {
+          const descriptions = {
+            light: 'Bright interface with subtle shadows.',
+            dark: 'Comfortable in low-light environments.',
+            system: 'Automatically follows the OS setting.',
+            'high-contrast': 'Optimised for legibility.'
+          };
+
+          const description = descriptions[value] || 'Custom theme.';
+          themeLog.textContent = `${value.replace('-', ' ')}: ${description} (via ${origin}).`;
+        };
+
+        themeGroup.addEventListener('wc-radio-group-value-change', (event) => {
+          updateThemeLog(event.detail.value, event.detail.origin);
+        });
+
+        updateThemeLog(themeGroup.value, 'initial selection');
+      }
+    </script>
+  </body>
+</html>

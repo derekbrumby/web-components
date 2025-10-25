@@ -20,6 +20,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/form.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/radio-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 ```
 
@@ -154,6 +155,53 @@ Imperatively call `toggle(force?: boolean)` to flip the state or force a particu
   `--checkbox-gap`, `--checkbox-label-color`.
 - Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
 - Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
+
+### `<wc-radio-group>`
+
+An accessible radio group with roving focus, loopable keyboard navigation, and form association built in. Each
+`<wc-radio-group-item>` renders a stylable control and indicator while ensuring only one option stays selected.
+
+```html
+<wc-radio-group name="density" default-value="comfortable">
+  <wc-radio-group-item value="default">Default</wc-radio-group-item>
+  <wc-radio-group-item value="comfortable">Comfortable</wc-radio-group-item>
+  <wc-radio-group-item value="compact">Compact</wc-radio-group-item>
+</wc-radio-group>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | First enabled item's value | Currently selected option. Reflects to the `value` property. |
+| `default-value` | string | `""` | Initial value applied when no `value` attribute or property is set. |
+| `name` | string | `""` | Associates the group with form submissions; uses the selected value. |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Switch between stacked and inline layouts and keyboard direction. |
+| `disabled` | boolean | `false` | Disables the entire group and removes items from the tab order. |
+| `required` | boolean | `false` | When true, native validation requires a selection before form submission. |
+| `loop` | boolean | `true` | Allows arrow-key navigation to wrap from the last item back to the first. |
+
+Set `disabled` on individual `<wc-radio-group-item>` elements to remove specific choices while keeping the rest
+interactive.
+
+#### Events
+
+- `wc-radio-group-value-change` — fired whenever the selection changes. `event.detail` contains the new `value`
+  and the `origin` (`"pointer"` or `"keyboard"`).
+- `input` — mirrors the native `input` event, useful for reacting to changes in real time.
+- `change` — dispatched after the group updates, matching native form semantics.
+
+#### Styling hooks
+
+- Group-level custom properties: `--wc-radio-group-gap`, `--wc-radio-group-direction`.
+- Item-level custom properties: `--wc-radio-item-size`, `--wc-radio-item-indicator-size`, `--wc-radio-item-gap`,
+  `--wc-radio-item-radius`, `--wc-radio-item-background`, `--wc-radio-item-background-hover`,
+  `--wc-radio-item-border`, `--wc-radio-item-shadow`, `--wc-radio-item-focus-ring`,
+  `--wc-radio-item-indicator-color`, `--wc-radio-item-label-color`.
+- Parts: `::part(root)` on the group, and `::part(item)`, `::part(control)`, `::part(indicator)`, `::part(label)` on
+  each item for fine-grained theming.
+- Data attributes: `[data-state="checked"|"unchecked"]`, `[data-disabled="true"]`, and `[data-orientation]` support
+  state-based styling.
 
 ### `<wc-password-toggle-field>`
 

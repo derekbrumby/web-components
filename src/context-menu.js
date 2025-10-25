@@ -476,16 +476,38 @@
       this.#menu.dataset.state = 'open';
       this.#menu.style.visibility = 'hidden';
       this.#trigger.setAttribute('aria-expanded', 'true');
-      this.#menu.style.left = `${x}px`;
-      this.#menu.style.top = `${y}px`;
+      this.#menu.style.left = '0px';
+      this.#menu.style.top = '0px';
       this.#attachGlobalListeners();
       requestAnimationFrame(() => {
         const rect = this.#menu.getBoundingClientRect();
         const padding = 8;
-        const nextX = clamp(x, padding, window.innerWidth - rect.width - padding);
-        const nextY = clamp(y, padding, window.innerHeight - rect.height - padding);
-        this.#menu.style.left = `${nextX}px`;
-        this.#menu.style.top = `${nextY}px`;
+        const gap = 4;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        let left = clamp(x + gap, padding, viewportWidth - rect.width - padding);
+        let horizontalPlacement = 'right';
+        const wouldOverflowRight = x + rect.width + padding > viewportWidth;
+        const roomOnLeft = x - rect.width - gap >= padding;
+        if (wouldOverflowRight && roomOnLeft) {
+          left = clamp(x - rect.width - gap, padding, viewportWidth - rect.width - padding);
+          horizontalPlacement = 'left';
+        }
+
+        let top = clamp(y + gap, padding, viewportHeight - rect.height - padding);
+        let verticalPlacement = 'bottom';
+        const wouldOverflowBottom = y + rect.height + padding > viewportHeight;
+        const roomAbove = y - rect.height - gap >= padding;
+        if (wouldOverflowBottom && roomAbove) {
+          top = clamp(y - rect.height - gap, padding, viewportHeight - rect.height - padding);
+          verticalPlacement = 'top';
+        }
+
+        this.#menu.dataset.placementX = horizontalPlacement;
+        this.#menu.dataset.placementY = verticalPlacement;
+        this.#menu.style.left = `${left}px`;
+        this.#menu.style.top = `${top}px`;
         this.#menu.style.visibility = 'visible';
         focusFirstItem(this.#menu);
       });
@@ -504,6 +526,8 @@
       this.setAttribute('data-state', 'closed');
       this.#menu.hidden = true;
       this.#menu.dataset.state = 'closed';
+      delete this.#menu.dataset.placementX;
+      delete this.#menu.dataset.placementY;
       this.#trigger.setAttribute('aria-expanded', 'false');
       this.#closeSubmenu(false);
       this.#detachGlobalListeners();
@@ -524,16 +548,34 @@
         const triggerRect = this.#submenuTrigger.getBoundingClientRect();
         const submenuRect = this.#submenu.getBoundingClientRect();
         const padding = 8;
-        let left = triggerRect.right + 8;
+        const gap = 6;
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight;
+
+        let left = triggerRect.right + gap;
+        let horizontalPlacement = 'right';
+        const wouldOverflowRight = triggerRect.right + submenuRect.width + padding > viewportWidth;
+        const roomOnLeft = triggerRect.left - submenuRect.width - gap >= padding;
+        if (wouldOverflowRight && roomOnLeft) {
+          left = triggerRect.left - submenuRect.width - gap;
+          horizontalPlacement = 'left';
+        }
+        left = clamp(left, padding, viewportWidth - submenuRect.width - padding);
+
         let top = triggerRect.top;
-        if (left + submenuRect.width + padding > window.innerWidth) {
-          left = triggerRect.left - submenuRect.width - 8;
+        let verticalPlacement = 'bottom';
+        const wouldOverflowBottom = triggerRect.bottom + submenuRect.height + padding > viewportHeight;
+        const roomAbove = triggerRect.bottom - submenuRect.height >= padding;
+        if (wouldOverflowBottom && roomAbove) {
+          top = triggerRect.bottom - submenuRect.height;
+          verticalPlacement = 'top';
         }
-        if (top + submenuRect.height + padding > window.innerHeight) {
-          top = window.innerHeight - submenuRect.height - padding;
-        }
+        top = clamp(top, padding, viewportHeight - submenuRect.height - padding);
+
+        this.#submenu.dataset.placementX = horizontalPlacement;
+        this.#submenu.dataset.placementY = verticalPlacement;
         this.#submenu.style.left = `${left}px`;
-        this.#submenu.style.top = `${Math.max(padding, top)}px`;
+        this.#submenu.style.top = `${top}px`;
         this.#submenu.style.visibility = 'visible';
       });
     }
@@ -546,6 +588,8 @@
       this.#submenuOpen = false;
       this.#submenu.hidden = true;
       this.#submenu.dataset.state = 'closed';
+      delete this.#submenu.dataset.placementX;
+      delete this.#submenu.dataset.placementY;
       this.#submenuTrigger.setAttribute('aria-expanded', 'false');
       clearHighlighted(this.#submenu);
       if (focusTrigger) {

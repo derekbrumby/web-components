@@ -421,7 +421,8 @@ keyboard shortcuts, or long-press on touch devices to summon the menu.
 ```
 
 The element renders a fully working menu with submenus, checkable items, and a radio group. It manages focus,
-collision-aware positioning, and dismiss behaviour automatically.
+collision-aware positioning (including horizontal/vertical flipping to avoid viewport overflow), and dismiss
+behaviour automatically.
 
 #### Events
 

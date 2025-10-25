@@ -49,6 +49,9 @@ hooks for theming.
 <!-- Inline markdown -->
 <wc-markdown-viewer markdown="# Hello!\nBuilt for CDN delivery."></wc-markdown-viewer>
 
+<!-- Attribute escaping is automatically normalised -->
+<wc-markdown-viewer markdown="Line one\nLine two"></wc-markdown-viewer>
+
 <!-- Remote markdown -->
 <wc-markdown-viewer src="/docs/welcome.md">
   <span slot="loading">Loading documentation…</span>
@@ -66,7 +69,7 @@ CSS custom properties while keeping a polite status message for assistive techno
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| `markdown` | string | `""` | Inline markdown string to render immediately. |
+| `markdown` | string | `""` | Inline markdown string to render immediately. Backslash escaped newlines (e.g. `\n`) are normalised. |
 | `src` | string | `""` | URL pointing to a markdown resource that will be fetched and rendered. |
 
 #### Slots

@@ -19,6 +19,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/form.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -152,6 +153,60 @@ Imperatively call `toggle(force?: boolean)` to flip the state or force a particu
   `--checkbox-gap`, `--checkbox-label-color`.
 - Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
 - Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
+
+### `<wc-password-toggle-field>`
+
+Reveal or mask passwords with a single component that handles focus management, accessibility, and form
+integration. Pointer toggles return focus to the input for fast editing, while keyboard toggles preserve button
+focus for consistent navigation. After submission, the component re-masks the value to avoid accidental plaintext
+storage.
+
+```html
+<form onsubmit="event.preventDefault();">
+  <wc-password-toggle-field
+    name="password"
+    placeholder="Enter password"
+    autocomplete="current-password"
+    show-label="Show password"
+    hide-label="Hide password"
+    required
+  ></wc-password-toggle-field>
+  <button type="submit">Submit</button>
+</form>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Current password value. Reflects the form submission value. |
+| `default-visible` | boolean | `false` | Shows the password on first render while leaving the attribute free to reflect live visibility. |
+| `visible` property | boolean | `false` | Runtime visibility flag. Updates automatically when the toggle is used. |
+| `label` | string | `""` | Provides an `aria-label` for the input when no external label is linked. |
+| `show-label` | string | `"Show password"` | Accessible text announced when the password is hidden. |
+| `hide-label` | string | `"Hide password"` | Accessible text announced when the password is visible. |
+| `disabled` | boolean | `false` | Disables both the input and toggle button. |
+| `required` | boolean | `false` | Marks the field as required when used in forms. |
+| `autocomplete` | string | `"current-password"` | Pass through to the internal input for password managers. |
+
+Standard `<input>` attributes such as `name`, `placeholder`, `pattern`, `inputmode`, `autofocus`, `minlength`, and
+`maxlength` forward directly to the internal control.
+
+#### Events
+
+- `visibilitychange` — fired whenever the reveal state changes. The event detail is `{ visible: boolean }` and the
+  event bubbles across shadow boundaries.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-password-field-height`, `--wc-password-field-radius`,
+  `--wc-password-field-background`, `--wc-password-field-border`, `--wc-password-field-border-hover`,
+  `--wc-password-field-border-focus`, `--wc-password-field-shadow-focus`, `--wc-password-field-gap`,
+  `--wc-password-field-color`, `--wc-password-field-placeholder`, `--wc-password-field-toggle-size`,
+  `--wc-password-field-toggle-color`, `--wc-password-field-toggle-color-active`,
+  `--wc-password-field-toggle-background`, `--wc-password-field-toggle-background-hover`.
+- Parts: `::part(wrapper)`, `::part(input)`, `::part(toggle)`, `::part(icon)`, `::part(assistive-text)`.
+- Data attributes: `[data-visible="true" | "false"]` on the host and toggle button for style adjustments.
 
 ### `<wc-otp-field>`
 

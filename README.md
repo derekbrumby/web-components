@@ -17,6 +17,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/navigation-menu.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/label.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/hover-card.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/tooltip.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/form.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
@@ -672,6 +673,46 @@ Customize using CSS custom properties and parts:
   fallback.
 
 #### Keyboard support
+
+### `<wc-tooltip>`
+
+An accessible tooltip surface that opens when its trigger receives hover or focus and closes on pointer exit,
+trigger activation, or the Escape key. Configure per-instance delays, placement, and arrow visibility while
+keeping the implementation dependency free.
+
+```html
+<wc-tooltip open-delay="200" close-delay="120" side="bottom">
+  <button slot="trigger" type="button" aria-label="Add to library">＋</button>
+  <span>Add to library</span>
+</wc-tooltip>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Forces the tooltip open. Remove the attribute to return to interactive behavior. |
+| `default-open` | boolean | `false` | Opens on first render without reflecting the `open` attribute. Ideal for demos. |
+| `open-delay` | number | `700` | Milliseconds to wait before opening after pointer hover. Keyboard focus opens instantly. |
+| `close-delay` | number | `150` | Milliseconds to wait before closing once focus or hover leaves the trigger/content. |
+| `side` | `top` \| `right` \| `bottom` \| `left` | `top` | Placement of the tooltip content relative to the trigger. |
+| `align` | `start` \| `center` \| `end` | `center` | Cross-axis alignment for the chosen side. |
+| `side-offset` | number | `6` | Gap in pixels between the trigger and tooltip. |
+| `align-offset` | number | `0` | Additional pixel offset along the alignment axis. |
+| `hide-arrow` | boolean | `false` | Removes the decorative arrow while leaving positioning intact. |
+
+Each attribute also exposes a camelCase property counterpart (`openDelay`, `closeDelay`, etc.) for imperative
+control.
+
+#### Styling hooks
+
+- Custom properties: `--tooltip-surface`, `--tooltip-color`, `--tooltip-border`, `--tooltip-radius`,
+  `--tooltip-padding`, `--tooltip-shadow`, `--tooltip-font-size`, `--tooltip-font-weight`,
+  `--tooltip-line-height`, `--tooltip-side-offset`, `--tooltip-align-offset`, `--tooltip-arrow-size`,
+  `--tooltip-transition-duration`, `--tooltip-transition-timing`, `--tooltip-trigger-focus-shadow`.
+- Parts: `::part(trigger)`, `::part(content)`, `::part(arrow)`.
+- Data attributes: `[data-state="open" | "closed"]`, `[data-side]`, `[data-align]`, `[data-hide-arrow]` for
+  state-aware theming.
 
 ### `<wc-dropdown-menu>` and friends
 

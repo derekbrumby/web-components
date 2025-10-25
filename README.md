@@ -13,12 +13,50 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/label.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
 examples for each component.
 
 ## Components
+
+### `<wc-label>`
+
+An accessible label element that stays associated with controls whether you link them via the `for`
+attribute or nest the control inside the component.
+
+```html
+<wc-label for="first-name">First name</wc-label>
+<input id="first-name" type="text" value="Pedro Duarte" />
+
+<wc-label>
+  Email notifications
+  <input slot="control" type="checkbox" checked />
+</wc-label>
+```
+
+#### Key attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `for` | string | `""` | Associates the label with a control by id, identical to the native attribute. |
+| `htmlFor` property | string | `""` | Property alias for `for`, useful when setting the target programmatically. |
+| `control` property | `HTMLElement \| null` | `null` | Accesses the associated control element, prioritizing slotted content. |
+
+#### Slots
+
+- _(default)_ — Label text or inline content.
+- `control` — Place a native control to wrap it with the label while keeping interactions intact.
+
+#### Styling hooks
+
+Tune presentation with CSS custom properties and parts:
+
+- Custom properties: `--label-gap`, `--label-gap-with-control`, `--label-font-size`, `--label-font-weight`,
+  `--label-line-height`, `--label-color`, `--label-background`, `--label-radius`, `--label-focus-outline`, and
+  more.
+- Parts: `::part(label)`, `::part(text)`, `::part(control)` for scoped theming without breaking internals.
 
 ### `<wc-otp-field>`
 

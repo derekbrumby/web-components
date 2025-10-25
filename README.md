@@ -40,6 +40,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/drawer.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -278,6 +279,42 @@ Adjust each instance’s width, height, and border radius with CSS custom proper
 - CSS custom properties: `--wc-skeleton-width`, `--wc-skeleton-height`, `--wc-skeleton-radius`,
   `--wc-skeleton-base-color`, `--wc-skeleton-highlight-color`, `--wc-skeleton-animation-duration`.
 - Parts: `::part(base)` exposes the animated surface for advanced overrides.
+
+### `<wc-badge>`
+
+Display statuses, counts, or links with a compact inline badge. The element mirrors the shadcn/ui
+variants while remaining fully stylable through CSS variables and the exposed part hook.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
+
+<wc-badge>New</wc-badge>
+<wc-badge variant="secondary">In review</wc-badge>
+<wc-badge href="/changelog">View changelog</wc-badge>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | string | `"default"` | Switch between `default`, `secondary`, `destructive`, or `outline` colour themes. |
+| `href` | string | `""` | When provided the badge renders as an anchor element, inheriting the supplied URL. |
+| `target` | string | `""` | Optional anchor target. Defaults to `_self`; `_blank` automatically applies `rel="noopener noreferrer"`. |
+| `rel` | string | `""` | Custom relationship attribute when the badge is acting as a link. |
+
+#### Slots
+
+- _(default)_ — Badge label, icons, or counters. SVG icons inherit the badge colour automatically.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-badge-background`, `--wc-badge-color`, `--wc-badge-border-color`,
+  `--wc-badge-hover-background`, `--wc-badge-hover-border-color`, `--wc-badge-focus-ring-color`,
+  `--wc-badge-radius`, `--wc-badge-padding-inline`, `--wc-badge-padding-block`,
+  `--wc-badge-font-size`, `--wc-badge-font-weight`, `--wc-badge-letter-spacing`, `--wc-badge-gap`,
+  `--wc-badge-min-width`, `--wc-badge-min-height`, `--wc-badge-shadow`,
+  `--wc-badge-text-transform`.
+- Parts: `::part(surface)` targets the pill surface for advanced customisation.
 
 ### `<wc-label>`
 

@@ -475,6 +475,10 @@ function parseList(lines, start) {
           continue;
         }
       }
+      const contentIndent = nextLine.match(/^\s*/)?.[0].length ?? 0;
+      if (contentIndent < baseIndent + 2) {
+        break;
+      }
       contentLines.push(nextLine.slice(Math.min(nextLine.length, baseIndent + 2)));
       index += 1;
     }

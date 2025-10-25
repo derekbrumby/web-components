@@ -1525,6 +1525,9 @@ box.
 - `<wc-sidebar-menu-badge>` displays counts or statuses.
 - `<wc-sidebar-menu-sub>` / `<wc-sidebar-menu-sub-item>` / `<wc-sidebar-menu-sub-button>` render nested navigation.
 - `<wc-sidebar-menu-skeleton>` mirrors the final layout for loading states.
+- When `collapsible="icon"` is active, menu buttons collapse to icon-only chips. Provide the icon as an `<svg>` element or
+  mark non-SVG elements with `data-sidebar-icon` so they remain visible. Badges, menu actions, and sub-navigation are
+  automatically hidden in this mode to keep the rail compact.
 
 #### Styling hooks
 

@@ -25,6 +25,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/radio-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/slider.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toggle.js"></script>
@@ -277,6 +278,23 @@ Imperatively call `toggle(force?: boolean)` to flip the state or force a particu
 - Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
 - Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
 
+### `<wc-slider>`
+
+An accessible slider that supports one or many thumbs, pointer and keyboard interaction, and native form
+integration. It mirrors the Radix UI Slider API with attributes for orientation, inversion, and minimum spacing
+between thumbs.
+
+```html
+<label id="demo-volume-label" for="demo-volume">Output volume</label>
+<wc-slider
+  id="demo-volume"
+  aria-labelledby="demo-volume-label"
+  thumb-labels="Volume"
+  value="25"
+  max="200"
+  step="5"
+  name="volume"
+></wc-slider>
 ### `<wc-switch>`
 
 An accessible binary toggle that mimics the Radix UI Switch while staying dependency-free. It exposes keyboard
@@ -400,6 +418,31 @@ progress bar API while keeping the markup minimal and themable through CSS custo
 
 #### Attributes & properties
 
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Space or comma separated numbers that seed the slider thumbs. The `value` property returns a `number[]`. |
+| `min` | number | `0` | Lower bound for all thumbs. |
+| `max` | number | `100` | Upper bound for all thumbs. |
+| `step` | number | `1` | Interval applied when dragging or using the keyboard. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Switches between horizontal and vertical layouts. |
+| `inverted` | boolean | `false` | Flips the direction of increasing values. |
+| `name` | string | `""` | When set, slider values participate in form submission using one entry per thumb. |
+| `disabled` | boolean | `false` | Removes the slider from the focus order and blocks pointer interaction. |
+| `min-steps-between-thumbs` | number | `0` | Enforces a minimum gap, expressed in steps, between neighbouring thumbs. |
+| `thumb-labels` | string | `""` | Comma separated labels applied to thumbs for assistive technologies. Falls back to the host’s `aria-label`/`aria-labelledby`. |
+
+#### Events
+
+- `input` — Fired whenever a thumb moves. Bubbles and crosses the shadow boundary.
+- `change` — Fired after a pointer drag ends or keyboard interaction commits.
+
+#### Styling hooks
+
+- Custom properties: `--wc-slider-width`, `--wc-slider-height`, `--wc-slider-gap`, `--wc-slider-track-size`,
+  `--wc-slider-track-radius`, `--wc-slider-track-background`, `--wc-slider-range-background`,
+  `--wc-slider-thumb-size`, `--wc-slider-thumb-radius`, `--wc-slider-thumb-background`,
+  `--wc-slider-thumb-shadow`, `--wc-slider-thumb-focus-outline`.
+- Parts: `::part(root)`, `::part(track)`, `::part(range)`, `::part(thumb)`.
 | Attribute | Type | Default | Description |
 | --- | --- | --- | --- |
 | `checked` | boolean | `false` | Sets the switch to the “on” position. Reflects to the `checked` property. |

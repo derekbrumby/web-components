@@ -9,6 +9,7 @@
     <script type="module" src="./src/alert-dialog.js"></script>
     <script type="module" src="./src/aspect-ratio.js"></script>
     <script type="module" src="./src/avatar.js"></script>
+    <script type="module" src="./src/collapsible.js"></script>
     <style>
       :root {
         color-scheme: light dark;
@@ -131,6 +132,46 @@
         margin: 0.35rem 0 0;
         color: #4338ca;
         line-height: 1.6;
+      }
+
+      .collapsible-demo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        align-items: flex-start;
+      }
+
+      .collapsible-callout {
+        flex: 1 1 280px;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .collapsible-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+      }
+
+      .collapsible-card strong {
+        font-weight: 600;
+        color: #312e81;
+      }
+
+      .collapsible-supporting {
+        max-width: 360px;
+        display: grid;
+        gap: 0.75rem;
+        color: #4338ca;
+      }
+
+      .collapsible-supporting p {
+        margin: 0;
+        line-height: 1.7;
       }
 
       @media (min-width: 900px) {
@@ -281,6 +322,59 @@
                 accessible.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <header>
+          <h2>&lt;wc-collapsible&gt;</h2>
+          <p>Build expandable summaries with optional preview content and animated icons.</p>
+        </header>
+
+        <div class="collapsible-demo">
+          <div class="collapsible-callout">
+            <h3>Starred repositories</h3>
+            <wc-collapsible
+              style="
+                --collapsible-width: min(100%, 320px);
+                --collapsible-background: linear-gradient(135deg, #312e81, #1e1b4b);
+                --collapsible-summary-color: #ede9fe;
+                --collapsible-trigger-background: #ffffff;
+                --collapsible-trigger-color: #5b21b6;
+                --collapsible-preview-background: rgba(255, 255, 255, 0.98);
+                --collapsible-preview-color: #312e81;
+                --collapsible-content-background: rgba(255, 255, 255, 0.98);
+                --collapsible-content-color: #312e81;
+              "
+            >
+              <span slot="summary">@peduarte starred 3 repositories</span>
+              <div slot="peek" class="collapsible-card">
+                <span>@radix-ui/primitives</span>
+                <strong>+24 ★</strong>
+              </div>
+              <div class="collapsible-card">
+                <span>@radix-ui/colors</span>
+                <strong>+12 ★</strong>
+              </div>
+              <div class="collapsible-card">
+                <span>@radix-ui/themes</span>
+                <strong>+9 ★</strong>
+              </div>
+            </wc-collapsible>
+          </div>
+
+          <div class="collapsible-supporting">
+            <h3>Highlights</h3>
+            <p>
+              Slots let you compose summary text, preview content, and the collapsible body without extra
+              wrappers. The trigger syncs aria attributes and responds to keyboard events.
+            </p>
+            <p>
+              Listen for the <code>openchange</code> event to sync analytics or control sibling UI. You can
+              also call <code>show()</code>, <code>hide()</code>, or <code>toggle()</code> to manage state
+              imperatively.
+            </p>
           </div>
         </div>
       </section>

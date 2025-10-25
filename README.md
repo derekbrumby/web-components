@@ -1489,7 +1489,8 @@ box.
 - `<wc-sidebar-provider>` — manages expanded/collapsed state, keyboard shortcuts (`⌘/Ctrl + B` by default), and an
   optional persisted cookie.
 - `<wc-sidebar>` — the panel itself. Supports `collapsible="icon"`, `collapsible="offcanvas"`, and non-collapsible
-  variants with optional inset/floating skins.
+  variants with optional inset/floating skins. Enforces border-box sizing so borders or floating padding never push it
+  past the configured width.
 - `<wc-sidebar-inset>` — wraps the main application area and reacts to the provider’s state so spacing stays aligned.
 - `<wc-sidebar-trigger>` — button that toggles the closest provider. Works inside the sidebar or the inset content.
 - `<wc-sidebar-menu>` family — render menu items, actions, badges, and sub-navigation with consistent spacing.

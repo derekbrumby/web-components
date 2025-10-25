@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <!-- Include from your CDN of choice -->
+<script type="module" src="./otp-field.js"></script>
+
+
+
+  </head>
+  <body>
+    <h1>
+      Web Components
+    </h1>
+<h3>
+  One-Time Password Field
+</h3>
+    <form id="verify" onsubmit="event.preventDefault(); alert(new FormData(event.target).get('otp'));">
+  <otp-field
+    name="otp"
+    length="6"
+    validation-type="numeric"
+    auto-submit
+    placeholder="•"
+    orientation="horizontal"
+    dir="ltr"
+  ></otp-field>
+  <button>Submit</button>
+</form>
+  </body>
+</html>
+

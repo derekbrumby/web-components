@@ -39,6 +39,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/date-picker.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/drawer.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
 ```
 
@@ -144,6 +145,86 @@ export const useCounter = () => {
 
 - CSS custom properties: `--code-viewer-background`, `--code-viewer-foreground`, `--code-viewer-padding`, `--code-viewer-radius`, `--code-viewer-shadow`, `--code-viewer-font-family`, `--code-viewer-font-size`, `--code-viewer-comment-color`, `--code-viewer-keyword-color`, `--code-viewer-string-color`, `--code-viewer-number-color`, `--code-viewer-attribute-color`, `--code-viewer-tag-color`, `--code-viewer-entity-color`, `--code-viewer-variable-color`, `--code-viewer-punctuation-color`, `--code-viewer-accent`.
 - Parts: `::part(container)`, `::part(surface)`, `::part(code)`, `::part(empty)`, `::part(error)`.
+
+### `<wc-data-table>`
+
+Build interactive data grids with sortable columns, filtering, pagination, column visibility controls, and row actions. The component embraces headless patterns so you can describe your columns and data via JavaScript without shipping a framework runtime.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
+
+<wc-data-table id="payments-table" page-size="5" filter-placeholder="Filter emails…"></wc-data-table>
+
+<script type="module">
+  import "https://cdn.example.com/web-components/data-table.js";
+
+  const table = document.querySelector('#payments-table');
+  table.columns = [
+    { id: 'status', header: 'Status', accessor: 'status', sortable: true },
+    { id: 'email', header: 'Email', accessor: 'email', sortable: true, filterable: true },
+    {
+      id: 'amount',
+      header: 'Amount',
+      accessor: 'amount',
+      align: 'right',
+      sortable: true,
+      formatter: (value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)
+    },
+    {
+      id: 'actions',
+      accessor: () => '',
+      hideable: false,
+      actions: [
+        { id: 'copy-id', label: 'Copy payment ID', action: (row) => navigator.clipboard?.writeText?.(row.id ?? '') },
+        { id: 'view-details', label: 'View payment details' }
+      ]
+    }
+  ];
+  table.data = [
+    { id: 'm5gr84i9', amount: 316, status: 'success', email: 'ken99@example.com' },
+    { id: '3u1reuv4', amount: 242, status: 'success', email: 'abe45@example.com' }
+  ];
+</script>
+```
+
+#### Attributes
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `page-size` | number | `5` | Number of rows rendered per page before pagination kicks in. |
+| `filter-placeholder` | string | `"Filter rows"` | Customises the placeholder copy for the search input. |
+| `selectable` | boolean | `true` | When present the table renders a checkbox column so users can select rows. Remove the attribute to disable selection entirely. |
+| `row-id-key` | string | `"id"` | Property name used to derive stable row identifiers when `columns`/`data` are arrays of plain objects. |
+
+#### Properties
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `columns` | `Array<DataTableColumn>` | Column configuration describing headers, accessors, formatting, sortability, filters, and optional action menus. |
+| `data` | `Array<object>` | Data rows rendered by the table. You can swap this at runtime to drive live updates. |
+| `pageSize` | number | Programmatic setter/getter mirroring the `page-size` attribute. |
+| `selectable` | boolean | Reflects the `selectable` attribute so you can toggle row selection from JavaScript. |
+| `selectedRows` | `Array<object>` | Read-only list of the currently selected data objects after filtering. |
+
+`DataTableColumn` objects support the following fields:
+
+- `id` — unique column identifier used for sorting and visibility.
+- `header` — string or function returning header content.
+- `accessor` — string key or function returning cell values.
+- `formatter` — optional value formatter for display.
+- `renderCell` — custom renderer returning DOM nodes or strings.
+- `sortable`, `filterable`, `hideable`, `align` — behavioural flags.
+- `actions` — array of `{ id, label, action }` descriptors used to render per-row dropdown menus.
+
+#### Events
+
+- `data-table-selection-change` — fired whenever the checked row set changes. `event.detail.rows` contains the selected objects.
+- `data-table-action` — emitted when an item inside a row action menu is activated. Provides `{ action, row, columnId, rowId }` in `event.detail`.
+
+#### Styling hooks
+
+- CSS custom properties: `--data-table-background`, `--data-table-border-color`, `--data-table-radius`, `--data-table-text-color`, `--data-table-muted-color`, `--data-table-toolbar-gap`, `--data-table-toolbar-padding`, `--data-table-filter-background`, `--data-table-filter-border`, `--data-table-filter-radius`, `--data-table-filter-padding`, `--data-table-filter-color`, `--data-table-filter-placeholder`, `--data-table-header-background`, `--data-table-header-color`, `--data-table-row-hover`, `--data-table-row-selected`, `--data-table-row-border`, `--data-table-pagination-gap`, `--data-table-control-radius`, `--data-table-control-border`, `--data-table-control-background`, `--data-table-control-color`, `--data-table-control-disabled-opacity`, `--data-table-menu-background`, `--data-table-menu-border`, `--data-table-menu-radius`, `--data-table-menu-shadow`, `--data-table-menu-item-hover`, `--data-table-actions-trigger-size`.
+- Parts: `::part(container)`, `::part(toolbar)`, `::part(filter)`, `::part(column-menu)`, `::part(surface)`, `::part(table)`, `::part(header)`, `::part(row)`, `::part(cell)`, `::part(empty)`, `::part(pagination)`, `::part(selection-summary)`, `::part(pagination-previous)`, `::part(pagination-next)`, `::part(column-menu-empty)`.
 ### `<wc-spinner>`
 
 An accessible loading indicator with no runtime dependencies. Customize the spinner’s size, stroke, and color with

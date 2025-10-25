@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-sidebar&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/sidebar.js"></script>
+    <style>
+      .layout-shell {
+        min-height: 540px;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        box-shadow: 0 32px 64px -36px rgba(15, 23, 42, 0.35);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+      }
+
+      wc-sidebar-provider {
+        --sidebar-width: 18rem;
+        --sidebar-collapsed-width: 4rem;
+        --sidebar-inset-padding: 1.5rem;
+        --sidebar-inset-padding-collapsed: 1.5rem 1.5rem 1.5rem 1.5rem;
+        background: var(--demo-surface, color-mix(in srgb, white 88%, #f1f5f9 12%));
+      }
+
+      wc-sidebar {
+        --sidebar: oklch(0.985 0 0);
+        --sidebar-foreground: oklch(0.145 0 0);
+        --sidebar-border: oklch(0.922 0 0);
+        --sidebar-ring: oklch(0.708 0 0);
+        --sidebar-group-label-color: color-mix(in srgb, currentColor 60%, transparent);
+        --sidebar-menu-button-background-active: rgba(79, 70, 229, 0.15);
+        --sidebar-menu-action-background-hover: rgba(79, 70, 229, 0.12);
+      }
+
+      .sidebar-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      .sidebar-brand span {
+        background: linear-gradient(135deg, #6366f1, #a855f7);
+        width: 2.25rem;
+        height: 2.25rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.75rem;
+        color: white;
+        font-size: 1rem;
+      }
+
+      .workspace-footer {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.75rem;
+        background: rgba(15, 23, 42, 0.06);
+      }
+
+      .workspace-footer img {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 999px;
+      }
+
+      .workspace-footer strong {
+        display: block;
+        font-size: 0.9rem;
+      }
+
+      .workspace-footer span {
+        font-size: 0.75rem;
+        color: rgba(15, 23, 42, 0.65);
+      }
+
+      .inset-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .breadcrumbs {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: rgba(15, 23, 42, 0.6);
+      }
+
+      .breadcrumbs span:last-child {
+        color: rgba(15, 23, 42, 0.85);
+        font-weight: 600;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .cards article {
+        border-radius: 1rem;
+        padding: 1.25rem;
+        background: white;
+        box-shadow: 0 22px 42px -32px rgba(15, 23, 42, 0.35);
+      }
+
+      .cards h4 {
+        margin: 0 0 0.35rem;
+        font-size: 1rem;
+      }
+
+      .cards p {
+        margin: 0;
+        color: rgba(15, 23, 42, 0.6);
+        font-size: 0.9rem;
+      }
+
+      .longform {
+        margin-top: 1.5rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 1.25rem;
+        box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+        min-height: 280px;
+      }
+
+      .longform h4 {
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+      }
+
+      .longform p {
+        color: rgba(15, 23, 42, 0.68);
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      @media (max-width: 720px) {
+        wc-sidebar-provider {
+          --sidebar-inset-padding: 1rem;
+        }
+
+        .inset-header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-card">
+          <h3>Collapsible workspace sidebar</h3>
+          <p>
+            Explore navigation groups, badges, nested pages, and a persistent trigger that adapts to mobile offcanvas
+            layouts.
+          </p>
+          <div class="layout-shell">
+            <wc-sidebar-provider persist-state>
+              <wc-sidebar collapsible="icon">
+                <wc-sidebar-header>
+                  <div class="sidebar-brand">
+                    <span>AD</span>
+                    <div>
+                      <div>Acme Docs</div>
+                      <small style="font-weight: 500; color: rgba(15, 23, 42, 0.6);">v5.3 release</small>
+                    </div>
+                  </div>
+                </wc-sidebar-header>
+                <wc-sidebar-content>
+                  <wc-sidebar-group>
+                    <wc-sidebar-group-label>Workspace</wc-sidebar-group-label>
+                    <wc-sidebar-group-content>
+                      <wc-sidebar-menu>
+                        <wc-sidebar-menu-item>
+                          <wc-sidebar-menu-button href="#overview" active>
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M4 4.75a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-.75.75h-6.5A.75.75 0 0 1 4 11.25Zm0 8a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-.75.75h-6.5A.75.75 0 0 1 4 20.25Zm8-8a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-.75.75h-6.5a.75.75 0 0 1-.75-.75Zm3 8a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-.75.75h-3.5a.75.75 0 0 1-.75-.75Z"
+                              />
+                            </svg>
+                            <span>Overview</span>
+                          </wc-sidebar-menu-button>
+                          <wc-sidebar-menu-badge>12</wc-sidebar-menu-badge>
+                        </wc-sidebar-menu-item>
+                        <wc-sidebar-menu-item>
+                          <wc-sidebar-menu-button href="#editor">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M5.25 3h13.5A2.25 2.25 0 0 1 21 5.25v13.5A2.25 2.25 0 0 1 18.75 21H5.25A2.25 2.25 0 0 1 3 18.75V5.25A2.25 2.25 0 0 1 5.25 3Zm1 3.5a.75.75 0 0 0 0 1.5H17.5a.75.75 0 0 0 0-1.5Z"
+                              />
+                            </svg>
+                            <span>Editor</span>
+                          </wc-sidebar-menu-button>
+                          <wc-sidebar-menu-action aria-label="Create document">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                              <path d="M12 5a.75.75 0 0 1 .75.75v5.5h5.5a.75.75 0 0 1 0 1.5h-5.5v5.5a.75.75 0 0 1-1.5 0v-5.5h-5.5a.75.75 0 0 1 0-1.5h5.5v-5.5A.75.75 0 0 1 12 5Z" />
+                            </svg>
+                          </wc-sidebar-menu-action>
+                        </wc-sidebar-menu-item>
+                        <wc-sidebar-menu-item>
+                          <wc-sidebar-menu-button href="#analytics">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M6 4.5a1 1 0 0 1 1 1V18a1 1 0 0 1-2 0V5.5a1 1 0 0 1 1-1Zm5 3a1 1 0 0 1 1 1V18a1 1 0 1 1-2 0V8.5a1 1 0 0 1 1-1Zm5 4a1 1 0 0 1 1 1V18a1 1 0 1 1-2 0v-5.5a1 1 0 0 1 1-1Z"
+                              />
+                            </svg>
+                            <span>Analytics</span>
+                          </wc-sidebar-menu-button>
+                        </wc-sidebar-menu-item>
+                      </wc-sidebar-menu>
+                    </wc-sidebar-group-content>
+                  </wc-sidebar-group>
+
+                  <wc-sidebar-group>
+                    <wc-sidebar-group-label>Library</wc-sidebar-group-label>
+                    <wc-sidebar-group-content>
+                      <wc-sidebar-menu>
+                        <wc-sidebar-menu-item>
+                          <wc-sidebar-menu-button href="#guides">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                              <path
+                                d="M6 4.25h6.75A2.75 2.75 0 0 1 15.5 7v12.25H6A2.75 2.75 0 0 1 3.25 16.5v-9A2.75 2.75 0 0 1 6 4.25Zm9.5 2.5h2.75A2.75 2.75 0 0 1 21 9.5v9A2.75 2.75 0 0 1 18.25 21H15.5Z"
+                              />
+                            </svg>
+                            <span>Guides</span>
+                          </wc-sidebar-menu-button>
+                          <wc-sidebar-menu-sub>
+                            <wc-sidebar-menu-sub-item>
+                              <wc-sidebar-menu-sub-button href="#installation">Installation</wc-sidebar-menu-sub-button>
+                            </wc-sidebar-menu-sub-item>
+                            <wc-sidebar-menu-sub-item>
+                              <wc-sidebar-menu-sub-button href="#data" active>Data fetching</wc-sidebar-menu-sub-button>
+                            </wc-sidebar-menu-sub-item>
+                            <wc-sidebar-menu-sub-item>
+                              <wc-sidebar-menu-sub-button href="#styling">Styling</wc-sidebar-menu-sub-button>
+                            </wc-sidebar-menu-sub-item>
+                          </wc-sidebar-menu-sub>
+                        </wc-sidebar-menu-item>
+                      </wc-sidebar-menu>
+                    </wc-sidebar-group-content>
+                  </wc-sidebar-group>
+                </wc-sidebar-content>
+
+                <wc-sidebar-footer>
+                  <div class="workspace-footer">
+                    <img src="https://avatars.dicebear.com/api/initials/A%20D.svg" alt="Ada Lovelace" />
+                    <div>
+                      <strong>Ada Lovelace</strong>
+                      <span>Product manager</span>
+                    </div>
+                  </div>
+                </wc-sidebar-footer>
+                <wc-sidebar-rail></wc-sidebar-rail>
+              </wc-sidebar>
+
+              <wc-sidebar-inset>
+                <header class="inset-header">
+                  <wc-sidebar-trigger label="Toggle navigation"></wc-sidebar-trigger>
+                  <nav class="breadcrumbs" aria-label="Breadcrumb">
+                    <span>Docs</span>
+                    <span aria-hidden="true">/</span>
+                    <span>Data fetching</span>
+                  </nav>
+                </header>
+                <div class="cards">
+                  <article>
+                    <h4>Server components</h4>
+                    <p>Stream data-heavy routes with instant loading states and zero waterfall requests.</p>
+                  </article>
+                  <article>
+                    <h4>Caching strategies</h4>
+                    <p>Configure smart revalidation for API routes, fetch requests, and dynamic rendering.</p>
+                  </article>
+                  <article>
+                    <h4>Edge rendering</h4>
+                    <p>Deploy near your users with fine-grained caching and fast global startup times.</p>
+                  </article>
+                </div>
+                <div class="longform">
+                  <h4>Data fetching playbook</h4>
+                  <p>
+                    Split critical queries from background hydration, cache optimistic responses, and surface precise
+                    fallback skeletons while requests resolve. The sidebar keeps navigation accessible even when the
+                    content area scrolls.
+                  </p>
+                </div>
+              </wc-sidebar-inset>
+            </wc-sidebar-provider>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

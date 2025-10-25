@@ -521,6 +521,14 @@
     #activationMode = 'automatic';
     /** @type {MutationObserver | null} */
     #observer = null;
+    /** @type {(event: Event) => void} */
+    #boundSlotChange = () => {};
+    /** @type {(event: CustomEvent<{ value: string }>) => void} */
+    #boundTabActivate = () => {};
+    /** @type {(event: CustomEvent<{ value: string }>) => void} */
+    #boundTabFocus = () => {};
+    /** @type {(event: KeyboardEvent) => void} */
+    #boundKeydown = () => {};
 
     constructor() {
       super();
@@ -567,10 +575,10 @@
       `;
       this.#slot = /** @type {HTMLSlotElement} */ (this.#root.querySelector('slot'));
 
-      this.#handleSlotChange = this.#handleSlotChange.bind(this);
-      this.#handleTabActivate = this.#handleTabActivate.bind(this);
-      this.#handleTabFocus = this.#handleTabFocus.bind(this);
-      this.#handleKeydown = this.#handleKeydown.bind(this);
+      this.#boundSlotChange = this.#handleSlotChange.bind(this);
+      this.#boundTabActivate = this.#handleTabActivate.bind(this);
+      this.#boundTabFocus = this.#handleTabFocus.bind(this);
+      this.#boundKeydown = this.#handleKeydown.bind(this);
     }
 
     connectedCallback() {
@@ -579,10 +587,10 @@
       upgradeProperty(this, 'activationMode');
       upgradeProperty(this, 'defaultValue');
 
-      this.addEventListener('wc-tab-activate', this.#handleTabActivate);
-      this.addEventListener('wc-tab-focus', this.#handleTabFocus);
-      this.addEventListener('keydown', this.#handleKeydown);
-      this.#slot.addEventListener('slotchange', this.#handleSlotChange);
+      this.addEventListener('wc-tab-activate', this.#boundTabActivate);
+      this.addEventListener('wc-tab-focus', this.#boundTabFocus);
+      this.addEventListener('keydown', this.#boundKeydown);
+      this.#slot.addEventListener('slotchange', this.#boundSlotChange);
 
       this.#observer = new MutationObserver((records) => {
         for (const record of records) {
@@ -614,10 +622,10 @@
     }
 
     disconnectedCallback() {
-      this.removeEventListener('wc-tab-activate', this.#handleTabActivate);
-      this.removeEventListener('wc-tab-focus', this.#handleTabFocus);
-      this.removeEventListener('keydown', this.#handleKeydown);
-      this.#slot.removeEventListener('slotchange', this.#handleSlotChange);
+      this.removeEventListener('wc-tab-activate', this.#boundTabActivate);
+      this.removeEventListener('wc-tab-focus', this.#boundTabFocus);
+      this.removeEventListener('keydown', this.#boundKeydown);
+      this.#slot.removeEventListener('slotchange', this.#boundSlotChange);
       if (this.#observer) {
         this.#observer.disconnect();
         this.#observer = null;

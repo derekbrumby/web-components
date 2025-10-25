@@ -637,8 +637,24 @@ function sanitizeHtml(html) {
  * @param {string} markdown
  * @returns {string}
  */
+function normalizeMarkdownInput(markdown) {
+  if (!markdown) {
+    return '';
+  }
+  if (markdown.includes('\n')) {
+    return markdown;
+  }
+  if (!/\\[nr]/.test(markdown)) {
+    return markdown;
+  }
+  return markdown
+    .replace(/\\r\\n/g, '\n')
+    .replace(/\\r/g, '\n')
+    .replace(/\\n/g, '\n');
+}
+
 function renderMarkdown(markdown) {
-  const tokens = tokenize(markdown);
+  const tokens = tokenize(normalizeMarkdownInput(markdown));
   const rawHtml = renderTokens(tokens);
   return sanitizeHtml(rawHtml);
 }
@@ -783,7 +799,7 @@ export class MarkdownViewer extends HTMLElement {
     container.appendChild(spinner);
 
     try {
-      let markdown = this.markdown ?? '';
+      let markdown = normalizeMarkdownInput(this.markdown ?? '');
       if (!markdown && this.src) {
         markdown = await this.#loadFromSource();
       }
@@ -793,6 +809,7 @@ export class MarkdownViewer extends HTMLElement {
           markdown = fallback;
         }
       }
+      markdown = normalizeMarkdownInput(markdown);
       const sanitized = markdown ? renderMarkdown(markdown) : '';
       container.innerHTML = sanitized || '<p part="empty">No markdown to display.</p>';
     } catch (error) {

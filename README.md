@@ -14,12 +14,106 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/form.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
 examples for each component.
 
 ## Components
+
+### `<wc-form>`
+
+An opinionated contact form that mirrors the Radix UI demo experience. It wires native constraint
+validation to accessible inline messages, automatically focuses the first invalid control, and exposes
+helpers for server-driven errors.
+
+```html
+<wc-form id="support-form" submit-label="Post question"></wc-form>
+
+<script type="module" src="https://cdn.example.com/web-components/form.js"></script>
+<script type="module">
+  const form = document.getElementById('support-form');
+  form?.addEventListener('wc-form-data', (event) => {
+    console.log('Form payload', event.detail);
+  });
+  form?.addEventListener('wc-form-submit', (event) => {
+    // Forward FormData to your API endpoint
+    fetch('/api/support', { method: 'POST', body: event.detail });
+  });
+</script>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `submit-label` | string | `"Post question"` | Customises the text shown on the submit button. |
+
+#### Methods
+
+- `reset()` — clears the form, removes validation messages, and resets custom errors.
+- `setCustomError(name: string, message: string)` — toggles a custom validation message for a field
+  (`"email"` or `"question"`).
+- `clearCustomError(name: string)` — convenience wrapper around `setCustomError(name, "")`.
+
+#### Events
+
+- `wc-form-submit` — fired after successful validation. `event.detail` is the `FormData` instance ready
+  for network submission.
+- `wc-form-data` — fired alongside `wc-form-submit` with a plain object version of the current values.
+
+#### Styling hooks
+
+- Custom properties: `--wc-form-background`, `--wc-form-foreground`, `--wc-form-muted`,
+  `--wc-form-field-background`, `--wc-form-field-border`, `--wc-form-field-border-hover`,
+  `--wc-form-field-border-focus`, `--wc-form-submit-background`, `--wc-form-submit-color`,
+  `--wc-form-submit-hover`, `--wc-form-radius`, `--wc-form-field-radius`, `--wc-form-shadow`,
+  `--wc-form-input-padding`, `--wc-form-message-error`, `--wc-form-message-error-color`, and more.
+- Parts: `::part(container)`, `::part(header)`, `::part(title)`, `::part(description)`, `::part(form)`,
+  `::part(field)`, `::part(label)`, `::part(messages)`, `::part(message)`, `::part(control)`,
+  `::part(submit)` allow deep theming.
+### `<wc-checkbox>`
+
+An accessible, tri-state checkbox control that mirrors Radix UI’s anatomy without runtime dependencies. It
+supports indeterminate states, full keyboard navigation, and form association.
+
+```html
+<form onsubmit="event.preventDefault();">
+  <wc-checkbox name="terms" value="accepted" required checked>
+    Accept terms and conditions.
+  </wc-checkbox>
+</form>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | boolean | `false` | Sets the checkbox to the checked state. Reflects to the `checked` property. |
+| `indeterminate` | boolean | `false` | Displays the indeterminate (mixed) state without marking it as checked. |
+| `disabled` | boolean | `false` | Removes the checkbox from the focus order and blocks interaction. |
+| `required` | boolean | `false` | Marks the checkbox as required when used inside a form. |
+| `value` | string | `"on"` | Value submitted with the parent form whenever the checkbox is checked. |
+| `name` | string | `""` | Associates the element with form submission entries. |
+
+Imperatively call `toggle(force?: boolean)` to flip the state or force a particular value.
+
+#### Events
+
+- `input`: Fired whenever user interaction updates the state. Bubbles and is composed.
+- `change`: Mirrors the native checkbox `change` event semantics.
+
+#### Styling hooks
+
+- CSS custom properties: `--checkbox-size`, `--checkbox-radius`, `--checkbox-border-width`,
+  `--checkbox-border-color`, `--checkbox-background`, `--checkbox-background-checked`,
+  `--checkbox-background-indeterminate`, `--checkbox-foreground`, `--checkbox-shadow`, `--checkbox-focus-ring`,
+  `--checkbox-gap`, `--checkbox-label-color`.
+- Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
+- Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
 
 ### `<wc-otp-field>`
 
@@ -131,6 +225,53 @@ Both the root and items expose rich customization options:
   `--accordion-transition-duration`, `--accordion-content-background`, and more.
 - Parts: `::part(item)`, `::part(trigger)`, `::part(trigger-label)`, `::part(indicator)`,
   `::part(panel)`, `::part(panel-inner)` allow precise targeting.
+
+### `<wc-collapsible>`
+
+An interactive disclosure that mirrors the Radix UI Collapsible primitive. It exposes dedicated slots for
+the summary line, an optional preview area, and the collapsible body so you can recreate complex layouts
+without extra wrappers.
+
+```html
+<wc-collapsible style="--collapsible-width: 300px;">
+  <span slot="summary">@peduarte starred 3 repositories</span>
+  <div slot="peek">@radix-ui/primitives</div>
+  <div>
+    <div>@radix-ui/colors</div>
+    <div>@radix-ui/themes</div>
+  </div>
+</wc-collapsible>
+```
+
+The component manages keyboard interaction (Enter/Space), exposes imperative `show()`, `hide()`, and
+`toggle()` methods, and emits an `openchange` event whenever the visibility switches.
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. Can be set declaratively or via the `open` property. |
+| `disabled` | boolean | `false` | Disables interaction and updates the button's focusability. |
+
+#### Slots
+
+- `summary`: Required. Text or elements displayed alongside the toggle button.
+- `peek`: Optional. Content that remains visible regardless of state (for featured items or previews).
+- _default_: Collapsible body content shown when expanded.
+
+#### Events
+
+- `openchange`: Bubbles with `{ open: boolean }` whenever the panel expands or collapses.
+
+#### Styling hooks
+
+Tune the component using custom properties or part selectors:
+
+- Custom properties: `--collapsible-width`, `--collapsible-background`, `--collapsible-trigger-size`,
+  `--collapsible-trigger-background`, `--collapsible-summary-color`, `--collapsible-content-background`,
+  `--collapsible-content-gap`, and more.
+- Parts: `::part(container)`, `::part(header)`, `::part(summary)`, `::part(trigger)`, `::part(preview)`,
+  `::part(content)`, `::part(icon-open)`, `::part(icon-closed)`.
 
 ### `<wc-aspect-ratio>`
 
@@ -324,6 +465,43 @@ property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperativ
   `--avatar-transition`, `--avatar-fallback-background`, `--avatar-fallback-color`,
   `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
 - Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
+
+### `<wc-context-menu>`
+
+A pointer-positioned context menu that mirrors the Radix UI anatomy while remaining dependency free. Right-click,
+keyboard shortcuts, or long-press on touch devices to summon the menu.
+
+```html
+<wc-context-menu></wc-context-menu>
+```
+
+The element renders a fully working menu with submenus, checkable items, and a radio group. It manages focus,
+collision-aware positioning, and dismiss behaviour automatically.
+
+#### Events
+
+- `select`: Fired when a standard menu item (non-checkbox/radio) is activated. The `detail` includes
+  `{ command: string | null }`.
+- `toggle`: Fired when a checkbox or radio item changes. The detail is
+  `{ type: 'checkbox', name: string | undefined, checked: boolean }` for checkboxes and
+  `{ type: 'radio', group: string | undefined, value: string }` for radios.
+
+#### Interaction features
+
+- Context menu triggers on right-click, `Shift+F10`, the dedicated context-menu key, or a 550&nbsp;ms long press.
+- Arrow keys, Home/End, and Escape work as expected for navigating and dismissing.
+- Submenus open on hover, focus, arrow-right, or click, with responsive collision handling.
+- Checkboxes and radios reflect their state visually with built-in indicators and emit change events.
+
+#### Styling hooks
+
+Tune the appearance with CSS properties or style parts directly:
+
+- Custom properties: `--context-menu-trigger-background`, `--context-menu-trigger-border`,
+  `--context-menu-trigger-color`, `--context-menu-background`, `--context-menu-shadow`,
+  `--context-menu-item-highlight`, `--context-menu-separator-color`, `--context-menu-indicator-color`, etc.
+- Parts: `::part(trigger)`, `::part(menu)`, `::part(submenu)`.
+
 ### Examples
 
 See [`index.html`](./index.html) for live demos showcasing:

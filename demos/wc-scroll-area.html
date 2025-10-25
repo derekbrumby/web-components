@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-scroll-area&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/scroll-area.js"></script>
+    <style>
+      .demo-scroll-area {
+        --scroll-area-background: #ffffff;
+        --scroll-area-radius: 1rem;
+        --scroll-area-border: 1px solid rgba(148, 163, 184, 0.18);
+        --scroll-area-scrollbar-girth: 12px;
+        --scroll-area-scrollbar-padding: 2px;
+        --scroll-area-thumb-min-size: 26px;
+        box-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.4);
+      }
+
+      .tag-list {
+        display: grid;
+        gap: 0.75rem;
+        padding: 1rem 1.25rem;
+      }
+
+      .tag-list h4 {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #5b21b6;
+      }
+
+      .tag-list ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.65rem;
+        font-size: 0.85rem;
+        color: #475569;
+      }
+
+      .tag-list li {
+        border-top: 1px solid rgba(148, 163, 184, 0.36);
+        padding-top: 0.55rem;
+      }
+
+      .tag-list li:first-child {
+        border-top: none;
+        padding-top: 0;
+      }
+
+      .preview-grid {
+        display: grid;
+        grid-auto-flow: column;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        width: max-content;
+        color: #0f172a;
+      }
+
+      .preview-grid article {
+        inline-size: 160px;
+        padding: 0.85rem;
+        border-radius: 0.75rem;
+        background: linear-gradient(150deg, rgba(165, 180, 252, 0.2), rgba(129, 140, 248, 0.35));
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .preview-grid article h4 {
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .preview-grid article p {
+        margin: 0;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        color: rgba(15, 23, 42, 0.72);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Compact tag list</h3>
+            <wc-scroll-area class="demo-scroll-area" style="inline-size: 220px; block-size: 260px;">
+              <div class="tag-list">
+                <h4>Tags</h4>
+                <ul data-demo="tag-list"></ul>
+              </div>
+            </wc-scroll-area>
+            <p>Vertical overflow keeps layout steady while the scrollbar floats above the surface.</p>
+          </div>
+
+          <div class="example-card">
+            <h3>Bidirectional content</h3>
+            <wc-scroll-area
+              class="demo-scroll-area"
+              type="scroll"
+              dir="rtl"
+              style="inline-size: 280px; block-size: 180px; --scroll-area-scrollbar-girth: 10px;"
+            >
+              <div class="preview-grid">
+                <article>
+                  <h4>Design specs</h4>
+                  <p>Latest changes to colors, typography, and elevation tokens.</p>
+                </article>
+                <article>
+                  <h4>Changelog</h4>
+                  <p>Track patch notes across releases without breaking keyboard scrolling.</p>
+                </article>
+                <article>
+                  <h4>Community</h4>
+                  <p>Join weekly office hours and share work in progress previews.</p>
+                </article>
+                <article>
+                  <h4>RTL sample</h4>
+                  <p>Scrollbars reposition when `dir="rtl"` is applied to the host element.</p>
+                </article>
+              </div>
+            </wc-scroll-area>
+            <p>
+              Using <code>type="scroll"</code> reveals the controls during interaction while keeping them hidden at rest.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      const tags = Array.from({ length: 50 }, (_, index, array) => `v1.2.0-beta.${array.length - index}`);
+      const list = document.querySelector('[data-demo="tag-list"]');
+      if (list) {
+        for (const tag of tags) {
+          const item = document.createElement('li');
+          item.textContent = tag;
+          list.append(item);
+        }
+      }
+    </script>
+  </body>
+</html>
+

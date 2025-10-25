@@ -21,6 +21,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/scroll-area.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -398,6 +399,46 @@ Tune the container with CSS custom properties or target internal parts:
   `--aspect-ratio-shadow`, `--aspect-ratio-overflow`, `--aspect-ratio-content-align`,
   `--aspect-ratio-content-justify`, `--aspect-ratio-object-fit`.
 - Parts: `::part(frame)`, `::part(content)` allow scoped overrides.
+
+### `<wc-scroll-area>`
+
+Overlay scrollbars that sit on top of the viewport while leaving layout untouched. The component keeps
+native scrolling behaviour—including keyboard navigation—while exposing hooks to restyle the bars and
+thumbs.
+
+```html
+<wc-scroll-area style="inline-size: 220px; block-size: 240px; --scroll-area-background: #fff;">
+  <div class="tag-stack">
+    <h4>Tags</h4>
+    <ul>
+      <li>v1.2.0-beta.50</li>
+      <li>v1.2.0-beta.49</li>
+      <li>v1.2.0-beta.48</li>
+      <!-- ... -->
+    </ul>
+  </div>
+</wc-scroll-area>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `'hover' \| 'scroll' \| 'always'` | `'hover'` | Controls when scrollbars are shown. `hover` reveals them on hover or scroll, `scroll` only during interaction, and `always` keeps them visible. |
+| `scroll-hide-delay` | number | `600` | Milliseconds to wait before fading the bars after scrolling when `type` is `hover` or `scroll`. |
+| `dir` | `'ltr' \| 'rtl'` | inherit | Forces the scrollbar placement and horizontal math for right-to-left layouts. |
+
+#### Styling hooks
+
+- CSS custom properties: `--scroll-area-background`, `--scroll-area-radius`, `--scroll-area-border`,
+  `--scroll-area-scrollbar-girth`, `--scroll-area-scrollbar-padding`,
+  `--scroll-area-scrollbar-background`, `--scroll-area-scrollbar-background-hover`,
+  `--scroll-area-thumb-background`, `--scroll-area-thumb-background-hover`,
+  `--scroll-area-thumb-radius`, `--scroll-area-thumb-min-size`,
+  `--scroll-area-scrollbar-transition-duration`.
+- Parts: `::part(viewport)`, `::part(content)`, `::part(scrollbar)`, `::part(thumb)`, `::part(corner)`.
+- Data attributes: `[data-has-vertical]`, `[data-has-horizontal]`, `[data-scrollbar-type]`,
+  `[data-scrollbar-visibility]`, and scrollbar-specific `[data-state="visible" | "hidden"]`.
 
 ### `<wc-dialog>`
 

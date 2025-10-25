@@ -19,7 +19,7 @@ examples for each component.
 
 ## Components
 
-### `<otp-field>`
+### `<wc-otp-field>`
 
 A form-associated input optimized for one-time-password (OTP) or verification codes. It handles cell
 focus management, paste-to-fill, keyboard navigation, validation, auto-submit, and exposes events for
@@ -27,7 +27,7 @@ integration.
 
 ```html
 <form onsubmit="event.preventDefault();">
-  <otp-field
+  <wc-otp-field
     name="otp"
     length="6"
     validation-type="numeric"
@@ -41,7 +41,7 @@ integration.
       --otp-border-focus: 2px solid #4f46e5;
       --otp-shadow-focus: 0 0 0 6px rgba(79, 70, 229, 0.15);
     "
-  ></otp-field>
+  ></wc-otp-field>
   <button type="submit">Verify</button>
 </form>
 ```

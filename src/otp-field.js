@@ -20,7 +20,7 @@
   /** @type {boolean} */
   const supportsFormAssociated = !!HTMLElement.prototype.attachInternals;
 
-  class OtpField extends HTMLElement {
+  class WcOtpField extends HTMLElement {
     static formAssociated = supportsFormAssociated;
 
     /** @type {ElementInternals|undefined} */
@@ -634,7 +634,7 @@
   }
 
   // Define accessors mapped to attributes for DX
-  Object.defineProperties(OtpField.prototype, {
+  Object.defineProperties(WcOtpField.prototype, {
     /** @property {number} length */
     length: { configurable: true, writable: true },
     /** @property {ValidationType} validationType */
@@ -661,11 +661,11 @@
     autofocus: { configurable: true, writable: true },
   });
 
-  if (!customElements.get('otp-field')) {
-    customElements.define('otp-field', OtpField);
+  if (!customElements.get('wc-otp-field')) {
+    customElements.define('wc-otp-field', WcOtpField);
   }
 
   // Optional export for module users (CDN UMD-ish convenience)
   // @ts-ignore
-  if (typeof window !== 'undefined') window.OtpField = OtpField;
+  if (typeof window !== 'undefined') window.WcOtpField = WcOtpField;
 })();

@@ -224,7 +224,7 @@
 
       <section>
         <header>
-          <h2>&lt;otp-field&gt;</h2>
+          <h2>&lt;wc-otp-field&gt;</h2>
           <p>
             A form-associated one-time-password input that manages focus, validation, and submissions.
             Customize appearance using CSS properties or <code>::part</code> selectors.
@@ -235,7 +235,7 @@
           <div class="example-card">
             <h3>Classic six-digit numeric code</h3>
             <form id="otp-demo" onsubmit="event.preventDefault();">
-              <otp-field
+              <wc-otp-field
                 name="otp"
                 length="6"
                 validation-type="numeric"
@@ -252,7 +252,7 @@
                   --otp-border-focus: 2px solid #4f46e5;
                   --otp-shadow-focus: 0 0 0 6px rgba(79,70,229,0.15);
                 "
-              ></otp-field>
+              ></wc-otp-field>
               <button type="submit">Submit</button>
             </form>
             <pre class="log" id="otp-log">Waiting for input…</pre>
@@ -260,7 +260,7 @@
 
           <div class="example-card">
             <h3>Vertical alphanumeric with masking</h3>
-            <otp-field
+            <wc-otp-field
               id="otp-advanced"
               length="8"
               validation-type="alphanumeric"
@@ -277,7 +277,7 @@
                 --otp-border-focus: 2px solid #f97316;
                 --otp-shadow-focus: 0 0 0 4px rgba(249, 115, 22, 0.35);
               "
-            ></otp-field>
+            ></wc-otp-field>
             <pre class="log" id="otp-advanced-log">Type to see updates…</pre>
           </div>
         </div>
@@ -435,7 +435,7 @@
           const formData = new FormData(event.target);
           otpLog.textContent = `Submitted code: ${formData.get('otp') || '(empty)'}`;
         });
-        otpForm.querySelector('otp-field')?.addEventListener('valuechange', (event) => {
+        otpForm.querySelector('wc-otp-field')?.addEventListener('valuechange', (event) => {
           const value = event.detail?.value || '';
           otpLog.textContent = `Typing: ${value}`;
         });

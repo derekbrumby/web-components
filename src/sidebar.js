@@ -98,7 +98,6 @@
           }
 
           slot::slotted(*) {
-            flex: 1 1 auto;
             min-width: 0;
           }
 

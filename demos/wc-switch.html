@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-switch&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/switch.js"></script>
+    <style>
+      .switch-stack {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .switch-stack wc-switch {
+        --switch-track-background: rgba(15, 23, 42, 0.16);
+        --switch-track-background-checked: rgba(79, 70, 229, 0.9);
+        --switch-thumb-shadow: 0 4px 12px -4px rgba(79, 70, 229, 0.9);
+      }
+
+      .switch-stack wc-switch:nth-child(2) {
+        --switch-track-background-checked: rgba(16, 185, 129, 0.9);
+        --switch-focus-ring: 0 0 0 4px rgba(16, 185, 129, 0.28);
+      }
+
+      .switch-stack wc-switch:nth-child(3) {
+        --switch-track-background-checked: rgba(245, 158, 11, 0.92);
+        --switch-focus-ring: 0 0 0 4px rgba(245, 158, 11, 0.28);
+      }
+
+      .preferences-form {
+        display: grid;
+        gap: 1.15rem;
+      }
+
+      .preferences-form .form-note {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      .switch-preview {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .switch-preview .pill-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .switch-preview .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.5rem 0.85rem;
+        border-radius: 999px;
+        background: rgba(99, 102, 241, 0.1);
+        color: #312e81;
+        font-weight: 500;
+      }
+
+      .switch-preview .pill span {
+        font-variant-numeric: tabular-nums;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>Binary preference toggles</h2>
+          <p>Combine pointer, keyboard, or form-driven updates with the accessible &lt;wc-switch&gt; component.</p>
+        </header>
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Quick system settings</h3>
+            <div class="switch-stack" id="quick-switches">
+              <wc-switch class="settings-switch" id="switch-airplane" checked>Airplane mode</wc-switch>
+              <wc-switch class="settings-switch" id="switch-wifi">Wi-Fi</wc-switch>
+              <wc-switch class="settings-switch" id="switch-bluetooth" checked>Bluetooth</wc-switch>
+            </div>
+            <div class="switch-preview">
+              <div class="pill-group" id="switch-pill-group"></div>
+              <pre class="log" id="switch-status">Airplane mode and Bluetooth are currently on.</pre>
+            </div>
+          </div>
+          <div class="example-card">
+            <h3>Form integration</h3>
+            <form id="switch-preferences" class="preferences-form" onsubmit="event.preventDefault();">
+              <p class="form-note">Switches reflect their state inside forms and respect the <code>required</code> attribute.</p>
+              <wc-switch name="notifications" value="enabled" required>Push notifications</wc-switch>
+              <wc-switch name="marketing" value="yes">Marketing emails</wc-switch>
+              <div class="pill-group" id="switch-form-preview"></div>
+              <button type="submit">Send preferences</button>
+            </form>
+            <pre class="log" id="switch-form-log">Toggle options and submit to inspect form data…</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script>
+      const quickSwitchesContainer = document.getElementById('quick-switches');
+      const quickSwitches = quickSwitchesContainer
+        ? Array.from(quickSwitchesContainer.querySelectorAll('wc-switch.settings-switch'))
+        : [];
+      const statusLog = document.getElementById('switch-status');
+      const pillGroup = document.getElementById('switch-pill-group');
+
+      const renderQuickSwitchState = () => {
+        if (!statusLog || !pillGroup) {
+          return;
+        }
+        const enabled = quickSwitches.filter((control) => control.checked);
+        pillGroup.innerHTML = '';
+        enabled.forEach((control) => {
+          const pill = document.createElement('span');
+          pill.className = 'pill';
+          pill.textContent = control.textContent?.trim() || 'Enabled';
+          pillGroup.appendChild(pill);
+        });
+        if (enabled.length === 0) {
+          statusLog.textContent = 'All quick settings are off.';
+        } else if (enabled.length === quickSwitches.length) {
+          statusLog.textContent = 'Every quick setting is currently enabled.';
+        } else {
+          const names = enabled.map((control) => control.textContent?.trim() || '').filter(Boolean);
+          let formatted = 'Some settings';
+          if (names.length === 1) {
+            formatted = names[0];
+          } else if (names.length === 2) {
+            formatted = names.join(' and ');
+          } else if (names.length > 2) {
+            const tail = names.pop();
+            formatted = `${names.join(', ')}, and ${tail}`;
+          }
+          statusLog.textContent = `${formatted} ${enabled.length === 1 ? 'is' : 'are'} currently on.`;
+        }
+      };
+
+      quickSwitches.forEach((control) => {
+        control.addEventListener('change', renderQuickSwitchState);
+      });
+
+      renderQuickSwitchState();
+
+      const preferencesForm = document.getElementById('switch-preferences');
+      const preferencesPreview = document.getElementById('switch-form-preview');
+      const preferencesLog = document.getElementById('switch-form-log');
+
+      if (preferencesForm && preferencesPreview && preferencesLog) {
+        const renderFormPreview = () => {
+          const switches = Array.from(preferencesForm.querySelectorAll('wc-switch[name]'));
+          preferencesPreview.innerHTML = '';
+          switches.forEach((control) => {
+            const pill = document.createElement('span');
+            pill.className = 'pill';
+            pill.innerHTML = `${control.textContent?.trim() || 'Option'} <span>${control.checked ? 'on' : 'off'}</span>`;
+            preferencesPreview.appendChild(pill);
+          });
+        };
+
+        preferencesForm.addEventListener('change', (event) => {
+          const target = event.target;
+          if (target instanceof HTMLElement && target.tagName === 'WC-SWITCH') {
+            renderFormPreview();
+          }
+        });
+
+        preferencesForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const formData = new FormData(preferencesForm);
+          const entries = Array.from(formData.entries());
+          if (entries.length === 0) {
+            preferencesLog.textContent = 'No switches are enabled yet. Enable at least one to submit a value.';
+            return;
+          }
+          const summary = entries
+            .map(([key, value]) => `${key}=${value}`)
+            .join(', ');
+          preferencesLog.textContent = `Submitted with ${summary}.`;
+        });
+
+        renderFormPreview();
+      }
+    </script>
+  </body>
+</html>

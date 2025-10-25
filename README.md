@@ -35,6 +35,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/separator.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toolbar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/date-picker.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
 ```
 
@@ -1328,6 +1329,53 @@ control.
 - Parts: `::part(trigger)`, `::part(content)`, `::part(arrow)` for scoped theming.
 - Data attributes: `[data-state="open" | "closed"]`, `[data-side]`, `[data-align]`, and `[data-modal]` enable
   direction-aware transitions.
+
+### `<wc-date-picker>`
+
+An all-in-one calendar popover for capturing single dates or ranges. It bundles range highlighting, quick presets,
+keyboard navigation, and locale-aware formatting while staying dependency free.
+
+```html
+<wc-date-picker mode="range" value="2024-05-01..2024-05-07"></wc-date-picker>
+
+<script type="module" src="https://cdn.example.com/web-components/date-picker.js"></script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Selected date as `YYYY-MM-DD` or range as `start..end`. Mirrors the `value` property. |
+| `mode` | `"single" \| "range"` | `"single"` | Switch between a single date or start/end range picker. |
+| `min` | string | `""` | Lower bound in `YYYY-MM-DD`. Disabled days before this date. |
+| `max` | string | `""` | Upper bound in `YYYY-MM-DD`. Disabled days after this date. |
+| `locale` | string | Browser locale | Custom locale passed to `Intl.DateTimeFormat`. Updates weekday/month labels. |
+| `first-day-of-week` | number | `0` | Index of the first weekday (0 = Sunday, 1 = Monday, ...). |
+| `placeholder` | string | `"Select date" / "Select dates"` | Custom text when no selection is made. |
+| `hide-presets` | boolean | `false` | Removes the quick preset column for a slimmer layout. |
+| `value` property | string | `""` | Programmatic mirror of the attribute. Setting it reflects back to the DOM. |
+| `mode` property | `"single" \| "range"` | `"single"` | Imperatively toggle the selection mode. |
+
+#### Methods
+
+- `open()` — reveals the calendar popover.
+- `close()` — hides the popover.
+
+#### Events
+
+- `date-change` — fired after a confirmed selection. `event.detail` includes `{ value, start, end }` with native `Date`
+  instances (the `end` value is `null` when `mode="single"`).
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-date-picker-background`, `--wc-date-picker-border-color`,
+  `--wc-date-picker-radius`, `--wc-date-picker-shadow`, `--wc-date-picker-accent`,
+  `--wc-date-picker-accent-soft`, `--wc-date-picker-muted`, `--wc-date-picker-gap`.
+- Parts: `::part(trigger)`, `::part(label)`, `::part(icon)`, `::part(panel)`, `::part(calendar)`, `::part(month)`,
+  `::part(month-title)`, `::part(nav)`, `::part(weekdays)`, `::part(grid)`, `::part(day)`, `::part(presets)`,
+  `::part(preset-button)`, `::part(status)`.
+- Data attributes: `[data-open]`, `[data-empty]`, `[data-selected]`, `[data-in-range]`, `[data-range-start]`,
+  `[data-range-end]`, `[data-today]`, `[data-outside]`, `[data-disabled]` for targeted styling.
 
 ### `<wc-dropdown-menu>` and friends
 

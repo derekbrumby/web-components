@@ -302,6 +302,7 @@
             min-width: 0;
             transition: width var(--wc-sidebar-transition-duration) var(--wc-sidebar-transition-easing);
             contain: layout style;
+            box-sizing: border-box;
           }
 
           :host([variant="floating"]) {
@@ -357,6 +358,7 @@
             transform: translateX(var(--wc-sidebar-current-translate));
             outline: none;
             box-shadow: var(--wc-sidebar-shadow, none);
+            box-sizing: border-box;
           }
 
           :host([collapsible="offcanvas"]) .base,

@@ -27,6 +27,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/slider.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/resizable.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toggle.js"></script>
@@ -377,6 +378,76 @@ between thumbs.
   step="5"
   name="volume"
 ></wc-slider>
+```
+
+### `<wc-resizable-group>`
+
+Build resizable layouts with nested panels and keyboard-friendly separators. Compose
+`<wc-resizable-group>` with `<wc-resizable-panel>` and `<wc-resizable-handle>` elements to create
+split editors, dashboards, or media inspectors with zero runtime dependencies.
+
+```html
+<wc-resizable-group direction="horizontal" style="inline-size: 28rem; block-size: 16rem;">
+  <wc-resizable-panel default-size="40" min-size="20">
+    <section class="panel">Outline</section>
+  </wc-resizable-panel>
+  <wc-resizable-handle with-handle></wc-resizable-handle>
+  <wc-resizable-panel default-size="60">
+    <wc-resizable-group direction="vertical">
+      <wc-resizable-panel default-size="35">
+        <section class="panel">Preview</section>
+      </wc-resizable-panel>
+      <wc-resizable-handle></wc-resizable-handle>
+      <wc-resizable-panel default-size="65">
+        <section class="panel">Notes</section>
+      </wc-resizable-panel>
+    </wc-resizable-group>
+  </wc-resizable-panel>
+</wc-resizable-group>
+```
+
+#### `<wc-resizable-group>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `direction` | `horizontal` \| `vertical` | `horizontal` | Controls the layout axis, handle cursor, and keyboard bindings. |
+
+#### `<wc-resizable-panel>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `default-size` | number (0–100) | _(even split)_ | Preferred percentage of the parent track. Unset panels share remaining space equally. |
+| `min-size` | number (0–100) | `5` | Minimum percentage a panel can collapse to when dragging or nudging handles. |
+| `max-size` | number (0–100) | `100` | Maximum percentage a panel can occupy relative to its immediate group. |
+| `disabled` | boolean | `false` | Removes the panel from interaction. Sizes remain fixed when disabled. |
+
+#### `<wc-resizable-handle>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `with-handle` | boolean | `false` | Reveals a visible grip inside the separator for additional affordance. |
+
+#### Events
+
+- `wc-resize` — Emitted by `<wc-resizable-group>` whenever two adjacent panels change size. The
+  event detail includes `{ orientation, previous, next, sizes }` with the updated percentages.
+
+#### Styling hooks
+
+- Group custom properties: `--wc-resizable-border`, `--wc-resizable-border-radius`,
+  `--wc-resizable-border-color`, `--wc-resizable-background`, `--wc-resizable-gap`.
+- Panel custom properties: `--wc-resizable-panel-background`, `--wc-resizable-panel-color`,
+  `--wc-resizable-panel-padding`, `--wc-resizable-panel-border`,
+  `--wc-resizable-panel-disabled-opacity`.
+- Handle custom properties: `--wc-resizable-handle-size`, `--wc-resizable-handle-hit-area`,
+  `--wc-resizable-handle-color`, `--wc-resizable-handle-hover-color`,
+  `--wc-resizable-handle-active-color`, `--wc-resizable-grip-width`,
+  `--wc-resizable-grip-height`.
+- Parts: `wc-resizable-group::part(container)`, `wc-resizable-panel::part(panel)`, and for the
+  handle `::part(hit-area)`, `::part(separator)`, `::part(grip)`.
+- Data attributes: `[data-orientation]` on groups and handles, `[data-disabled]` on panels and
+  handles, plus handle `[data-with-handle]` when a grip is shown.
+
 ### `<wc-switch>`
 
 An accessible binary toggle that mimics the Radix UI Switch while staying dependency-free. It exposes keyboard

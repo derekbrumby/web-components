@@ -7,6 +7,7 @@
     <script type="module" src="./src/otp-field.js"></script>
     <script type="module" src="./src/accordion.js"></script>
     <script type="module" src="./src/alert-dialog.js"></script>
+    <script type="module" src="./src/dialog.js"></script>
     <script type="module" src="./src/aspect-ratio.js"></script>
     <script type="module" src="./src/avatar.js"></script>
     <script type="module" src="./src/form.js"></script>
@@ -264,6 +265,81 @@
         width: 1.15rem;
         height: 1.15rem;
         accent-color: #38bdf8;
+      }
+
+      .dialog-form {
+        display: grid;
+        gap: 1rem;
+        margin: 0;
+      }
+
+      .dialog-field {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .dialog-label {
+        font-weight: 600;
+        color: #312e81;
+      }
+
+      .dialog-input {
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        border-radius: 0.65rem;
+        padding: 0.65rem 0.75rem;
+        font: inherit;
+        background: rgba(255, 255, 255, 0.85);
+        color: #0f172a;
+        transition: border-color 150ms ease, box-shadow 150ms ease;
+      }
+
+      .dialog-input:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      }
+
+      .dialog-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+
+      .dialog-meta {
+        display: grid;
+        gap: 0.75rem;
+        margin: 0;
+      }
+
+      .dialog-meta dt {
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #64748b;
+        margin: 0;
+      }
+
+      .dialog-meta dd {
+        margin: 0.25rem 0 0;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .dialog-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .dialog-pill {
+        background: rgba(56, 189, 248, 0.16);
+        color: #0369a1;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
       }
     </style>
   </head>
@@ -563,6 +639,113 @@
               "
             ></wc-otp-field>
             <pre class="log" id="otp-advanced-log">Type to see updates…</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <header>
+          <h2>&lt;wc-dialog&gt;</h2>
+          <p>
+            General-purpose dialogs that can run modally or as lightweight, non-modal panels. Manage focus,
+            labelling, and styling entirely with slots and CSS properties.
+          </p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Profile editor (modal)</h3>
+            <wc-dialog
+              id="dialog-profile"
+              style="
+                --dialog-width: min(500px, 90vw);
+                --dialog-background: rgba(248, 250, 252, 0.98);
+                --dialog-overlay-background: rgba(15, 23, 42, 0.45);
+                --dialog-shadow: 0 32px 64px -32px rgba(15, 23, 42, 0.5);
+                --dialog-close-background: rgba(148, 163, 184, 0.25);
+              "
+            >
+              <button slot="trigger">Edit profile</button>
+              <span slot="title">Edit profile</span>
+              <span slot="description">
+                Make changes to your public details. Save the form when you're done.
+              </span>
+              <form class="dialog-form" id="dialog-profile-form">
+                <label class="dialog-field">
+                  <span class="dialog-label">Name</span>
+                  <input
+                    class="dialog-input"
+                    type="text"
+                    name="name"
+                    value="Pedro Duarte"
+                    autocomplete="name"
+                  />
+                </label>
+                <label class="dialog-field">
+                  <span class="dialog-label">Username</span>
+                  <input
+                    class="dialog-input"
+                    type="text"
+                    name="username"
+                    value="@peduarte"
+                    autocomplete="username"
+                  />
+                </label>
+              </form>
+              <div slot="footer" class="dialog-footer">
+                <button type="button" class="ghost-button" data-dialog-close="true">Cancel</button>
+                <button type="submit" form="dialog-profile-form">Save changes</button>
+              </div>
+            </wc-dialog>
+            <pre class="log" id="dialog-profile-log">Dialog closed. Click “Edit profile” to open.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Inline inspector (non-modal)</h3>
+            <wc-dialog
+              id="dialog-inspector"
+              modal="false"
+              open
+              style="
+                --dialog-width: min(360px, 90vw);
+                --dialog-padding: 1.25rem;
+                --dialog-background: rgba(255, 255, 255, 0.96);
+                --dialog-overlay-background: transparent;
+                --dialog-shadow: 0 24px 48px -28px rgba(15, 23, 42, 0.35);
+                --dialog-close-background: rgba(148, 163, 184, 0.25);
+              "
+            >
+              <button slot="trigger" class="ghost-button">Toggle inspector</button>
+              <span slot="title">Component inspector</span>
+              <span slot="description">
+                Non-modal dialogs keep the rest of the interface interactive.
+              </span>
+              <dl class="dialog-meta">
+                <div>
+                  <dt>Element</dt>
+                  <dd>&lt;wc-avatar&gt;</dd>
+                </div>
+                <div>
+                  <dt>Slots used</dt>
+                  <dd class="dialog-pill-row">
+                    <span class="dialog-pill">fallback</span>
+                    <span class="dialog-pill">default</span>
+                    <span class="dialog-pill">trigger</span>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Recent action</dt>
+                  <dd>Avatar updated 2 minutes ago</dd>
+                </div>
+              </dl>
+              <div slot="footer" class="dialog-footer">
+                <button type="button" class="ghost-button" data-dialog-close="true">Close panel</button>
+              </div>
+            </wc-dialog>
+            <p>
+              Because <code>modal="false"</code> is set, the dialog stays visible while you continue interacting
+              with the rest of the page.
+            </p>
           </div>
         </div>
       </section>
@@ -983,6 +1166,74 @@
         });
       }
 
+      const dialogProfile = document.getElementById('dialog-profile');
+      const dialogProfileForm = document.getElementById('dialog-profile-form');
+      const dialogProfileLog = document.getElementById('dialog-profile-log');
+      let profileSaveTimer = 0;
+      if (dialogProfile && dialogProfileForm instanceof HTMLFormElement && dialogProfileLog) {
+        const profileClosedText = 'Dialog closed. Click “Edit profile” to open.';
+        const profileOpenText = 'Dialog open. Update fields and save.';
+        const updateProfileLog = () => {
+          const desired = dialogProfile.hasAttribute('open') ? profileOpenText : profileClosedText;
+          if (dialogProfile.hasAttribute('open')) {
+            dialogProfileLog.textContent = desired;
+            return;
+          }
+          const current = dialogProfileLog.textContent || '';
+          if (current === profileClosedText || current === profileOpenText) {
+            dialogProfileLog.textContent = desired;
+          }
+        };
+        dialogProfileLog.textContent = profileClosedText;
+        updateProfileLog();
+        const observer = new MutationObserver(updateProfileLog);
+        observer.observe(dialogProfile, { attributes: true, attributeFilter: ['open'] });
+
+        dialogProfileForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (profileSaveTimer) {
+            window.clearTimeout(profileSaveTimer);
+            profileSaveTimer = 0;
+          }
+          dialogProfileLog.textContent = 'Saving changes…';
+          const formData = new FormData(dialogProfileForm);
+          const nameValue = String(formData.get('name') || '').trim();
+          const usernameValue = String(formData.get('username') || '').trim();
+          profileSaveTimer = window.setTimeout(() => {
+            const summary = nameValue || 'Profile';
+            const usernameSuffix = usernameValue ? ` (${usernameValue})` : '';
+            dialogProfileLog.textContent = `Saved ${summary}${usernameSuffix}.`;
+            if (typeof dialogProfile.hide === 'function') {
+              dialogProfile.hide();
+            } else {
+              dialogProfile.removeAttribute('open');
+            }
+            profileSaveTimer = 0;
+          }, 700);
+        });
+      }
+
+      document.addEventListener('click', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        if (target.dataset.dialogClose === 'true') {
+          const host = target.closest('wc-dialog');
+          if (!host) return;
+          event.preventDefault();
+          if (host.id === 'dialog-profile' && dialogProfileLog) {
+            if (profileSaveTimer) {
+              window.clearTimeout(profileSaveTimer);
+              profileSaveTimer = 0;
+            }
+            dialogProfileLog.textContent = 'Changes discarded.';
+          }
+          if (typeof host.hide === 'function') {
+            host.hide();
+          } else {
+            host.removeAttribute('open');
+          }
+        }
+      });
       const contextMenuDemo = document.getElementById('context-menu-demo');
       const contextMenuLog = document.getElementById('context-menu-log');
       if (contextMenuDemo && contextMenuLog) {

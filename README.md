@@ -12,6 +12,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/otp-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/form.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
@@ -304,6 +305,59 @@ Tune the container with CSS custom properties or target internal parts:
   `--aspect-ratio-content-justify`, `--aspect-ratio-object-fit`.
 - Parts: `::part(frame)`, `::part(content)` allow scoped overrides.
 
+### `<wc-dialog>`
+
+An adaptable dialog window supporting modal and non-modal presentations. Inspired by Radix UI's Dialog, the
+component handles focus management, labelling, and overlay rendering without external dependencies.
+
+```html
+<wc-dialog id="profile-dialog">
+  <button slot="trigger">Edit profile</button>
+  <span slot="title">Edit profile</span>
+  <span slot="description">Make changes to your profile and save when you're done.</span>
+  <form style="display: grid; gap: 1rem;">
+    <label style="display: grid; gap: 0.35rem;">
+      <span>Name</span>
+      <input type="text" value="Pedro Duarte" />
+    </label>
+    <label style="display: grid; gap: 0.35rem;">
+      <span>Username</span>
+      <input type="text" value="@peduarte" />
+    </label>
+  </form>
+  <div slot="footer" style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+    <button type="button" class="ghost-button">Cancel</button>
+    <button type="button">Save changes</button>
+  </div>
+</wc-dialog>
+```
+
+Slots cover the trigger, title, description, an optional footer region, and a default slot for arbitrary
+content. Provide a `slot="close"` element to override the built-in close button.
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. Use the `open` property or `show()`/`hide()` methods for imperative control. |
+| `modal` | boolean | `true` | When `false`, the dialog behaves non-modally (no overlay, no focus trap, page remains scrollable). |
+
+#### Methods
+
+- `show()` – opens the dialog.
+- `hide()` – closes the dialog.
+- `toggle(force?: boolean)` – toggles open state, optionally forcing a boolean value.
+
+#### Styling hooks
+
+Tune the presentation with CSS custom properties and parts:
+
+- Custom properties: `--dialog-width`, `--dialog-max-height`, `--dialog-padding`, `--dialog-radius`,
+  `--dialog-background`, `--dialog-color`, `--dialog-overlay-background`, `--dialog-shadow`,
+  `--dialog-close-background`, etc.
+- Parts: `::part(trigger)`, `::part(portal)`, `::part(overlay)`, `::part(content)`, `::part(header)`,
+  `::part(title)`, `::part(description)`, `::part(body)`, `::part(footer)`, `::part(close-button)`.
+
 ### `<wc-alert-dialog>`
 
 An accessible, focus-trapped confirmation dialog that mirrors the Radix UI alert dialog experience while
@@ -344,6 +398,7 @@ Programmatic helpers `show()`, `hide()`, and `toggle(force?: boolean)` are expos
 
 #### Keyboard support
 
+- `Esc` closes the dialog and refocuses the trigger.
 - `Tab`/`Shift+Tab` cycle focus within the dialog.
 - Focus is trapped while open and returns to the invoking trigger on close.
 

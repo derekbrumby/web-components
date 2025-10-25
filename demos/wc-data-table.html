@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-data-table&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/data-table.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .table-demo {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      wc-data-table {
+        --data-table-background: rgba(255, 255, 255, 0.92);
+        --data-table-border-color: rgba(148, 163, 184, 0.3);
+        --data-table-row-hover: rgba(79, 70, 229, 0.1);
+        --data-table-row-selected: rgba(129, 140, 248, 0.18);
+        --data-table-header-background: rgba(248, 250, 252, 0.9);
+        --data-table-control-border: 1px solid rgba(99, 102, 241, 0.45);
+        --data-table-control-color: #312e81;
+        --data-table-filter-border: 1px solid rgba(99, 102, 241, 0.25);
+        --data-table-filter-placeholder: rgba(79, 70, 229, 0.85);
+        --data-table-menu-shadow: 0 28px 52px -32px rgba(67, 56, 202, 0.45);
+      }
+
+      .log {
+        border-radius: 0.75rem;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        padding: 1rem;
+        min-height: 5rem;
+        background: rgba(248, 250, 252, 0.85);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.85rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="table-demo">
+        <header>
+          <h2>&lt;wc-data-table&gt;</h2>
+          <p>
+            Interactive data grid with filtering, sorting, pagination, column visibility toggles, and row actions inspired by
+            the TanStack Table payments example.
+          </p>
+        </header>
+        <wc-data-table id="payments-table" page-size="5" filter-placeholder="Filter emails…"></wc-data-table>
+        <div>
+          <h3>Selection log</h3>
+          <pre class="log" id="selection-log">Interact with the table to see emitted events.</pre>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const payments = [
+        { id: 'm5gr84i9', amount: 316, status: 'success', email: 'ken99@example.com' },
+        { id: '3u1reuv4', amount: 242, status: 'success', email: 'Abe45@example.com' },
+        { id: 'derv1ws0', amount: 837, status: 'processing', email: 'Monserrat44@example.com' },
+        { id: '5kma53ae', amount: 874, status: 'success', email: 'Silas22@example.com' },
+        { id: 'bhqecj4p', amount: 721, status: 'failed', email: 'carmella@example.com' },
+        { id: 'qkmns91a', amount: 129, status: 'pending', email: 'maia@example.com' },
+        { id: 'mbv93psq', amount: 418, status: 'success', email: 'anderson@example.com' },
+        { id: 've08hd25', amount: 193, status: 'processing', email: 'amilia@example.com' },
+        { id: 'x9as2lqo', amount: 665, status: 'success', email: 'zita@example.com' },
+        { id: 'sg3we12x', amount: 552, status: 'failed', email: 'bayer@example.com' }
+      ];
+
+      const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      });
+
+      const table = document.querySelector('#payments-table');
+      if (table) {
+        table.columns = [
+          {
+            id: 'status',
+            header: 'Status',
+            accessor: 'status',
+            sortable: true,
+            filterable: true,
+            formatter: (value) => (value ? String(value).charAt(0).toUpperCase() + String(value).slice(1) : '')
+          },
+          {
+            id: 'email',
+            header: 'Email',
+            accessor: 'email',
+            sortable: true,
+            filterable: true,
+            formatter: (value) => (value ? String(value).toLowerCase() : '')
+          },
+          {
+            id: 'amount',
+            header: () => {
+              const span = document.createElement('span');
+              span.textContent = 'Amount';
+              span.style.display = 'inline-flex';
+              span.style.justifyContent = 'flex-end';
+              span.style.width = '100%';
+              return span;
+            },
+            accessor: 'amount',
+            sortable: true,
+            filterable: false,
+            align: 'right',
+            formatter: (value) => (typeof value === 'number' ? formatter.format(value) : '')
+          },
+          {
+            id: 'actions',
+            header: '',
+            accessor: () => '',
+            sortable: false,
+            filterable: false,
+            hideable: false,
+            align: 'right',
+            actions: [
+              {
+                id: 'copy-id',
+                label: 'Copy payment ID',
+                action: (row) => navigator.clipboard?.writeText?.(row.id ?? '')
+              },
+              { id: 'view-customer', label: 'View customer' },
+              { id: 'view-details', label: 'View payment details' }
+            ]
+          }
+        ];
+        table.data = payments;
+
+        const log = document.getElementById('selection-log');
+        const entries = [];
+        const append = (message) => {
+          entries.unshift(`${new Date().toLocaleTimeString()} — ${message}`);
+          log.textContent = entries.slice(0, 6).join('\n');
+        };
+
+        table.addEventListener('data-table-selection-change', (event) => {
+          const detail = event.detail;
+          append(`Selected ${detail.rows.length} rows`);
+        });
+
+        table.addEventListener('data-table-action', (event) => {
+          const detail = event.detail;
+          append(`Action "${detail.action}" on ${detail.row.email}`);
+        });
+      }
+    </script>
+  </body>
+</html>

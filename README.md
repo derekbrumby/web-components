@@ -21,6 +21,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/toggle.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -208,6 +209,53 @@ Standard `<input>` attributes such as `name`, `placeholder`, `pattern`, `inputmo
   `--wc-password-field-toggle-background`, `--wc-password-field-toggle-background-hover`.
 - Parts: `::part(wrapper)`, `::part(input)`, `::part(toggle)`, `::part(icon)`, `::part(assistive-text)`.
 - Data attributes: `[data-visible="true" | "false"]` on the host and toggle button for style adjustments.
+
+### `<wc-toggle>`
+
+An accessible, two-state toggle button that mirrors the Radix UI Toggle. It supports controlled and uncontrolled
+usage, full keyboard interaction, ARIA labelling, and emits a `pressed-change` event whenever the state flips.
+
+```html
+<wc-toggle aria-label="Toggle italic text">
+  <span aria-hidden="true" style="font-style: italic;">I</span>
+</wc-toggle>
+
+<p id="toggle-preview">Preview text</p>
+
+<script type="module" src="./src/toggle.js"></script>
+<script type="module">
+  const italicToggle = document.querySelector('wc-toggle');
+  const preview = document.getElementById('toggle-preview');
+  italicToggle?.addEventListener('pressed-change', (event) => {
+    preview?.classList.toggle('is-italic', event.detail.pressed);
+  });
+</script>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `pressed` | boolean | `false` | Reflects the current state. Set the attribute or property for controlled usage. |
+| `default-pressed` | boolean | `false` | Initial value when the element manages its own state. Combine with `reset()` to reapply. |
+| `disabled` | boolean | `false` | Removes the toggle from the tab order and blocks pointer/keyboard interaction. |
+
+#### Methods
+
+- `toggle(force?: boolean)` — flips the pressed state or forces a specific boolean value.
+- `reset()` — clears the `pressed` attribute (if present) and restores the default pressed state.
+
+#### Events
+
+- `pressed-change` — bubbles with `{ pressed: boolean }` whenever user interaction toggles the state.
+
+#### Styling hooks
+
+- CSS custom properties: `--toggle-size`, `--toggle-radius`, `--toggle-background`,
+  `--toggle-background-hover`, `--toggle-background-on`, `--toggle-foreground`, `--toggle-foreground-on`,
+  `--toggle-shadow`, `--toggle-focus-ring`.
+- Parts: `::part(control)` and `::part(label)` for scoped visual overrides.
+- Data attributes: `[data-state="on" | "off"]`, `[data-disabled="true"]`.
 
 ### `<wc-otp-field>`
 

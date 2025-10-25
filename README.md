@@ -13,6 +13,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/hover-card.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -255,6 +256,61 @@ property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperativ
   `--avatar-transition`, `--avatar-fallback-background`, `--avatar-fallback-color`,
   `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
 - Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
+
+### `<wc-hover-card>`
+
+A hover-activated preview surface that reveals supplemental information next to a trigger element. Inspired by
+the Radix UI Hover Card, it remains focus-aware, delay-configurable, and ships with collision-aware styling hooks.
+
+```html
+<wc-hover-card open-delay="0" close-delay="120">
+  <button slot="trigger" type="button" style="border-radius: 999px; padding: 0.25rem 0.75rem;">
+    Hover for profile
+  </button>
+  <div slot="content" style="display: grid; gap: 0.5rem;">
+    <strong>Radix UI</strong>
+    <p style="margin: 0;">Accessible components, icons, and design tokens for building better UI.</p>
+  </div>
+</wc-hover-card>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. When set the card stays open until cleared. |
+| `default-open` | boolean | `false` | Opens the card on first render without setting `open`. Useful for demos. |
+| `open-delay` | number | `700` | Milliseconds to wait before opening after pointer hover/focus. |
+| `close-delay` | number | `300` | Milliseconds to wait before closing once the pointer/focus leaves. |
+| `side` | `top` \| `right` \| `bottom` \| `left` | `bottom` | Placement of the content relative to the trigger. |
+| `align` | `start` \| `center` \| `end` | `center` | Alignment along the cross axis for the chosen side. |
+| `side-offset` | number | `8` | Gap between the trigger and the card, in pixels. |
+| `align-offset` | number | `0` | Fine-tunes alignment in pixels along the cross axis. |
+| `hide-arrow` | boolean | `false` | Removes the pointing arrow from the rendered content. |
+
+The element mirrors these attributes with camelCase properties (`openDelay`, `closeDelay`, etc.).
+
+#### Events
+
+- `openchange`: fired whenever visibility toggles. Detail payload: `{ open: boolean }`.
+
+#### Methods
+
+- `show()`: Opens immediately, bypassing delays.
+- `hide()`: Closes immediately.
+- `toggle(force?: boolean)`: Toggles visibility or forces a state when `force` is provided.
+
+#### Styling hooks
+
+Customize using CSS custom properties and parts:
+
+- Custom properties: `--hover-card-surface`, `--hover-card-color`, `--hover-card-radius`,
+  `--hover-card-shadow`, `--hover-card-border`, `--hover-card-padding`, `--hover-card-gap`,
+  `--hover-card-side-offset`, `--hover-card-align-offset`, `--hover-card-transition-duration`,
+  `--hover-card-transition-timing`, `--hover-card-arrow-size`, `--hover-card-arrow-shadow`.
+-- Parts: `::part(trigger)`, `::part(content)`, `::part(arrow)` and the default `::part(trigger-button)`
+  fallback.
+
 #### Keyboard support
 
 - `Esc` closes the dialog and refocuses the trigger.
@@ -278,6 +334,7 @@ See [`index.html`](./index.html) for live demos showcasing:
 - Accordion setups demonstrating `single`/`multiple` behavior, custom theming, and horizontal orientation.
 - Alert dialogs with destructive confirmations, async flows, and custom styling via CSS properties.
 - Aspect ratio containers framing responsive images and responsive embeds.
+- Hover cards that preview Radix UI social metadata with delayed entry/exit.
 
 ## Contributing
 

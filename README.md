@@ -14,12 +14,53 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
 examples for each component.
 
 ## Components
+
+### `<wc-checkbox>`
+
+An accessible, tri-state checkbox control that mirrors Radix UI’s anatomy without runtime dependencies. It
+supports indeterminate states, full keyboard navigation, and form association.
+
+```html
+<form onsubmit="event.preventDefault();">
+  <wc-checkbox name="terms" value="accepted" required checked>
+    Accept terms and conditions.
+  </wc-checkbox>
+</form>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | boolean | `false` | Sets the checkbox to the checked state. Reflects to the `checked` property. |
+| `indeterminate` | boolean | `false` | Displays the indeterminate (mixed) state without marking it as checked. |
+| `disabled` | boolean | `false` | Removes the checkbox from the focus order and blocks interaction. |
+| `required` | boolean | `false` | Marks the checkbox as required when used inside a form. |
+| `value` | string | `"on"` | Value submitted with the parent form whenever the checkbox is checked. |
+| `name` | string | `""` | Associates the element with form submission entries. |
+
+Imperatively call `toggle(force?: boolean)` to flip the state or force a particular value.
+
+#### Events
+
+- `input`: Fired whenever user interaction updates the state. Bubbles and is composed.
+- `change`: Mirrors the native checkbox `change` event semantics.
+
+#### Styling hooks
+
+- CSS custom properties: `--checkbox-size`, `--checkbox-radius`, `--checkbox-border-width`,
+  `--checkbox-border-color`, `--checkbox-background`, `--checkbox-background-checked`,
+  `--checkbox-background-indeterminate`, `--checkbox-foreground`, `--checkbox-shadow`, `--checkbox-focus-ring`,
+  `--checkbox-gap`, `--checkbox-label-color`.
+- Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
+- Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
 
 ### `<wc-otp-field>`
 

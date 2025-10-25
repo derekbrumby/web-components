@@ -134,7 +134,8 @@
     </main>
 
     <script type="module">
-      const tags = Array.from({ length: 50 }, (_, index, array) => `v1.2.0-beta.${array.length - index}`);
+      const tagCount = 50;
+      const tags = Array.from({ length: tagCount }, (_, index) => `v1.2.0-beta.${tagCount - index}`);
       const list = document.querySelector('[data-demo="tag-list"]');
       if (list) {
         for (const tag of tags) {

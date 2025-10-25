@@ -135,6 +135,14 @@
     #hasVertical = false;
     /** @type {boolean} */
     #hasHorizontal = false;
+    /** @type {(event: Event) => void} */
+    #boundHandleScroll;
+    /** @type {(event: PointerEvent) => void} */
+    #boundPointerEnter;
+    /** @type {(event: PointerEvent) => void} */
+    #boundPointerLeave;
+    /** @type {() => void} */
+    #boundSlotChange;
 
     constructor() {
       super();
@@ -347,10 +355,10 @@
       );
       this.#slot = /** @type {HTMLSlotElement} */ (this.#root.querySelector('slot'));
 
-      this.#handleScroll = this.#handleScroll.bind(this);
-      this.#handleSlotChange = this.#handleSlotChange.bind(this);
-      this.#handlePointerLeave = this.#handlePointerLeave.bind(this);
-      this.#handlePointerEnter = this.#handlePointerEnter.bind(this);
+      this.#boundHandleScroll = this.#handleScroll.bind(this);
+      this.#boundSlotChange = this.#handleSlotChange.bind(this);
+      this.#boundPointerLeave = this.#handlePointerLeave.bind(this);
+      this.#boundPointerEnter = this.#handlePointerEnter.bind(this);
     }
 
     connectedCallback() {
@@ -360,10 +368,10 @@
       this.dataset.scrollbarType = this.type;
       this.dataset.scrollbarVisibility = "hidden";
 
-      this.#viewport.addEventListener("scroll", this.#handleScroll, { passive: true });
-      this.addEventListener("pointerenter", this.#handlePointerEnter);
-      this.addEventListener("pointerleave", this.#handlePointerLeave);
-      this.#slot.addEventListener("slotchange", this.#handleSlotChange);
+      this.#viewport.addEventListener("scroll", this.#boundHandleScroll, { passive: true });
+      this.addEventListener("pointerenter", this.#boundPointerEnter);
+      this.addEventListener("pointerleave", this.#boundPointerLeave);
+      this.#slot.addEventListener("slotchange", this.#boundSlotChange);
 
       this.#verticalThumb.addEventListener("pointerdown", (event) => {
         this.#startThumbDrag("vertical", event);
@@ -385,10 +393,10 @@
     }
 
     disconnectedCallback() {
-      this.#viewport.removeEventListener("scroll", this.#handleScroll);
-      this.removeEventListener("pointerenter", this.#handlePointerEnter);
-      this.removeEventListener("pointerleave", this.#handlePointerLeave);
-      this.#slot.removeEventListener("slotchange", this.#handleSlotChange);
+      this.#viewport.removeEventListener("scroll", this.#boundHandleScroll);
+      this.removeEventListener("pointerenter", this.#boundPointerEnter);
+      this.removeEventListener("pointerleave", this.#boundPointerLeave);
+      this.#slot.removeEventListener("slotchange", this.#boundSlotChange);
 
       if (this.#resizeObserver) {
         this.#resizeObserver.unobserve(this.#viewport);

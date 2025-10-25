@@ -21,6 +21,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/toolbar.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -208,6 +209,54 @@ Standard `<input>` attributes such as `name`, `placeholder`, `pattern`, `inputmo
   `--wc-password-field-toggle-background`, `--wc-password-field-toggle-background-hover`.
 - Parts: `::part(wrapper)`, `::part(input)`, `::part(toggle)`, `::part(icon)`, `::part(assistive-text)`.
 - Data attributes: `[data-visible="true" | "false"]` on the host and toggle button for style adjustments.
+
+### `<wc-toolbar>`
+
+An accessible formatting toolbar that groups common text controls, mimicking the Radix UI toolbar demo.
+It ships with multiple toggle buttons for bold, italic, and strikethrough, an exclusive alignment toggle
+group, a metadata link, and a share action. Keyboard users can cycle through controls with the arrow keys
+thanks to the roving tabindex implementation.
+
+```html
+<wc-toolbar alignment="left"></wc-toolbar>
+
+<script type="module" src="https://cdn.example.com/web-components/toolbar.js"></script>
+<script type="module">
+  const toolbar = document.querySelector('wc-toolbar');
+  toolbar?.addEventListener('wc-toolbar-share', (event) => {
+    const { alignment, formats } = event.detail;
+    console.log(`Share clicked with ${alignment} alignment and formats:`, formats);
+  });
+</script>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `alignment` | string | `"center"` | Controls the active alignment toggle. Accepts `"left"`, `"center"`, or `"right"`. |
+| `aria-label` | string | `"Formatting options"` | Overrides the accessible label announced for the toolbar container. |
+
+#### Properties
+
+- `formats: string[]` — read-only array describing the currently active formatting toggles.
+
+#### Events
+
+- `wc-toolbar-format-change` — fired when a formatting toggle is activated or deactivated. Detail includes the
+  active `value` array and information about the toggled control.
+- `wc-toolbar-alignment-change` — emitted whenever the alignment selection changes. Detail contains the active
+  alignment.
+- `wc-toolbar-share` — triggered when the share button is pressed. Detail carries the alignment and format
+  selections at the moment of activation.
+
+#### Styling hooks
+
+- Custom properties: `--toolbar-background`, `--toolbar-radius`, `--toolbar-shadow`, `--toolbar-color`,
+  `--toolbar-accent`, `--toolbar-accent-contrast`, `--toolbar-accent-hover`, `--toolbar-hover`,
+  `--toolbar-hover-contrast`, `--toolbar-focus-ring`, `--toolbar-separator-color`, `--toolbar-font-family`.
+- Parts: `::part(toolbar)`, `::part(toggle-group)`, `::part(toggle)`, `::part(separator)`, `::part(metadata)`,
+  `::part(share)`.
 
 ### `<wc-otp-field>`
 

@@ -9,6 +9,7 @@
     <script type="module" src="./src/alert-dialog.js"></script>
     <script type="module" src="./src/aspect-ratio.js"></script>
     <script type="module" src="./src/avatar.js"></script>
+    <script type="module" src="./src/checkbox.js"></script>
     <style>
       :root {
         color-scheme: light dark;
@@ -86,6 +87,24 @@
       .example-grid {
         display: grid;
         gap: 1.5rem;
+      }
+
+      .checkbox-stack {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .checkbox-list {
+        display: grid;
+        gap: 0.5rem;
+        margin-inline-start: 1.5rem;
+      }
+
+      .checkbox-inline-note {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #475569;
+        line-height: 1.6;
       }
 
       .avatar-row {
@@ -211,6 +230,44 @@
         <h1>Web Component Playground</h1>
         <p>Drop-in friendly, dependency-free elements ready for CDN delivery.</p>
       </header>
+
+      <section>
+        <header>
+          <h2>&lt;wc-checkbox&gt;</h2>
+          <p>Tri-state checkbox control with built-in form association, focus management, and themable parts.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Consent agreement</h3>
+            <form id="checkbox-consent" class="checkbox-stack" onsubmit="event.preventDefault();">
+              <wc-checkbox id="checkbox-consent-control" name="terms" value="accepted" required>
+                Accept terms and conditions.
+              </wc-checkbox>
+              <p class="checkbox-inline-note">
+                Required before continuing. Toggle the checkbox to see how form submission reflects the current state.
+              </p>
+              <button type="submit">Continue</button>
+            </form>
+            <pre class="log" id="checkbox-consent-log">Awaiting interaction…</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Bulk selection with indeterminate state</h3>
+            <div class="checkbox-stack">
+              <wc-checkbox id="checkbox-master" indeterminate>
+                Notify me about workspace updates
+              </wc-checkbox>
+              <div class="checkbox-list" id="checkbox-items">
+                <wc-checkbox class="checkbox-item" value="product" checked>Product announcements</wc-checkbox>
+                <wc-checkbox class="checkbox-item" value="security" checked>Security advisories</wc-checkbox>
+                <wc-checkbox class="checkbox-item" value="news">Community highlights</wc-checkbox>
+              </div>
+            </div>
+            <pre class="log" id="checkbox-selection-log">All options pending…</pre>
+          </div>
+        </div>
+      </section>
 
       <section>
         <header>
@@ -544,6 +601,87 @@
     </main>
 
     <script>
+      const checkboxConsentForm = document.getElementById('checkbox-consent');
+      const checkboxConsentControl = document.getElementById('checkbox-consent-control');
+      const checkboxConsentLog = document.getElementById('checkbox-consent-log');
+
+      if (checkboxConsentForm && checkboxConsentControl && checkboxConsentLog) {
+        checkboxConsentControl.addEventListener('change', () => {
+          checkboxConsentLog.textContent = checkboxConsentControl.checked
+            ? 'Consent granted. The form can now be submitted.'
+            : 'Consent withdrawn. Submission is blocked until accepted again.';
+        });
+
+        checkboxConsentForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (!checkboxConsentControl.checked) {
+            checkboxConsentLog.textContent = 'Cannot submit: terms must be accepted first.';
+            return;
+          }
+          const formData = new FormData(checkboxConsentForm);
+          checkboxConsentLog.textContent = `Submitted with terms=${formData.get('terms')}.`;
+        });
+      }
+
+      const checkboxMaster = document.getElementById('checkbox-master');
+      const checkboxItemsContainer = document.getElementById('checkbox-items');
+      const checkboxSelectionLog = document.getElementById('checkbox-selection-log');
+
+      if (checkboxMaster && checkboxItemsContainer && checkboxSelectionLog) {
+        const checkboxItems = Array.from(
+          checkboxItemsContainer.querySelectorAll('wc-checkbox.checkbox-item')
+        );
+
+        const updateMasterState = () => {
+          const checkedCount = checkboxItems.filter((item) => item.checked).length;
+          if (checkedCount === 0) {
+            checkboxMaster.checked = false;
+            checkboxMaster.indeterminate = false;
+          } else if (checkedCount === checkboxItems.length) {
+            checkboxMaster.checked = true;
+            checkboxMaster.indeterminate = false;
+          } else {
+            checkboxMaster.checked = false;
+            checkboxMaster.indeterminate = true;
+          }
+        };
+
+        const updateSelectionLog = () => {
+          const selected = checkboxItems
+            .filter((item) => item.checked)
+            .map((item) => (item.textContent || '').trim())
+            .filter(Boolean);
+          const state = checkboxMaster.indeterminate
+            ? 'indeterminate'
+            : checkboxMaster.checked
+              ? 'checked'
+              : 'unchecked';
+          checkboxSelectionLog.textContent =
+            selected.length > 0
+              ? `Master is ${state}. Selected: ${selected.join(', ')}.`
+              : `Master is ${state}. No notifications selected.`;
+        };
+
+        checkboxMaster.addEventListener('change', () => {
+          const shouldCheck = checkboxMaster.checked;
+          checkboxMaster.indeterminate = false;
+          checkboxItems.forEach((item) => {
+            item.checked = shouldCheck;
+          });
+          updateSelectionLog();
+        });
+
+        checkboxItems.forEach((item) => {
+          item.addEventListener('change', () => {
+            updateMasterState();
+            updateSelectionLog();
+          });
+        });
+
+        updateMasterState();
+        updateSelectionLog();
+      }
+
       const otpForm = document.getElementById('otp-demo');
       const otpLog = document.getElementById('otp-log');
       const otpAdvanced = document.getElementById('otp-advanced');

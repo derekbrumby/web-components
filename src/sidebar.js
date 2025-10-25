@@ -417,6 +417,8 @@
 
           :host([collapsible="icon"][data-collapsible-state="collapsed"]) .scroll {
             align-items: center;
+            padding: var(--wc-sidebar-padding-collapsed, 0.75rem 0.5rem);
+            gap: var(--wc-sidebar-gap-collapsed, 0.75rem);
           }
         </style>
         <div part="base" class="base" role="complementary">
@@ -733,6 +735,17 @@
             margin-bottom: var(--sidebar-header-margin, 0.75rem);
             border-bottom: var(--sidebar-header-border, none);
           }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) header {
+            justify-content: center;
+            padding: var(--sidebar-header-padding-collapsed, 0);
+            margin-bottom: var(--sidebar-header-margin-collapsed, 0.5rem);
+            overflow: hidden;
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) ::slotted(*) {
+            min-width: 0;
+          }
         </style>
         <header part="header">
           <slot></slot>
@@ -771,6 +784,10 @@
             gap: var(--sidebar-footer-gap, 0.5rem);
             padding: var(--sidebar-footer-padding, 0.75rem 0 0 0);
             border-top: var(--sidebar-footer-border, none);
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) footer {
+            display: none;
           }
         </style>
         <footer part="footer">
@@ -846,10 +863,20 @@
             padding: var(--sidebar-group-padding, 0.25rem 0.35rem);
           }
 
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) {
+            background: var(--sidebar-group-background-collapsed, transparent);
+            padding: var(--sidebar-group-padding-collapsed, 0.25rem 0);
+          }
+
           .group {
             display: flex;
             flex-direction: column;
             gap: var(--sidebar-group-gap, 0.5rem);
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .group {
+            align-items: center;
+            gap: var(--sidebar-group-gap-collapsed, 0.35rem);
           }
 
           .group-header {
@@ -868,10 +895,19 @@
             display: flex;
           }
 
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .group-header {
+            display: none;
+          }
+
           .group-content {
             display: flex;
             flex-direction: column;
             gap: var(--sidebar-group-content-gap, 0.35rem);
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .group-content {
+            align-items: center;
+            gap: var(--sidebar-group-content-gap-collapsed, 0.35rem);
           }
         </style>
         <section part="group" class="group">
@@ -920,6 +956,10 @@
             gap: 0.5rem;
           }
 
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) {
+            display: none;
+          }
+
           span {
             display: inline-flex;
             align-items: center;
@@ -965,6 +1005,10 @@
             color: var(--sidebar-group-action-color, currentColor);
             cursor: pointer;
             transition: background var(--wc-sidebar-transition-duration) var(--wc-sidebar-transition-easing);
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) button {
+            display: none;
           }
 
           button:hover {
@@ -1015,6 +1059,10 @@
             gap: var(--sidebar-group-content-gap, 0.35rem);
           }
 
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) {
+            align-items: center;
+          }
+
           .content {
             display: flex;
             flex-direction: column;
@@ -1053,6 +1101,11 @@
             flex-direction: column;
             gap: var(--sidebar-menu-gap, 0.25rem);
           }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) ul {
+            align-items: center;
+            gap: var(--sidebar-menu-gap-collapsed, 0.5rem);
+          }
         </style>
         <ul part="menu" role="list">
           <slot></slot>
@@ -1078,6 +1131,11 @@
             display: flex;
             align-items: stretch;
             gap: 0.25rem;
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) li {
+            justify-content: center;
+            gap: 0;
           }
         </style>
         <li part="menu-item" role="listitem">
@@ -1162,6 +1220,25 @@
           .label ::slotted(svg) {
             width: 1.1rem;
             height: 1.1rem;
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .control {
+            padding: var(--sidebar-menu-button-padding-collapsed, 0.5rem);
+            justify-content: center;
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .label {
+            justify-content: center;
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .label ::slotted(span:not([data-sidebar-icon])) {
+            display: none;
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .label ::slotted(strong),
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .label ::slotted(em),
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) .label ::slotted(small) {
+            display: none;
           }
         </style>
         <button type="button" class="control" part="menu-button">
@@ -1256,6 +1333,10 @@
             transition: background var(--wc-sidebar-transition-duration) var(--wc-sidebar-transition-easing);
           }
 
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) button {
+            display: none;
+          }
+
           button:hover,
           button:focus-visible {
             background: var(--sidebar-menu-action-background-hover, rgba(15, 23, 42, 0.12));
@@ -1301,6 +1382,10 @@
             background: var(--sidebar-menu-badge-background, rgba(79, 70, 229, 0.15));
             color: var(--sidebar-menu-badge-color, inherit);
           }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) span {
+            display: none;
+          }
         </style>
         <span part="menu-badge">
           <slot></slot>
@@ -1329,6 +1414,10 @@
             display: flex;
             flex-direction: column;
             gap: var(--sidebar-menu-sub-gap, 0.25rem);
+          }
+
+          :host-context(wc-sidebar[collapsible="icon"][data-collapsible-state="collapsed"]) ul {
+            display: none;
           }
         </style>
         <ul part="menu-sub" role="list">

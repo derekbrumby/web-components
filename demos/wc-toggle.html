@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-toggle&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/toggle.js"></script>
+    <style>
+      .toolbar {
+        display: inline-flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .toolbar-toggle .toolbar-icon {
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .toolbar-preview {
+        margin-top: 1.25rem;
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        background: rgba(79, 70, 229, 0.08);
+        color: rgba(30, 27, 75, 1);
+        transition: transform 160ms ease, color 160ms ease;
+      }
+
+      .toolbar-preview.is-bold {
+        font-weight: 700;
+      }
+
+      .toolbar-preview.is-italic {
+        font-style: italic;
+      }
+
+      .toolbar-preview.is-underline {
+        text-decoration: underline;
+        text-decoration-thickness: 0.15em;
+      }
+
+      .controlled-demo {
+        display: grid;
+        gap: 1rem;
+        align-items: center;
+        justify-items: start;
+      }
+
+      .controlled-demo .controlled-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .controlled-demo .controlled-status {
+        font-weight: 600;
+        color: rgba(67, 56, 202, 1);
+      }
+
+      .controlled-demo .status-muted {
+        color: rgba(107, 114, 128, 1);
+        font-weight: 500;
+      }
+
+      .controlled-toggle-wrapper {
+        display: inline-flex;
+        gap: 0.65rem;
+        align-items: center;
+      }
+
+      .controlled-toggle-wrapper span {
+        font-weight: 600;
+      }
+
+      .controlled-demo label {
+        display: inline-flex;
+        gap: 0.5rem;
+        align-items: center;
+        font-size: 0.95rem;
+        color: rgba(71, 85, 105, 1);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Rich text toolbar</h3>
+            <p>Combine toggles to format the preview text. Each toggle is independent and keyboard accessible.</p>
+            <div class="toolbar" role="toolbar" aria-label="Text formatting">
+              <wc-toggle class="toolbar-toggle" aria-label="Bold" data-style="bold">
+                <span aria-hidden="true" class="toolbar-icon">B</span>
+              </wc-toggle>
+              <wc-toggle class="toolbar-toggle" aria-label="Italic" data-style="italic">
+                <span aria-hidden="true" class="toolbar-icon">I</span>
+              </wc-toggle>
+              <wc-toggle class="toolbar-toggle" aria-label="Underline" data-style="underline">
+                <span aria-hidden="true" class="toolbar-icon">U</span>
+              </wc-toggle>
+            </div>
+            <p id="toggle-toolbar-preview" class="toolbar-preview">Radix-inspired toggles with zero dependencies.</p>
+          </div>
+
+          <div class="example-card">
+            <h3>Controlled toggle</h3>
+            <p>
+              Drive the pressed state imperatively while still responding to user interaction. Use the controls to
+              force a value, disable the toggle, or return to its default.
+            </p>
+            <div class="controlled-demo">
+              <div class="controlled-toggle-wrapper">
+                <wc-toggle id="notifications-toggle" aria-label="Enable notifications" default-pressed>
+                  <span aria-hidden="true">🔔</span>
+                </wc-toggle>
+                <span>Notifications</span>
+              </div>
+              <div id="notifications-status" class="controlled-status"></div>
+              <div class="controlled-actions">
+                <button type="button" data-action="set-on">Set on</button>
+                <button type="button" data-action="set-off">Set off</button>
+                <button type="button" data-action="reset">Reset</button>
+              </div>
+              <label>
+                <input type="checkbox" id="notifications-disable" /> Disable toggle
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const toolbarToggles = Array.from(document.querySelectorAll('wc-toggle.toolbar-toggle'));
+      const toolbarPreview = document.getElementById('toggle-toolbar-preview');
+
+      const syncToolbarPreview = () => {
+        if (!toolbarPreview) {
+          return;
+        }
+        toolbarPreview.classList.toggle(
+          'is-bold',
+          toolbarToggles.some((toggle) => toggle.dataset.style === 'bold' && toggle.pressed)
+        );
+        toolbarPreview.classList.toggle(
+          'is-italic',
+          toolbarToggles.some((toggle) => toggle.dataset.style === 'italic' && toggle.pressed)
+        );
+        toolbarPreview.classList.toggle(
+          'is-underline',
+          toolbarToggles.some((toggle) => toggle.dataset.style === 'underline' && toggle.pressed)
+        );
+      };
+
+      toolbarToggles.forEach((toggle) => {
+        toggle.addEventListener('pressed-change', syncToolbarPreview);
+      });
+
+      syncToolbarPreview();
+
+      const notificationsToggle = document.getElementById('notifications-toggle');
+      const notificationsStatus = document.getElementById('notifications-status');
+      const notificationsDisable = document.getElementById('notifications-disable');
+      const actionButtons = Array.from(
+        document.querySelectorAll('.controlled-actions [data-action]')
+      );
+
+      const renderNotificationsStatus = () => {
+        if (!notificationsStatus || !notificationsToggle) {
+          return;
+        }
+        const pressed = notificationsToggle.pressed;
+        notificationsStatus.textContent = pressed
+          ? 'Notifications enabled'
+          : 'Notifications muted';
+        notificationsStatus.classList.toggle('status-muted', !pressed);
+      };
+
+      if (notificationsToggle) {
+        notificationsToggle.addEventListener('pressed-change', renderNotificationsStatus);
+      }
+
+      actionButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          if (!notificationsToggle) {
+            return;
+          }
+          const action = button.getAttribute('data-action');
+          if (action === 'set-on') {
+            notificationsToggle.pressed = true;
+          } else if (action === 'set-off') {
+            notificationsToggle.pressed = false;
+          } else if (action === 'reset') {
+            notificationsToggle.reset();
+          }
+          renderNotificationsStatus();
+        });
+      });
+
+      notificationsDisable?.addEventListener('change', (event) => {
+        if (!notificationsToggle) {
+          return;
+        }
+        const target = event.target;
+        const shouldDisable = target instanceof HTMLInputElement && target.checked;
+        notificationsToggle.disabled = shouldDisable;
+      });
+
+      renderNotificationsStatus();
+    </script>
+  </body>
+</html>

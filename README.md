@@ -13,6 +13,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 ```
 
@@ -171,6 +172,53 @@ Both the root and items expose rich customization options:
   `--accordion-transition-duration`, `--accordion-content-background`, and more.
 - Parts: `::part(item)`, `::part(trigger)`, `::part(trigger-label)`, `::part(indicator)`,
   `::part(panel)`, `::part(panel-inner)` allow precise targeting.
+
+### `<wc-collapsible>`
+
+An interactive disclosure that mirrors the Radix UI Collapsible primitive. It exposes dedicated slots for
+the summary line, an optional preview area, and the collapsible body so you can recreate complex layouts
+without extra wrappers.
+
+```html
+<wc-collapsible style="--collapsible-width: 300px;">
+  <span slot="summary">@peduarte starred 3 repositories</span>
+  <div slot="peek">@radix-ui/primitives</div>
+  <div>
+    <div>@radix-ui/colors</div>
+    <div>@radix-ui/themes</div>
+  </div>
+</wc-collapsible>
+```
+
+The component manages keyboard interaction (Enter/Space), exposes imperative `show()`, `hide()`, and
+`toggle()` methods, and emits an `openchange` event whenever the visibility switches.
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. Can be set declaratively or via the `open` property. |
+| `disabled` | boolean | `false` | Disables interaction and updates the button's focusability. |
+
+#### Slots
+
+- `summary`: Required. Text or elements displayed alongside the toggle button.
+- `peek`: Optional. Content that remains visible regardless of state (for featured items or previews).
+- _default_: Collapsible body content shown when expanded.
+
+#### Events
+
+- `openchange`: Bubbles with `{ open: boolean }` whenever the panel expands or collapses.
+
+#### Styling hooks
+
+Tune the component using custom properties or part selectors:
+
+- Custom properties: `--collapsible-width`, `--collapsible-background`, `--collapsible-trigger-size`,
+  `--collapsible-trigger-background`, `--collapsible-summary-color`, `--collapsible-content-background`,
+  `--collapsible-content-gap`, and more.
+- Parts: `::part(container)`, `::part(header)`, `::part(summary)`, `::part(trigger)`, `::part(preview)`,
+  `::part(content)`, `::part(icon-open)`, `::part(icon-closed)`.
 
 ### `<wc-aspect-ratio>`
 

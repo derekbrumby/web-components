@@ -885,6 +885,91 @@ Tune the appearance with CSS properties or style parts directly:
   `--context-menu-item-highlight`, `--context-menu-separator-color`, `--context-menu-indicator-color`, etc.
 - Parts: `::part(trigger)`, `::part(menu)`, `::part(submenu)`.
 
+### `<wc-toast>`
+
+An accessible toast notification component that mirrors Radix UI's Toast primitives without dependencies. It provides
+automatic dismissal with pause/resume handling, viewport hotkeys, swipe-to-dismiss gestures, and styling hooks for a
+foreground or background announcement.
+
+```html
+<button id="toast-trigger" type="button">Add to calendar</button>
+
+<wc-toast
+  id="calendar-toast"
+  title="Scheduled: Catch up"
+  action-label="Undo"
+  label="Notifications ({hotkey})"
+  hotkey="F8"
+>
+  <time slot="description"></time>
+</wc-toast>
+
+<script type="module" src="./src/toast.js"></script>
+<script type="module">
+  const toast = document.getElementById("calendar-toast");
+  const description = toast?.querySelector('time[slot="description"]');
+  const trigger = document.getElementById("toast-trigger");
+
+  const oneWeekAway = () => {
+    const now = new Date();
+    now.setDate(now.getDate() + 7);
+    return now;
+  };
+
+  trigger?.addEventListener("click", () => {
+    const eventDate = oneWeekAway();
+    if (description) {
+      description.dateTime = eventDate.toISOString();
+      description.textContent = eventDate.toLocaleString("en-US", {
+        dateStyle: "full",
+        timeStyle: "short",
+      });
+    }
+    toast?.show();
+  });
+</script>
+```
+
+#### Attributes & properties
+
+| Attribute / Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls whether the toast is visible. Toggle with the `open` property or the `show()` / `close()` methods. |
+| `default-open` | boolean | `false` | Opens the toast once when the component is initialised. |
+| `duration` | number | `5000` | Auto-dismiss timeout in milliseconds. Set to `0` to disable automatic closing. |
+| `title` | string | `""` | Text content used when no slotted `title` node is supplied. |
+| `description` | string | `""` | Text content used when no slotted `description` node is supplied. |
+| `action-label` | string | `""` | Label for the default action button. Supply a node in the `action` slot to fully customise the action. |
+| `label` | string | `"Notifications ({hotkey})"` | Accessible label applied to the toast viewport. `{hotkey}` expands to the configured keyboard shortcut. |
+| `hotkey` | string | `"F8"` | Keyboard shortcut (comma separated combinations such as `"Alt+KeyT"`) that focuses the toast viewport. |
+| `type` | `"foreground" \| "background"` | `"foreground"` | Controls the `aria-live` politeness level. |
+
+#### Methods
+
+- `show(options?: { title?: string; description?: string; actionLabel?: string; duration?: number; })` — Opens the toast
+  and optionally overrides its content or duration for that display.
+- `close(reason?: "api" | "timeout" | "action" | "close-button" | "swipe" | "escape")` — Closes the toast and emits a
+  `wc-toast-close` event with the supplied reason.
+
+#### Events
+
+- `wc-toast-open` — Fired when the toast becomes visible. `event.detail.reason` indicates why the toast opened.
+- `wc-toast-close` — Fired when the toast closes. The detail includes a `reason` such as `timeout`, `action`, or
+  `swipe`.
+- `wc-toast-action` — Emitted when the default action button is activated.
+- `wc-toast-pause` / `wc-toast-resume` — Fired when the auto-dismiss timer pauses or resumes because of pointer,
+  focus, swipe, or visibility interactions.
+
+#### Styling hooks
+
+Customise appearance with CSS properties or the exposed parts:
+
+- Custom properties: `--wc-toast-background`, `--wc-toast-foreground`, `--wc-toast-shadow`, `--wc-toast-border`,
+  `--wc-toast-radius`, `--wc-toast-padding`, `--wc-toast-viewport-padding`, `--wc-toast-action-background`,
+  `--wc-toast-action-color`, `--wc-toast-close-color`, `--wc-toast-swipe-move-x`, `--wc-toast-swipe-end-x`, etc.
+- Parts: `::part(viewport)`, `::part(toast)`, `::part(title)`, `::part(description)`, `::part(actions)`,
+  `::part(action)`, `::part(close)`.
+
 ### Examples
 
 See [`index.html`](./index.html) for live demos showcasing:
@@ -895,6 +980,7 @@ See [`index.html`](./index.html) for live demos showcasing:
 - Aspect ratio containers framing responsive images and responsive embeds.
 - Hover cards that preview Radix UI social metadata with delayed entry/exit.
 - Dropdown menus with submenus, checkboxes, and radio groups mirroring Radix UI ergonomics.
+- Toast notifications with programmatic triggers, accessible time descriptions, and swipe-to-dismiss behaviour.
 
 ## Contributing
 

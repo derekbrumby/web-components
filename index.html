@@ -6,10 +6,96 @@
     <title>Web Components Demo</title>
     <link rel="stylesheet" href="./demos/demo-base.css" />
     <style>
+      :root {
+        color-scheme: light dark;
+      }
+
+      main {
+        display: grid;
+        gap: 2.5rem;
+      }
+
       main > header {
         display: grid;
         gap: 0.75rem;
         text-align: center;
+      }
+
+      .demo-layout {
+        display: grid;
+        gap: 2.5rem;
+        grid-template-columns: minmax(15rem, 22rem) minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .demo-nav {
+        position: sticky;
+        top: 2rem;
+        align-self: start;
+        padding: 1.25rem;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.65);
+        box-shadow: 0 32px 64px -36px rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(16px);
+      }
+
+      .demo-nav ol {
+        list-style: none;
+        display: grid;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0;
+      }
+
+      .demo-nav button {
+        width: 100%;
+        padding: 0.65rem 0.85rem;
+        border-radius: 0.75rem;
+        border: none;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        transition: background-color 160ms ease, color 160ms ease;
+      }
+
+      .demo-nav button:hover {
+        background: rgba(99, 102, 241, 0.12);
+      }
+
+      .demo-nav button:focus-visible {
+        outline: 3px solid rgba(99, 102, 241, 0.45);
+        outline-offset: 3px;
+      }
+
+      .demo-nav button.is-active {
+        background: rgba(79, 70, 229, 0.18);
+        color: rgb(67, 56, 202);
+        font-weight: 600;
+      }
+
+      .demo-display {
+        min-height: 20rem;
+      }
+
+      .demo-noscript {
+        margin: 0;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        background: rgba(99, 102, 241, 0.15);
+        color: rgb(67, 56, 202);
+        font-weight: 600;
+        text-align: center;
+      }
+
+      section[data-demo-id] {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      section[data-demo-id][hidden] {
+        display: none;
       }
 
       .demo-frame-wrapper {
@@ -29,6 +115,28 @@
         outline: 3px solid rgba(99, 102, 241, 0.45);
         outline-offset: 6px;
       }
+
+      @media (max-width: 960px) {
+        .demo-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .demo-nav {
+          position: static;
+          padding: 0.75rem;
+        }
+
+        .demo-nav ol {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+        }
+      }
+
+      @media (max-width: 720px) {
+        .demo-nav ol {
+          grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+        }
+      }
     </style>
   </head>
   <body>
@@ -38,247 +146,332 @@
         <p>Drop-in friendly, dependency-free elements ready for CDN delivery.</p>
       </header>
 
-      <section>
-        <header>
-          <h2>&lt;wc-menubar&gt;</h2>
-          <p>Desktop-style menus with nested submenus, checkable items, and roving keyboard focus.</p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-menubar&gt; demo"
-            src="./demos/wc-menubar.html"
-            loading="lazy"
-            height="520"
-          ></iframe>
-        </div>
-      </section>
+      <div class="demo-layout">
+        <nav class="demo-nav" aria-label="Component demos">
+          <ol>
+            <li><button type="button" class="is-active" aria-current="page" data-demo-target="wc-menubar">&lt;wc-menubar&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-label">&lt;wc-label&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-form">&lt;wc-form&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-checkbox">&lt;wc-checkbox&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-avatar">&lt;wc-avatar&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-hover-card">&lt;wc-hover-card&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-collapsible">&lt;wc-collapsible&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-aspect-ratio">&lt;wc-aspect-ratio&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-otp-field">&lt;wc-otp-field&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-dropdown-menu">&lt;wc-dropdown-menu&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-dialog">&lt;wc-dialog&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-alert-dialog">&lt;wc-alert-dialog&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-context-menu">&lt;wc-context-menu&gt;</button></li>
+            <li><button type="button" aria-current="false" data-demo-target="wc-accordion">&lt;wc-accordion&gt;</button></li>
+          </ol>
+        </nav>
 
-      <section>
-        <header>
-          <h2>&lt;wc-label&gt;</h2>
-          <p>Render accessible labels that stay linked to their controls—inline or slotted.</p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-label&gt; demo"
-            src="./demos/wc-label.html"
-            loading="lazy"
-            height="360"
-          ></iframe>
-        </div>
-      </section>
+        <div class="demo-display">
+          <noscript>
+            <p class="demo-noscript">Enable JavaScript to switch between component previews.</p>
+          </noscript>
+          <section data-demo-id="wc-menubar">
+            <header>
+              <h2>&lt;wc-menubar&gt;</h2>
+              <p>Desktop-style menus with nested submenus, checkable items, and roving keyboard focus.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-menubar&gt; demo"
+                src="./demos/wc-menubar.html"
+                loading="lazy"
+                height="520"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-form&gt;</h2>
-          <p>Collect validated contact requests with inline messaging and fully managed focus states.</p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-form&gt; demo"
-            src="./demos/wc-form.html"
-            loading="lazy"
-            height="620"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-label" hidden>
+            <header>
+              <h2>&lt;wc-label&gt;</h2>
+              <p>Render accessible labels that stay linked to their controls—inline or slotted.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-label&gt; demo"
+                src="./demos/wc-label.html"
+                loading="lazy"
+                height="360"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-checkbox&gt;</h2>
-          <p>Tri-state checkbox control with built-in form association, focus management, and themable parts.</p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-checkbox&gt; demo"
-            src="./demos/wc-checkbox.html"
-            loading="lazy"
-            height="600"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-form" hidden>
+            <header>
+              <h2>&lt;wc-form&gt;</h2>
+              <p>Collect validated contact requests with inline messaging and fully managed focus states.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-form&gt; demo"
+                src="./demos/wc-form.html"
+                loading="lazy"
+                height="620"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-avatar&gt;</h2>
-          <p>Display users with graceful image loading, delayed fallbacks, and fully themable initials.</p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-avatar&gt; demo"
-            src="./demos/wc-avatar.html"
-            loading="lazy"
-            height="540"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-checkbox" hidden>
+            <header>
+              <h2>&lt;wc-checkbox&gt;</h2>
+              <p>Tri-state checkbox control with built-in form association, focus management, and themable parts.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-checkbox&gt; demo"
+                src="./demos/wc-checkbox.html"
+                loading="lazy"
+                height="600"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-hover-card&gt;</h2>
-          <p>Preview link destinations and people cards with configurable delays, placement, and arrows.</p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-hover-card&gt; demo"
-            src="./demos/wc-hover-card.html"
-            loading="lazy"
-            height="620"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-avatar" hidden>
+            <header>
+              <h2>&lt;wc-avatar&gt;</h2>
+              <p>Display users with graceful image loading, delayed fallbacks, and fully themable initials.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-avatar&gt; demo"
+                src="./demos/wc-avatar.html"
+                loading="lazy"
+                height="540"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-collapsible&gt;</h2>
-          <p>Build expandable summaries with optional preview content and animated icons.</p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-collapsible&gt; demo"
-            src="./demos/wc-collapsible.html"
-            loading="lazy"
-            height="520"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-hover-card" hidden>
+            <header>
+              <h2>&lt;wc-hover-card&gt;</h2>
+              <p>Preview link destinations and people cards with configurable delays, placement, and arrows.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-hover-card&gt; demo"
+                src="./demos/wc-hover-card.html"
+                loading="lazy"
+                height="620"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-aspect-ratio&gt;</h2>
-          <p>Maintain fixed ratios for media and containers with zero layout shift.</p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-aspect-ratio&gt; demo"
-            src="./demos/wc-aspect-ratio.html"
-            loading="lazy"
-            height="520"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-collapsible" hidden>
+            <header>
+              <h2>&lt;wc-collapsible&gt;</h2>
+              <p>Build expandable summaries with optional preview content and animated icons.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-collapsible&gt; demo"
+                src="./demos/wc-collapsible.html"
+                loading="lazy"
+                height="520"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-otp-field&gt;</h2>
-          <p>
-            A form-associated one-time-password input that manages focus, validation, and submissions. Customize
-            appearance using CSS properties or <code>::part</code> selectors.
-          </p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-otp-field&gt; demo"
-            src="./demos/wc-otp-field.html"
-            loading="lazy"
-            height="560"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-aspect-ratio" hidden>
+            <header>
+              <h2>&lt;wc-aspect-ratio&gt;</h2>
+              <p>Maintain fixed ratios for media and containers with zero layout shift.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-aspect-ratio&gt; demo"
+                src="./demos/wc-aspect-ratio.html"
+                loading="lazy"
+                height="520"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-dropdown-menu&gt;</h2>
-          <p>
-            Radix-inspired dropdown menus with nested fly-outs, checkboxes, radio groups, and full keyboard support.
-            Style everything with CSS custom properties and <code>::part</code> selectors.
-          </p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-dropdown-menu&gt; demo"
-            src="./demos/wc-dropdown-menu.html"
-            loading="lazy"
-            height="600"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-otp-field" hidden>
+            <header>
+              <h2>&lt;wc-otp-field&gt;</h2>
+              <p>
+                A form-associated one-time-password input that manages focus, validation, and submissions. Customize
+                appearance using CSS properties or <code>::part</code> selectors.
+              </p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-otp-field&gt; demo"
+                src="./demos/wc-otp-field.html"
+                loading="lazy"
+                height="560"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-dialog&gt;</h2>
-          <p>
-            General-purpose dialogs that can run modally or as lightweight, non-modal panels. Manage focus, labelling,
-            and styling entirely with slots and CSS properties.
-          </p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-dialog&gt; demo"
-            src="./demos/wc-dialog.html"
-            loading="lazy"
-            height="640"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-dropdown-menu" hidden>
+            <header>
+              <h2>&lt;wc-dropdown-menu&gt;</h2>
+              <p>
+                Radix-inspired dropdown menus with nested fly-outs, checkboxes, radio groups, and full keyboard support.
+                Style everything with CSS custom properties and <code>::part</code> selectors.
+              </p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-dropdown-menu&gt; demo"
+                src="./demos/wc-dropdown-menu.html"
+                loading="lazy"
+                height="600"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-alert-dialog&gt;</h2>
-          <p>
-            Modal confirmation dialogs with focus trapping, accessible labelling, and customizable styling hooks. Use
-            slots for triggers, titles, descriptions, and action buttons.
-          </p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-alert-dialog&gt; demo"
-            src="./demos/wc-alert-dialog.html"
-            loading="lazy"
-            height="560"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-dialog" hidden>
+            <header>
+              <h2>&lt;wc-dialog&gt;</h2>
+              <p>
+                General-purpose dialogs that can run modally or as lightweight, non-modal panels. Manage focus, labelling,
+                and styling entirely with slots and CSS properties.
+              </p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-dialog&gt; demo"
+                src="./demos/wc-dialog.html"
+                loading="lazy"
+                height="640"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-context-menu&gt;</h2>
-          <p>
-            Display pointer-anchored menus with submenus, checkboxes, radios, and keyboard support. Works with
-            right-clicks, the context-menu key, and long-press on touch devices.
-          </p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-context-menu&gt; demo"
-            src="./demos/wc-context-menu.html"
-            loading="lazy"
-            height="540"
-          ></iframe>
-        </div>
-      </section>
+          <section data-demo-id="wc-alert-dialog" hidden>
+            <header>
+              <h2>&lt;wc-alert-dialog&gt;</h2>
+              <p>
+                Modal confirmation dialogs with focus trapping, accessible labelling, and customizable styling hooks. Use
+                slots for triggers, titles, descriptions, and action buttons.
+              </p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-alert-dialog&gt; demo"
+                src="./demos/wc-alert-dialog.html"
+                loading="lazy"
+                height="560"
+              ></iframe>
+            </div>
+          </section>
 
-      <section>
-        <header>
-          <h2>&lt;wc-accordion&gt;</h2>
-          <p>
-            Accessible accordion primitives with keyboard support, horizontal or vertical layouts, and multi-open
-            configurations.
-          </p>
-        </header>
-        <div class="demo-frame-wrapper">
-          <iframe
-            class="demo-frame"
-            title="&lt;wc-accordion&gt; demo"
-            src="./demos/wc-accordion.html"
-            loading="lazy"
-            height="620"
-          ></iframe>
+          <section data-demo-id="wc-context-menu" hidden>
+            <header>
+              <h2>&lt;wc-context-menu&gt;</h2>
+              <p>
+                Display pointer-anchored menus with submenus, checkboxes, radios, and keyboard support. Works with
+                right-clicks, the context-menu key, and long-press on touch devices.
+              </p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-context-menu&gt; demo"
+                src="./demos/wc-context-menu.html"
+                loading="lazy"
+                height="540"
+              ></iframe>
+            </div>
+          </section>
+
+          <section data-demo-id="wc-accordion" hidden>
+            <header>
+              <h2>&lt;wc-accordion&gt;</h2>
+              <p>
+                Accessible accordion primitives with keyboard support, horizontal or vertical layouts, and multi-open
+                configurations.
+              </p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-accordion&gt; demo"
+                src="./demos/wc-accordion.html"
+                loading="lazy"
+                height="620"
+              ></iframe>
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
     </main>
+
+    <script type="module">
+      const nav = document.querySelector('.demo-nav');
+      const buttons = Array.from(nav.querySelectorAll('button[data-demo-target]'));
+      const demos = Array.from(document.querySelectorAll('section[data-demo-id]'));
+
+      const setActiveDemo = (demoId) => {
+        if (!demoId) return;
+
+        const hasDemo = demos.some((section) => section.dataset.demoId === demoId);
+        if (!hasDemo) return;
+
+        for (const section of demos) {
+          const isMatch = section.dataset.demoId === demoId;
+          section.hidden = !isMatch;
+        }
+
+        for (const button of buttons) {
+          const isActive = button.dataset.demoTarget === demoId;
+          button.classList.toggle('is-active', isActive);
+          button.setAttribute('aria-current', isActive ? 'page' : 'false');
+        }
+
+      };
+
+      const activateFromHash = () => {
+        const hash = window.location.hash.replace('#', '');
+        if (!hash) {
+          return buttons[0]?.dataset.demoTarget;
+        }
+
+        const button = buttons.find((item) => item.dataset.demoTarget === hash);
+        return button ? button.dataset.demoTarget : buttons[0]?.dataset.demoTarget;
+      };
+
+      nav.addEventListener('click', (event) => {
+        const button = event.target.closest('button[data-demo-target]');
+        if (!button) return;
+
+        const demoId = button.dataset.demoTarget;
+        if (!demoId) return;
+
+        event.preventDefault();
+        setActiveDemo(demoId);
+        if (history.replaceState) {
+          history.replaceState(null, '', `#${demoId}`);
+        } else {
+          window.location.hash = demoId;
+        }
+        button.focus({ preventScroll: true });
+      });
+
+      window.addEventListener('hashchange', () => {
+        const demoId = activateFromHash();
+        setActiveDemo(demoId);
+      });
+
+      setActiveDemo(activateFromHash());
+    </script>
   </body>
 </html>

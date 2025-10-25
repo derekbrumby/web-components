@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-toast&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/toast.js"></script>
+    <style>
+      .toast-card {
+        display: grid;
+        gap: 1rem;
+        justify-items: start;
+      }
+
+      .toast-card button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.45rem 0.95rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: #f8fafc;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 12px 30px -18px rgba(76, 29, 149, 0.6);
+      }
+
+      .toast-card button:hover {
+        filter: brightness(1.05);
+      }
+
+      .toast-card button:focus-visible {
+        outline: 3px solid rgba(165, 180, 252, 0.9);
+        outline-offset: 3px;
+      }
+
+      .toast-log {
+        inline-size: 100%;
+        min-block-size: 5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>Calendar reminder toast</h2>
+          <p>
+            Show a toast that schedules a catch-up one week away. The notification pauses while hovered or focused,
+            supports the <kbd>F8</kbd> hotkey, and dismisses via swipe gestures.
+          </p>
+        </header>
+
+        <div class="example-card toast-card">
+          <button id="toast-trigger" type="button">Add to calendar</button>
+
+          <wc-toast
+            id="calendar-toast"
+            title="Scheduled: Catch up"
+            action-label="Undo"
+            label="Notifications ({hotkey})"
+            hotkey="F8"
+          >
+            <time slot="description" id="toast-description"></time>
+          </wc-toast>
+
+          <pre class="log toast-log" id="toast-log">Click the button to schedule your catch up.</pre>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      const trigger = document.getElementById('toast-trigger');
+      const toast = document.getElementById('calendar-toast');
+      const description = document.getElementById('toast-description');
+      const log = document.getElementById('toast-log');
+
+      const prettyDate = (date) =>
+        date.toLocaleString('en-US', {
+          dateStyle: 'full',
+          timeStyle: 'short',
+        });
+
+      const oneWeekAway = () => {
+        const next = new Date();
+        next.setDate(next.getDate() + 7);
+        return next;
+      };
+
+      trigger?.addEventListener('click', () => {
+        const when = oneWeekAway();
+        if (description) {
+          description.dateTime = when.toISOString();
+          description.textContent = prettyDate(when);
+        }
+        toast?.show();
+        if (log) {
+          log.textContent = `Toast opened for ${prettyDate(when)}.`;
+        }
+      });
+
+      toast?.addEventListener('wc-toast-action', () => {
+        if (log) {
+          log.textContent = 'Undo selected. The calendar reminder will be removed.';
+        }
+      });
+
+      toast?.addEventListener('wc-toast-close', (event) => {
+        const reason = event.detail?.reason || 'unknown';
+        if (log) {
+          log.textContent = `Toast closed via ${reason}.`;
+        }
+      });
+
+      toast?.addEventListener('wc-toast-pause', (event) => {
+        const source = event.detail?.source || 'interaction';
+        if (log) {
+          log.textContent = `Toast paused because of ${source}.`;
+        }
+      });
+
+      toast?.addEventListener('wc-toast-resume', (event) => {
+        const source = event.detail?.source || 'interaction';
+        if (log) {
+          log.textContent = `Toast resumed after ${source}.`;
+        }
+      });
+    </script>
+  </body>
+</html>
+

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-markdown-viewer&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/markdown-viewer.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2rem;
+        padding: 2rem;
+      }
+
+      .markdown-demo {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      wc-markdown-viewer {
+        padding: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.4);
+        background: rgba(15, 23, 42, 0.85);
+        color: rgb(226, 232, 240);
+      }
+
+      wc-markdown-viewer[variant="surface"] {
+        background: rgba(255, 255, 255, 0.92);
+        color: rgb(30, 41, 59);
+        box-shadow: 0 18px 36px -24px rgba(15, 23, 42, 0.35);
+      }
+
+      wc-markdown-viewer::part(empty) {
+        margin: 0;
+        font-style: italic;
+        opacity: 0.7;
+      }
+
+      wc-markdown-viewer::part(error) {
+        margin: 0;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        background: rgba(239, 68, 68, 0.15);
+        color: rgb(220, 38, 38);
+      }
+
+      .hint {
+        margin: 0;
+        color: rgb(100, 116, 139);
+      }
+
+      .controls {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .controls button {
+        border: none;
+        border-radius: 999px;
+        padding: 0.5rem 1.25rem;
+        background: rgba(99, 102, 241, 0.16);
+        color: rgb(79, 70, 229);
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease;
+      }
+
+      .controls button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 32px -24px rgba(79, 70, 229, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="markdown-demo">
+        <header>
+          <h2>Inline markdown</h2>
+          <p>Pass markdown directly through the <code>markdown</code> attribute or property.</p>
+        </header>
+        <wc-markdown-viewer
+          markdown="# CDN friendly markdown\n\nRender **bold**, _italic_, and `inline code` out of the box.\n\n> Accessible by default with sanitization built in."
+        ></wc-markdown-viewer>
+        <p class="hint">Escaped line breaks like <code>\n</code> are automatically converted for attribute usage.</p>
+      </section>
+
+      <section class="markdown-demo">
+        <header>
+          <h2>Remote documents</h2>
+          <p>Provide a URL to fetch `.md` content. Use the <code>loading</code> slot to customise progress states.</p>
+        </header>
+        <wc-markdown-viewer variant="surface" src="./markdown-sample.md">
+          <span slot="loading">Fetching remote content…</span>
+        </wc-markdown-viewer>
+        <div class="controls" aria-label="Remote markdown controls">
+          <button type="button" data-trigger="refresh">Reload markdown</button>
+          <button type="button" data-trigger="error">Simulate error</button>
+        </div>
+      </section>
+    </main>
+    <script type="module">
+      const viewer = document.querySelector('wc-markdown-viewer[variant="surface"]');
+      const buttons = document.querySelectorAll('[data-trigger]');
+      const originalSrc = viewer?.src;
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          if (!viewer) return;
+          if (button.dataset.trigger === 'refresh') {
+            viewer.src = '';
+            requestAnimationFrame(() => {
+              viewer.src = originalSrc;
+            });
+          }
+          if (button.dataset.trigger === 'error') {
+            viewer.src = './missing-file.md';
+          }
+        });
+      });
+
+      viewer?.addEventListener('markdown-error', () => {
+        setTimeout(() => {
+          viewer.src = originalSrc;
+        }, 1800);
+      });
+    </script>
+  </body>
+</html>

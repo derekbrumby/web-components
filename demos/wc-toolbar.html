@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-toolbar&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/toolbar.js"></script>
+    <style>
+      .demo-canvas {
+        display: grid;
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .preview-area {
+        display: grid;
+        gap: 0.75rem;
+        background: rgba(255, 255, 255, 0.75);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        box-shadow: 0 18px 48px -32px rgba(15, 23, 42, 0.4);
+      }
+
+      .preview-text {
+        padding: 1rem;
+        border-radius: 0.75rem;
+        background: rgba(99, 102, 241, 0.1);
+        color: rgb(30, 64, 175);
+        transition: transform 180ms ease;
+      }
+
+      .preview-text[data-alignment='left'] {
+        text-align: left;
+      }
+
+      .preview-text[data-alignment='center'] {
+        text-align: center;
+      }
+
+      .preview-text[data-alignment='right'] {
+        text-align: right;
+      }
+
+      .preview-text[data-animate='true'] {
+        transform: scale(1.01);
+      }
+
+      .log {
+        font-family: 'Fira Code', 'SFMono-Regular', ui-monospace, monospace;
+        font-size: 0.8125rem;
+        background: rgba(15, 23, 42, 0.85);
+        color: rgba(226, 232, 240, 0.95);
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        white-space: pre-wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-card demo-canvas">
+          <h3>Document editor toolbar</h3>
+          <wc-toolbar
+            id="toolbar-demo"
+            style="
+              --toolbar-background: rgba(255, 255, 255, 0.95);
+              --toolbar-shadow: 0 22px 45px -32px rgba(15, 23, 42, 0.45);
+              --toolbar-accent: #4c1d95;
+              --toolbar-accent-hover: #5b21b6;
+              --toolbar-accent-contrast: #ffffff;
+              --toolbar-hover: rgba(139, 92, 246, 0.15);
+              --toolbar-hover-contrast: #4c1d95;
+              --toolbar-focus-ring: 0 0 0 2px rgba(129, 140, 248, 0.45);
+            "
+          ></wc-toolbar>
+          <article class="preview-area">
+            <p
+              class="preview-text"
+              id="toolbar-preview"
+              data-alignment="center"
+            >
+              Radix-inspired primitives are now available as framework-agnostic web components.
+            </p>
+            <pre class="log" id="toolbar-log">Interact with the toolbar to see live updates…</pre>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const toolbar = document.getElementById('toolbar-demo');
+      const preview = document.getElementById('toolbar-preview');
+      const log = document.getElementById('toolbar-log');
+
+      const updatePreviewFormats = () => {
+        if (!(toolbar && preview)) return;
+        const formats = toolbar.formats || [];
+        const text = 'Radix-inspired primitives are now available as framework-agnostic web components.';
+        preview.textContent = text;
+        preview.style.fontWeight = formats.includes('bold') ? '700' : '';
+        preview.style.fontStyle = formats.includes('italic') ? 'italic' : '';
+        preview.style.textDecoration = formats.includes('strikethrough') ? 'line-through' : 'none';
+        preview.dataset.animate = 'true';
+        requestAnimationFrame(() => {
+          preview.dataset.animate = 'false';
+        });
+      };
+
+      const updateLog = (message) => {
+        if (log) {
+          log.textContent = message;
+        }
+      };
+
+      toolbar?.addEventListener('wc-toolbar-format-change', (event) => {
+        const formats = event.detail?.value || [];
+        updatePreviewFormats();
+        updateLog(`Formats active: ${formats.length ? formats.join(', ') : 'none'}.`);
+      });
+
+      toolbar?.addEventListener('wc-toolbar-alignment-change', (event) => {
+        if (preview) {
+          preview.dataset.alignment = event.detail?.value || 'center';
+        }
+        updateLog(`Alignment set to ${event.detail?.value || 'center'}.`);
+      });
+
+      toolbar?.addEventListener('wc-toolbar-share', (event) => {
+        const { alignment, formats } = event.detail || {};
+        updateLog(
+          `Share clicked with alignment "${alignment}" and formats: ${
+            formats?.length ? formats.join(', ') : 'none'
+          }.`
+        );
+      });
+
+      // Initialise preview with default states once the component upgrades.
+      if (customElements.get('wc-toolbar')) {
+        updatePreviewFormats();
+      } else {
+        customElements.whenDefined('wc-toolbar').then(updatePreviewFormats);
+      }
+    </script>
+  </body>
+</html>

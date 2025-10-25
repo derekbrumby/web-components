@@ -428,19 +428,6 @@
         this.#root.querySelector(".description")
       );
 
-      this.#handlePointerDown = this.#handlePointerDown.bind(this);
-      this.#handlePointerMove = this.#handlePointerMove.bind(this);
-      this.#handlePointerUp = this.#handlePointerUp.bind(this);
-      this.#handlePointerCancel = this.#handlePointerCancel.bind(this);
-      this.#handleKeydown = this.#handleKeydown.bind(this);
-      this.#handleHotkey = this.#handleHotkey.bind(this);
-      this.#handleVisibilityPause = this.#handleVisibilityPause.bind(this);
-      this.#handleVisibilityResume = this.#handleVisibilityResume.bind(this);
-      this.#handleMousePause = this.#handleMousePause.bind(this);
-      this.#handleMouseResume = this.#handleMouseResume.bind(this);
-      this.#handleFocusPause = this.#handleFocusPause.bind(this);
-      this.#handleFocusResume = this.#handleFocusResume.bind(this);
-      this.#onSlotChange = this.#onSlotChange.bind(this);
     }
 
     connectedCallback() {
@@ -774,7 +761,10 @@
       this.#paused = false;
     }
 
-    #handlePointerDown(event) {
+    /**
+     * @param {PointerEvent} event
+     */
+    #handlePointerDown = (event) => {
       if (!this.#open) {
         return;
       }
@@ -789,18 +779,24 @@
       this.style.setProperty("--wc-toast-swipe-move-x", "0px");
       this.style.setProperty("--wc-toast-swipe-end-x", "0px");
       this.#pauseTimer("swipe");
-    }
+    };
 
-    #handlePointerMove(event) {
+    /**
+     * @param {PointerEvent} event
+     */
+    #handlePointerMove = (event) => {
       if (!this.#swiping || event.pointerId !== this.#swipePointer) {
         return;
       }
       const deltaX = Math.max(0, event.clientX - this.#swipeStartX);
       this.style.setProperty("--wc-toast-swipe-move-x", `${deltaX}px`);
       this.#toast.dataset.swipe = "move";
-    }
+    };
 
-    #handlePointerUp(event) {
+    /**
+     * @param {PointerEvent} event
+     */
+    #handlePointerUp = (event) => {
       if (!this.#swiping || event.pointerId !== this.#swipePointer) {
         return;
       }
@@ -821,9 +817,12 @@
           delete this.#toast.dataset.swipe;
         });
       }
-    }
+    };
 
-    #handlePointerCancel(event) {
+    /**
+     * @param {PointerEvent} event
+     */
+    #handlePointerCancel = (event) => {
       if (!this.#swiping || event.pointerId !== this.#swipePointer) {
         return;
       }
@@ -839,21 +838,24 @@
       if (pointerId) {
         this.#toast.releasePointerCapture(pointerId);
       }
-    }
+    };
 
-    #handleMousePause() {
+    #handleMousePause = () => {
       this.#pauseTimer("pointer");
-    }
+    };
 
-    #handleMouseResume() {
+    #handleMouseResume = () => {
       this.#resumeTimer("pointer");
-    }
+    };
 
-    #handleFocusPause() {
+    #handleFocusPause = () => {
       this.#pauseTimer("focus");
-    }
+    };
 
-    #handleFocusResume(event) {
+    /**
+     * @param {FocusEvent} event
+     */
+    #handleFocusResume = (event) => {
       const relatedTarget = /** @type {Node | null} */ (event.relatedTarget);
       const remainsInside =
         (relatedTarget !== null && this.contains(relatedTarget)) ||
@@ -861,17 +863,20 @@
       if (!remainsInside) {
         this.#resumeTimer("focus");
       }
-    }
+    };
 
-    #handleVisibilityPause() {
+    #handleVisibilityPause = () => {
       this.#pauseTimer("visibility");
-    }
+    };
 
-    #handleVisibilityResume() {
+    #handleVisibilityResume = () => {
       this.#resumeTimer("visibility");
-    }
+    };
 
-    #handleKeydown(event) {
+    /**
+     * @param {KeyboardEvent} event
+     */
+    #handleKeydown = (event) => {
       if (event.defaultPrevented) {
         return;
       }
@@ -880,10 +885,13 @@
         event.preventDefault();
         this.close("escape");
       }
-    }
+    };
 
-    #handleHotkey(event) {
-      if (event.defaultPrevented) {
+    /**
+     * @param {KeyboardEvent} event
+     */
+    #handleHotkey = (event) => {
+      if (!this.#hotkeys.length || event.defaultPrevented) {
         return;
       }
       for (const combo of this.#hotkeys) {
@@ -911,7 +919,7 @@
           break;
         }
       }
-    }
+    };
 
     #syncTitleAndDescription() {
       const hasTitleSlot = this.#titleSlot.assignedNodes({ flatten: true }).length > 0;
@@ -978,10 +986,10 @@
       this.#toast.setAttribute("aria-live", liveValue);
     }
 
-    #onSlotChange() {
+    #onSlotChange = () => {
       this.#syncTitleAndDescription();
       this.#syncActionButton();
-    }
+    };
   }
 
   customElements.define("wc-toast", WcToast);

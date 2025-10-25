@@ -265,11 +265,13 @@
 
           [part="scrollbar"][data-orientation="vertical"] [part="thumb"] {
             inline-size: calc(100% - (var(--scroll-area-scrollbar-padding) * 2));
+            inset-inline-end: var(--scroll-area-scrollbar-padding);
             min-block-size: var(--scroll-area-thumb-min-size);
           }
 
           [part="scrollbar"][data-orientation="horizontal"] [part="thumb"] {
             block-size: calc(100% - (var(--scroll-area-scrollbar-padding) * 2));
+            inset-inline-end: auto;
             min-inline-size: var(--scroll-area-thumb-min-size);
           }
 
@@ -706,7 +708,7 @@
         const thumbOffset = paddingStart + (maxScroll === 0 ? 0 : (scrollOffset / maxScroll) * maxThumbOffset);
 
         this.#verticalThumb.style.height = `${thumbSize}px`;
-        this.#verticalThumb.style.top = `${thumbOffset}px`;
+        this.#verticalThumb.style.setProperty("inset-block-start", `${thumbOffset}px`);
       }
 
       if (this.#hasHorizontal && !this.#horizontalScrollbar.hidden) {
@@ -718,7 +720,7 @@
         const thumbOffset = paddingStart + (maxScroll === 0 ? 0 : (scrollOffset / maxScroll) * maxThumbOffset);
 
         this.#horizontalThumb.style.width = `${thumbSize}px`;
-        this.#horizontalThumb.style.left = `${thumbOffset}px`;
+        this.#horizontalThumb.style.setProperty("inset-inline-start", `${thumbOffset}px`);
       }
     }
 

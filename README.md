@@ -15,6 +15,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/navigation-menu.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/sidebar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/label.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/hover-card.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/tooltip.js"></script>
@@ -1256,6 +1257,92 @@ triggers, and `Escape` to close the menu. Focus is restored to the current trigg
   `--navigation-menu-viewport-shadow`, `--navigation-menu-viewport-radius`, `--navigation-menu-indicator-color`.
 - Parts: `::part(root)`, `::part(surface)`, `::part(list)`, `::part(trigger)`, `::part(link)`, `::part(indicator)`,
   `::part(viewport)`, `::part(content)`.
+
+### `<wc-sidebar-provider>`, `<wc-sidebar>`, `<wc-sidebar-trigger>`, `<wc-sidebar-menu>`
+
+A full sidebar system that mirrors the shadcn/ui primitives. Compose collapsible navigation, sticky headers and
+footers, menu badges, nested sections, and icon rails while keeping keyboard shortcuts and persisted state out of the
+box.
+
+```html
+<wc-sidebar-provider persist-state>
+  <wc-sidebar collapsible="icon">
+    <wc-sidebar-header>...</wc-sidebar-header>
+    <wc-sidebar-content>
+      <wc-sidebar-group>
+        <wc-sidebar-group-label>Workspace</wc-sidebar-group-label>
+        <wc-sidebar-group-content>
+          <wc-sidebar-menu>
+            <wc-sidebar-menu-item>
+              <wc-sidebar-menu-button href="#" active>
+                <span>Overview</span>
+              </wc-sidebar-menu-button>
+              <wc-sidebar-menu-badge>12</wc-sidebar-menu-badge>
+            </wc-sidebar-menu-item>
+          </wc-sidebar-menu>
+        </wc-sidebar-group-content>
+      </wc-sidebar-group>
+    </wc-sidebar-content>
+    <wc-sidebar-footer>...</wc-sidebar-footer>
+    <wc-sidebar-rail></wc-sidebar-rail>
+  </wc-sidebar>
+  <wc-sidebar-inset>
+    <header>
+      <wc-sidebar-trigger></wc-sidebar-trigger>
+      <!-- main content -->
+    </header>
+  </wc-sidebar-inset>
+</wc-sidebar-provider>
+```
+
+#### Key elements
+
+- `<wc-sidebar-provider>` — manages expanded/collapsed state, keyboard shortcuts (`⌘/Ctrl + B` by default), and an
+  optional persisted cookie.
+- `<wc-sidebar>` — the panel itself. Supports `collapsible="icon"`, `collapsible="offcanvas"`, and non-collapsible
+  variants with optional inset/floating skins.
+- `<wc-sidebar-inset>` — wraps the main application area and reacts to the provider’s state so spacing stays aligned.
+- `<wc-sidebar-trigger>` — button that toggles the closest provider. Works inside the sidebar or the inset content.
+- `<wc-sidebar-menu>` family — render menu items, actions, badges, and sub-navigation with consistent spacing.
+
+#### `<wc-sidebar-provider>` attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `true` | Controlled open state. Can be managed via property or attribute. |
+| `default-open` | boolean | `true` | Sets the initial open value without forcing a controlled state. |
+| `persist-state` | boolean | `false` | When present, the component stores the current state in a cookie. |
+| `cookie-name` | string | `"sidebar_state"` | Customise the cookie key used when `persist-state` is enabled. |
+| `shortcut` | string | `"b"` | Keyboard shortcut letter for the toggle (`⌘+shortcut` on macOS, `Ctrl+shortcut` elsewhere). |
+| `mobile-query` | string | `"(max-width: 960px)"` | Media query that switches the sidebar into an offcanvas overlay. |
+
+#### `<wc-sidebar>` attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `sidebar` \| `floating` \| `inset` | `sidebar` | Controls framing and border radius. |
+| `collapsible` | `icon` \| `offcanvas` \| `none` | `icon` | Determines collapsed behaviour. `offcanvas` hides the panel entirely. |
+| `side` | `left` \| `right` | `left` | Positions the sidebar on the chosen edge of the provider. |
+
+#### Menu primitives
+
+- `<wc-sidebar-menu-item>` groups controls horizontally so badges and actions align.
+- `<wc-sidebar-menu-button>` renders a link or button. Use the `href` attribute for navigation and `active` to flag the
+  current page.
+- `<wc-sidebar-menu-action>` exposes an auxiliary button next to the main item (e.g. for dropdown menus).
+- `<wc-sidebar-menu-badge>` displays counts or statuses.
+- `<wc-sidebar-menu-sub>` / `<wc-sidebar-menu-sub-item>` / `<wc-sidebar-menu-sub-button>` render nested navigation.
+- `<wc-sidebar-menu-skeleton>` mirrors the final layout for loading states.
+
+#### Styling hooks
+
+- Custom properties: `--wc-sidebar-width`, `--wc-sidebar-width-mobile`, `--wc-sidebar-collapsed-width`,
+  `--wc-sidebar-transition-duration`, `--wc-sidebar-transition-easing`, `--sidebar`, `--sidebar-foreground`,
+  `--sidebar-border`, `--sidebar-ring`, `--sidebar-group-gap`, `--sidebar-menu-button-gap`,
+  `--sidebar-menu-action-padding`, `--sidebar-inset-padding`, and more exposed across the subcomponents.
+- Parts: `::part(base)`, `::part(scroll)`, `::part(header)`, `::part(content)`, `::part(footer)`, `::part(group)`,
+  `::part(group-header)`, `::part(group-content)`, `::part(menu)`, `::part(menu-item)`, `::part(menu-button)`,
+  `::part(menu-action)`, `::part(menu-badge)`, `::part(menu-sub)`, `::part(menu-skeleton)`.
 
 ### `<wc-menubar>`
 

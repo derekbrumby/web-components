@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-toggle-group&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/toggle-group.js"></script>
+    <style>
+      .toggle-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .icon-button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .stack {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .formatting-preview {
+        padding: 1rem;
+        border-radius: 0.75rem;
+        background: rgba(99, 102, 241, 0.08);
+        color: rgb(55, 48, 163);
+      }
+
+      .vertical-example wc-toggle-group {
+        display: inline-flex;
+      }
+
+      .vertical-example wc-toggle-group[orientation="vertical"] {
+        --toggle-group-item-size: auto;
+        --toggle-group-item-radius: 0.5rem;
+        width: 100%;
+      }
+
+      .vertical-example button {
+        padding-inline: 1rem;
+        min-height: 2.5rem;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card toggle-card">
+            <h3>Text alignment</h3>
+            <p>
+              Single-selection mode keeps one value active at a time. Keyboard arrows wrap across the group and the
+              active toggle stays tabbable.
+            </p>
+            <wc-toggle-group id="alignment-toggle" aria-label="Text alignment" default-value="center">
+              <button type="button" class="icon-button" data-value="left" aria-label="Align left">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 5h16M4 10h10M4 15h16M4 20h10"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="2"
+                  ></path>
+                </svg>
+              </button>
+              <button type="button" class="icon-button" data-value="center" aria-label="Align center">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 5h16M7 10h10M4 15h16M7 20h10"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="2"
+                  ></path>
+                </svg>
+              </button>
+              <button type="button" class="icon-button" data-value="right" aria-label="Align right">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 5h16M10 10h10M4 15h16M10 20h10"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-width="2"
+                  ></path>
+                </svg>
+              </button>
+            </wc-toggle-group>
+            <p id="alignment-log" class="log">Center aligned.</p>
+          </div>
+
+          <div class="example-card toggle-card">
+            <h3>Formatting toggles</h3>
+            <div class="stack">
+              <p>
+                Multiple-selection mode maintains a set of active values. Use it for formatting controls, filter
+                pills, or any other independent toggles.
+              </p>
+              <wc-toggle-group
+                id="formatting-toggle"
+                aria-label="Formatting options"
+                type="multiple"
+                default-values="bold italic"
+              >
+                <button type="button" data-value="bold" aria-label="Bold text">B</button>
+                <button type="button" data-value="italic" aria-label="Italic text">I</button>
+                <button type="button" data-value="underline" aria-label="Underline text">U</button>
+              </wc-toggle-group>
+              <div class="formatting-preview" id="formatting-preview">
+                Bold and italic formatting active.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="example-card toggle-card vertical-example">
+          <h3>Vertical orientation</h3>
+          <p>
+            Change the `orientation` attribute for stacked layouts. Navigation switches to the up and down arrow keys
+            while Home/End still jump to the edges.
+          </p>
+          <wc-toggle-group id="vertical-toggle" aria-label="Notification cadence" orientation="vertical">
+            <button type="button" data-value="daily">Daily summary</button>
+            <button type="button" data-value="weekly">Weekly digest</button>
+            <button type="button" data-value="off">Mute notifications</button>
+          </wc-toggle-group>
+          <p class="log" id="vertical-log">No cadence selected.</p>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const alignmentToggle = document.getElementById('alignment-toggle');
+      const alignmentLog = document.getElementById('alignment-log');
+      const formattingToggle = document.getElementById('formatting-toggle');
+      const formattingPreview = document.getElementById('formatting-preview');
+      const verticalToggle = document.getElementById('vertical-toggle');
+      const verticalLog = document.getElementById('vertical-log');
+
+      if (alignmentToggle && alignmentLog) {
+        alignmentToggle.addEventListener('wc-toggle-group-change', (event) => {
+          const value = event.detail?.value;
+          const alignment = value ?? 'none';
+          alignmentLog.textContent =
+            alignment === 'none' ? 'No alignment selected.' : `${alignment.charAt(0).toUpperCase()}${alignment.slice(1)} aligned.`;
+        });
+      }
+
+      if (formattingToggle && formattingPreview) {
+        const renderPreview = (values) => {
+          if (!values.length) {
+            formattingPreview.textContent = 'No formatting active.';
+            formattingPreview.style.fontWeight = '400';
+            formattingPreview.style.fontStyle = 'normal';
+            formattingPreview.style.textDecoration = 'none';
+            return;
+          }
+          formattingPreview.textContent = `${values
+            .map((value) => value.charAt(0).toUpperCase() + value.slice(1))
+            .join(' and ')} formatting active.`;
+          formattingPreview.style.fontWeight = values.includes('bold') ? '700' : '400';
+          formattingPreview.style.fontStyle = values.includes('italic') ? 'italic' : 'normal';
+          formattingPreview.style.textDecoration = values.includes('underline') ? 'underline' : 'none';
+        };
+
+        formattingToggle.addEventListener('wc-toggle-group-change', (event) => {
+          const values = Array.isArray(event.detail?.values) ? event.detail.values : [];
+          renderPreview(values);
+        });
+
+        renderPreview(formattingToggle.values ?? []);
+      }
+
+      if (verticalToggle && verticalLog) {
+        verticalToggle.addEventListener('wc-toggle-group-change', (event) => {
+          const value = event.detail?.value;
+          verticalLog.textContent = value ? `Cadence set to ${value}.` : 'No cadence selected.';
+        });
+      }
+    </script>
+  </body>
+</html>

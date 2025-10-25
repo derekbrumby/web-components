@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-separator&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/separator.js"></script>
+    <style>
+      .separator-demo {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .separator-card {
+        padding: 1.5rem;
+        border-radius: 1rem;
+        background: linear-gradient(180deg, rgba(79, 70, 229, 0.18), rgba(15, 23, 42, 0.72));
+        color: white;
+        box-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.6);
+      }
+
+      .separator-card h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1.1rem;
+      }
+
+      .separator-card p {
+        margin: 0;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      .separator-inline {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        font-size: 0.95rem;
+      }
+
+      .separator-inline strong {
+        font-weight: 600;
+      }
+
+      .separator-stack {
+        display: grid;
+        gap: 0.5rem;
+        font-size: 0.95rem;
+      }
+
+      .separator-muted {
+        --separator-color: rgba(255, 255, 255, 0.22);
+      }
+
+      .separator-loud {
+        --separator-color: rgba(192, 132, 252, 0.8);
+        --separator-thickness: 3px;
+        --separator-radius: 999px;
+      }
+
+      .separator-vertical {
+        height: 1.5rem;
+      }
+
+      .separator-board {
+        padding: 1.5rem;
+        border-radius: 1rem;
+        background: rgba(255, 255, 255, 0.9);
+        color: rgb(30, 41, 59);
+        box-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.4);
+      }
+
+      .separator-board h4 {
+        margin: 0 0 0.75rem;
+        font-size: 1rem;
+      }
+
+      .separator-board ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .separator-board li {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .separator-board li span {
+        font-weight: 600;
+        min-width: 5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="separator-demo">
+        <div class="separator-card">
+          <h3>Radix Primitives</h3>
+          <p>An open-source UI component library.</p>
+          <wc-separator class="separator-muted"></wc-separator>
+          <div class="separator-inline">
+            <span>Blog</span>
+            <wc-separator class="separator-muted separator-vertical" orientation="vertical" decorative></wc-separator>
+            <span>Docs</span>
+            <wc-separator class="separator-muted separator-vertical" orientation="vertical" decorative></wc-separator>
+            <span>Source</span>
+          </div>
+        </div>
+
+        <div class="separator-card">
+          <h3>Orientation aware</h3>
+          <div class="separator-stack">
+            <p>
+              Horizontal separators stretch to fill their container by default. Adjust
+              <code>--separator-length</code> to create shorter dividers.
+            </p>
+            <wc-separator class="separator-loud" style="--separator-length: 60%;"></wc-separator>
+            <p>
+              Vertical separators collapse to their thickness and grow to fill the available block size.
+            </p>
+            <div class="separator-inline">
+              <strong>Now</strong>
+              <wc-separator
+                class="separator-loud separator-vertical"
+                orientation="vertical"
+                style="--separator-length: 2.75rem;"
+              ></wc-separator>
+              <span>Later today</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="separator-board" aria-live="polite">
+          <h4>Decorative dividers</h4>
+          <ul>
+            <li>
+              <span>Default</span>
+              <wc-separator></wc-separator>
+            </li>
+            <li>
+              <span>Decorative</span>
+              <wc-separator decorative></wc-separator>
+            </li>
+            <li>
+              <span>Themed</span>
+              <wc-separator class="separator-loud" decorative></wc-separator>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

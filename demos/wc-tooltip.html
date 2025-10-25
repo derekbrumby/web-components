@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-tooltip&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/tooltip.js"></script>
+    <style>
+      .tooltip-icon-button {
+        inline-size: 2.25rem;
+        block-size: 2.25rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        border: none;
+        background: #ffffff;
+        color: #4c1d95;
+        box-shadow: 0 12px 32px -16px rgba(15, 23, 42, 0.35);
+        cursor: pointer;
+        transition: transform 160ms ease, background-color 160ms ease;
+      }
+
+      .tooltip-icon-button svg {
+        width: 1.1rem;
+        height: 1.1rem;
+      }
+
+      .tooltip-icon-button:hover {
+        background: #ede9fe;
+        transform: translateY(-1px);
+      }
+
+      .tooltip-icon-button:focus-visible {
+        outline: 3px solid rgba(79, 70, 229, 0.45);
+        outline-offset: 2px;
+      }
+
+      .tooltip-pill-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .tooltip-pill-group button {
+        appearance: none;
+        border: none;
+        border-radius: 999px;
+        padding: 0.35rem 0.85rem;
+        font-size: 0.875rem;
+        background: rgba(79, 70, 229, 0.12);
+        color: #312e81;
+        cursor: pointer;
+      }
+
+      .tooltip-pill-group button:focus-visible {
+        outline: 3px solid rgba(99, 102, 241, 0.4);
+        outline-offset: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Icon action tooltip</h3>
+            <p class="example-card-description">
+              Hover or focus the floating action button to reveal guidance. Pointer delays mirror the Radix defaults
+              while keyboard focus opens instantly.
+            </p>
+            <wc-tooltip open-delay="400" close-delay="150" side="bottom">
+              <button slot="trigger" type="button" class="tooltip-icon-button" aria-label="Add to library">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path
+                    d="M8.75 3.25a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </button>
+              <span>Add to library</span>
+            </wc-tooltip>
+            <p>
+              Customize surface colors, shadows, and arrow visibility with the provided CSS variables and shadow parts.
+              Tooltips stay visible while pointer users linger over the content area.
+            </p>
+          </div>
+
+          <div class="example-card">
+            <h3>Direction aware labels</h3>
+            <p class="example-card-description">
+              Use `side`, `align`, and offset props to anchor tooltips to different edges while keeping the arrow
+              aligned with each trigger.
+            </p>
+            <div class="tooltip-pill-group">
+              <wc-tooltip side="top" side-offset="10" align="start">
+                <button slot="trigger" type="button">Top start</button>
+                <span>Positions the label above the trigger.</span>
+              </wc-tooltip>
+              <wc-tooltip side="right" align="center" close-delay="200">
+                <button slot="trigger" type="button">Right</button>
+                <span>Great for inline icon menus.</span>
+              </wc-tooltip>
+              <wc-tooltip side="bottom" align="end" align-offset="8" hide-arrow>
+                <button slot="trigger" type="button">Bottom end</button>
+                <span>Arrows are optional when styling cards.</span>
+              </wc-tooltip>
+            </div>
+            <p>
+              Adjust `open-delay` and `close-delay` per instance or drive the `open` property directly for fully
+              controlled experiences.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

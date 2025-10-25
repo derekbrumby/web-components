@@ -14,6 +14,8 @@ TEMPLATE.innerHTML = `
   <style>
     :host {
       display: block;
+      max-width: 100%;
+      min-inline-size: 0;
       color: var(--code-viewer-foreground, #e2e8f0);
       background: var(--code-viewer-background, #0f172a);
       border-radius: var(--code-viewer-radius, 0.75rem);
@@ -32,6 +34,7 @@ TEMPLATE.innerHTML = `
       display: block;
       background: inherit;
       color: inherit;
+      overflow-x: auto;
     }
 
     pre {

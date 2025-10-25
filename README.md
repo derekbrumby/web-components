@@ -21,6 +21,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -154,6 +155,45 @@ Imperatively call `toggle(force?: boolean)` to flip the state or force a particu
   `--checkbox-gap`, `--checkbox-label-color`.
 - Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
 - Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
+
+### `<wc-progress>`
+
+Display task completion with a lightweight, accessible progress indicator. The component mirrors the Radix UI
+progress bar API while keeping the markup minimal and themable through CSS custom properties.
+
+```html
+<wc-progress id="task-progress" value="32" max="80" label="File upload"></wc-progress>
+<script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
+<script type="module">
+  const progress = document.getElementById('task-progress');
+  progress?.addEventListener('click', () => {
+    progress.value = Math.min(progress.value + 8, progress.max);
+  });
+</script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | number \| null | `null` | Sets the current completion value. Remove the attribute or set to `null` for the indeterminate state. |
+| `max` | number | `100` | Defines the maximum completion value that represents 100%. Must be greater than 0. |
+| `label` | string | `""` | Optional accessible label forwarded to `aria-label`. Omit when labelling externally via `aria-labelledby`. |
+| `value-text` | string | `""` | Custom text announced to assistive tech. Defaults to a generated percentage description when determinate. |
+
+#### Slots
+
+- `label` — Provide visible helper text that appears below the progress indicator while remaining outside the track.
+
+#### Styling hooks
+
+- CSS custom properties: `--progress-width`, `--progress-min-width`, `--progress-height`, `--progress-radius`,
+  `--progress-background`, `--progress-indicator-background`, `--progress-indicator-foreground`,
+  `--progress-transition-duration`, `--progress-transition-timing`, `--progress-complete-duration`,
+  `--progress-indeterminate-duration`, `--progress-indeterminate-easing`.
+- Parts: `::part(track)`, `::part(indicator)`, `::part(label)`.
+- Data attributes: `[data-state="loading" | "complete" | "indeterminate"]`, `[data-value]`, `[data-max]` for
+  state-driven styling.
 
 ### `<wc-password-toggle-field>`
 

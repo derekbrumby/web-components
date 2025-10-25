@@ -25,6 +25,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/radio-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toggle.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/spinner.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/scroll-area.js"></script>
@@ -1341,6 +1342,59 @@ Tune the appearance with CSS properties or style parts directly:
   `--context-menu-item-highlight`, `--context-menu-separator-color`, `--context-menu-indicator-color`, etc.
 - Parts: `::part(trigger)`, `::part(menu)`, `::part(submenu)`.
 
+### `<wc-tabs>`
+
+An accessible tab system composed of a root controller plus lightweight triggers and panels. It mirrors the
+Radix UI tabs anatomy with support for horizontal or vertical layouts, automatic or manual activation, and
+roving focus that follows arrow keys.
+
+```html
+<wc-tabs default-value="account">
+  <wc-tablist aria-label="Manage your account">
+    <wc-tab value="account">Account</wc-tab>
+    <wc-tab value="password">Password</wc-tab>
+  </wc-tablist>
+  <wc-tabpanel value="account">
+    <p>Make changes to your account here. Click save when you're done.</p>
+  </wc-tabpanel>
+  <wc-tabpanel value="password">
+    <p>Change your password here. After saving, you'll be logged out.</p>
+  </wc-tabpanel>
+</wc-tabs>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Current active tab value. Reflects whenever selection changes; set it to control the component imperatively. |
+| `default-value` | string | `""` | Initial tab when `value` is not provided. Useful for uncontrolled usage. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Lays out triggers across the top/bottom (`horizontal`) or side (`vertical`). |
+| `activation-mode` | `"automatic" \| "manual"` | `"automatic"` | Automatic switches panels on arrow navigation. Manual keeps focus movement separate until Enter/Space activates a tab. |
+
+#### Child elements
+
+- `<wc-tablist>` wraps the interactive triggers. Apply `aria-label`/`aria-labelledby` to describe the set.
+- `<wc-tab value="...">` renders a focusable trigger. Add `disabled` to remove it from interaction and roving focus.
+- `<wc-tabpanel value="...">` hosts the associated content. Its `value` must match a `<wc-tab>`.
+
+#### Events
+
+- `wc-tabs-change` — fired when the active tab updates. `event.detail.value` contains the new value.
+
+#### Styling hooks
+
+- CSS custom properties: `--tabs-width`, `--tabs-max-width`, `--tabs-background`, `--tabs-border`, `--tabs-radius`,
+  `--tabs-shadow`, `--tabs-list-background`, `--tabs-list-border`, `--tabs-list-gap`, `--tabs-list-min-width`,
+  `--tabs-trigger-padding`, `--tabs-trigger-font-size`, `--tabs-trigger-font-weight`, `--tabs-trigger-color`,
+  `--tabs-trigger-active-color`, `--tabs-trigger-background`, `--tabs-trigger-background-hover`,
+  `--tabs-trigger-background-active`, `--tabs-trigger-radius`, `--tabs-trigger-focus-ring`,
+  `--tabs-trigger-gap`, `--tabs-trigger-active-shadow`, `--tabs-panel-padding`, `--tabs-panel-background`,
+  `--tabs-panel-color`, `--tabs-panel-radius`, `--tabs-panel-radius-vertical`, `--tabs-panel-shadow`,
+  `--tabs-panel-focus-ring`.
+- Parts: `::part(container)`, `::part(list)`, `::part(trigger)`, `::part(panel)`.
+- Data attributes: `[data-orientation]` and `[data-value]` on `<wc-tabs>`, `[data-state]`, `[data-disabled]` on
+  `<wc-tab>`, and `[data-state]` on `<wc-tabpanel>`.
 ### `<wc-toast>`
 
 An accessible toast notification component that mirrors Radix UI's Toast primitives without dependencies. It provides
@@ -1436,6 +1490,7 @@ See [`index.html`](./index.html) for live demos showcasing:
 - Aspect ratio containers framing responsive images and responsive embeds.
 - Hover cards that preview Radix UI social metadata with delayed entry/exit.
 - Dropdown menus with submenus, checkboxes, and radio groups mirroring Radix UI ergonomics.
+- Tabs demonstrating automatic activation, manual vertical layouts, and live value change events.
 - Toast notifications with programmatic triggers, accessible time descriptions, and swipe-to-dismiss behaviour.
 
 ## Contributing

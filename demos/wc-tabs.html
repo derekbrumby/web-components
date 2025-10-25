@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-tabs&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/tabs.js"></script>
+    <style>
+      .tabs-demo-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+
+      wc-tabs {
+        --tabs-width: min(320px, 100%);
+        --tabs-radius: 0.75rem;
+        --tabs-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.45);
+        --tabs-border: 1px solid rgba(148, 163, 184, 0.3);
+        --tabs-background: rgba(255, 255, 255, 0.98);
+        --tabs-list-background: rgba(255, 255, 255, 0.9);
+        --tabs-panel-padding: 1.5rem;
+        --tabs-trigger-radius: 0.75rem 0.75rem 0 0;
+        --tabs-trigger-background-active: rgba(238, 242, 255, 0.65);
+        --tabs-trigger-active-shadow: inset 0 -2px 0 rgba(99, 102, 241, 0.45);
+        --tabs-panel-radius: 0 0 0.75rem 0.75rem;
+      }
+
+      wc-tabs[orientation="vertical"] {
+        --tabs-width: min(420px, 100%);
+        --tabs-panel-radius-vertical: 0 0.75rem 0.75rem 0.75rem;
+      }
+
+      .tabs-panel-content {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .tabs-fieldset {
+        display: grid;
+        gap: 0.45rem;
+      }
+
+      .tabs-fieldset label {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        color: #4338ca;
+      }
+
+      .tabs-fieldset input,
+      .tabs-fieldset textarea,
+      .tabs-fieldset select {
+        border-radius: 0.65rem;
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        padding: 0.55rem 0.75rem;
+        font-size: 0.95rem;
+        color: #1f2937;
+        background: rgba(248, 250, 252, 0.9);
+        box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.15);
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      .tabs-fieldset input:focus,
+      .tabs-fieldset textarea:focus,
+      .tabs-fieldset select:focus {
+        outline: none;
+        border-color: rgba(99, 102, 241, 0.65);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+      }
+
+      .tabs-actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .tabs-actions button {
+        padding-inline: 1.25rem;
+      }
+
+      .vertical-tab-panel {
+        display: grid;
+        gap: 0.75rem;
+        color: #312e81;
+      }
+
+      .vertical-tab-panel p {
+        margin: 0;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-tabs&gt;</h2>
+          <p>Switch between layered sections of content with accessible keyboard navigation and configurable activation.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Account management</h3>
+            <p>Classic horizontal tabs with automatic activation. The component wires labels, focus management, and ARIA relationships for you.</p>
+            <div class="tabs-demo-wrapper">
+              <wc-tabs id="account-tabs" default-value="account">
+                <wc-tablist aria-label="Manage your account">
+                  <wc-tab value="account">Account</wc-tab>
+                  <wc-tab value="password">Password</wc-tab>
+                </wc-tablist>
+                <wc-tabpanel value="account">
+                  <div class="tabs-panel-content">
+                    <p>Make changes to your account here. Click save when you're done.</p>
+                    <div class="tabs-fieldset">
+                      <label for="account-name">Name</label>
+                      <input id="account-name" name="name" value="Pedro Duarte" autocomplete="name" />
+                    </div>
+                    <div class="tabs-fieldset">
+                      <label for="account-username">Username</label>
+                      <input id="account-username" name="username" value="@peduarte" autocomplete="username" />
+                    </div>
+                    <div class="tabs-actions">
+                      <button type="button">Save changes</button>
+                    </div>
+                  </div>
+                </wc-tabpanel>
+                <wc-tabpanel value="password">
+                  <div class="tabs-panel-content">
+                    <p>Change your password here. After saving, you'll be logged out.</p>
+                    <div class="tabs-fieldset">
+                      <label for="account-current-password">Current password</label>
+                      <input id="account-current-password" name="current-password" type="password" autocomplete="current-password" />
+                    </div>
+                    <div class="tabs-fieldset">
+                      <label for="account-new-password">New password</label>
+                      <input id="account-new-password" name="new-password" type="password" autocomplete="new-password" />
+                    </div>
+                    <div class="tabs-fieldset">
+                      <label for="account-confirm-password">Confirm password</label>
+                      <input id="account-confirm-password" name="confirm-password" type="password" autocomplete="new-password" />
+                    </div>
+                    <div class="tabs-actions">
+                      <button type="button">Change password</button>
+                    </div>
+                  </div>
+                </wc-tabpanel>
+              </wc-tabs>
+            </div>
+            <pre class="log" id="tabs-account-log">Active tab: account</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Manual activation &amp; vertical layout</h3>
+            <p>When activation mode is manual, focus moves with the arrow keys but content switches on Enter or Space. Useful for large or media-heavy panels.</p>
+            <div class="tabs-demo-wrapper">
+              <wc-tabs id="reports-tabs" default-value="analytics" orientation="vertical" activation-mode="manual">
+                <wc-tablist aria-label="Reports">
+                  <wc-tab value="analytics">Analytics</wc-tab>
+                  <wc-tab value="engagement">Engagement</wc-tab>
+                  <wc-tab value="retention">Retention</wc-tab>
+                </wc-tablist>
+                <wc-tabpanel value="analytics">
+                  <div class="vertical-tab-panel">
+                    <h4>Analytics overview</h4>
+                    <p>Measure product health with real-time funnels, cohort comparisons, and anomaly detection dashboards.</p>
+                    <button type="button" class="ghost-button">View dashboard</button>
+                  </div>
+                </wc-tabpanel>
+                <wc-tabpanel value="engagement">
+                  <div class="vertical-tab-panel">
+                    <h4>Engagement</h4>
+                    <p>Track active minutes, feature adoption, and workspace hotspots. Use keyboard arrows to focus this tab, then press Enter to activate it.</p>
+                    <button type="button">Create segment</button>
+                  </div>
+                </wc-tabpanel>
+                <wc-tabpanel value="retention">
+                  <div class="vertical-tab-panel">
+                    <h4>Retention</h4>
+                    <p>Visualise long-term loyalty with rolling retention curves and churn predictors tuned to your plan tiers.</p>
+                    <button type="button" class="ghost-button">Export report</button>
+                  </div>
+                </wc-tabpanel>
+              </wc-tabs>
+            </div>
+            <pre class="log" id="tabs-reports-log">Active tab: analytics</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const accountTabs = document.getElementById('account-tabs');
+      const accountLog = document.getElementById('tabs-account-log');
+      const reportsTabs = document.getElementById('reports-tabs');
+      const reportsLog = document.getElementById('tabs-reports-log');
+
+      accountTabs?.addEventListener('wc-tabs-change', (event) => {
+        if (accountLog) {
+          accountLog.textContent = `Active tab: ${event.detail.value}`;
+        }
+      });
+
+      reportsTabs?.addEventListener('wc-tabs-change', (event) => {
+        if (reportsLog) {
+          reportsLog.textContent = `Active tab: ${event.detail.value}`;
+        }
+      });
+    </script>
+  </body>
+</html>

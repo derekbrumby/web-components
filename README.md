@@ -14,6 +14,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/navigation-menu.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/label.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/hover-card.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/form.js"></script>
@@ -503,6 +504,31 @@ property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperativ
   `--avatar-transition`, `--avatar-fallback-background`, `--avatar-fallback-color`,
   `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
 - Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
+
+### `<wc-navigation-menu>`
+
+An animated navigation system with triggers, indicator, and viewport-driven content inspired by the Radix UI
+Navigation Menu example. The component renders a centered list of triggers, swaps contextual content into an
+animated viewport, and keeps the active trigger highlighted with an indicator that tracks pointer or keyboard
+interaction.
+
+```html
+<wc-navigation-menu></wc-navigation-menu>
+```
+
+The viewport resizes automatically based on the active panel and exposes CSS variables so the transitions match the
+Radix demo. Use `ArrowDown` to open the focused trigger, `ArrowLeft`/`ArrowRight` or `Home`/`End` to move between
+triggers, and `Escape` to close the menu. Focus is restored to the current trigger when the menu closes.
+
+#### Styling hooks
+
+- Custom properties: `--navigation-menu-font-family`, `--navigation-menu-foreground`, `--navigation-menu-surface`,
+  `--navigation-menu-surface-shadow`, `--navigation-menu-radius`, `--navigation-menu-trigger-radius`,
+  `--navigation-menu-trigger-color`, `--navigation-menu-trigger-hover`, `--navigation-menu-trigger-active`,
+  `--navigation-menu-trigger-focus`, `--navigation-menu-icon-color`, `--navigation-menu-viewport-surface`,
+  `--navigation-menu-viewport-shadow`, `--navigation-menu-viewport-radius`, `--navigation-menu-indicator-color`.
+- Parts: `::part(root)`, `::part(surface)`, `::part(list)`, `::part(trigger)`, `::part(link)`, `::part(indicator)`,
+  `::part(viewport)`, `::part(content)`.
 
 ### `<wc-menubar>`
 

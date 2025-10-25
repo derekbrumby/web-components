@@ -466,6 +466,83 @@ property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperativ
   `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
 - Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
 
+### `<wc-dropdown-menu>` and friends
+
+A composable dropdown menu system inspired by Radix UI. It offers a declarative API for menu triggers, items,
+separators, labels, submenus, checkbox items, and radio groups while keeping focus management and keyboard
+navigation accessible by default.
+
+```html
+<wc-dropdown-menu>
+  <button slot="trigger" aria-label="Customise options" class="menu-trigger">
+    ☰
+  </button>
+
+  <wc-dropdown-item shortcut="⌘+T">New Tab</wc-dropdown-item>
+  <wc-dropdown-item shortcut="⌘+N">New Window</wc-dropdown-item>
+  <wc-dropdown-item shortcut="⇧+⌘+N" disabled>New Private Window</wc-dropdown-item>
+
+  <wc-dropdown-submenu>
+    More Tools
+    <wc-dropdown-item slot="submenu" shortcut="⌘+S">Save Page As…</wc-dropdown-item>
+    <wc-dropdown-item slot="submenu">Create Shortcut…</wc-dropdown-item>
+    <wc-dropdown-item slot="submenu">Name Window…</wc-dropdown-item>
+    <wc-dropdown-separator slot="submenu"></wc-dropdown-separator>
+    <wc-dropdown-item slot="submenu">Developer Tools</wc-dropdown-item>
+  </wc-dropdown-submenu>
+
+  <wc-dropdown-separator></wc-dropdown-separator>
+  <wc-dropdown-checkbox-item shortcut="⌘+B" checked>Show Bookmarks</wc-dropdown-checkbox-item>
+  <wc-dropdown-checkbox-item>Show Full URLs</wc-dropdown-checkbox-item>
+
+  <wc-dropdown-separator></wc-dropdown-separator>
+  <wc-dropdown-label>People</wc-dropdown-label>
+  <wc-dropdown-radio-group value="pedro">
+    <wc-dropdown-radio-item value="pedro">Pedro Duarte</wc-dropdown-radio-item>
+    <wc-dropdown-radio-item value="colm">Colm Tuite</wc-dropdown-radio-item>
+  </wc-dropdown-radio-group>
+</wc-dropdown-menu>
+```
+
+#### Root attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls menu visibility. Toggle with the `open` property or `toggle()` method. |
+
+#### Menu building blocks
+
+| Element | Purpose |
+| --- | --- |
+| `<wc-dropdown-item>` | Standard actionable menu row supporting optional shortcut text via the `shortcut` attribute. |
+| `<wc-dropdown-checkbox-item>` | Toggleable checkbox item. Reflects `checked`/`indeterminate` states and emits `wc-dropdown-checkbox-change`. |
+| `<wc-dropdown-radio-group>` | Groups radio items. Control the active value with the `value` attribute/property. |
+| `<wc-dropdown-radio-item>` | Exclusive selection item inside a radio group. Emits `wc-dropdown-radio-change` on selection. |
+| `<wc-dropdown-submenu>` | Opens a nested fly-out menu. Place submenu children with `slot="submenu"`. |
+| `<wc-dropdown-label>` | Visual label for a section. |
+| `<wc-dropdown-separator>` | Renders a horizontal rule between sections. |
+
+#### Events
+
+- `wc-dropdown-select`: Fired whenever a menu item (including checkbox/radio items) is activated.
+- `wc-dropdown-checkbox-change`: Emitted from `<wc-dropdown-checkbox-item>` with `{ checked, item }`.
+- `wc-dropdown-radio-change`: Emitted from `<wc-dropdown-radio-item>` with `{ value, item }` when a new option is chosen.
+- `wc-dropdown-toggle`: Emitted from `<wc-dropdown-menu>` whenever the root open state changes.
+
+#### Styling hooks
+
+- Root custom properties: `--wc-dropdown-width`, `--wc-dropdown-radius`, `--wc-dropdown-background`,
+  `--wc-dropdown-padding`, `--wc-dropdown-shadow`, `--wc-dropdown-border-color`, `--wc-dropdown-offset`,
+  `--wc-dropdown-trigger-background`, `--wc-dropdown-trigger-color`.
+- Item custom properties: `--wc-dropdown-item-radius`, `--wc-dropdown-item-padding`,
+  `--wc-dropdown-item-background`, `--wc-dropdown-item-background-hover`, `--wc-dropdown-item-background-active`,
+  `--wc-dropdown-item-shortcut-color`, `--wc-dropdown-focus-outline`.
+- Parts: `::part(trigger)`, `::part(trigger-button)`, `::part(content)`, `::part(button)`, `::part(label)`,
+  `::part(indicator)`, `::part(submenu)`, `::part(submenu-indicator)` for fine-grained overrides.
+
+The component manages focus, supports `Escape`, arrow key navigation, Home/End, and closes on outside interaction
+by default. Nested submenus inherit keyboard support (Arrow Right/Left) and reuse the same styling tokens for
+consistent theming.
 ### `<wc-context-menu>`
 
 A pointer-positioned context menu that mirrors the Radix UI anatomy while remaining dependency free. Right-click,
@@ -510,6 +587,7 @@ See [`index.html`](./index.html) for live demos showcasing:
 - Accordion setups demonstrating `single`/`multiple` behavior, custom theming, and horizontal orientation.
 - Alert dialogs with destructive confirmations, async flows, and custom styling via CSS properties.
 - Aspect ratio containers framing responsive images and responsive embeds.
+- Dropdown menus with submenus, checkboxes, and radio groups mirroring Radix UI ergonomics.
 
 ## Contributing
 

@@ -21,6 +21,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/separator.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -64,6 +65,41 @@ Tune presentation with CSS custom properties and parts:
   `--label-line-height`, `--label-color`, `--label-background`, `--label-radius`, `--label-focus-outline`, and
   more.
 - Parts: `::part(label)`, `::part(text)`, `::part(control)` for scoped theming without breaking internals.
+### `<wc-separator>`
+
+A flexible divider that mirrors the semantics of `<hr>` while offering vertical orientation support and
+decorative presentation for purely visual usage. By default the component exposes `role="separator"`
+so assistive technologies understand its purpose.
+
+```html
+<div class="stack">
+  <h3>Integrations</h3>
+  <p>Connect to your existing workflow with a few clicks.</p>
+  <wc-separator></wc-separator>
+  <div class="links">
+    <a href="#">Docs</a>
+    <wc-separator orientation="vertical" decorative></wc-separator>
+    <a href="#">API status</a>
+  </div>
+</div>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Controls the axis the separator occupies. Vertical separators collapse their width and stretch to the available height. |
+| `decorative` | boolean | `false` | Removes the structural `role` and hides the separator from assistive tech for purely visual separation. |
+| `orientation` property | `"horizontal" \| "vertical"` | `"horizontal"` | Property alias for the orientation attribute. |
+| `decorative` property | boolean | `false` | Reflects to the `decorative` attribute for imperative toggling. |
+
+#### Styling hooks
+
+- CSS custom properties: `--separator-thickness`, `--separator-color`, `--separator-length`,
+  `--separator-radius`, `--separator-margin`.
+- Parts: `::part(separator)` targets the internal rule element without breaking encapsulation.
+- Data attributes: `[data-orientation="horizontal" | "vertical"]` for orientation aware styling.
+
 ### `<wc-form>`
 
 An opinionated contact form that mirrors the Radix UI demo experience. It wires native constraint

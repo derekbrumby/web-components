@@ -1459,6 +1459,7 @@ supports modal and non-modal modes, optional arrows, collision-aware placement, 
 </wc-popover>
 
 <script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/calendar.js"></script>
 ```
 
 #### Attributes & properties
@@ -1531,6 +1532,48 @@ control.
 - Parts: `::part(trigger)`, `::part(content)`, `::part(arrow)` for scoped theming.
 - Data attributes: `[data-state="open" | "closed"]`, `[data-side]`, `[data-align]`, and `[data-modal]` enable
   direction-aware transitions.
+
+### `<wc-calendar>`
+
+An inline calendar grid for selecting a single date with keyboard navigation, locale-aware labels, and optional
+month/year dropdowns. It mirrors the shadcn/ui Calendar component while remaining a zero-dependency web component.
+
+```html
+<wc-calendar caption-layout="dropdown"></wc-calendar>
+
+<script type="module" src="https://cdn.example.com/web-components/calendar.js"></script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Selected date as `YYYY-MM-DD`. Mirrors the `value` property. |
+| `min` | string | `""` | Lower bound in `YYYY-MM-DD`. Days before this date are disabled. |
+| `max` | string | `""` | Upper bound in `YYYY-MM-DD`. Days after this date are disabled. |
+| `locale` | string | Browser locale | Locale passed to `Intl.DateTimeFormat` for month, weekday, and announcement strings. |
+| `time-zone` | string | Browser time zone | IANA time zone identifier ensuring the highlighted date matches the user's offset. |
+| `first-day-of-week` | number | `0` | Index of the first weekday (0 = Sunday, 1 = Monday, ...). |
+| `caption-layout` | `"label" \| "dropdown" \| "dropdown-months" \| "dropdown-years"` | `"label"` | Toggle between a static month label or dropdown controls for month/year selection. |
+| `show-outside-days` | `"true" \| "false"` | `"true"` | Set to `false` to hide days that belong to adjacent months instead of rendering them muted. |
+| `value` property | string | `""` | Programmatic mirror of the attribute. Updating it re-renders the grid. |
+| `valueAsDate` property | `Date \| null` | `null` | Selected date as a `Date` object (midday UTC) for integrations with existing APIs. |
+
+#### Events
+
+- `change` — Fired after the user picks a day. `event.detail` includes `{ value, date }` where `value` is the ISO string
+  and `date` is a native `Date` instance.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-calendar-background`, `--wc-calendar-foreground`, `--wc-calendar-muted`,
+  `--wc-calendar-border-color`, `--wc-calendar-accent`, `--wc-calendar-accent-soft`, `--wc-calendar-radius`,
+  `--wc-calendar-shadow`, `--wc-calendar-cell-size`.
+- Parts: `::part(calendar)`, `::part(header)`, `::part(nav-button)`, `::part(nav-previous)`, `::part(nav-next)`,
+  `::part(caption)`, `::part(caption-label)`, `::part(caption-controls)`, `::part(month-select)`, `::part(year-select)`,
+  `::part(table)`, `::part(table-head)`, `::part(weekday-row)`, `::part(grid)`, `::part(week-row)`, `::part(day-cell)`,
+  `::part(day-button)`.
+- Data attributes: `[data-selected]`, `[data-outside]`, `[data-today]`, `[aria-disabled]` offer state-based theming.
 
 ### `<wc-date-picker>`
 

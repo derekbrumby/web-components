@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-calendar&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/calendar.js"></script>
+    <style>
+      .example-grid {
+        display: grid;
+        gap: 2rem;
+      }
+
+      @media (min-width: 860px) {
+        .example-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .example-card {
+        display: grid;
+        gap: 1.25rem;
+        padding: 1.75rem;
+        border-radius: 1.25rem;
+        background: var(--demo-card-background, rgba(255, 255, 255, 0.62));
+        box-shadow: 0 24px 40px -32px rgba(15, 23, 42, 0.45);
+      }
+
+      .example-card h2 {
+        margin: 0;
+        font-size: 1.35rem;
+        letter-spacing: -0.015em;
+      }
+
+      .example-card p {
+        margin: 0;
+        color: rgba(71, 85, 105, 0.85);
+      }
+
+      .event-log {
+        font-size: 0.85rem;
+        color: rgba(30, 64, 175, 0.9);
+        background: rgba(191, 219, 254, 0.35);
+        border-radius: 0.75rem;
+        padding: 0.6rem 0.85rem;
+      }
+
+      .calendar-compact {
+        --wc-calendar-background: rgba(15, 23, 42, 0.96);
+        --wc-calendar-border-color: rgba(148, 163, 184, 0.35);
+        --wc-calendar-shadow: 0 38px 68px -36px rgba(15, 23, 42, 0.75);
+        --wc-calendar-accent: rgb(59, 130, 246);
+        --wc-calendar-accent-soft: rgba(59, 130, 246, 0.16);
+        --wc-calendar-muted: rgba(148, 163, 184, 0.85);
+        color: #e2e8f0;
+      }
+
+      .calendar-compact button {
+        font: inherit;
+      }
+
+      .calendar-compact [part="calendar"] {
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .timezone-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .timezone-actions button {
+        border: none;
+        border-radius: 999px;
+        padding: 0.45rem 0.95rem;
+        font: inherit;
+        background: rgba(59, 130, 246, 0.12);
+        color: rgb(37, 99, 235);
+        cursor: pointer;
+        transition: background-color 140ms ease, transform 140ms ease;
+      }
+
+      .timezone-actions button:hover {
+        background: rgba(59, 130, 246, 0.2);
+      }
+
+      .timezone-actions button:active {
+        transform: translateY(1px);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="example-grid">
+      <section class="example-card">
+        <div>
+          <h2>Pick a date</h2>
+          <p>The component focuses the selected day and announces changes as you move with the keyboard.</p>
+        </div>
+        <wc-calendar id="basic-calendar"></wc-calendar>
+        <div class="event-log" data-log="basic" aria-live="polite">Waiting for a selection…</div>
+      </section>
+
+      <section class="example-card">
+        <div>
+          <h2>Dropdown caption</h2>
+          <p>Switch months and years with dropdowns while respecting custom bounds.</p>
+        </div>
+        <wc-calendar
+          id="dropdown-calendar"
+          caption-layout="dropdown"
+          first-day-of-week="1"
+          min="2024-01-01"
+          max="2024-12-31"
+          value="2024-06-12"
+        ></wc-calendar>
+      </section>
+
+      <section class="example-card calendar-compact" style="grid-column: span 2;">
+        <div>
+          <h2>Timezone aware scheduling</h2>
+          <p>Sync the calendar to the viewer's local timezone to avoid off-by-one selections.</p>
+        </div>
+        <wc-calendar id="timezone-calendar" show-outside-days="false"></wc-calendar>
+        <div class="timezone-actions">
+          <button type="button" id="timezone-refresh">Use my timezone</button>
+        </div>
+        <div class="event-log" data-log="timezone" aria-live="polite">Timezone not detected yet.</div>
+      </section>
+    </main>
+
+    <script type="module">
+      const formatDate = new Intl.DateTimeFormat(undefined, { dateStyle: 'full' });
+
+      const basicCalendar = document.querySelector('#basic-calendar');
+      const basicLog = document.querySelector('[data-log="basic"]');
+      basicCalendar.addEventListener('change', (event) => {
+        const { date } = event.detail;
+        basicLog.textContent = date ? `Selected ${formatDate.format(date)}` : 'Waiting for a selection…';
+      });
+
+      const dropdownCalendar = document.querySelector('#dropdown-calendar');
+      dropdownCalendar.addEventListener('change', (event) => {
+        const { date } = event.detail;
+        if (date) {
+          dropdownCalendar.setAttribute('aria-label', `Analytics for ${formatDate.format(date)}`);
+        }
+      });
+
+      const timezoneCalendar = document.querySelector('#timezone-calendar');
+      const timezoneLog = document.querySelector('[data-log="timezone"]');
+      const timezoneButton = document.querySelector('#timezone-refresh');
+
+      const syncTimezone = () => {
+        const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        timezoneCalendar.timeZone = zone;
+        timezoneLog.textContent = `Showing dates in ${zone}.`;
+      };
+
+      timezoneButton.addEventListener('click', () => {
+        syncTimezone();
+      });
+
+      timezoneCalendar.addEventListener('change', (event) => {
+        const { date } = event.detail;
+        if (date) {
+          timezoneLog.textContent = `Scheduled for ${formatDate.format(date)} (${timezoneCalendar.timeZone ?? 'local time'}).`;
+        }
+      });
+
+      // Detect timezone on load for convenience.
+      syncTimezone();
+    </script>
+  </body>
+</html>

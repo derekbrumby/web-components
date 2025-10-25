@@ -129,12 +129,45 @@ Both the root and items expose rich customization options:
 - Parts: `::part(item)`, `::part(trigger)`, `::part(trigger-label)`, `::part(indicator)`,
   `::part(panel)`, `::part(panel-inner)` allow precise targeting.
 
+### `<wc-aspect-ratio>`
+
+A lightweight container that locks its slotted content to a specific ratio. Useful for media, embeds,
+and previews where consistent sizing is required regardless of the viewport width.
+
+```html
+<wc-aspect-ratio ratio="16/9" style="max-width: 320px;">
+  <img
+    src="https://images.unsplash.com/photo-1535025183041-0991a977e25b?w=640&dpr=2&q=80"
+    alt="Landscape photograph by Tobias Tullius"
+    style="border-radius: inherit;"
+  />
+</wc-aspect-ratio>
+```
+
+#### Key attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `ratio` | number \| string | `1` | Desired width/height ratio (supports decimals, `16/9`, or `4:3` strings). |
+
+The component also exposes a `ratio` property for imperative updates.
+
+#### Styling hooks
+
+Tune the container with CSS custom properties or target internal parts:
+
+- Custom properties: `--aspect-ratio-background`, `--aspect-ratio-border`, `--aspect-ratio-border-radius`,
+  `--aspect-ratio-shadow`, `--aspect-ratio-overflow`, `--aspect-ratio-content-align`,
+  `--aspect-ratio-content-justify`, `--aspect-ratio-object-fit`.
+- Parts: `::part(frame)`, `::part(content)` allow scoped overrides.
+
 ### Examples
 
 See [`index.html`](./index.html) for live demos showcasing:
 
 - OTP field variations (numeric, masked, vertical layouts) with event logging.
 - Accordion setups demonstrating `single`/`multiple` behavior, custom theming, and horizontal orientation.
+- Aspect ratio containers framing responsive images and responsive embeds.
 
 ## Contributing
 

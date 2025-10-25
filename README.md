@@ -36,6 +36,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/separator.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toolbar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/drawer.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -1007,6 +1008,70 @@ Tune the presentation with CSS custom properties and parts:
   `--dialog-close-background`, etc.
 - Parts: `::part(trigger)`, `::part(portal)`, `::part(overlay)`, `::part(content)`, `::part(header)`,
   `::part(title)`, `::part(description)`, `::part(body)`, `::part(footer)`, `::part(close-button)`.
+
+### `<wc-drawer>`
+
+A mobile-first sheet that slides from any edge of the viewport while keeping focus safely trapped. The drawer is
+ideal for dense forms or confirmation flows on small screens and mirrors Vaul's ergonomics without depending on
+React.
+
+```html
+<wc-drawer id="activity-drawer" placement="bottom">
+  <button slot="trigger" class="ghost-button">Open drawer</button>
+  <span slot="title">Move goal</span>
+  <span slot="description">Set your daily activity goal.</span>
+  <div class="goal-adjuster">
+    <button type="button" data-step="-10">-</button>
+    <output id="goal-output" for="activity-goal">350</output>
+    <button type="button" data-step="10">+</button>
+  </div>
+  <wc-progress value="62"></wc-progress>
+  <div slot="footer" style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+    <button type="button" data-drawer-close class="ghost-button">Cancel</button>
+    <button type="button">Save goal</button>
+  </div>
+</wc-drawer>
+```
+
+Attach your trigger via the dedicated slot and describe the sheet with the `title`/`description` slots. Buttons inside
+the panel can close the sheet by adding `data-drawer-close`. The default slot renders the main body content while the
+`footer` slot is perfect for stacked actions.
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. Use the property, `show()`/`hide()`, or `toggle()` for imperative control. |
+| `placement` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'bottom'` | Determines which edge of the viewport the drawer animates from. |
+
+#### Methods
+
+- `show()` – opens the drawer.
+- `hide()` – closes the drawer.
+- `toggle(force?: boolean)` – toggles visibility, optionally forcing a boolean value.
+
+#### Slots
+
+- `trigger` — Element that opens the drawer.
+- `title` — Heading content announced as the accessible name.
+- `description` — Supplementary text announced as the accessible description.
+- _(default)_ — Main content area.
+- `footer` — Sticky action region rendered after the main content.
+- `close` — Optional custom close control rendered after the footer.
+
+#### Events
+
+- `drawer-open` — Fired after the sheet becomes visible.
+- `drawer-close` — Fired after the sheet hides.
+
+#### Styling hooks
+
+- CSS custom properties: `--drawer-width`, `--drawer-height`, `--drawer-max-width`, `--drawer-max-height`,
+  `--drawer-padding`, `--drawer-radius`, `--drawer-background`, `--drawer-color`, `--drawer-overlay-background`,
+  `--drawer-overlay-backdrop-filter`, `--drawer-shadow`, `--drawer-transition-duration`, `--drawer-transition-easing`,
+  `--drawer-section-gap`, `--drawer-title-size`, `--drawer-title-weight`, `--drawer-description-color`.
+- Parts: `::part(trigger)`, `::part(portal)`, `::part(overlay)`, `::part(positioner)`, `::part(panel)`,
+  `::part(header)`, `::part(title)`, `::part(description)`, `::part(body)`, `::part(footer)`, `::part(close)`.
 
 ### `<wc-alert-dialog>`
 

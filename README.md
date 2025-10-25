@@ -22,6 +22,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/separator.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toolbar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
@@ -855,6 +856,71 @@ Customize using CSS custom properties and parts:
   fallback.
 
 #### Keyboard support
+
+### `<wc-popover>`
+
+Display contextual surfaces that stay anchored to a trigger while respecting viewport constraints. The component
+supports modal and non-modal modes, optional arrows, collision-aware placement, and a fully-managed focus lifecycle.
+
+```html
+<wc-popover side="bottom" align="center">
+  <button slot="trigger" type="button">Open popover</button>
+  <div slot="content">
+    <h3>Team settings</h3>
+    <p>Promote collaborators or update plan limits directly in place.</p>
+    <button type="button" data-popover-close>Close</button>
+  </div>
+</wc-popover>
+
+<script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. When omitted, the component manages its own open state. |
+| `default-open` | boolean | `false` | Opens the popover on first render without reflecting the `open` attribute. |
+| `modal` | boolean | `false` | When present, focus is trapped inside the popover until it closes. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side for positioning relative to the anchor. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment on the cross axis. |
+| `side-offset` | number | `8` | Pixel offset applied away from the anchor along the chosen side. |
+| `align-offset` | number | `0` | Additional shift along the alignment axis. |
+| `collision-padding` | number | `8` | Minimum distance to keep between the surface and viewport edges. |
+| `avoid-collisions` | boolean | `true` | Disable to prevent automatic side flipping when the preferred side overflows. |
+| `hide-arrow` | boolean | `false` | Removes the decorative arrow element. |
+| `close-on-escape` | boolean | `true` | Toggle whether pressing Escape dismisses the popover. |
+| `close-on-interact-outside` | boolean | `true` | Disable to keep the popover open when clicking or focusing outside. |
+| `open` property | boolean | `false` | Imperative property that mirrors the `open` attribute. |
+| `modal` property | boolean | `false` | Imperative property controlling modal behaviour. |
+
+#### Methods
+
+- `show()` — opens the popover.
+- `hide()` — closes the popover.
+- `toggle(force?: boolean)` — toggles visibility or forces a specific state when `force` is supplied.
+
+#### Events
+
+- `wc-popover-open` — fired whenever the popover transitions to the open state.
+- `wc-popover-close` — fired whenever the popover transitions to the closed state.
+
+#### Slots
+
+- `trigger` — interactive element that toggles the popover when activated.
+- `anchor` — optional positioning reference. When omitted, the trigger is used as the anchor.
+- `content` — rich content rendered inside the floating surface.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-popover-surface`, `--wc-popover-color`, `--wc-popover-border`,
+  `--wc-popover-shadow`, `--wc-popover-radius`, `--wc-popover-padding`, `--wc-popover-gap`,
+  `--wc-popover-arrow-size`, `--wc-popover-arrow-offset`, `--wc-popover-transform-origin`,
+  `--wc-popover-trigger-width`, `--wc-popover-trigger-height`, `--wc-popover-content-available-width`,
+  `--wc-popover-content-available-height`, `--wc-popover-collision-padding`, `--wc-popover-z-index`.
+- Parts: `::part(trigger)`, `::part(content)`, `::part(arrow)` for scoped theming.
+- Data attributes: `[data-state="open" | "closed"]`, `[data-side]`, `[data-align]`, and `[data-modal]` enable
+  direction-aware transitions.
 
 ### `<wc-dropdown-menu>` and friends
 

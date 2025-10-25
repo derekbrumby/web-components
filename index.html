@@ -6,6 +6,7 @@
     <title>Web Components Demo</title>
     <script type="module" src="./src/otp-field.js"></script>
     <script type="module" src="./src/accordion.js"></script>
+    <script type="module" src="./src/aspect-ratio.js"></script>
     <style>
       :root {
         color-scheme: light dark;
@@ -118,6 +119,62 @@
         <h1>Web Component Playground</h1>
         <p>Drop-in friendly, dependency-free elements ready for CDN delivery.</p>
       </header>
+
+      <section>
+        <header>
+          <h2>&lt;wc-aspect-ratio&gt;</h2>
+          <p>Keep media, embeds, and previews locked to a precise ratio without extra wrapper markup.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Wide hero image (16&nbsp;/&nbsp;9)</h3>
+            <wc-aspect-ratio
+              ratio="16/9"
+              style="
+                max-width: 320px;
+                --aspect-ratio-border-radius: 1rem;
+                --aspect-ratio-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.65);
+              "
+            >
+              <img
+                src="https://images.unsplash.com/photo-1535025183041-0991a977e25b?w=640&dpr=2&q=80"
+                alt="Landscape photograph by Tobias Tullius"
+                style="border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.12);"
+              />
+            </wc-aspect-ratio>
+            <p>
+              Images, videos, and other media automatically stretch to fill the frame while preserving the
+              aspect ratio using CSS custom properties.
+            </p>
+          </div>
+
+          <div class="example-card">
+            <h3>Square embed (1&nbsp;/&nbsp;1)</h3>
+            <wc-aspect-ratio
+              ratio="1"
+              style="
+                --aspect-ratio-background: radial-gradient(circle at 25% 25%, #22d3ee, #0ea5e9);
+                --aspect-ratio-border-radius: 1.25rem;
+                --aspect-ratio-content-align: center;
+                --aspect-ratio-content-justify: center;
+                color: white;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+              "
+            >
+              <div style="text-align: center;">
+                Responsive embed
+              </div>
+            </wc-aspect-ratio>
+            <p>
+              Nest any HTML content—maps, charts, or previews—and keep it centered within a consistent
+              square footprint.
+            </p>
+          </div>
+        </div>
+      </section>
 
       <section>
         <header>

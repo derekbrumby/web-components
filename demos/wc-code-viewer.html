@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-code-viewer&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/code-viewer.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2rem;
+        padding: 2rem;
+      }
+
+      .stack {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      wc-code-viewer {
+        max-width: min(48rem, 100%);
+        border-radius: 1rem;
+        box-shadow: 0 28px 52px -36px rgba(15, 23, 42, 0.55);
+      }
+
+      wc-code-viewer::part(surface) {
+        margin: 0;
+      }
+
+      wc-code-viewer.surface {
+        --code-viewer-background: rgba(255, 255, 255, 0.95);
+        --code-viewer-foreground: rgb(15, 23, 42);
+        --code-viewer-comment-color: #64748b;
+        --code-viewer-keyword-color: #6366f1;
+        --code-viewer-string-color: #ea580c;
+        --code-viewer-number-color: #0ea5e9;
+        --code-viewer-attribute-color: #7c3aed;
+        --code-viewer-tag-color: #1d4ed8;
+        --code-viewer-entity-color: #be123c;
+        --code-viewer-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.25);
+      }
+
+      wc-code-viewer.blueprint {
+        --code-viewer-background: #0f172a;
+        --code-viewer-foreground: #e0f2fe;
+        --code-viewer-comment-color: #94a3b8;
+        --code-viewer-keyword-color: #38bdf8;
+        --code-viewer-string-color: #facc15;
+        --code-viewer-number-color: #2dd4bf;
+        --code-viewer-attribute-color: #f472b6;
+        --code-viewer-tag-color: #60a5fa;
+        --code-viewer-entity-color: #e2e8f0;
+        --code-viewer-padding: 1.75rem;
+      }
+
+      .controls {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .controls button {
+        border: none;
+        border-radius: 999px;
+        padding: 0.55rem 1.4rem;
+        background: rgba(79, 70, 229, 0.14);
+        color: rgb(67, 56, 202);
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease;
+      }
+
+      .controls button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 18px 32px -24px rgba(79, 70, 229, 0.4);
+      }
+
+      .hint {
+        margin: 0;
+        color: rgb(100, 116, 139);
+      }
+
+      .hint strong {
+        color: inherit;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="stack">
+        <header>
+          <h2>Inline snippets</h2>
+          <p>Pass code inline through the light DOM or with the <code>code</code> property.</p>
+        </header>
+        <wc-code-viewer language="ts">
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  plugins: [],
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
+});
+        </wc-code-viewer>
+        <p class="hint">Whitespace is normalised automatically so you can keep the HTML readable.</p>
+      </section>
+
+      <section class="stack">
+        <header>
+          <h2>Fetch remote files</h2>
+          <p>Use the <code>src</code> attribute to stream a remote file and show a custom loading indicator.</p>
+        </header>
+        <wc-code-viewer class="surface" src="./code-viewer-sample.js">
+          <span slot="loading">Fetching highlighted snippet…</span>
+        </wc-code-viewer>
+        <div class="controls" aria-label="Remote code snippet controls">
+          <button type="button" data-src="./code-viewer-sample.js">Load JavaScript</button>
+          <button type="button" data-src="./code-viewer-sample.py">Load Python</button>
+        </div>
+      </section>
+
+      <section class="stack">
+        <header>
+          <h2>Language inference</h2>
+          <p>Provide a <code>filename</code> hint or rely on shebang detection for inline code.</p>
+        </header>
+        <wc-code-viewer class="blueprint" filename="workflow.yaml">
+name: CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm ci
+      - name: Run checks
+        run: npm test -- --watch=false
+        </wc-code-viewer>
+      </section>
+    </main>
+    <script type="module">
+      const viewer = document.querySelector('wc-code-viewer.surface');
+      const buttons = document.querySelectorAll('.controls [data-src]');
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          if (!viewer) return;
+          const next = button.getAttribute('data-src');
+          if (!next) return;
+          viewer.src = '';
+          requestAnimationFrame(() => {
+            viewer.src = next;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

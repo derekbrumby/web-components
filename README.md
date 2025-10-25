@@ -65,6 +65,83 @@ copy pastes cleanly.
 <wc-markdown-viewer src="/docs/welcome.md">
   <span slot="loading">Loading documentation…</span>
 </wc-markdown-viewer>
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `markdown` | string | `""` | Inline markdown string to render immediately. Backslash escaped newlines (e.g. `\n`) are normalised. |
+| `src` | string | `""` | URL pointing to a markdown resource that will be fetched and rendered. |
+
+#### Slots
+
+- _(default)_ — Optional fallback markdown text. Used when neither `markdown` nor `src` provide content.
+- `loading` — Displayed while a remote `src` document is loading.
+
+#### Events
+
+- `markdown-loadstart` — Fired when a remote request begins. `event.detail` includes `{ source }`.
+- `markdown-load` — Emitted after successfully fetching content. `event.detail.markdown` contains the raw string.
+- `markdown-error` — Fired when fetching fails. Access the thrown `error` through `event.detail.error`.
+
+#### Styling hooks
+
+- Custom properties: `--markdown-viewer-color`, `--markdown-viewer-background`, `--markdown-viewer-padding`, `--markdown-viewer-code-background`, `--markdown-viewer-code-color`, `--markdown-viewer-inline-code-background`, `--markdown-viewer-inline-code-color`, `--markdown-viewer-link-color`, `--markdown-viewer-heading-margin`, and more.
+- Parts: `::part(container)`, `::part(empty)`, `::part(error)`.
+
+### `<wc-code-viewer>`
+
+Render syntax-highlighted code blocks from inline snippets or remote files. The element dedents light DOM content, infers languages from filenames or shebangs, and exposes a loading slot for remote requests.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/code-viewer.js"></script>
+
+<!-- Inline code via light DOM -->
+<wc-code-viewer language="ts">
+import { createSignal } from 'solid-js';
+
+export const useCounter = () => {
+  const [count, setCount] = createSignal(0);
+  return { count, increment: () => setCount((value) => value + 1) };
+};
+</wc-code-viewer>
+
+<!-- Property assignment -->
+<wc-code-viewer id="demo-viewer"></wc-code-viewer>
+<script type="module">
+  const viewer = document.querySelector('#demo-viewer');
+  viewer.code = "console.log('Shipped as a standalone module');";
+</script>
+
+<!-- Remote file -->
+<wc-code-viewer src="/snippets/example.js">
+  <span slot="loading">Loading snippet…</span>
+</wc-code-viewer>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `code` | string | `""` | Inline code string to render immediately. Escaped newlines (e.g. `\n`) are normalised for convenience. |
+| `src` | string | `""` | URL to fetch when remote code should be displayed. Only `http:` and `https:` schemes are allowed. |
+| `language` | string | `""` | Optional syntax hint (e.g. `javascript`, `typescript`, `css`, `html`, `json`, `python`, `shell`, `yaml`). When omitted the component infers the language from the filename, `src`, or shebang. |
+| `filename` | string | `""` | Hint used when inferring the language for inline snippets (for example `example.ts` or `workflow.yaml`). |
+
+#### Slots
+
+- `loading` — Displayed while a remote `src` file is being fetched.
+
+#### Events
+
+- `code-loadstart` — Fired when a remote request begins. `event.detail` includes `{ source }`.
+- `code-load` — Emitted after successfully fetching content. `event.detail.code` contains the raw string.
+- `code-error` — Fired when fetching fails. Access the thrown `error` through `event.detail.error`.
+
+#### Styling hooks
+
+- CSS custom properties: `--code-viewer-background`, `--code-viewer-foreground`, `--code-viewer-padding`, `--code-viewer-radius`, `--code-viewer-shadow`, `--code-viewer-font-family`, `--code-viewer-font-size`, `--code-viewer-comment-color`, `--code-viewer-keyword-color`, `--code-viewer-string-color`, `--code-viewer-number-color`, `--code-viewer-attribute-color`, `--code-viewer-tag-color`, `--code-viewer-entity-color`, `--code-viewer-variable-color`, `--code-viewer-punctuation-color`, `--code-viewer-accent`.
+- Parts: `::part(container)`, `::part(surface)`, `::part(code)`, `::part(empty)`, `::part(error)`.
 ### `<wc-spinner>`
 
 An accessible loading indicator with no runtime dependencies. Customize the spinner’s size, stroke, and color with
@@ -76,33 +153,6 @@ CSS custom properties while keeping a polite status message for assistive techno
 
 #### Attributes & properties
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| `markdown` | string | `""` | Inline markdown string to render immediately. Backslash escaped newlines (e.g. `\n`) are normalised. |
-| `src` | string | `""` | URL pointing to a markdown resource that will be fetched and rendered. |
-
-#### Slots
-
-- _(default)_ — Optional fallback markdown text. Used when neither `markdown` nor `src` provide
-  content.
-- `loading` — Displayed while a remote `src` document is loading.
-
-#### Events
-
-- `markdown-loadstart` — Fired when a remote request begins. `event.detail` includes `{ source }`.
-- `markdown-load` — Emitted after successfully fetching content. `event.detail.markdown` contains
-  the raw string.
-- `markdown-error` — Fired when fetching fails. Access the thrown `error` through
-  `event.detail.error`.
-
-#### Styling hooks
-
-- Custom properties: `--markdown-viewer-color`, `--markdown-viewer-background`,
-  `--markdown-viewer-padding`, `--markdown-viewer-code-background`,
-  `--markdown-viewer-code-color`, `--markdown-viewer-inline-code-background`,
-  `--markdown-viewer-inline-code-color`, `--markdown-viewer-link-color`,
-  `--markdown-viewer-heading-margin`, and more.
-- Parts: `::part(container)`, `::part(empty)`, `::part(error)`.
 | `label` | string | `"Loading"` | Sets the accessible status text announced to assistive technologies. Mirrors to `aria-label` when one is not provided. |
 | `visual-label` | boolean | `false` | Reveals the accessible label next to the indicator so the status is shown visually as well. |
 

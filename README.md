@@ -21,6 +21,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -154,6 +155,41 @@ Imperatively call `toggle(force?: boolean)` to flip the state or force a particu
   `--checkbox-gap`, `--checkbox-label-color`.
 - Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
 - Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
+
+### `<wc-switch>`
+
+An accessible binary toggle that mimics the Radix UI Switch while staying dependency-free. It exposes keyboard
+controls, optional form participation, and styling hooks for both the track and thumb.
+
+```html
+<wc-switch name="airplane" value="enabled" checked>Airplane mode</wc-switch>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | boolean | `false` | Sets the switch to the “on” position. Reflects to the `checked` property. |
+| `disabled` | boolean | `false` | Removes the control from the tab order and blocks pointer/keyboard interaction. |
+| `required` | boolean | `false` | Marks the control as required for native form validation. |
+| `name` | string | `""` | Associates the component with a form entry when checked. |
+| `value` | string | `"on"` | Value submitted with the parent form while checked. |
+
+Call `toggle(force?: boolean)` to imperatively flip the value or force a specific state.
+
+#### Events
+
+- `input` — fires whenever the checked state changes. Bubbles and crosses shadow boundaries.
+- `change` — mirrors native switch/checkbox change semantics.
+
+#### Styling hooks
+
+- CSS custom properties: `--switch-width`, `--switch-height`, `--switch-padding`, `--switch-radius`,
+  `--switch-track-background`, `--switch-track-background-checked`, `--switch-thumb-size`,
+  `--switch-thumb-background`, `--switch-thumb-shadow`, `--switch-focus-ring`, `--switch-gap`,
+  `--switch-label-color`.
+- Parts: `::part(root)`, `::part(control)`, `::part(thumb)`, `::part(label)`.
+- Data attributes: `[data-state="checked" | "unchecked"]`, `[data-disabled="true"]`.
 
 ### `<wc-password-toggle-field>`
 

@@ -20,6 +20,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/form.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/toggle-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 ```
 
@@ -154,6 +155,73 @@ Imperatively call `toggle(force?: boolean)` to flip the state or force a particu
   `--checkbox-gap`, `--checkbox-label-color`.
 - Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
 - Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
+
+### `<wc-toggle-group>`
+
+An accessible collection of on/off buttons. Configure it for single selection (like radio behaviour) or multiple
+selection (like toggle buttons) with identical markup. Each item supports roving focus, keyboard navigation, and
+ARIA pressed states.
+
+```html
+<wc-toggle-group aria-label="Text alignment" default-value="center">
+  <button type="button" data-value="left" aria-label="Align left">L</button>
+  <button type="button" data-value="center" aria-label="Align center">C</button>
+  <button type="button" data-value="right" aria-label="Align right">R</button>
+</wc-toggle-group>
+
+<wc-toggle-group
+  class="formatting-group"
+  aria-label="Formatting"
+  type="multiple"
+  default-values="bold italic"
+>
+  <button type="button" data-value="bold">B</button>
+  <button type="button" data-value="italic">I</button>
+  <button type="button" data-value="underline">U</button>
+</wc-toggle-group>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `single` \| `multiple` | `single` | Controls whether one or many buttons can be active. |
+| `value` | string | `null` | Selected value in single mode. Reflects user interaction when uncontrolled. |
+| `values` | space-delimited string | `""` | Active values in multiple mode. Reflects when uncontrolled. |
+| `default-value` | string | `null` | Initial value for single mode without forcing control. |
+| `default-values` | space-delimited string | `""` | Initial values for multiple mode without forcing control. |
+| `disabled` | boolean | `false` | Disables all items and removes them from the focus order. |
+| `orientation` | `horizontal` \| `vertical` | `horizontal` | Adjusts keyboard navigation and flex layout direction. |
+| `loop` | boolean | `true` | Wrap keyboard navigation from end to start. Set `loop="false"` to disable wrapping. |
+
+#### Properties
+
+- `value: string | null` — mirrors the attribute for single mode.
+- `values: string[]` — mirrors the attribute for multiple mode.
+- `disabled: boolean` — toggles the component disabled state.
+- `orientation: "horizontal" | "vertical"` — runtime orientation control.
+- `loop: boolean` — enables or disables wrap-around focus navigation.
+
+#### Events
+
+- `wc-toggle-group-change` — fired whenever user interaction updates selection. `event.detail` contains
+  `{ value: string | null, values: string[] }` representing the toggled value and the current collection.
+
+#### Slots
+
+- _(default)_ — Place any number of focusable elements (typically `<button>`). Provide `data-value` or `value`
+  attributes so the group can track each item.
+
+#### Styling hooks
+
+- CSS custom properties: `--toggle-group-background`, `--toggle-group-shadow`, `--toggle-group-radius`,
+  `--toggle-group-gap`, `--toggle-group-padding`, `--toggle-group-font-family`, `--toggle-group-item-size`,
+  `--toggle-group-item-radius`, `--toggle-group-item-background`, `--toggle-group-item-color`,
+  `--toggle-group-item-hover`, `--toggle-group-item-active-background`, `--toggle-group-item-active-color`,
+  `--toggle-group-item-disabled-opacity`, `--toggle-group-item-focus-ring`.
+- Parts: `::part(root)` for the container and `::part(item)` for each toggle button.
+- Data attributes: host `[data-orientation]`, `[data-disabled]`; items `[data-state]`, `[data-disabled]`,
+  `[data-position]`, and `[data-focus]` for granular styling.
 
 ### `<wc-password-toggle-field>`
 

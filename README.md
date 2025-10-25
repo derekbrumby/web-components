@@ -504,6 +504,38 @@ property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperativ
   `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
 - Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
 
+### `<wc-menubar>`
+
+A desktop-style menu bar that mirrors the Radix UI example with nested submenus, checkable items, and radio
+groups. The component manages focus, keyboard navigation, and menu positioning without external
+dependencies.
+
+```html
+<wc-menubar
+  style="
+    --menubar-surface: #ffffff;
+    --menubar-item-highlight: linear-gradient(135deg, #7c3aed, #6366f1);
+    --menubar-focus-ring: 0 0 0 2px rgba(99, 102, 241, 0.35);
+  "
+></wc-menubar>
+```
+
+#### Events
+
+| Event | Detail | Description |
+| --- | --- | --- |
+| `menubar-select` | `{ menu: string \| null, label: string }` | Fired when a standard menu item is activated. |
+| `menubar-checkbox-toggle` | `{ item: string, checked: boolean }` | Emitted when a checkbox item is toggled. |
+| `menubar-radio-change` | `{ value: string }` | Emitted when a different radio profile is selected. |
+
+#### Styling hooks
+
+- Custom properties: `--menubar-surface`, `--menubar-shadow`, `--menubar-trigger-color`,
+  `--menubar-trigger-highlight`, `--menubar-panel-surface`, `--menubar-panel-shadow`,
+  `--menubar-item-color`, `--menubar-item-highlight`, `--menubar-shortcut-color`,
+  `--menubar-focus-ring`, and more.
+- Parts: `::part(menubar)`, `::part(trigger)`, `::part(menu)`, `::part(menu-item)`, `::part(shortcut)`,
+  `::part(indicator)`, `::part(submenu)`.
 ### `<wc-hover-card>`
 
 A hover-activated preview surface that reveals supplemental information next to a trigger element. Inspired by

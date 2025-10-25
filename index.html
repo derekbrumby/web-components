@@ -403,8 +403,6 @@
         <header>
           <h2>&lt;wc-form&gt;</h2>
           <p>Collect validated contact requests with inline messaging and fully managed focus states.</p>
-          <h2>&lt;wc-checkbox&gt;</h2>
-          <p>Tri-state checkbox control with built-in form association, focus management, and themable parts.</p>
         </header>
 
         <div class="example-grid two-column">
@@ -419,6 +417,18 @@
             <wc-form id="wc-form-server" submit-label="Send question"></wc-form>
             <button id="wc-form-server-error" class="ghost-button">Trigger server errors</button>
             <pre class="log" id="wc-form-server-log">Click "Trigger server errors" to simulate API feedback.</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <header>
+          <h2>&lt;wc-checkbox&gt;</h2>
+          <p>Tri-state checkbox control with built-in form association, focus management, and themable parts.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
             <h3>Consent agreement</h3>
             <form id="checkbox-consent" class="checkbox-stack" onsubmit="event.preventDefault();">
               <wc-checkbox id="checkbox-consent-control" name="terms" value="accepted" required>

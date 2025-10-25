@@ -9,6 +9,7 @@
     <script type="module" src="./src/alert-dialog.js"></script>
     <script type="module" src="./src/aspect-ratio.js"></script>
     <script type="module" src="./src/avatar.js"></script>
+    <script type="module" src="./src/context-menu.js"></script>
     <script type="module" src="./src/collapsible.js"></script>
     <script type="module" src="./src/checkbox.js"></script>
     <style>
@@ -619,6 +620,47 @@
 
       <section>
         <header>
+          <h2>&lt;wc-context-menu&gt;</h2>
+          <p>
+            Display pointer-anchored menus with submenus, checkboxes, radios, and keyboard support. Works with
+            right-clicks, the context-menu key, and long-press on touch devices.
+          </p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Default interaction log</h3>
+            <wc-context-menu id="context-menu-demo"></wc-context-menu>
+            <pre class="log" id="context-menu-log">Right-click or long-press to try it.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Themable surface</h3>
+            <wc-context-menu
+              id="context-menu-themed"
+              style="
+                --context-menu-trigger-width: 280px;
+                --context-menu-trigger-background: linear-gradient(135deg, rgba(236, 72, 153, 0.55), rgba(14, 165, 233, 0.55));
+                --context-menu-trigger-border: 2px dashed rgba(255, 255, 255, 0.6);
+                --context-menu-trigger-color: #0f172a;
+                --context-menu-background: rgba(15, 23, 42, 0.95);
+                --context-menu-color: #e0e7ff;
+                --context-menu-shadow: 0 22px 40px -24px rgba(14, 116, 144, 0.65);
+                --context-menu-item-highlight: rgba(236, 72, 153, 0.35);
+                --context-menu-separator-color: rgba(59, 130, 246, 0.4);
+                --context-menu-indicator-color: #fbbf24;
+              "
+            ></wc-context-menu>
+            <p>
+              Override the exposed CSS variables to adapt the trigger, surface, indicators, and highlighted state to
+              your brand palette.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <header>
           <h2>&lt;wc-accordion&gt;</h2>
           <p>
             Accessible accordion primitives with keyboard support, horizontal or vertical layouts, and multi-open configurations.
@@ -875,6 +917,47 @@
             }
             alertAsyncTimer = 0;
           }, 1200);
+        });
+      }
+
+      const contextMenuDemo = document.getElementById('context-menu-demo');
+      const contextMenuLog = document.getElementById('context-menu-log');
+      if (contextMenuDemo && contextMenuLog) {
+        const commandLabels = {
+          back: 'Back',
+          forward: 'Forward',
+          reload: 'Reload',
+          'save-page': 'Save Page As…',
+          'create-shortcut': 'Create Shortcut…',
+          'name-window': 'Name Window…',
+          'dev-tools': 'Developer Tools',
+        };
+        const checkboxLabels = {
+          bookmarks: 'Show Bookmarks',
+          urls: 'Show Full URLs',
+        };
+        const personLabels = {
+          pedro: 'Pedro Duarte',
+          colm: 'Colm Tuite',
+        };
+
+        contextMenuDemo.addEventListener('select', (event) => {
+          const command = event.detail?.command || 'unknown';
+          const label = commandLabels[command] || command.replace(/-/g, ' ');
+          contextMenuLog.textContent = `Selected action: ${label}.`;
+        });
+
+        contextMenuDemo.addEventListener('toggle', (event) => {
+          const detail = event.detail || {};
+          if (detail.type === 'checkbox') {
+            const name = detail.name || 'option';
+            const label = checkboxLabels[name] || name;
+            contextMenuLog.textContent = `${label} ${detail.checked ? 'enabled' : 'disabled'}.`;
+          } else if (detail.type === 'radio') {
+            const value = detail.value || '';
+            const person = personLabels[value] || value;
+            contextMenuLog.textContent = `Primary person set to ${person}.`;
+          }
         });
       }
     </script>

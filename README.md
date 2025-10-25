@@ -20,6 +20,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/form.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 ```
 
@@ -154,6 +155,70 @@ Imperatively call `toggle(force?: boolean)` to flip the state or force a particu
   `--checkbox-gap`, `--checkbox-label-color`.
 - Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
 - Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
+
+### `<wc-select>`
+
+Framework-agnostic select element that composes a trigger button, floating listbox, grouped options, separators,
+and typeahead navigation. Inspired by the Radix UI Select primitive, the component ships with zero runtime
+dependencies and exposes rich styling hooks.
+
+```html
+<wc-select placeholder="Select a fruit…">
+  <wc-select-group label="Fruits">
+    <wc-select-option value="apple">Apple</wc-select-option>
+    <wc-select-option value="banana">Banana</wc-select-option>
+    <wc-select-option value="blueberry">Blueberry</wc-select-option>
+  </wc-select-group>
+
+  <wc-select-separator></wc-select-separator>
+
+  <wc-select-group label="Vegetables">
+    <wc-select-option value="aubergine">Aubergine</wc-select-option>
+    <wc-select-option value="carrot" disabled>Carrot</wc-select-option>
+  </wc-select-group>
+</wc-select>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Currently selected option value. Reflects to the `value` property. |
+| `placeholder` | string | `"Select an option"` | Text shown inside the trigger when no item is selected. |
+| `disabled` | boolean | `false` | Removes the component from the focus order and blocks interaction. |
+| `open` property | boolean (read-only) | `false` | Indicates whether the dropdown content is visible. |
+
+Call `open()` and `close()` to imperatively toggle the dropdown. The component also emits native `input` and
+`change` events whenever the selection changes.
+
+#### Child elements
+
+- `<wc-select-option>` — individual choice with `value`, `disabled`, and optional `text-value` attributes for custom
+  typeahead labels.
+- `<wc-select-group>` — wraps related options and exposes a `label` attribute for accessible grouping.
+- `<wc-select-separator>` — renders a visual separator between option clusters.
+
+#### Events
+
+- `wc-select-toggle` — fired whenever the dropdown opens or closes. `event.detail.open` is a boolean.
+- `wc-select-change` — dispatched after the value changes. `event.detail.value` provides the new value and
+  `event.detail.option` references the selected `<wc-select-option>` element.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-select-trigger-height`, `--wc-select-trigger-padding`,
+  `--wc-select-trigger-radius`, `--wc-select-trigger-background`, `--wc-select-trigger-color`,
+  `--wc-select-trigger-placeholder`, `--wc-select-trigger-border`, `--wc-select-trigger-shadow`,
+  `--wc-select-trigger-focus-ring`, `--wc-select-content-background`, `--wc-select-content-border`,
+  `--wc-select-content-radius`, `--wc-select-content-shadow`, `--wc-select-viewport-padding`,
+  `--wc-select-viewport-max-height`, `--wc-select-icon-color`, `--wc-select-option-radius`,
+  `--wc-select-option-padding`, `--wc-select-option-color`, `--wc-select-option-background`,
+  `--wc-select-option-highlighted-background`, `--wc-select-option-highlighted-color`,
+  `--wc-select-option-disabled-color`, `--wc-select-option-indicator-color`, `--wc-select-group-label-color`,
+  `--wc-select-separator-color`.
+- Parts: `::part(trigger)`, `::part(value)`, `::part(icon)`, `::part(content)`, `::part(viewport)`,
+  `::part(option)`, `::part(indicator)`, `::part(text)`, `::part(group)`, `::part(label)`, `::part(group-options)`,
+  `::part(separator)`.
 
 ### `<wc-password-toggle-field>`
 

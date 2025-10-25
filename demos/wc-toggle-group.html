@@ -56,7 +56,12 @@
               Single-selection mode keeps one value active at a time. Keyboard arrows wrap across the group and the
               active toggle stays tabbable.
             </p>
-            <wc-toggle-group id="alignment-toggle" aria-label="Text alignment" default-value="center">
+            <wc-toggle-group
+              id="alignment-toggle"
+              aria-label="Text alignment"
+              default-value="center"
+              data-code-example
+            >
               <button type="button" class="icon-button" data-value="left" aria-label="Align left">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path
@@ -106,6 +111,7 @@
                 aria-label="Formatting options"
                 type="multiple"
                 default-values="bold italic"
+                data-code-example
               >
                 <button type="button" data-value="bold" aria-label="Bold text">B</button>
                 <button type="button" data-value="italic" aria-label="Italic text">I</button>
@@ -126,7 +132,12 @@
             Change the `orientation` attribute for stacked layouts. Navigation switches to the up and down arrow keys
             while Home/End still jump to the edges.
           </p>
-          <wc-toggle-group id="vertical-toggle" aria-label="Notification cadence" orientation="vertical">
+          <wc-toggle-group
+            id="vertical-toggle"
+            aria-label="Notification cadence"
+            orientation="vertical"
+            data-code-example
+          >
             <button type="button" data-value="daily">Daily summary</button>
             <button type="button" data-value="weekly">Weekly digest</button>
             <button type="button" data-value="off">Mute notifications</button>
@@ -185,5 +196,6 @@
         });
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

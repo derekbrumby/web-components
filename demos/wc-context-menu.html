@@ -13,7 +13,7 @@
         <div class="example-grid two-column">
           <div class="example-card">
             <h3>Default interaction log</h3>
-            <wc-context-menu id="context-menu-demo"></wc-context-menu>
+            <wc-context-menu id="context-menu-demo" data-code-example></wc-context-menu>
             <pre class="log" id="context-menu-log">Right-click or long-press to try it.</pre>
           </div>
 
@@ -33,6 +33,7 @@
                 --context-menu-separator-color: rgba(59, 130, 246, 0.4);
                 --context-menu-indicator-color: #fbbf24;
               "
+              data-code-example
             ></wc-context-menu>
             <p>
               Override the exposed CSS variables to adapt the trigger, surface, indicators, and highlighted state to
@@ -85,5 +86,6 @@
         });
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

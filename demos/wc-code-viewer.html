@@ -93,7 +93,7 @@
           <h2>Inline snippets</h2>
           <p>Pass code inline through the light DOM or with the <code>code</code> property.</p>
         </header>
-        <wc-code-viewer language="ts">
+        <wc-code-viewer language="ts" data-code-example>
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -112,7 +112,7 @@ export default defineConfig({
           <h2>Fetch remote files</h2>
           <p>Use the <code>src</code> attribute to stream a remote file and show a custom loading indicator.</p>
         </header>
-        <wc-code-viewer class="surface" src="./code-viewer-sample.js">
+        <wc-code-viewer class="surface" src="./code-viewer-sample.js" data-code-example>
           <span slot="loading">Fetching highlighted snippet…</span>
         </wc-code-viewer>
         <div class="controls" aria-label="Remote code snippet controls">
@@ -126,7 +126,7 @@ export default defineConfig({
           <h2>Language inference</h2>
           <p>Provide a <code>filename</code> hint or rely on shebang detection for inline code.</p>
         </header>
-        <wc-code-viewer class="blueprint" filename="workflow.yaml">
+        <wc-code-viewer class="blueprint" filename="workflow.yaml" data-code-example>
 name: CI
 on:
   push:
@@ -160,5 +160,6 @@ jobs:
         });
       });
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

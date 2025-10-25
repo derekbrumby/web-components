@@ -13,7 +13,7 @@
         <div class="example-grid">
           <div class="example-card">
             <h3>Single item open at a time</h3>
-            <wc-accordion id="accordion-single" type="single" collapsible>
+            <wc-accordion id="accordion-single" type="single" collapsible data-code-example>
               <wc-accordion-item value="item-1">
                 <span slot="trigger">Is it accessible?</span>
                 <p slot="content">
@@ -48,6 +48,7 @@
                 --accordion-gap: 1rem;
                 --accordion-surface: transparent;
               "
+              data-code-example
             >
               <wc-accordion-item value="item-a" heading-level="4" style="--accordion-trigger-background: rgba(14, 165, 233, 0.12);">
                 <span slot="trigger">Design tokens</span>
@@ -97,5 +98,6 @@
         });
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

@@ -90,7 +90,7 @@
           <div class="example-card">
             <h3>Rich text toolbar</h3>
             <p>Combine toggles to format the preview text. Each toggle is independent and keyboard accessible.</p>
-            <div class="toolbar" role="toolbar" aria-label="Text formatting">
+            <div class="toolbar" role="toolbar" aria-label="Text formatting" data-code-example>
               <wc-toggle class="toolbar-toggle" aria-label="Bold" data-style="bold">
                 <span aria-hidden="true" class="toolbar-icon">B</span>
               </wc-toggle>
@@ -110,7 +110,7 @@
               Drive the pressed state imperatively while still responding to user interaction. Use the controls to
               force a value, disable the toggle, or return to its default.
             </p>
-            <div class="controlled-demo">
+            <div class="controlled-demo" data-code-example>
               <div class="controlled-toggle-wrapper">
                 <wc-toggle id="notifications-toggle" aria-label="Enable notifications" default-pressed>
                   <span aria-hidden="true">🔔</span>
@@ -210,5 +210,6 @@
 
       renderNotificationsStatus();
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

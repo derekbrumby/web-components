@@ -58,6 +58,12 @@
         gap: 1.25rem;
       }
 
+      wc-code-viewer {
+        display: block;
+        inline-size: 100%;
+        margin-block-start: 1rem;
+      }
+
       .log {
         background: rgba(15, 23, 42, 0.05);
         border-radius: 0.75rem;

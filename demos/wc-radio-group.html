@@ -74,8 +74,10 @@
             'high-contrast': 'Optimised for legibility.'
           };
 
-          const description = descriptions[value] || 'Custom theme.';
-          themeLog.textContent = `${value.replace('-', ' ')}: ${description} (via ${origin}).`;
+          const isString = typeof value === 'string';
+          const normalizedValue = isString ? value : 'no selection';
+          const description = descriptions[normalizedValue] || 'Custom theme.';
+          themeLog.textContent = `${normalizedValue.replace('-', ' ')}: ${description} (via ${origin || 'unknown origin'}).`;
         };
 
         themeGroup.addEventListener('wc-radio-group-value-change', (event) => {

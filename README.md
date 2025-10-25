@@ -201,6 +201,20 @@ Programmatic helpers `show()`, `hide()`, and `toggle(force?: boolean)` are expos
   work) and call `hide()` when ready.
 - `cancel`: Emitted when the user dismisses the dialog (Cancel button, overlay click, or Escape key).
 
+#### Keyboard support
+
+- `Tab`/`Shift+Tab` cycle focus within the dialog.
+- Focus is trapped while open and returns to the invoking trigger on close.
+
+#### Styling hooks
+
+Customize via CSS custom properties and exposed parts:
+
+- Custom properties: `--alert-dialog-overlay-background`, `--alert-dialog-transition-duration`,
+  `--alert-dialog-padding`, `--alert-dialog-radius`, `--alert-dialog-action-background`, and more.
+- Parts: `::part(overlay)`, `::part(content)`, `::part(title)`, `::part(description)`, `::part(body)`,
+  `::part(footer)`, `::part(cancel-button)`, `::part(action-button)`.
+
 ### `<wc-avatar>`
 
 An inline avatar element that progressively loads an image and gracefully falls back to initials or any custom
@@ -255,20 +269,42 @@ property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperativ
   `--avatar-transition`, `--avatar-fallback-background`, `--avatar-fallback-color`,
   `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
 - Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
-#### Keyboard support
 
-- `Esc` closes the dialog and refocuses the trigger.
-- `Tab`/`Shift+Tab` cycle focus within the dialog.
-- Focus is trapped while open and returns to the invoking trigger on close.
+### `<wc-context-menu>`
+
+A pointer-positioned context menu that mirrors the Radix UI anatomy while remaining dependency free. Right-click,
+keyboard shortcuts, or long-press on touch devices to summon the menu.
+
+```html
+<wc-context-menu></wc-context-menu>
+```
+
+The element renders a fully working menu with submenus, checkable items, and a radio group. It manages focus,
+collision-aware positioning, and dismiss behaviour automatically.
+
+#### Events
+
+- `select`: Fired when a standard menu item (non-checkbox/radio) is activated. The `detail` includes
+  `{ command: string | null }`.
+- `toggle`: Fired when a checkbox or radio item changes. The detail is
+  `{ type: 'checkbox', name: string | undefined, checked: boolean }` for checkboxes and
+  `{ type: 'radio', group: string | undefined, value: string }` for radios.
+
+#### Interaction features
+
+- Context menu triggers on right-click, `Shift+F10`, the dedicated context-menu key, or a 550&nbsp;ms long press.
+- Arrow keys, Home/End, and Escape work as expected for navigating and dismissing.
+- Submenus open on hover, focus, arrow-right, or click, with responsive collision handling.
+- Checkboxes and radios reflect their state visually with built-in indicators and emit change events.
 
 #### Styling hooks
 
-Customize via CSS custom properties and exposed parts:
+Tune the appearance with CSS properties or style parts directly:
 
-- Custom properties: `--alert-dialog-overlay-background`, `--alert-dialog-transition-duration`,
-  `--alert-dialog-padding`, `--alert-dialog-radius`, `--alert-dialog-action-background`, and more.
-- Parts: `::part(overlay)`, `::part(content)`, `::part(title)`, `::part(description)`, `::part(body)`,
-  `::part(footer)`, `::part(cancel-button)`, `::part(action-button)`.
+- Custom properties: `--context-menu-trigger-background`, `--context-menu-trigger-border`,
+  `--context-menu-trigger-color`, `--context-menu-background`, `--context-menu-shadow`,
+  `--context-menu-item-highlight`, `--context-menu-separator-color`, `--context-menu-indicator-color`, etc.
+- Parts: `::part(trigger)`, `::part(menu)`, `::part(submenu)`.
 
 ### Examples
 

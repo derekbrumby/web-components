@@ -14,8 +14,8 @@ function greet(name) {
 
 Tables are supported as well:
 
-| Feature | Status |
-| :------ | :----- |
-| Sanitization | ✅ |
-| Lists | ✅ |
-| Tables | ✅ |
+Feature | Status | Notes
+:------ | :----- | :-----------------------
+Sanitization | ✅ | Prevents unsafe HTML from rendering
+Lists | ✅ | Handles nested content
+Tables | ✅ | Leading pipes are optional

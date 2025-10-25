@@ -214,6 +214,9 @@ function splitTableRow(row) {
 function parseAlignmentRow(row) {
   return splitTableRow(row).map((cell) => {
     const trimmed = cell.trim();
+    if (!/^:?-{3,}:?$/.test(trimmed)) {
+      return null;
+    }
     const starts = trimmed.startsWith(':');
     const ends = trimmed.endsWith(':');
     if (starts && ends) {
@@ -227,6 +230,56 @@ function parseAlignmentRow(row) {
     }
     return null;
   });
+}
+
+/**
+ * Determine whether a markdown row is a table alignment divider.
+ * @param {string} row
+ * @returns {boolean}
+ */
+function isTableDividerRow(row) {
+  if (!row.includes('|')) {
+    return false;
+  }
+  const cells = splitTableRow(row);
+  if (cells.length === 0) {
+    return false;
+  }
+  return cells.every((cell) => {
+    const trimmed = cell.trim();
+    if (!trimmed) {
+      return false;
+    }
+    return /^:?-{3,}:?$/.test(trimmed);
+  });
+}
+
+/**
+ * Ensure a table row has a consistent number of cells.
+ * @param {string[]} cells
+ * @param {number} columnCount
+ * @returns {string[]}
+ */
+function normalizeRowCells(cells, columnCount) {
+  const normalized = cells.slice(0, columnCount);
+  while (normalized.length < columnCount) {
+    normalized.push('');
+  }
+  return normalized;
+}
+
+/**
+ * Pad table alignment definitions to match the number of columns.
+ * @param {("left"|"center"|"right"|null)[]} aligns
+ * @param {number} columnCount
+ * @returns {("left"|"center"|"right"|null)[]}
+ */
+function normalizeAlignments(aligns, columnCount) {
+  const normalized = aligns.slice(0, columnCount);
+  while (normalized.length < columnCount) {
+    normalized.push(null);
+  }
+  return normalized;
 }
 
 /**
@@ -248,7 +301,14 @@ function tokenize(markdown) {
       if (next.trim() === '') {
         break;
       }
-      if (CODE_FENCE_PATTERN.test(next) || HEADING_PATTERN.test(next.trim()) || HORIZONTAL_RULE_PATTERN.test(next) || BLOCKQUOTE_PATTERN.test(next) || LIST_MARKER_PATTERN.test(next.trim()) || (next.trim().startsWith('|') && i + 1 < lines.length && /^\s*\|?\s*:?-+:?\s*\|/.test(lines[i + 1]))) {
+      if (
+        CODE_FENCE_PATTERN.test(next) ||
+        HEADING_PATTERN.test(next.trim()) ||
+        HORIZONTAL_RULE_PATTERN.test(next) ||
+        BLOCKQUOTE_PATTERN.test(next) ||
+        LIST_MARKER_PATTERN.test(next.trim()) ||
+        (next.includes('|') && i + 1 < lines.length && isTableDividerRow(lines[i + 1]))
+      ) {
         break;
       }
       parts.push(next);
@@ -320,17 +380,30 @@ function tokenize(markdown) {
       continue;
     }
 
-    if (line.trim().startsWith('|') && index + 1 < lines.length && /^\s*\|?\s*:?-+:?\s*\|/.test(lines[index + 1])) {
+    const nextLine = lines[index + 1];
+    if (line.includes('|') && nextLine && isTableDividerRow(nextLine)) {
       const headerCells = splitTableRow(line);
-      const alignCells = parseAlignmentRow(lines[index + 1]);
-      const rows = [];
-      index += 2;
-      while (index < lines.length && lines[index].trim().startsWith('|')) {
-        rows.push(splitTableRow(lines[index]));
-        index += 1;
+      const alignCells = parseAlignmentRow(nextLine);
+      const columnCount = Math.max(headerCells.length, alignCells.length);
+      if (columnCount > 1) {
+        const header = normalizeRowCells(headerCells, columnCount);
+        const aligns = normalizeAlignments(alignCells, columnCount);
+        const rows = [];
+        index += 2;
+        while (index < lines.length) {
+          const rowLine = lines[index];
+          if (!rowLine || rowLine.trim() === '') {
+            break;
+          }
+          if (!rowLine.includes('|')) {
+            break;
+          }
+          rows.push(normalizeRowCells(splitTableRow(rowLine), columnCount));
+          index += 1;
+        }
+        tokens.push({ type: 'table', header, aligns, rows });
+        continue;
       }
-      tokens.push({ type: 'table', header: headerCells, aligns: alignCells, rows });
-      continue;
     }
 
     const [paragraphToken, nextIndex] = pushParagraph(index);
@@ -512,7 +585,7 @@ function renderTokens(tokens) {
             .map((cell, index) => {
               const align = token.aligns[index];
               const attr = align ? ` style="text-align:${align}"` : '';
-              return `<th${attr}>${renderInline(cell)}</th>`;
+              return `<th${attr}>${renderInline(cell ?? '')}</th>`;
             })
             .join('');
           const body = token.rows
@@ -521,7 +594,7 @@ function renderTokens(tokens) {
                 .map((cell, index) => {
                   const align = token.aligns[index];
                   const attr = align ? ` style="text-align:${align}"` : '';
-                  return `<td${attr}>${renderInline(cell)}</td>`;
+                  return `<td${attr}>${renderInline(cell ?? '')}</td>`;
                 })
                 .join('')}</tr>`;
             })

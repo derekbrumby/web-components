@@ -1,30 +1,302 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <!-- Include from your CDN of choice -->
-<script type="module" src="./otp-field.js"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Web Components Demo</title>
+    <script type="module" src="./src/otp-field.js"></script>
+    <script type="module" src="./src/accordion.js"></script>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
 
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #f9fafb, #eef2ff);
+        color: #0f172a;
+      }
 
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 4rem;
+        display: grid;
+        gap: 3rem;
+      }
 
+      h1 {
+        font-size: clamp(2.5rem, 5vw, 3.5rem);
+        margin: 0;
+        font-weight: 700;
+      }
+
+      section {
+        background: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(8px);
+        border-radius: 1.25rem;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: 0 40px 80px -40px rgba(15, 23, 42, 0.35);
+        padding: 2rem;
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      section header {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      section header h2 {
+        margin: 0;
+        font-size: clamp(1.75rem, 3vw, 2.25rem);
+      }
+
+      section header p {
+        margin: 0;
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      form {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .example-card {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .log {
+        background: rgba(15, 23, 42, 0.05);
+        border-radius: 0.75rem;
+        padding: 1rem;
+        font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.875rem;
+        color: #0f172a;
+        overflow-x: auto;
+        white-space: pre-wrap;
+      }
+
+      .example-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 900px) {
+        .example-grid.two-column {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      button {
+        border: none;
+        border-radius: 999px;
+        background: #4f46e5;
+        color: #ffffff;
+        font-weight: 600;
+        padding: 0.75rem 1.75rem;
+        cursor: pointer;
+        transition: transform 150ms ease, box-shadow 150ms ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 30px -18px rgba(79, 70, 229, 0.8);
+      }
+
+      button:active {
+        transform: translateY(1px);
+      }
+    </style>
   </head>
   <body>
-    <h1>
-      Web Components
-    </h1>
-<h3>
-  One-Time Password Field
-</h3>
-    <form id="verify" onsubmit="event.preventDefault(); alert(new FormData(event.target).get('otp'));">
-  <otp-field
-    name="otp"
-    length="6"
-    validation-type="numeric"
-    auto-submit
-    placeholder="•"
-    orientation="horizontal"
-    dir="ltr"
-  ></otp-field>
-  <button>Submit</button>
-</form>
+    <main>
+      <header>
+        <h1>Web Component Playground</h1>
+        <p>Drop-in friendly, dependency-free elements ready for CDN delivery.</p>
+      </header>
+
+      <section>
+        <header>
+          <h2>&lt;otp-field&gt;</h2>
+          <p>
+            A form-associated one-time-password input that manages focus, validation, and submissions.
+            Customize appearance using CSS properties or <code>::part</code> selectors.
+          </p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Classic six-digit numeric code</h3>
+            <form id="otp-demo" onsubmit="event.preventDefault();">
+              <otp-field
+                name="otp"
+                length="6"
+                validation-type="numeric"
+                placeholder="•"
+                auto-submit
+                autocomplete="one-time-code"
+                style="
+                  --otp-gap: 0.75rem;
+                  --otp-input-size: 56px;
+                  --otp-font-size: 20px;
+                  --otp-radius: 14px;
+                  --otp-bg: rgba(255,255,255,0.9);
+                  --otp-border: 1px solid rgba(148, 163, 184, 0.4);
+                  --otp-border-focus: 2px solid #4f46e5;
+                  --otp-shadow-focus: 0 0 0 6px rgba(79,70,229,0.15);
+                "
+              ></otp-field>
+              <button type="submit">Submit</button>
+            </form>
+            <pre class="log" id="otp-log">Waiting for input…</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Vertical alphanumeric with masking</h3>
+            <otp-field
+              id="otp-advanced"
+              length="8"
+              validation-type="alphanumeric"
+              orientation="vertical"
+              type="password"
+              placeholder="✶"
+              dir="ltr"
+              style="
+                --otp-gap: 0.35rem;
+                --otp-input-size: 44px;
+                --otp-bg: rgba(15, 23, 42, 0.85);
+                --otp-color: #f8fafc;
+                --otp-border: 1px solid rgba(148, 163, 184, 0.5);
+                --otp-border-focus: 2px solid #f97316;
+                --otp-shadow-focus: 0 0 0 4px rgba(249, 115, 22, 0.35);
+              "
+            ></otp-field>
+            <pre class="log" id="otp-advanced-log">Type to see updates…</pre>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <header>
+          <h2>&lt;wc-accordion&gt;</h2>
+          <p>
+            Accessible accordion primitives with keyboard support, horizontal or vertical layouts, and multi-open configurations.
+          </p>
+        </header>
+
+        <div class="example-grid">
+          <div class="example-card">
+            <h3>Single item open at a time</h3>
+            <wc-accordion id="accordion-single" type="single" collapsible>
+              <wc-accordion-item value="item-1">
+                <span slot="trigger">Is it accessible?</span>
+                <p slot="content">
+                  Yes. It adheres to the WAI-ARIA accordion pattern and exposes keyboard navigation.
+                </p>
+              </wc-accordion-item>
+              <wc-accordion-item value="item-2">
+                <span slot="trigger">Can I restyle it?</span>
+                <p slot="content">
+                  Absolutely. Use CSS custom properties like <code>--accordion-trigger-background</code> or target parts such as
+                  <code>::part(trigger)</code> and <code>::part(panel-inner)</code>.
+                </p>
+              </wc-accordion-item>
+              <wc-accordion-item value="item-3">
+                <span slot="trigger">Will it collapse?</span>
+                <p slot="content">
+                  When <code>collapsible</code> is set, users can close the active item, leaving all sections collapsed.
+                </p>
+              </wc-accordion-item>
+            </wc-accordion>
+            <pre class="log" id="accordion-single-log">Interact with the accordion to see state updates.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Multiple expansion with horizontal layout</h3>
+            <wc-accordion
+              id="accordion-multi"
+              type="multiple"
+              orientation="horizontal"
+              values="item-a,item-c"
+              style="
+                --accordion-gap: 1rem;
+                --accordion-surface: transparent;
+              "
+            >
+              <wc-accordion-item value="item-a" heading-level="4" style="--accordion-trigger-background: rgba(14, 165, 233, 0.12);">
+                <span slot="trigger">Design tokens</span>
+                <div slot="content">
+                  <ul>
+                    <li>--accordion-radius</li>
+                    <li>--accordion-trigger-padding</li>
+                    <li>--accordion-transition-duration</li>
+                  </ul>
+                </div>
+              </wc-accordion-item>
+              <wc-accordion-item value="item-b" heading-level="4" style="--accordion-trigger-background: rgba(249, 115, 22, 0.12);">
+                <span slot="trigger">Animation</span>
+                <p slot="content">
+                  Panels animate using height transitions that respect <code>--accordion-transition-duration</code> and
+                  <code>--accordion-transition-easing</code>.
+                </p>
+              </wc-accordion-item>
+              <wc-accordion-item value="item-c" heading-level="4" style="--accordion-trigger-background: rgba(34, 197, 94, 0.12);">
+                <span slot="trigger">Accessibility</span>
+                <p slot="content">
+                  Built-in keyboard handling supports arrow keys, Home/End navigation, and respects disabled items.
+                </p>
+              </wc-accordion-item>
+            </wc-accordion>
+            <pre class="log" id="accordion-multi-log">Open and close multiple panels to inspect emitted values.</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const otpForm = document.getElementById('otp-demo');
+      const otpLog = document.getElementById('otp-log');
+      const otpAdvanced = document.getElementById('otp-advanced');
+      const otpAdvancedLog = document.getElementById('otp-advanced-log');
+
+      if (otpForm && otpLog) {
+        otpForm.addEventListener('submit', (event) => {
+          const formData = new FormData(event.target);
+          otpLog.textContent = `Submitted code: ${formData.get('otp') || '(empty)'}`;
+        });
+        otpForm.querySelector('otp-field')?.addEventListener('valuechange', (event) => {
+          const value = event.detail?.value || '';
+          otpLog.textContent = `Typing: ${value}`;
+        });
+      }
+
+      if (otpAdvanced && otpAdvancedLog) {
+        otpAdvanced.addEventListener('valuechange', (event) => {
+          const value = event.detail?.value || '';
+          otpAdvancedLog.textContent = `Current value: ${value}`;
+        });
+      }
+
+      const accordionSingle = document.getElementById('accordion-single');
+      const accordionSingleLog = document.getElementById('accordion-single-log');
+      if (accordionSingle && accordionSingleLog) {
+        accordionSingle.addEventListener('change', (event) => {
+          accordionSingleLog.textContent = `Open value: ${event.detail?.value || 'none'}`;
+        });
+      }
+
+      const accordionMulti = document.getElementById('accordion-multi');
+      const accordionMultiLog = document.getElementById('accordion-multi-log');
+      if (accordionMulti && accordionMultiLog) {
+        accordionMulti.addEventListener('change', (event) => {
+          const values = event.detail?.values || [];
+          accordionMultiLog.textContent = `Open values: ${values.join(', ') || 'none'}`;
+        });
+      }
+    </script>
   </body>
 </html>
-

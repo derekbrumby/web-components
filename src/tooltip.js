@@ -136,6 +136,28 @@
     #contentId;
     /** @type {boolean} */
     #globalsAttached = false;
+    /** @type {(event: PointerEvent) => void} */
+    #boundPointerEnter;
+    /** @type {(event: PointerEvent) => void} */
+    #boundPointerLeave;
+    /** @type {(event: FocusEvent) => void} */
+    #boundFocusIn;
+    /** @type {(event: FocusEvent) => void} */
+    #boundFocusOut;
+    /** @type {(event: MouseEvent) => void} */
+    #boundTriggerClick;
+    /** @type {(event: KeyboardEvent) => void} */
+    #boundKeyDown;
+    /** @type {(event: KeyboardEvent) => void} */
+    #boundDocumentKeyDown;
+    /** @type {(event: PointerEvent) => void} */
+    #boundDocumentPointerDown;
+    /** @type {(event: PointerEvent) => void} */
+    #boundContentPointerEnter;
+    /** @type {(event: PointerEvent) => void} */
+    #boundContentPointerLeave;
+    /** @type {() => void} */
+    #boundSlotChange;
 
     constructor() {
       super();
@@ -310,45 +332,22 @@
 
       this.#updateMetrics = () => {
         if (this.#open) {
-          this.#positionContent();
+          this._positionContent();
         }
       };
 
-      this.#handlePointerEnter = this.#handlePointerEnter.bind(this);
-      this.#handlePointerLeave = this.#handlePointerLeave.bind(this);
-      this.#handleFocusIn = this.#handleFocusIn.bind(this);
-      this.#handleFocusOut = this.#handleFocusOut.bind(this);
-      this.#handleTriggerClick = this.#handleTriggerClick.bind(this);
-      this.#handleKeyDown = this.#handleKeyDown.bind(this);
-      this.#handleDocumentKeyDown = this.#handleDocumentKeyDown.bind(this);
-      this.#handleDocumentPointerDown = this.#handleDocumentPointerDown.bind(this);
-      this.#handleContentPointerEnter = this.#handleContentPointerEnter.bind(this);
-      this.#handleContentPointerLeave = this.#handleContentPointerLeave.bind(this);
-      this.#handleSlotChange = this.#handleSlotChange.bind(this);
+      this.#boundPointerEnter = this.#handlePointerEnter.bind(this);
+      this.#boundPointerLeave = this.#handlePointerLeave.bind(this);
+      this.#boundFocusIn = this.#handleFocusIn.bind(this);
+      this.#boundFocusOut = this.#handleFocusOut.bind(this);
+      this.#boundTriggerClick = this.#handleTriggerClick.bind(this);
+      this.#boundKeyDown = this.#handleKeyDown.bind(this);
+      this.#boundDocumentKeyDown = this.#handleDocumentKeyDown.bind(this);
+      this.#boundDocumentPointerDown = this.#handleDocumentPointerDown.bind(this);
+      this.#boundContentPointerEnter = this.#handleContentPointerEnter.bind(this);
+      this.#boundContentPointerLeave = this.#handleContentPointerLeave.bind(this);
+      this.#boundSlotChange = this.#handleSlotChange.bind(this);
     }
-
-    /** @type {(event: PointerEvent) => void} */
-    #handlePointerEnter;
-    /** @type {(event: PointerEvent) => void} */
-    #handlePointerLeave;
-    /** @type {(event: FocusEvent) => void} */
-    #handleFocusIn;
-    /** @type {(event: FocusEvent) => void} */
-    #handleFocusOut;
-    /** @type {(event: MouseEvent) => void} */
-    #handleTriggerClick;
-    /** @type {(event: KeyboardEvent) => void} */
-    #handleKeyDown;
-    /** @type {(event: KeyboardEvent) => void} */
-    #handleDocumentKeyDown;
-    /** @type {(event: PointerEvent) => void} */
-    #handleDocumentPointerDown;
-    /** @type {(event: PointerEvent) => void} */
-    #handleContentPointerEnter;
-    /** @type {(event: PointerEvent) => void} */
-    #handleContentPointerLeave;
-    /** @type {() => void} */
-    #handleSlotChange;
 
     connectedCallback() {
       upgradeProperty(this, "open");
@@ -360,15 +359,15 @@
         this.#reflectOpenAttribute(true);
       }
 
-      this.#triggerContainer.addEventListener("pointerenter", this.#handlePointerEnter);
-      this.#triggerContainer.addEventListener("pointerleave", this.#handlePointerLeave);
-      this.#triggerContainer.addEventListener("focusin", this.#handleFocusIn);
-      this.#triggerContainer.addEventListener("focusout", this.#handleFocusOut);
-      this.#triggerContainer.addEventListener("click", this.#handleTriggerClick);
-      this.#triggerContainer.addEventListener("keydown", this.#handleKeyDown, true);
-      this.#content.addEventListener("pointerenter", this.#handleContentPointerEnter);
-      this.#content.addEventListener("pointerleave", this.#handleContentPointerLeave);
-      this.#triggerSlot.addEventListener("slotchange", this.#handleSlotChange);
+      this.#triggerContainer.addEventListener("pointerenter", this.#boundPointerEnter);
+      this.#triggerContainer.addEventListener("pointerleave", this.#boundPointerLeave);
+      this.#triggerContainer.addEventListener("focusin", this.#boundFocusIn);
+      this.#triggerContainer.addEventListener("focusout", this.#boundFocusOut);
+      this.#triggerContainer.addEventListener("click", this.#boundTriggerClick);
+      this.#triggerContainer.addEventListener("keydown", this.#boundKeyDown, true);
+      this.#content.addEventListener("pointerenter", this.#boundContentPointerEnter);
+      this.#content.addEventListener("pointerleave", this.#boundContentPointerLeave);
+      this.#triggerSlot.addEventListener("slotchange", this.#boundSlotChange);
 
       this.#applyState();
       this.#handleSlotChange();
@@ -383,20 +382,20 @@
 
       if (this.#open) {
         this.#attachGlobals();
-        this.#positionContent();
+        this._positionContent();
       }
     }
 
     disconnectedCallback() {
-      this.#triggerContainer.removeEventListener("pointerenter", this.#handlePointerEnter);
-      this.#triggerContainer.removeEventListener("pointerleave", this.#handlePointerLeave);
-      this.#triggerContainer.removeEventListener("focusin", this.#handleFocusIn);
-      this.#triggerContainer.removeEventListener("focusout", this.#handleFocusOut);
-      this.#triggerContainer.removeEventListener("click", this.#handleTriggerClick);
-      this.#triggerContainer.removeEventListener("keydown", this.#handleKeyDown, true);
-      this.#content.removeEventListener("pointerenter", this.#handleContentPointerEnter);
-      this.#content.removeEventListener("pointerleave", this.#handleContentPointerLeave);
-      this.#triggerSlot.removeEventListener("slotchange", this.#handleSlotChange);
+      this.#triggerContainer.removeEventListener("pointerenter", this.#boundPointerEnter);
+      this.#triggerContainer.removeEventListener("pointerleave", this.#boundPointerLeave);
+      this.#triggerContainer.removeEventListener("focusin", this.#boundFocusIn);
+      this.#triggerContainer.removeEventListener("focusout", this.#boundFocusOut);
+      this.#triggerContainer.removeEventListener("click", this.#boundTriggerClick);
+      this.#triggerContainer.removeEventListener("keydown", this.#boundKeyDown, true);
+      this.#content.removeEventListener("pointerenter", this.#boundContentPointerEnter);
+      this.#content.removeEventListener("pointerleave", this.#boundContentPointerLeave);
+      this.#triggerSlot.removeEventListener("slotchange", this.#boundSlotChange);
       this.#contentSlot.removeEventListener("slotchange", this.#updateMetrics);
       this.#resizeObserver?.disconnect();
       this.#resizeObserver = null;
@@ -437,7 +436,7 @@
             : this.#side;
           this.dataset.side = this.#side;
           if (this.#open) {
-            this.#positionContent();
+            this._positionContent();
           }
           break;
         }
@@ -447,7 +446,7 @@
             : this.#align;
           this.dataset.align = this.#align;
           if (this.#open) {
-            this.#positionContent();
+            this._positionContent();
           }
           break;
         }
@@ -455,7 +454,7 @@
           this.#sideOffset = parseOffset(newValue, DEFAULT_SIDE_OFFSET);
           this.style.setProperty("--tooltip-side-offset", `${this.#sideOffset}px`);
           if (this.#open) {
-            this.#positionContent();
+            this._positionContent();
           }
           break;
         }
@@ -463,7 +462,7 @@
           this.#alignOffset = parseOffset(newValue, DEFAULT_ALIGN_OFFSET);
           this.style.setProperty("--tooltip-align-offset", `${this.#alignOffset}px`);
           if (this.#open) {
-            this.#positionContent();
+            this._positionContent();
           }
           break;
         }
@@ -562,7 +561,7 @@
 
       if (this.#open) {
         this.#attachGlobals();
-        this.#positionContent();
+        this._positionContent();
       } else {
         this.#detachGlobals();
       }
@@ -574,8 +573,8 @@
       }
       window.addEventListener("resize", this.#updateMetrics, { passive: true });
       window.addEventListener("scroll", this.#updateMetrics, true);
-      document.addEventListener("keydown", this.#handleDocumentKeyDown, true);
-      document.addEventListener("pointerdown", this.#handleDocumentPointerDown, true);
+      document.addEventListener("keydown", this.#boundDocumentKeyDown, true);
+      document.addEventListener("pointerdown", this.#boundDocumentPointerDown, true);
       this.#globalsAttached = true;
     }
 
@@ -585,8 +584,8 @@
       }
       window.removeEventListener("resize", this.#updateMetrics);
       window.removeEventListener("scroll", this.#updateMetrics, true);
-      document.removeEventListener("keydown", this.#handleDocumentKeyDown, true);
-      document.removeEventListener("pointerdown", this.#handleDocumentPointerDown, true);
+      document.removeEventListener("keydown", this.#boundDocumentKeyDown, true);
+      document.removeEventListener("pointerdown", this.#boundDocumentPointerDown, true);
       this.#globalsAttached = false;
     }
 
@@ -744,7 +743,12 @@
       });
     }
 
-    #positionContent() {
+    /**
+     * Positions the tooltip surface relative to the trigger.
+     *
+     * @private
+     */
+    _positionContent() {
       const triggerRect = this.#triggerContainer.getBoundingClientRect();
       const contentRect = this.#content.getBoundingClientRect();
 

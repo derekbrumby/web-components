@@ -127,26 +127,33 @@
     <script>
       const volumeSlider = document.getElementById('slider-volume');
       const volumeOutput = document.getElementById('slider-volume-output');
-      if (volumeSlider && volumeOutput) {
-        const updateVolume = () => {
-          const value = volumeSlider.value[0] ?? 0;
-          volumeOutput.textContent = `${value}%`;
-        };
-        volumeSlider.addEventListener('input', updateVolume);
-        updateVolume();
-      }
-
       const priceSlider = document.getElementById('slider-price');
       const priceOutput = document.getElementById('slider-price-output');
       const priceForm = document.getElementById('slider-price-form');
       const priceLog = document.getElementById('slider-price-log');
+
+      const sliderReady = customElements.whenDefined('wc-slider');
+
+      if (volumeSlider && volumeOutput) {
+        sliderReady.then(() => {
+          const updateVolume = () => {
+            const [value = 0] = volumeSlider.value;
+            volumeOutput.textContent = `${value}%`;
+          };
+          volumeSlider.addEventListener('input', updateVolume);
+          updateVolume();
+        });
+      }
+
       if (priceSlider && priceOutput) {
-        const updatePrice = () => {
-          const [min = 0, max = 0] = priceSlider.value;
-          priceOutput.textContent = `$${min} – $${max}`;
-        };
-        priceSlider.addEventListener('input', updatePrice);
-        updatePrice();
+        sliderReady.then(() => {
+          const updatePrice = () => {
+            const [min = 0, max = 0] = priceSlider.value;
+            priceOutput.textContent = `$${min} – $${max}`;
+          };
+          priceSlider.addEventListener('input', updatePrice);
+          updatePrice();
+        });
       }
 
       if (priceForm && priceLog) {

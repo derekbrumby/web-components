@@ -36,6 +36,22 @@ examples for each component.
 
 ## Components
 
+### `<wc-markdown-viewer>`
+
+Render markdown from an inline string or fetch it from a remote `.md` file while keeping the output
+sanitized. The component ships zero runtime dependencies, exposing slots for loading states and CSS
+hooks for theming.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/markdown-viewer.js"></script>
+
+<!-- Inline markdown -->
+<wc-markdown-viewer markdown="# Hello!\nBuilt for CDN delivery."></wc-markdown-viewer>
+
+<!-- Remote markdown -->
+<wc-markdown-viewer src="/docs/welcome.md">
+  <span slot="loading">Loading documentation…</span>
+</wc-markdown-viewer>
 ### `<wc-spinner>`
 
 An accessible loading indicator with no runtime dependencies. Customize the spinner’s size, stroke, and color with
@@ -49,6 +65,31 @@ CSS custom properties while keeping a polite status message for assistive techno
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
+| `markdown` | string | `""` | Inline markdown string to render immediately. |
+| `src` | string | `""` | URL pointing to a markdown resource that will be fetched and rendered. |
+
+#### Slots
+
+- _(default)_ — Optional fallback markdown text. Used when neither `markdown` nor `src` provide
+  content.
+- `loading` — Displayed while a remote `src` document is loading.
+
+#### Events
+
+- `markdown-loadstart` — Fired when a remote request begins. `event.detail` includes `{ source }`.
+- `markdown-load` — Emitted after successfully fetching content. `event.detail.markdown` contains
+  the raw string.
+- `markdown-error` — Fired when fetching fails. Access the thrown `error` through
+  `event.detail.error`.
+
+#### Styling hooks
+
+- Custom properties: `--markdown-viewer-color`, `--markdown-viewer-background`,
+  `--markdown-viewer-padding`, `--markdown-viewer-code-background`,
+  `--markdown-viewer-code-color`, `--markdown-viewer-inline-code-background`,
+  `--markdown-viewer-inline-code-color`, `--markdown-viewer-link-color`,
+  `--markdown-viewer-heading-margin`, and more.
+- Parts: `::part(container)`, `::part(empty)`, `::part(error)`.
 | `label` | string | `"Loading"` | Sets the accessible status text announced to assistive technologies. Mirrors to `aria-label` when one is not provided. |
 | `visual-label` | boolean | `false` | Reveals the accessible label next to the indicator so the status is shown visually as well. |
 

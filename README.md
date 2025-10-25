@@ -530,6 +530,8 @@ split editors, dashboards, or media inspectors with zero runtime dependencies.
 | --- | --- | --- | --- |
 | `direction` | `horizontal` \| `vertical` | `horizontal` | Controls the layout axis, handle cursor, and keyboard bindings. |
 
+Give the group a definite `inline-size`/`block-size` (for example through `height` on a wrapping container) so that percentage-based panel sizes resolve correctly, especially for vertical stacks.
+
 #### `<wc-resizable-panel>`
 
 | Name | Type | Default | Description |

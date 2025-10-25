@@ -516,6 +516,8 @@
 
           [part="container"] {
             display: flex;
+            inline-size: 100%;
+            block-size: 100%;
             border-radius: var(--wc-resizable-border-radius);
             border: var(--wc-resizable-border, 1px solid var(--wc-resizable-border-color));
             background: var(--wc-resizable-background);

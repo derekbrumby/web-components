@@ -9,6 +9,7 @@
     <script type="module" src="./src/alert-dialog.js"></script>
     <script type="module" src="./src/aspect-ratio.js"></script>
     <script type="module" src="./src/avatar.js"></script>
+    <script type="module" src="./src/form.js"></script>
     <style>
       :root {
         color-scheme: light dark;
@@ -211,6 +212,28 @@
         <h1>Web Component Playground</h1>
         <p>Drop-in friendly, dependency-free elements ready for CDN delivery.</p>
       </header>
+
+      <section>
+        <header>
+          <h2>&lt;wc-form&gt;</h2>
+          <p>Collect validated contact requests with inline messaging and fully managed focus states.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Inline validation with native constraints</h3>
+            <wc-form id="wc-form-demo"></wc-form>
+            <pre class="log" id="wc-form-log">Fill out the form and submit to see emitted events.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Simulated server-side validation</h3>
+            <wc-form id="wc-form-server" submit-label="Send question"></wc-form>
+            <button id="wc-form-server-error" class="ghost-button">Trigger server errors</button>
+            <pre class="log" id="wc-form-server-log">Click "Trigger server errors" to simulate API feedback.</pre>
+          </div>
+        </div>
+      </section>
 
       <section>
         <header>
@@ -544,6 +567,58 @@
     </main>
 
     <script>
+      const demoForm = document.getElementById('wc-form-demo');
+      const demoFormLog = document.getElementById('wc-form-log');
+      if (demoForm && demoFormLog) {
+        demoForm.addEventListener('wc-form-data', (event) => {
+          const data = Object.entries(event.detail || {})
+            .map(([key, value]) => `${key}: ${value}`)
+            .join('\n');
+          demoFormLog.textContent = data ? `Current values:\n${data}` : 'Form cleared.';
+        });
+        demoForm.addEventListener('wc-form-submit', (event) => {
+          if (event.detail instanceof FormData) {
+            const objectData = Object.fromEntries(event.detail.entries());
+            demoFormLog.textContent = `Submitted payload:\n${JSON.stringify(objectData, null, 2)}`;
+          }
+        });
+      }
+
+      const serverForm = document.getElementById('wc-form-server');
+      const serverFormLog = document.getElementById('wc-form-server-log');
+      const serverErrorButton = document.getElementById('wc-form-server-error');
+      if (serverForm && serverFormLog) {
+        serverForm.addEventListener('wc-form-submit', () => {
+          serverFormLog.textContent = 'Submitting…';
+          window.setTimeout(() => {
+            if (typeof serverForm.setCustomError === 'function') {
+              serverForm.setCustomError('email', 'That email is already associated with a ticket.');
+              serverForm.setCustomError('question', 'Please add more detail so we can help faster.');
+            }
+            serverFormLog.textContent = 'Server responded with validation errors.';
+          }, 400);
+        });
+
+        serverForm.addEventListener('wc-form-data', (event) => {
+          const data = Object.entries(event.detail || {})
+            .map(([key, value]) => `${key}: ${value}`)
+            .join('\n');
+          serverFormLog.textContent = data
+            ? `Client-side values:\n${data}`
+            : 'Form cleared. Click "Trigger server errors" to add failures.';
+        });
+      }
+
+      if (serverForm && serverErrorButton && serverFormLog) {
+        serverErrorButton.addEventListener('click', () => {
+          if (typeof serverForm.setCustomError === 'function') {
+            serverForm.setCustomError('email', 'That email is already associated with a ticket.');
+            serverForm.setCustomError('question', 'Please add more detail so we can help faster.');
+          }
+          serverFormLog.textContent = 'Injected server-side errors. Start typing to clear them.';
+        });
+      }
+
       const otpForm = document.getElementById('otp-demo');
       const otpLog = document.getElementById('otp-log');
       const otpAdvanced = document.getElementById('otp-advanced');

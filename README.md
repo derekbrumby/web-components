@@ -13,12 +13,65 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/form.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
 examples for each component.
 
 ## Components
+
+### `<wc-form>`
+
+An opinionated contact form that mirrors the Radix UI demo experience. It wires native constraint
+validation to accessible inline messages, automatically focuses the first invalid control, and exposes
+helpers for server-driven errors.
+
+```html
+<wc-form id="support-form" submit-label="Post question"></wc-form>
+
+<script type="module" src="https://cdn.example.com/web-components/form.js"></script>
+<script type="module">
+  const form = document.getElementById('support-form');
+  form?.addEventListener('wc-form-data', (event) => {
+    console.log('Form payload', event.detail);
+  });
+  form?.addEventListener('wc-form-submit', (event) => {
+    // Forward FormData to your API endpoint
+    fetch('/api/support', { method: 'POST', body: event.detail });
+  });
+</script>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `submit-label` | string | `"Post question"` | Customises the text shown on the submit button. |
+
+#### Methods
+
+- `reset()` — clears the form, removes validation messages, and resets custom errors.
+- `setCustomError(name: string, message: string)` — toggles a custom validation message for a field
+  (`"email"` or `"question"`).
+- `clearCustomError(name: string)` — convenience wrapper around `setCustomError(name, "")`.
+
+#### Events
+
+- `wc-form-submit` — fired after successful validation. `event.detail` is the `FormData` instance ready
+  for network submission.
+- `wc-form-data` — fired alongside `wc-form-submit` with a plain object version of the current values.
+
+#### Styling hooks
+
+- Custom properties: `--wc-form-background`, `--wc-form-foreground`, `--wc-form-muted`,
+  `--wc-form-field-background`, `--wc-form-field-border`, `--wc-form-field-border-hover`,
+  `--wc-form-field-border-focus`, `--wc-form-submit-background`, `--wc-form-submit-color`,
+  `--wc-form-submit-hover`, `--wc-form-radius`, `--wc-form-field-radius`, `--wc-form-shadow`,
+  `--wc-form-input-padding`, `--wc-form-message-error`, `--wc-form-message-error-color`, and more.
+- Parts: `::part(container)`, `::part(header)`, `::part(title)`, `::part(description)`, `::part(form)`,
+  `::part(field)`, `::part(label)`, `::part(messages)`, `::part(message)`, `::part(control)`,
+  `::part(submit)` allow deep theming.
 
 ### `<wc-otp-field>`
 

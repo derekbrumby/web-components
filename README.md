@@ -42,7 +42,8 @@ examples for each component.
 
 Render markdown from an inline string or fetch it from a remote `.md` file while keeping the output
 sanitized. The component ships zero runtime dependencies, exposing slots for loading states and CSS
-hooks for theming.
+hooks for theming. GitHub-flavoured tables render with or without leading pipes so documentation
+copy pastes cleanly.
 
 ```html
 <script type="module" src="https://cdn.example.com/web-components/markdown-viewer.js"></script>

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-select&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/select.js"></script>
+    <style>
+      .select-showcase {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .select-stack {
+        display: grid;
+        gap: 1rem;
+        align-content: start;
+      }
+
+      .select-stack label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        color: #312e81;
+      }
+
+      .select-inline-note {
+        margin: 0;
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      .log {
+        min-height: 5rem;
+      }
+
+      wc-select {
+        --wc-select-trigger-background: #ffffff;
+        --wc-select-trigger-color: #4338ca;
+        --wc-select-trigger-border: 1px solid rgba(99, 102, 241, 0.22);
+        --wc-select-trigger-shadow: 0 18px 40px -28px rgba(79, 70, 229, 0.55);
+        --wc-select-trigger-focus-ring: 0 0 0 2px rgba(129, 140, 248, 0.55);
+        --wc-select-content-background: rgba(255, 255, 255, 0.96);
+        --wc-select-content-border: 1px solid rgba(99, 102, 241, 0.18);
+        --wc-select-content-shadow: 0 32px 64px -32px rgba(99, 102, 241, 0.55);
+        --wc-select-viewport-padding: 0.4rem;
+        --wc-select-option-highlighted-background: rgba(79, 70, 229, 0.16);
+        --wc-select-option-highlighted-color: #1e1b4b;
+        --wc-select-option-indicator-color: #4338ca;
+        --wc-select-group-label-color: #818cf8;
+      }
+
+      .select-grid {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .select-grid > div {
+        display: grid;
+        gap: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-select&gt;</h2>
+          <p>
+            Button-triggered listbox with grouping, separators, typeahead, and keyboard-friendly navigation. Mirrors the
+            Radix UI select experience without runtime dependencies.
+          </p>
+        </header>
+
+        <div class="select-showcase">
+          <div class="example-card">
+            <h3>Produce picker</h3>
+            <div class="select-grid">
+              <div class="select-stack">
+                <label for="produce-select">Pick your favourite:</label>
+                <wc-select id="produce-select" placeholder="Select a fruit…">
+                  <wc-select-group label="Fruits">
+                    <wc-select-option value="apple">Apple</wc-select-option>
+                    <wc-select-option value="banana">Banana</wc-select-option>
+                    <wc-select-option value="blueberry">Blueberry</wc-select-option>
+                    <wc-select-option value="grapes">Grapes</wc-select-option>
+                    <wc-select-option value="pineapple">Pineapple</wc-select-option>
+                  </wc-select-group>
+
+                  <wc-select-separator></wc-select-separator>
+
+                  <wc-select-group label="Vegetables">
+                    <wc-select-option value="aubergine">Aubergine</wc-select-option>
+                    <wc-select-option value="broccoli">Broccoli</wc-select-option>
+                    <wc-select-option value="carrot" disabled>Carrot</wc-select-option>
+                    <wc-select-option value="courgette">Courgette</wc-select-option>
+                    <wc-select-option value="leek">Leek</wc-select-option>
+                  </wc-select-group>
+
+                  <wc-select-separator></wc-select-separator>
+
+                  <wc-select-group label="Meat">
+                    <wc-select-option value="beef">Beef</wc-select-option>
+                    <wc-select-option value="chicken">Chicken</wc-select-option>
+                    <wc-select-option value="lamb">Lamb</wc-select-option>
+                    <wc-select-option value="pork">Pork</wc-select-option>
+                  </wc-select-group>
+                </wc-select>
+                <p class="select-inline-note">
+                  Use <kbd>Arrow keys</kbd>, <kbd>Home</kbd>/<kbd>End</kbd>, or start typing to quickly jump to items. Press
+                  <kbd>Enter</kbd> to confirm.
+                </p>
+              </div>
+
+              <div>
+                <h4>Recent changes</h4>
+                <pre id="select-log" class="log">Interact with the select to see emitted events.</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="example-card">
+            <h3>Custom trigger styling</h3>
+            <div class="select-stack">
+              <wc-select
+                id="color-select"
+                value="violet"
+                style="
+                  --wc-select-trigger-background: linear-gradient(135deg, #ede9fe, #e0e7ff);
+                  --wc-select-trigger-color: #312e81;
+                  --wc-select-trigger-shadow: 0 18px 45px -30px rgba(76, 29, 149, 0.6);
+                  --wc-select-viewport-padding: 0.35rem;
+                  --wc-select-content-shadow: 0 26px 56px -28px rgba(59, 7, 100, 0.5);
+                  --wc-select-option-highlighted-background: rgba(76, 29, 149, 0.18);
+                  --wc-select-option-indicator-color: #4c1d95;
+                  --wc-select-group-label-color: #4c1d95;
+                "
+              >
+                <wc-select-group label="Palette">
+                  <wc-select-option value="violet">Violet</wc-select-option>
+                  <wc-select-option value="emerald">Emerald</wc-select-option>
+                  <wc-select-option value="amber">Amber</wc-select-option>
+                  <wc-select-option value="sky">Sky</wc-select-option>
+                </wc-select-group>
+              </wc-select>
+              <p class="select-inline-note">Customize via CSS custom properties and the exposed ::part hooks.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const select = document.getElementById('produce-select');
+      const log = document.getElementById('select-log');
+      if (select && log) {
+        const entries = [];
+        const updateLog = () => {
+          log.textContent = entries.slice(-4).join('\n') || 'Interact with the select to see emitted events.';
+        };
+
+        select.addEventListener('wc-select-toggle', (event) => {
+          entries.push(event.detail?.open ? 'Dropdown opened.' : 'Dropdown closed.');
+          updateLog();
+        });
+
+        select.addEventListener('wc-select-change', (event) => {
+          const value = event.detail?.value;
+          entries.push(`Value changed → ${value ?? 'unknown'}`);
+          updateLog();
+        });
+
+        updateLog();
+      }
+    </script>
+  </body>
+</html>

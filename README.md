@@ -17,17 +17,104 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/navigation-menu.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/label.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/hover-card.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/tooltip.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/form.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/toggle-group.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/radio-group.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/slider.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/toggle.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/spinner.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/scroll-area.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/separator.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/toolbar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
 examples for each component.
 
 ## Components
+
+### `<wc-markdown-viewer>`
+
+Render markdown from an inline string or fetch it from a remote `.md` file while keeping the output
+sanitized. The component ships zero runtime dependencies, exposing slots for loading states and CSS
+hooks for theming.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/markdown-viewer.js"></script>
+
+<!-- Inline markdown -->
+<wc-markdown-viewer markdown="# Hello!\nBuilt for CDN delivery."></wc-markdown-viewer>
+
+<!-- Attribute escaping is automatically normalised -->
+<wc-markdown-viewer markdown="Line one\nLine two"></wc-markdown-viewer>
+
+<!-- Remote markdown -->
+<wc-markdown-viewer src="/docs/welcome.md">
+  <span slot="loading">Loading documentation…</span>
+</wc-markdown-viewer>
+### `<wc-spinner>`
+
+An accessible loading indicator with no runtime dependencies. Customize the spinner’s size, stroke, and color with
+CSS custom properties while keeping a polite status message for assistive technologies.
+
+```html
+<wc-spinner label="Processing payment"></wc-spinner>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `markdown` | string | `""` | Inline markdown string to render immediately. Backslash escaped newlines (e.g. `\n`) are normalised. |
+| `src` | string | `""` | URL pointing to a markdown resource that will be fetched and rendered. |
+
+#### Slots
+
+- _(default)_ — Optional fallback markdown text. Used when neither `markdown` nor `src` provide
+  content.
+- `loading` — Displayed while a remote `src` document is loading.
+
+#### Events
+
+- `markdown-loadstart` — Fired when a remote request begins. `event.detail` includes `{ source }`.
+- `markdown-load` — Emitted after successfully fetching content. `event.detail.markdown` contains
+  the raw string.
+- `markdown-error` — Fired when fetching fails. Access the thrown `error` through
+  `event.detail.error`.
+
+#### Styling hooks
+
+- Custom properties: `--markdown-viewer-color`, `--markdown-viewer-background`,
+  `--markdown-viewer-padding`, `--markdown-viewer-code-background`,
+  `--markdown-viewer-code-color`, `--markdown-viewer-inline-code-background`,
+  `--markdown-viewer-inline-code-color`, `--markdown-viewer-link-color`,
+  `--markdown-viewer-heading-margin`, and more.
+- Parts: `::part(container)`, `::part(empty)`, `::part(error)`.
+| `label` | string | `"Loading"` | Sets the accessible status text announced to assistive technologies. Mirrors to `aria-label` when one is not provided. |
+| `visual-label` | boolean | `false` | Reveals the accessible label next to the indicator so the status is shown visually as well. |
+
+#### Slots
+
+- _(default)_ — Optional inline content displayed after the spinner. Useful for custom status text or icons.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-spinner-size`, `--wc-spinner-stroke-width`, `--wc-spinner-track-color`,
+  `--wc-spinner-color`, `--wc-spinner-gap`, `--wc-spinner-duration`.
+- Parts: `::part(icon)` for the SVG container, `::part(label)` for the accessible status text (visible when
+  `visual-label` is present).
+
+The element defaults to `role="status"`, `aria-live="polite"`, and `aria-busy="true"` so updates are announced without
+stealing focus.
 
 ### `<wc-label>`
 
@@ -65,6 +152,41 @@ Tune presentation with CSS custom properties and parts:
   `--label-line-height`, `--label-color`, `--label-background`, `--label-radius`, `--label-focus-outline`, and
   more.
 - Parts: `::part(label)`, `::part(text)`, `::part(control)` for scoped theming without breaking internals.
+### `<wc-separator>`
+
+A flexible divider that mirrors the semantics of `<hr>` while offering vertical orientation support and
+decorative presentation for purely visual usage. By default the component exposes `role="separator"`
+so assistive technologies understand its purpose.
+
+```html
+<div class="stack">
+  <h3>Integrations</h3>
+  <p>Connect to your existing workflow with a few clicks.</p>
+  <wc-separator></wc-separator>
+  <div class="links">
+    <a href="#">Docs</a>
+    <wc-separator orientation="vertical" decorative></wc-separator>
+    <a href="#">API status</a>
+  </div>
+</div>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Controls the axis the separator occupies. Vertical separators collapse their width and stretch to the available height. |
+| `decorative` | boolean | `false` | Removes the structural `role` and hides the separator from assistive tech for purely visual separation. |
+| `orientation` property | `"horizontal" \| "vertical"` | `"horizontal"` | Property alias for the orientation attribute. |
+| `decorative` property | boolean | `false` | Reflects to the `decorative` attribute for imperative toggling. |
+
+#### Styling hooks
+
+- CSS custom properties: `--separator-thickness`, `--separator-color`, `--separator-length`,
+  `--separator-radius`, `--separator-margin`.
+- Parts: `::part(separator)` targets the internal rule element without breaking encapsulation.
+- Data attributes: `[data-orientation="horizontal" | "vertical"]` for orientation aware styling.
+
 ### `<wc-form>`
 
 An opinionated contact form that mirrors the Radix UI demo experience. It wires native constraint
@@ -173,6 +295,125 @@ between thumbs.
   step="5"
   name="volume"
 ></wc-slider>
+### `<wc-switch>`
+
+An accessible binary toggle that mimics the Radix UI Switch while staying dependency-free. It exposes keyboard
+controls, optional form participation, and styling hooks for both the track and thumb.
+
+```html
+<wc-switch name="airplane" value="enabled" checked>Airplane mode</wc-switch>
+### `<wc-toggle-group>`
+
+An accessible collection of on/off buttons. Configure it for single selection (like radio behaviour) or multiple
+selection (like toggle buttons) with identical markup. Each item supports roving focus, keyboard navigation, and
+ARIA pressed states.
+
+```html
+<wc-toggle-group aria-label="Text alignment" default-value="center">
+  <button type="button" data-value="left" aria-label="Align left">L</button>
+  <button type="button" data-value="center" aria-label="Align center">C</button>
+  <button type="button" data-value="right" aria-label="Align right">R</button>
+</wc-toggle-group>
+
+<wc-toggle-group
+  class="formatting-group"
+  aria-label="Formatting"
+  type="multiple"
+  default-values="bold italic"
+>
+  <button type="button" data-value="bold">B</button>
+  <button type="button" data-value="italic">I</button>
+  <button type="button" data-value="underline">U</button>
+</wc-toggle-group>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `single` \| `multiple` | `single` | Controls whether one or many buttons can be active. |
+| `value` | string | `null` | Selected value in single mode. Reflects user interaction when uncontrolled. |
+| `values` | space-delimited string | `""` | Active values in multiple mode. Reflects when uncontrolled. |
+| `default-value` | string | `null` | Initial value for single mode without forcing control. |
+| `default-values` | space-delimited string | `""` | Initial values for multiple mode without forcing control. |
+| `disabled` | boolean | `false` | Disables all items and removes them from the focus order. |
+| `orientation` | `horizontal` \| `vertical` | `horizontal` | Adjusts keyboard navigation and flex layout direction. |
+| `loop` | boolean | `true` | Wrap keyboard navigation from end to start. Set `loop="false"` to disable wrapping. |
+
+#### Properties
+
+- `value: string | null` — mirrors the attribute for single mode.
+- `values: string[]` — mirrors the attribute for multiple mode.
+- `disabled: boolean` — toggles the component disabled state.
+- `orientation: "horizontal" | "vertical"` — runtime orientation control.
+- `loop: boolean` — enables or disables wrap-around focus navigation.
+
+#### Events
+
+- `wc-toggle-group-change` — fired whenever user interaction updates selection. `event.detail` contains
+  `{ value: string | null, values: string[] }` representing the toggled value and the current collection.
+
+#### Slots
+
+- _(default)_ — Place any number of focusable elements (typically `<button>`). Provide `data-value` or `value`
+  attributes so the group can track each item.
+
+#### Styling hooks
+
+- CSS custom properties: `--toggle-group-background`, `--toggle-group-shadow`, `--toggle-group-radius`,
+  `--toggle-group-gap`, `--toggle-group-padding`, `--toggle-group-font-family`, `--toggle-group-item-size`,
+  `--toggle-group-item-radius`, `--toggle-group-item-background`, `--toggle-group-item-color`,
+  `--toggle-group-item-hover`, `--toggle-group-item-active-background`, `--toggle-group-item-active-color`,
+  `--toggle-group-item-disabled-opacity`, `--toggle-group-item-focus-ring`.
+- Parts: `::part(root)` for the container and `::part(item)` for each toggle button.
+- Data attributes: host `[data-orientation]`, `[data-disabled]`; items `[data-state]`, `[data-disabled]`,
+  `[data-position]`, and `[data-focus]` for granular styling.
+### `<wc-radio-group>`
+
+An accessible radio group with roving focus, loopable keyboard navigation, and form association built in. Each
+`<wc-radio-group-item>` renders a stylable control and indicator while ensuring only one option stays selected.
+
+```html
+<wc-radio-group name="density" default-value="comfortable">
+  <wc-radio-group-item value="default">Default</wc-radio-group-item>
+  <wc-radio-group-item value="comfortable">Comfortable</wc-radio-group-item>
+  <wc-radio-group-item value="compact">Compact</wc-radio-group-item>
+</wc-radio-group>
+### `<wc-select>`
+
+Framework-agnostic select element that composes a trigger button, floating listbox, grouped options, separators,
+and typeahead navigation. Inspired by the Radix UI Select primitive, the component ships with zero runtime
+dependencies and exposes rich styling hooks.
+
+```html
+<wc-select placeholder="Select a fruit…">
+  <wc-select-group label="Fruits">
+    <wc-select-option value="apple">Apple</wc-select-option>
+    <wc-select-option value="banana">Banana</wc-select-option>
+    <wc-select-option value="blueberry">Blueberry</wc-select-option>
+  </wc-select-group>
+
+  <wc-select-separator></wc-select-separator>
+
+  <wc-select-group label="Vegetables">
+    <wc-select-option value="aubergine">Aubergine</wc-select-option>
+    <wc-select-option value="carrot" disabled>Carrot</wc-select-option>
+  </wc-select-group>
+</wc-select>
+### `<wc-progress>`
+
+Display task completion with a lightweight, accessible progress indicator. The component mirrors the Radix UI
+progress bar API while keeping the markup minimal and themable through CSS custom properties.
+
+```html
+<wc-progress id="task-progress" value="32" max="80" label="File upload"></wc-progress>
+<script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
+<script type="module">
+  const progress = document.getElementById('task-progress');
+  progress?.addEventListener('click', () => {
+    progress.value = Math.min(progress.value + 8, progress.max);
+  });
+</script>
 ```
 
 #### Attributes & properties
@@ -202,6 +443,114 @@ between thumbs.
   `--wc-slider-thumb-size`, `--wc-slider-thumb-radius`, `--wc-slider-thumb-background`,
   `--wc-slider-thumb-shadow`, `--wc-slider-thumb-focus-outline`.
 - Parts: `::part(root)`, `::part(track)`, `::part(range)`, `::part(thumb)`.
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | boolean | `false` | Sets the switch to the “on” position. Reflects to the `checked` property. |
+| `disabled` | boolean | `false` | Removes the control from the tab order and blocks pointer/keyboard interaction. |
+| `required` | boolean | `false` | Marks the control as required for native form validation. |
+| `name` | string | `""` | Associates the component with a form entry when checked. |
+| `value` | string | `"on"` | Value submitted with the parent form while checked. |
+
+Call `toggle(force?: boolean)` to imperatively flip the value or force a specific state.
+
+#### Events
+
+- `input` — fires whenever the checked state changes. Bubbles and crosses shadow boundaries.
+- `change` — mirrors native switch/checkbox change semantics.
+
+#### Styling hooks
+
+- CSS custom properties: `--switch-width`, `--switch-height`, `--switch-padding`, `--switch-radius`,
+  `--switch-track-background`, `--switch-track-background-checked`, `--switch-thumb-size`,
+  `--switch-thumb-background`, `--switch-thumb-shadow`, `--switch-focus-ring`, `--switch-gap`,
+  `--switch-label-color`.
+- Parts: `::part(root)`, `::part(control)`, `::part(thumb)`, `::part(label)`.
+- Data attributes: `[data-state="checked" | "unchecked"]`, `[data-disabled="true"]`.
+| `value` | string | First enabled item's value | Currently selected option. Reflects to the `value` property. |
+| `default-value` | string | `""` | Initial value applied when no `value` attribute or property is set. |
+| `name` | string | `""` | Associates the group with form submissions; uses the selected value. |
+| `orientation` | `"vertical" \| "horizontal"` | `"vertical"` | Switch between stacked and inline layouts and keyboard direction. |
+| `disabled` | boolean | `false` | Disables the entire group and removes items from the tab order. |
+| `required` | boolean | `false` | When true, native validation requires a selection before form submission. |
+| `loop` | boolean | `true` | Allows arrow-key navigation to wrap from the last item back to the first. |
+
+Set `disabled` on individual `<wc-radio-group-item>` elements to remove specific choices while keeping the rest
+interactive.
+
+#### Events
+
+- `wc-radio-group-value-change` — fired whenever the selection changes. `event.detail` contains the new `value`
+  and the `origin` (`"pointer"` or `"keyboard"`).
+- `input` — mirrors the native `input` event, useful for reacting to changes in real time.
+- `change` — dispatched after the group updates, matching native form semantics.
+
+#### Styling hooks
+
+- Group-level custom properties: `--wc-radio-group-gap`, `--wc-radio-group-direction`.
+- Item-level custom properties: `--wc-radio-item-size`, `--wc-radio-item-indicator-size`, `--wc-radio-item-gap`,
+  `--wc-radio-item-radius`, `--wc-radio-item-background`, `--wc-radio-item-background-hover`,
+  `--wc-radio-item-border`, `--wc-radio-item-shadow`, `--wc-radio-item-focus-ring`,
+  `--wc-radio-item-indicator-color`, `--wc-radio-item-label-color`.
+- Parts: `::part(root)` on the group, and `::part(item)`, `::part(control)`, `::part(indicator)`, `::part(label)` on
+  each item for fine-grained theming.
+- Data attributes: `[data-state="checked"|"unchecked"]`, `[data-disabled="true"]`, and `[data-orientation]` support
+  state-based styling.
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Currently selected option value. Reflects to the `value` property. |
+| `placeholder` | string | `"Select an option"` | Text shown inside the trigger when no item is selected. |
+| `disabled` | boolean | `false` | Removes the component from the focus order and blocks interaction. |
+| `open` property | boolean (read-only) | `false` | Indicates whether the dropdown content is visible. |
+
+Call `open()` and `close()` to imperatively toggle the dropdown. The component also emits native `input` and
+`change` events whenever the selection changes.
+
+#### Child elements
+
+- `<wc-select-option>` — individual choice with `value`, `disabled`, and optional `text-value` attributes for custom
+  typeahead labels.
+- `<wc-select-group>` — wraps related options and exposes a `label` attribute for accessible grouping.
+- `<wc-select-separator>` — renders a visual separator between option clusters.
+
+#### Events
+
+- `wc-select-toggle` — fired whenever the dropdown opens or closes. `event.detail.open` is a boolean.
+- `wc-select-change` — dispatched after the value changes. `event.detail.value` provides the new value and
+  `event.detail.option` references the selected `<wc-select-option>` element.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-select-trigger-height`, `--wc-select-trigger-padding`,
+  `--wc-select-trigger-radius`, `--wc-select-trigger-background`, `--wc-select-trigger-color`,
+  `--wc-select-trigger-placeholder`, `--wc-select-trigger-border`, `--wc-select-trigger-shadow`,
+  `--wc-select-trigger-focus-ring`, `--wc-select-content-background`, `--wc-select-content-border`,
+  `--wc-select-content-radius`, `--wc-select-content-shadow`, `--wc-select-viewport-padding`,
+  `--wc-select-viewport-max-height`, `--wc-select-icon-color`, `--wc-select-option-radius`,
+  `--wc-select-option-padding`, `--wc-select-option-color`, `--wc-select-option-background`,
+  `--wc-select-option-highlighted-background`, `--wc-select-option-highlighted-color`,
+  `--wc-select-option-disabled-color`, `--wc-select-option-indicator-color`, `--wc-select-group-label-color`,
+  `--wc-select-separator-color`.
+- Parts: `::part(trigger)`, `::part(value)`, `::part(icon)`, `::part(content)`, `::part(viewport)`,
+  `::part(option)`, `::part(indicator)`, `::part(text)`, `::part(group)`, `::part(label)`, `::part(group-options)`,
+  `::part(separator)`.
+| `value` | number \| null | `null` | Sets the current completion value. Remove the attribute or set to `null` for the indeterminate state. |
+| `max` | number | `100` | Defines the maximum completion value that represents 100%. Must be greater than 0. |
+| `label` | string | `""` | Optional accessible label forwarded to `aria-label`. Omit when labelling externally via `aria-labelledby`. |
+| `value-text` | string | `""` | Custom text announced to assistive tech. Defaults to a generated percentage description when determinate. |
+
+#### Slots
+
+- `label` — Provide visible helper text that appears below the progress indicator while remaining outside the track.
+
+#### Styling hooks
+
+- CSS custom properties: `--progress-width`, `--progress-min-width`, `--progress-height`, `--progress-radius`,
+  `--progress-background`, `--progress-indicator-background`, `--progress-indicator-foreground`,
+  `--progress-transition-duration`, `--progress-transition-timing`, `--progress-complete-duration`,
+  `--progress-indeterminate-duration`, `--progress-indeterminate-easing`.
+- Parts: `::part(track)`, `::part(indicator)`, `::part(label)`.
+- Data attributes: `[data-state="loading" | "complete" | "indeterminate"]`, `[data-value]`, `[data-max]` for
+  state-driven styling.
 
 ### `<wc-password-toggle-field>`
 
@@ -256,6 +605,96 @@ Standard `<input>` attributes such as `name`, `placeholder`, `pattern`, `inputmo
   `--wc-password-field-toggle-background`, `--wc-password-field-toggle-background-hover`.
 - Parts: `::part(wrapper)`, `::part(input)`, `::part(toggle)`, `::part(icon)`, `::part(assistive-text)`.
 - Data attributes: `[data-visible="true" | "false"]` on the host and toggle button for style adjustments.
+
+### `<wc-toggle>`
+
+An accessible, two-state toggle button that mirrors the Radix UI Toggle. It supports controlled and uncontrolled
+usage, full keyboard interaction, ARIA labelling, and emits a `pressed-change` event whenever the state flips.
+
+```html
+<wc-toggle aria-label="Toggle italic text">
+  <span aria-hidden="true" style="font-style: italic;">I</span>
+</wc-toggle>
+
+<p id="toggle-preview">Preview text</p>
+
+<script type="module" src="./src/toggle.js"></script>
+<script type="module">
+  const italicToggle = document.querySelector('wc-toggle');
+  const preview = document.getElementById('toggle-preview');
+  italicToggle?.addEventListener('pressed-change', (event) => {
+    preview?.classList.toggle('is-italic', event.detail.pressed);
+### `<wc-toolbar>`
+
+An accessible formatting toolbar that groups common text controls, mimicking the Radix UI toolbar demo.
+It ships with multiple toggle buttons for bold, italic, and strikethrough, an exclusive alignment toggle
+group, a metadata link, and a share action. Keyboard users can cycle through controls with the arrow keys
+thanks to the roving tabindex implementation.
+
+```html
+<wc-toolbar alignment="left"></wc-toolbar>
+
+<script type="module" src="https://cdn.example.com/web-components/toolbar.js"></script>
+<script type="module">
+  const toolbar = document.querySelector('wc-toolbar');
+  toolbar?.addEventListener('wc-toolbar-share', (event) => {
+    const { alignment, formats } = event.detail;
+    console.log(`Share clicked with ${alignment} alignment and formats:`, formats);
+  });
+</script>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `pressed` | boolean | `false` | Reflects the current state. Set the attribute or property for controlled usage. |
+| `default-pressed` | boolean | `false` | Initial value when the element manages its own state. Combine with `reset()` to reapply. |
+| `disabled` | boolean | `false` | Removes the toggle from the tab order and blocks pointer/keyboard interaction. |
+
+#### Methods
+
+- `toggle(force?: boolean)` — flips the pressed state or forces a specific boolean value.
+- `reset()` — clears the `pressed` attribute (if present) and restores the default pressed state.
+
+#### Events
+
+- `pressed-change` — bubbles with `{ pressed: boolean }` whenever user interaction toggles the state.
+
+#### Styling hooks
+
+- CSS custom properties: `--toggle-size`, `--toggle-radius`, `--toggle-background`,
+  `--toggle-background-hover`, `--toggle-background-on`, `--toggle-foreground`, `--toggle-foreground-on`,
+  `--toggle-shadow`, `--toggle-focus-ring`.
+- Parts: `::part(control)` and `::part(label)` for scoped visual overrides.
+- Data attributes: `[data-state="on" | "off"]`, `[data-disabled="true"]`.
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `alignment` | string | `"center"` | Controls the active alignment toggle. Accepts `"left"`, `"center"`, or `"right"`. |
+| `aria-label` | string | `"Formatting options"` | Overrides the accessible label announced for the toolbar container. |
+
+#### Properties
+
+- `formats: string[]` — read-only array describing the currently active formatting toggles.
+
+#### Events
+
+- `wc-toolbar-format-change` — fired when a formatting toggle is activated or deactivated. Detail includes the
+  active `value` array and information about the toggled control.
+- `wc-toolbar-alignment-change` — emitted whenever the alignment selection changes. Detail contains the active
+  alignment.
+- `wc-toolbar-share` — triggered when the share button is pressed. Detail carries the alignment and format
+  selections at the moment of activation.
+
+#### Styling hooks
+
+- Custom properties: `--toolbar-background`, `--toolbar-radius`, `--toolbar-shadow`, `--toolbar-color`,
+  `--toolbar-accent`, `--toolbar-accent-contrast`, `--toolbar-accent-hover`, `--toolbar-hover`,
+  `--toolbar-hover-contrast`, `--toolbar-focus-ring`, `--toolbar-separator-color`, `--toolbar-font-family`.
+- Parts: `::part(toolbar)`, `::part(toggle-group)`, `::part(toggle)`, `::part(separator)`, `::part(metadata)`,
+  `::part(share)`.
 
 ### `<wc-otp-field>`
 
@@ -446,6 +885,46 @@ Tune the container with CSS custom properties or target internal parts:
   `--aspect-ratio-shadow`, `--aspect-ratio-overflow`, `--aspect-ratio-content-align`,
   `--aspect-ratio-content-justify`, `--aspect-ratio-object-fit`.
 - Parts: `::part(frame)`, `::part(content)` allow scoped overrides.
+
+### `<wc-scroll-area>`
+
+Overlay scrollbars that sit on top of the viewport while leaving layout untouched. The component keeps
+native scrolling behaviour—including keyboard navigation—while exposing hooks to restyle the bars and
+thumbs.
+
+```html
+<wc-scroll-area style="inline-size: 220px; block-size: 240px; --scroll-area-background: #fff;">
+  <div class="tag-stack">
+    <h4>Tags</h4>
+    <ul>
+      <li>v1.2.0-beta.50</li>
+      <li>v1.2.0-beta.49</li>
+      <li>v1.2.0-beta.48</li>
+      <!-- ... -->
+    </ul>
+  </div>
+</wc-scroll-area>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `type` | `'hover' \| 'scroll' \| 'always'` | `'hover'` | Controls when scrollbars are shown. `hover` reveals them on hover or scroll, `scroll` only during interaction, and `always` keeps them visible. |
+| `scroll-hide-delay` | number | `600` | Milliseconds to wait before fading the bars after scrolling when `type` is `hover` or `scroll`. |
+| `dir` | `'ltr' \| 'rtl'` | inherit | Forces the scrollbar placement and horizontal math for right-to-left layouts. |
+
+#### Styling hooks
+
+- CSS custom properties: `--scroll-area-background`, `--scroll-area-radius`, `--scroll-area-border`,
+  `--scroll-area-scrollbar-girth`, `--scroll-area-scrollbar-padding`,
+  `--scroll-area-scrollbar-background`, `--scroll-area-scrollbar-background-hover`,
+  `--scroll-area-thumb-background`, `--scroll-area-thumb-background-hover`,
+  `--scroll-area-thumb-radius`, `--scroll-area-thumb-min-size`,
+  `--scroll-area-scrollbar-transition-duration`.
+- Parts: `::part(viewport)`, `::part(content)`, `::part(scrollbar)`, `::part(thumb)`, `::part(corner)`.
+- Data attributes: `[data-has-vertical]`, `[data-has-horizontal]`, `[data-scrollbar-type]`,
+  `[data-scrollbar-visibility]`, and scrollbar-specific `[data-state="visible" | "hidden"]`.
 
 ### `<wc-dialog>`
 
@@ -721,6 +1200,106 @@ Customize using CSS custom properties and parts:
 
 #### Keyboard support
 
+### `<wc-tooltip>`
+
+An accessible tooltip surface that opens when its trigger receives hover or focus and closes on pointer exit,
+trigger activation, or the Escape key. Configure per-instance delays, placement, and arrow visibility while
+keeping the implementation dependency free.
+
+```html
+<wc-tooltip open-delay="200" close-delay="120" side="bottom">
+  <button slot="trigger" type="button" aria-label="Add to library">＋</button>
+  <span>Add to library</span>
+</wc-tooltip>
+### `<wc-popover>`
+
+Display contextual surfaces that stay anchored to a trigger while respecting viewport constraints. The component
+supports modal and non-modal modes, optional arrows, collision-aware placement, and a fully-managed focus lifecycle.
+
+```html
+<wc-popover side="bottom" align="center">
+  <button slot="trigger" type="button">Open popover</button>
+  <div slot="content">
+    <h3>Team settings</h3>
+    <p>Promote collaborators or update plan limits directly in place.</p>
+    <button type="button" data-popover-close>Close</button>
+  </div>
+</wc-popover>
+
+<script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Forces the tooltip open. Remove the attribute to return to interactive behavior. |
+| `default-open` | boolean | `false` | Opens on first render without reflecting the `open` attribute. Ideal for demos. |
+| `open-delay` | number | `700` | Milliseconds to wait before opening after pointer hover. Keyboard focus opens instantly. |
+| `close-delay` | number | `150` | Milliseconds to wait before closing once focus or hover leaves the trigger/content. |
+| `side` | `top` \| `right` \| `bottom` \| `left` | `top` | Placement of the tooltip content relative to the trigger. |
+| `align` | `start` \| `center` \| `end` | `center` | Cross-axis alignment for the chosen side. |
+| `side-offset` | number | `6` | Gap in pixels between the trigger and tooltip. |
+| `align-offset` | number | `0` | Additional pixel offset along the alignment axis. |
+| `hide-arrow` | boolean | `false` | Removes the decorative arrow while leaving positioning intact. |
+
+Each attribute also exposes a camelCase property counterpart (`openDelay`, `closeDelay`, etc.) for imperative
+control.
+
+#### Styling hooks
+
+- Custom properties: `--tooltip-surface`, `--tooltip-color`, `--tooltip-border`, `--tooltip-radius`,
+  `--tooltip-padding`, `--tooltip-shadow`, `--tooltip-font-size`, `--tooltip-font-weight`,
+  `--tooltip-line-height`, `--tooltip-side-offset`, `--tooltip-align-offset`, `--tooltip-arrow-size`,
+  `--tooltip-transition-duration`, `--tooltip-transition-timing`, `--tooltip-trigger-focus-shadow`.
+- Parts: `::part(trigger)`, `::part(content)`, `::part(arrow)`.
+- Data attributes: `[data-state="open" | "closed"]`, `[data-side]`, `[data-align]`, `[data-hide-arrow]` for
+  state-aware theming.
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. When omitted, the component manages its own open state. |
+| `default-open` | boolean | `false` | Opens the popover on first render without reflecting the `open` attribute. |
+| `modal` | boolean | `false` | When present, focus is trapped inside the popover until it closes. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"bottom"` | Preferred side for positioning relative to the anchor. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Alignment on the cross axis. |
+| `side-offset` | number | `8` | Pixel offset applied away from the anchor along the chosen side. |
+| `align-offset` | number | `0` | Additional shift along the alignment axis. |
+| `collision-padding` | number | `8` | Minimum distance to keep between the surface and viewport edges. |
+| `avoid-collisions` | boolean | `true` | Disable to prevent automatic side flipping when the preferred side overflows. |
+| `hide-arrow` | boolean | `false` | Removes the decorative arrow element. |
+| `close-on-escape` | boolean | `true` | Toggle whether pressing Escape dismisses the popover. |
+| `close-on-interact-outside` | boolean | `true` | Disable to keep the popover open when clicking or focusing outside. |
+| `open` property | boolean | `false` | Imperative property that mirrors the `open` attribute. |
+| `modal` property | boolean | `false` | Imperative property controlling modal behaviour. |
+
+#### Methods
+
+- `show()` — opens the popover.
+- `hide()` — closes the popover.
+- `toggle(force?: boolean)` — toggles visibility or forces a specific state when `force` is supplied.
+
+#### Events
+
+- `wc-popover-open` — fired whenever the popover transitions to the open state.
+- `wc-popover-close` — fired whenever the popover transitions to the closed state.
+
+#### Slots
+
+- `trigger` — interactive element that toggles the popover when activated.
+- `anchor` — optional positioning reference. When omitted, the trigger is used as the anchor.
+- `content` — rich content rendered inside the floating surface.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-popover-surface`, `--wc-popover-color`, `--wc-popover-border`,
+  `--wc-popover-shadow`, `--wc-popover-radius`, `--wc-popover-padding`, `--wc-popover-gap`,
+  `--wc-popover-arrow-size`, `--wc-popover-arrow-offset`, `--wc-popover-transform-origin`,
+  `--wc-popover-trigger-width`, `--wc-popover-trigger-height`, `--wc-popover-content-available-width`,
+  `--wc-popover-content-available-height`, `--wc-popover-collision-padding`, `--wc-popover-z-index`.
+- Parts: `::part(trigger)`, `::part(content)`, `::part(arrow)` for scoped theming.
+- Data attributes: `[data-state="open" | "closed"]`, `[data-side]`, `[data-align]`, and `[data-modal]` enable
+  direction-aware transitions.
+
 ### `<wc-dropdown-menu>` and friends
 
 A composable dropdown menu system inspired by Radix UI. It offers a declarative API for menu triggers, items,
@@ -835,6 +1414,144 @@ Tune the appearance with CSS properties or style parts directly:
   `--context-menu-item-highlight`, `--context-menu-separator-color`, `--context-menu-indicator-color`, etc.
 - Parts: `::part(trigger)`, `::part(menu)`, `::part(submenu)`.
 
+### `<wc-tabs>`
+
+An accessible tab system composed of a root controller plus lightweight triggers and panels. It mirrors the
+Radix UI tabs anatomy with support for horizontal or vertical layouts, automatic or manual activation, and
+roving focus that follows arrow keys.
+
+```html
+<wc-tabs default-value="account">
+  <wc-tablist aria-label="Manage your account">
+    <wc-tab value="account">Account</wc-tab>
+    <wc-tab value="password">Password</wc-tab>
+  </wc-tablist>
+  <wc-tabpanel value="account">
+    <p>Make changes to your account here. Click save when you're done.</p>
+  </wc-tabpanel>
+  <wc-tabpanel value="password">
+    <p>Change your password here. After saving, you'll be logged out.</p>
+  </wc-tabpanel>
+</wc-tabs>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Current active tab value. Reflects whenever selection changes; set it to control the component imperatively. |
+| `default-value` | string | `""` | Initial tab when `value` is not provided. Useful for uncontrolled usage. |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Lays out triggers across the top/bottom (`horizontal`) or side (`vertical`). |
+| `activation-mode` | `"automatic" \| "manual"` | `"automatic"` | Automatic switches panels on arrow navigation. Manual keeps focus movement separate until Enter/Space activates a tab. |
+
+#### Child elements
+
+- `<wc-tablist>` wraps the interactive triggers. Apply `aria-label`/`aria-labelledby` to describe the set.
+- `<wc-tab value="...">` renders a focusable trigger. Add `disabled` to remove it from interaction and roving focus.
+- `<wc-tabpanel value="...">` hosts the associated content. Its `value` must match a `<wc-tab>`.
+
+#### Events
+
+- `wc-tabs-change` — fired when the active tab updates. `event.detail.value` contains the new value.
+
+#### Styling hooks
+
+- CSS custom properties: `--tabs-width`, `--tabs-max-width`, `--tabs-background`, `--tabs-border`, `--tabs-radius`,
+  `--tabs-shadow`, `--tabs-list-background`, `--tabs-list-border`, `--tabs-list-gap`, `--tabs-list-min-width`,
+  `--tabs-trigger-padding`, `--tabs-trigger-font-size`, `--tabs-trigger-font-weight`, `--tabs-trigger-color`,
+  `--tabs-trigger-active-color`, `--tabs-trigger-background`, `--tabs-trigger-background-hover`,
+  `--tabs-trigger-background-active`, `--tabs-trigger-radius`, `--tabs-trigger-focus-ring`,
+  `--tabs-trigger-gap`, `--tabs-trigger-active-shadow`, `--tabs-panel-padding`, `--tabs-panel-background`,
+  `--tabs-panel-color`, `--tabs-panel-radius`, `--tabs-panel-radius-vertical`, `--tabs-panel-shadow`,
+  `--tabs-panel-focus-ring`.
+- Parts: `::part(container)`, `::part(list)`, `::part(trigger)`, `::part(panel)`.
+- Data attributes: `[data-orientation]` and `[data-value]` on `<wc-tabs>`, `[data-state]`, `[data-disabled]` on
+  `<wc-tab>`, and `[data-state]` on `<wc-tabpanel>`.
+### `<wc-toast>`
+
+An accessible toast notification component that mirrors Radix UI's Toast primitives without dependencies. It provides
+automatic dismissal with pause/resume handling, viewport hotkeys, swipe-to-dismiss gestures, and styling hooks for a
+foreground or background announcement.
+
+```html
+<button id="toast-trigger" type="button">Add to calendar</button>
+
+<wc-toast
+  id="calendar-toast"
+  title="Scheduled: Catch up"
+  action-label="Undo"
+  label="Notifications ({hotkey})"
+  hotkey="F8"
+>
+  <time slot="description"></time>
+</wc-toast>
+
+<script type="module" src="./src/toast.js"></script>
+<script type="module">
+  const toast = document.getElementById("calendar-toast");
+  const description = toast?.querySelector('time[slot="description"]');
+  const trigger = document.getElementById("toast-trigger");
+
+  const oneWeekAway = () => {
+    const now = new Date();
+    now.setDate(now.getDate() + 7);
+    return now;
+  };
+
+  trigger?.addEventListener("click", () => {
+    const eventDate = oneWeekAway();
+    if (description) {
+      description.dateTime = eventDate.toISOString();
+      description.textContent = eventDate.toLocaleString("en-US", {
+        dateStyle: "full",
+        timeStyle: "short",
+      });
+    }
+    toast?.show();
+  });
+</script>
+```
+
+#### Attributes & properties
+
+| Attribute / Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls whether the toast is visible. Toggle with the `open` property or the `show()` / `close()` methods. |
+| `default-open` | boolean | `false` | Opens the toast once when the component is initialised. |
+| `duration` | number | `5000` | Auto-dismiss timeout in milliseconds. Set to `0` to disable automatic closing. |
+| `title` | string | `""` | Text content used when no slotted `title` node is supplied. |
+| `description` | string | `""` | Text content used when no slotted `description` node is supplied. |
+| `action-label` | string | `""` | Label for the default action button. Supply a node in the `action` slot to fully customise the action. |
+| `label` | string | `"Notifications ({hotkey})"` | Accessible label applied to the toast viewport. `{hotkey}` expands to the configured keyboard shortcut. |
+| `hotkey` | string | `"F8"` | Keyboard shortcut (comma separated combinations such as `"Alt+KeyT"`) that focuses the toast viewport. |
+| `type` | `"foreground" \| "background"` | `"foreground"` | Controls the `aria-live` politeness level. |
+
+#### Methods
+
+- `show(options?: { title?: string; description?: string; actionLabel?: string; duration?: number; })` — Opens the toast
+  and optionally overrides its content or duration for that display.
+- `close(reason?: "api" | "timeout" | "action" | "close-button" | "swipe" | "escape")` — Closes the toast and emits a
+  `wc-toast-close` event with the supplied reason.
+
+#### Events
+
+- `wc-toast-open` — Fired when the toast becomes visible. `event.detail.reason` indicates why the toast opened.
+- `wc-toast-close` — Fired when the toast closes. The detail includes a `reason` such as `timeout`, `action`, or
+  `swipe`.
+- `wc-toast-action` — Emitted when the default action button is activated.
+- `wc-toast-pause` / `wc-toast-resume` — Fired when the auto-dismiss timer pauses or resumes because of pointer,
+  focus, swipe, or visibility interactions.
+
+#### Styling hooks
+
+Customise appearance with CSS properties or the exposed parts:
+
+- Custom properties: `--wc-toast-background`, `--wc-toast-foreground`, `--wc-toast-shadow`, `--wc-toast-border`,
+  `--wc-toast-radius`, `--wc-toast-padding`, `--wc-toast-viewport-padding`, `--wc-toast-action-background`,
+  `--wc-toast-action-color`, `--wc-toast-close-color`, `--wc-toast-swipe-move-x`, `--wc-toast-swipe-end-x`, etc.
+- Parts: `::part(viewport)`, `::part(toast)`, `::part(title)`, `::part(description)`, `::part(actions)`,
+  `::part(action)`, `::part(close)`.
+
 ### Examples
 
 See [`index.html`](./index.html) for live demos showcasing:
@@ -845,6 +1562,8 @@ See [`index.html`](./index.html) for live demos showcasing:
 - Aspect ratio containers framing responsive images and responsive embeds.
 - Hover cards that preview Radix UI social metadata with delayed entry/exit.
 - Dropdown menus with submenus, checkboxes, and radio groups mirroring Radix UI ergonomics.
+- Tabs demonstrating automatic activation, manual vertical layouts, and live value change events.
+- Toast notifications with programmatic triggers, accessible time descriptions, and swipe-to-dismiss behaviour.
 
 ## Contributing
 

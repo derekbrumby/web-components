@@ -70,7 +70,7 @@
               Hover or focus the floating action button to reveal guidance. Pointer delays mirror the Radix defaults
               while keyboard focus opens instantly.
             </p>
-            <wc-tooltip open-delay="400" close-delay="150" side="bottom">
+            <wc-tooltip open-delay="400" close-delay="150" side="bottom" data-code-example>
               <button slot="trigger" type="button" class="tooltip-icon-button" aria-label="Add to library">
                 <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
                   <path
@@ -94,15 +94,15 @@
               aligned with each trigger.
             </p>
             <div class="tooltip-pill-group">
-              <wc-tooltip side="top" side-offset="10" align="start">
+              <wc-tooltip side="top" side-offset="10" align="start" data-code-example>
                 <button slot="trigger" type="button">Top start</button>
                 <span>Positions the label above the trigger.</span>
               </wc-tooltip>
-              <wc-tooltip side="right" align="center" close-delay="200">
+              <wc-tooltip side="right" align="center" close-delay="200" data-code-example>
                 <button slot="trigger" type="button">Right</button>
                 <span>Great for inline icon menus.</span>
               </wc-tooltip>
-              <wc-tooltip side="bottom" align="end" align-offset="8" hide-arrow>
+              <wc-tooltip side="bottom" align="end" align-offset="8" hide-arrow data-code-example>
                 <button slot="trigger" type="button">Bottom end</button>
                 <span>Arrows are optional when styling cards.</span>
               </wc-tooltip>
@@ -115,5 +115,6 @@
         </div>
       </section>
     </main>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

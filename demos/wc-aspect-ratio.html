@@ -13,7 +13,11 @@
         <div class="example-grid two-column">
           <div class="example-card">
             <h3>Landscape preview</h3>
-            <wc-aspect-ratio ratio="16 / 9" style="--aspect-border-radius: 1rem; --aspect-overlay: rgba(15, 23, 42, 0.2);">
+            <wc-aspect-ratio
+              ratio="16 / 9"
+              style="--aspect-border-radius: 1rem; --aspect-overlay: rgba(15, 23, 42, 0.2);"
+              data-code-example
+            >
               <img
                 alt="Lake and mountains"
                 src="https://images.unsplash.com/photo-1759346329380-b8fde799521a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1470"
@@ -25,7 +29,7 @@
 
           <div class="example-card">
             <h3>Responsive square</h3>
-            <wc-aspect-ratio ratio="1 / 1" style="--aspect-border-radius: 24px;">
+            <wc-aspect-ratio ratio="1 / 1" style="--aspect-border-radius: 24px;" data-code-example>
               <div
                 style="
                   display: grid;
@@ -47,5 +51,6 @@
         </div>
       </section>
     </main>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

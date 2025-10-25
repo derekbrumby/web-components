@@ -77,7 +77,11 @@
             <h3>Split editor</h3>
             <p>Combine nested groups to create multi-directional layouts. Drag handles or use the arrow keys.</p>
             <div class="resizable-preview">
-              <wc-resizable-group class="resizable-demo resizable-demo--nested" direction="horizontal">
+              <wc-resizable-group
+                class="resizable-demo resizable-demo--nested"
+                direction="horizontal"
+                data-code-example
+              >
                 <wc-resizable-panel default-size="45" min-size="20">
                   <div>Outline</div>
                 </wc-resizable-panel>
@@ -101,7 +105,11 @@
             <h3>Vertical stack</h3>
             <p>Switch the <code>direction</code> attribute to rearrange the axis without changing markup.</p>
             <div class="resizable-preview">
-              <wc-resizable-group class="resizable-demo is-vertical" direction="vertical">
+              <wc-resizable-group
+                class="resizable-demo is-vertical"
+                direction="vertical"
+                data-code-example
+              >
                 <wc-resizable-panel default-size="30">
                   <div>Header</div>
                 </wc-resizable-panel>
@@ -123,7 +131,12 @@
             percentages.
           </p>
           <div class="resizable-preview">
-            <wc-resizable-group id="resizable-inspector" class="resizable-demo" direction="horizontal">
+            <wc-resizable-group
+              id="resizable-inspector"
+              class="resizable-demo"
+              direction="horizontal"
+              data-code-example
+            >
               <wc-resizable-panel default-size="35" min-size="20">
                 <div>Sidebar</div>
               </wc-resizable-panel>
@@ -157,5 +170,6 @@ Inspector: <strong>${nextSize.toFixed(1)}%</strong>
         });
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

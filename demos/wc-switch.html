@@ -78,7 +78,7 @@
         <div class="example-grid two-column">
           <div class="example-card">
             <h3>Quick system settings</h3>
-            <div class="switch-stack" id="quick-switches">
+            <div class="switch-stack" id="quick-switches" data-code-example>
               <wc-switch class="settings-switch" id="switch-airplane" checked>Airplane mode</wc-switch>
               <wc-switch class="settings-switch" id="switch-wifi">Wi-Fi</wc-switch>
               <wc-switch class="settings-switch" id="switch-bluetooth" checked>Bluetooth</wc-switch>
@@ -90,7 +90,7 @@
           </div>
           <div class="example-card">
             <h3>Form integration</h3>
-            <form id="switch-preferences" class="preferences-form" onsubmit="event.preventDefault();">
+            <form id="switch-preferences" class="preferences-form" onsubmit="event.preventDefault();" data-code-example>
               <p class="form-note">Switches reflect their state inside forms and respect the <code>required</code> attribute.</p>
               <wc-switch name="notifications" value="enabled" required>Push notifications</wc-switch>
               <wc-switch name="marketing" value="yes">Marketing emails</wc-switch>
@@ -187,5 +187,6 @@
         renderFormPreview();
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

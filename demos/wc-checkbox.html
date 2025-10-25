@@ -13,7 +13,7 @@
         <div class="example-grid two-column">
           <div class="example-card">
             <h3>Consent agreement</h3>
-            <form id="checkbox-consent" class="checkbox-stack" onsubmit="event.preventDefault();">
+            <form id="checkbox-consent" class="checkbox-stack" onsubmit="event.preventDefault();" data-code-example>
               <wc-checkbox id="checkbox-consent-control" name="terms" value="accepted" required>
                 Accept terms and conditions.
               </wc-checkbox>
@@ -27,7 +27,7 @@
 
           <div class="example-card">
             <h3>Bulk selection with indeterminate state</h3>
-            <div class="checkbox-stack">
+            <div class="checkbox-stack" data-code-example>
               <wc-checkbox id="checkbox-master" indeterminate>
                 Notify me about workspace updates
               </wc-checkbox>
@@ -125,5 +125,6 @@
         updateSelectionLog();
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

@@ -13,7 +13,7 @@
         <div class="example-grid two-column">
           <div class="example-card">
             <h3>Destructive confirmation</h3>
-            <wc-alert-dialog id="alert-dialog-destructive">
+            <wc-alert-dialog id="alert-dialog-destructive" data-code-example>
               <button slot="trigger" class="danger-button">Delete account</button>
               <span slot="title">Delete this account?</span>
               <span slot="description">
@@ -45,6 +45,7 @@
                 --alert-dialog-action-background: #38bdf8;
                 --alert-dialog-button-radius: 0.75rem;
               "
+              data-code-example
             >
               <button slot="trigger" class="button-soft">Archive project</button>
               <span slot="title">Archive this project?</span>
@@ -129,5 +130,6 @@
         });
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

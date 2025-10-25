@@ -75,7 +75,7 @@
           <h2>Book a stay</h2>
           <p>Select your arrival date. Dates before today are unavailable.</p>
         </div>
-        <wc-date-picker id="single-date"></wc-date-picker>
+        <wc-date-picker id="single-date" data-code-example></wc-date-picker>
         <div class="event-log" data-log="single" aria-live="polite">Waiting for a date…</div>
       </section>
 
@@ -84,7 +84,7 @@
           <h2>Analytics range</h2>
           <p>Use presets or pick custom dates to filter your dashboard.</p>
         </div>
-        <wc-date-picker id="range-date" mode="range" value="2024-04-01..2024-04-14"></wc-date-picker>
+        <wc-date-picker id="range-date" mode="range" value="2024-04-01..2024-04-14" data-code-example></wc-date-picker>
         <div class="event-log" data-log="range" aria-live="polite">Waiting for a range…</div>
       </section>
 
@@ -100,6 +100,7 @@
           hide-presets
           first-day-of-week="1"
           placeholder="Select campaign window"
+          data-code-example
         ></wc-date-picker>
       </section>
     </main>
@@ -151,5 +152,6 @@
           : 'Waiting for a range…';
       });
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

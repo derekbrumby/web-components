@@ -84,6 +84,7 @@
         </header>
         <wc-markdown-viewer
           markdown="# CDN friendly markdown\n\nRender **bold**, _italic_, and `inline code` out of the box.\n\n> Accessible by default with sanitization built in."
+          data-code-example
         ></wc-markdown-viewer>
         <p class="hint">Escaped line breaks like <code>\n</code> are automatically converted for attribute usage.</p>
       </section>
@@ -93,7 +94,7 @@
           <h2>Remote documents</h2>
           <p>Provide a URL to fetch `.md` content. Use the <code>loading</code> slot to customise progress states.</p>
         </header>
-        <wc-markdown-viewer variant="surface" src="./markdown-sample.md">
+        <wc-markdown-viewer variant="surface" src="./markdown-sample.md" data-code-example>
           <span slot="loading">Fetching remote content…</span>
         </wc-markdown-viewer>
         <div class="controls" aria-label="Remote markdown controls">
@@ -128,5 +129,6 @@
         }, 1800);
       });
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

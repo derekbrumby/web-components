@@ -103,7 +103,7 @@
             <h3>Account management</h3>
             <p>Classic horizontal tabs with automatic activation. The component wires labels, focus management, and ARIA relationships for you.</p>
             <div class="tabs-demo-wrapper">
-              <wc-tabs id="account-tabs" default-value="account">
+              <wc-tabs id="account-tabs" default-value="account" data-code-example>
                 <wc-tablist aria-label="Manage your account">
                   <wc-tab value="account">Account</wc-tab>
                   <wc-tab value="password">Password</wc-tab>
@@ -153,7 +153,13 @@
             <h3>Manual activation &amp; vertical layout</h3>
             <p>When activation mode is manual, focus moves with the arrow keys but content switches on Enter or Space. Useful for large or media-heavy panels.</p>
             <div class="tabs-demo-wrapper">
-              <wc-tabs id="reports-tabs" default-value="analytics" orientation="vertical" activation-mode="manual">
+              <wc-tabs
+                id="reports-tabs"
+                default-value="analytics"
+                orientation="vertical"
+                activation-mode="manual"
+                data-code-example
+              >
                 <wc-tablist aria-label="Reports">
                   <wc-tab value="analytics">Analytics</wc-tab>
                   <wc-tab value="engagement">Engagement</wc-tab>
@@ -206,5 +212,6 @@
         }
       });
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

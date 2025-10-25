@@ -97,7 +97,7 @@
           <h2>Pick a date</h2>
           <p>The component focuses the selected day and announces changes as you move with the keyboard.</p>
         </div>
-        <wc-calendar id="basic-calendar"></wc-calendar>
+        <wc-calendar id="basic-calendar" data-code-example></wc-calendar>
         <div class="event-log" data-log="basic" aria-live="polite">Waiting for a selection…</div>
       </section>
 
@@ -113,6 +113,7 @@
           min="2024-01-01"
           max="2024-12-31"
           value="2024-06-12"
+          data-code-example
         ></wc-calendar>
       </section>
 
@@ -121,7 +122,7 @@
           <h2>Timezone aware scheduling</h2>
           <p>Sync the calendar to the viewer's local timezone to avoid off-by-one selections.</p>
         </div>
-        <wc-calendar id="timezone-calendar" show-outside-days="false"></wc-calendar>
+        <wc-calendar id="timezone-calendar" show-outside-days="false" data-code-example></wc-calendar>
         <div class="timezone-actions">
           <button type="button" id="timezone-refresh">Use my timezone</button>
         </div>
@@ -171,5 +172,6 @@
       // Detect timezone on load for convenience.
       syncTimezone();
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

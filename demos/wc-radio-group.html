@@ -16,7 +16,7 @@
             <p>
               The group is form-associated, so the selected value is posted automatically.
             </p>
-            <form id="radio-density-form" onsubmit="event.preventDefault();">
+            <form id="radio-density-form" onsubmit="event.preventDefault();" data-code-example>
               <wc-radio-group id="radio-density" name="density" default-value="comfortable">
                 <wc-radio-group-item value="default">Default</wc-radio-group-item>
                 <wc-radio-group-item value="comfortable">Comfortable</wc-radio-group-item>
@@ -32,7 +32,13 @@
             <p>
               Horizontal orientation with looping disabled showcases keyboard navigation tweaks.
             </p>
-            <wc-radio-group id="radio-theme" orientation="horizontal" loop="false" default-value="system">
+            <wc-radio-group
+              id="radio-theme"
+              orientation="horizontal"
+              loop="false"
+              default-value="system"
+              data-code-example
+            >
               <wc-radio-group-item value="light">Light</wc-radio-group-item>
               <wc-radio-group-item value="dark">Dark</wc-radio-group-item>
               <wc-radio-group-item value="system">System</wc-radio-group-item>
@@ -87,5 +93,6 @@
         updateThemeLog(themeGroup.value, 'initial selection');
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

@@ -48,7 +48,7 @@
           <div class="example-card">
             <h3>Volume control</h3>
             <p>Drag or use the arrow keys to adjust the output level. The slider mirrors the native range input events.</p>
-            <div class="slider-stack">
+            <div class="slider-stack" data-code-example>
               <div class="slider-label-row">
                 <label id="slider-volume-label" for="slider-volume">Output volume</label>
                 <output id="slider-volume-output" for="slider-volume">50%</output>
@@ -68,7 +68,7 @@
           <div class="example-card">
             <h3>Price range filter</h3>
             <p>Two thumbs define the minimum and maximum price. Form submissions receive one entry per thumb.</p>
-            <form id="slider-price-form" class="slider-stack" onsubmit="event.preventDefault();">
+            <form id="slider-price-form" class="slider-stack" onsubmit="event.preventDefault();" data-code-example>
               <div class="slider-label-row">
                 <span id="slider-price-label">Price range</span>
                 <output class="slider-range-output" id="slider-price-output">$20 – $80</output>
@@ -95,7 +95,7 @@
         <div class="example-card">
           <h3>Vertical light intensity</h3>
           <p>Orientation and inversion attributes adapt the track while keeping keyboard controls intuitive.</p>
-          <div class="slider-vertical-demo">
+          <div class="slider-vertical-demo" data-code-example>
             <div>
               <strong>Left panel</strong>
               <wc-slider
@@ -164,5 +164,6 @@
         });
       }
     </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

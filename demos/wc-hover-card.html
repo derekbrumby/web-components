@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-hover-card&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/hover-card.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-hover-card&gt;</h2>
+          <p>Preview link destinations and people cards with configurable delays, placement, and arrows.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Radix UI preview</h3>
+            <wc-hover-card
+              open-delay="150"
+              close-delay="150"
+              side="right"
+              style="
+                --hover-card-surface: #ffffff;
+                --hover-card-shadow: 0 32px 60px -40px rgba(15, 23, 42, 0.6);
+                --hover-card-border: 1px solid rgba(148, 163, 184, 0.28);
+                --hover-card-padding: 1.5rem;
+                --hover-card-gap: 0.85rem;
+              "
+            >
+              <button slot="trigger" type="button" class="hover-card-trigger" aria-label="Open Radix UI hover card">
+                <img
+                  class="hover-card-trigger-avatar"
+                  src="https://pbs.twimg.com/profile_images/1337055608613253126/r_eiMp2H_400x400.png"
+                  alt="Radix UI avatar"
+                />
+              </button>
+              <div slot="content" class="hover-card-content">
+                <img
+                  class="hover-card-avatar-large"
+                  src="https://pbs.twimg.com/profile_images/1337055608613253126/r_eiMp2H_400x400.png"
+                  alt="Radix UI"
+                />
+                <div class="hover-card-identity">
+                  <div>
+                    <p class="hover-card-name">Radix</p>
+                    <p class="hover-card-handle">@radix_ui</p>
+                  </div>
+                  <p class="hover-card-description">
+                    Components, icons, colors, and templates for building high-quality, accessible UI. Free and
+                    open-source.
+                  </p>
+                  <div class="hover-card-stats">
+                    <div>
+                      <span class="hover-card-stat-number">0</span>
+                      <span class="hover-card-stat-label">Following</span>
+                    </div>
+                    <div>
+                      <span class="hover-card-stat-number">2,900</span>
+                      <span class="hover-card-stat-label">Followers</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </wc-hover-card>
+            <p>
+              The card appears on hover with a short delay, positioning itself to the right of the trigger while
+              keeping focus and Escape-to-close behavior intact.
+            </p>
+          </div>
+
+          <div class="example-card">
+            <h3>Product quick look</h3>
+            <wc-hover-card
+              open-delay="0"
+              close-delay="180"
+              side="top"
+              align="start"
+              side-offset="12"
+              align-offset="8"
+              style="
+                --hover-card-surface: #0f172a;
+                --hover-card-color: #f8fafc;
+                --hover-card-arrow-shadow: none;
+                --hover-card-border: 1px solid rgba(148, 163, 184, 0.35);
+              "
+            >
+              <a slot="trigger" class="hover-card-trigger link" href="https://radix-ui.com" target="_blank" rel="noreferrer">
+                Learn more
+              </a>
+              <div slot="content" class="hover-card-content compact">
+                <strong class="hover-card-title">Radix Primitives</strong>
+                <p class="hover-card-description">
+                  Unstyled, accessible primitives for building high-quality design systems and web apps.
+                </p>
+                <ul class="hover-card-list">
+                  <li>Focus-aware interactions</li>
+                  <li>Collision-adjusted positioning</li>
+                  <li>Theme agnostic styling hooks</li>
+                </ul>
+              </div>
+            </wc-hover-card>
+            <p>
+              Customize side, alignment, offsets, and surface variables to match brand palettes or dock the panel to
+              complex layouts.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

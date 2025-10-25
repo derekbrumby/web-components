@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-otp-field&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/otp-field.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-otp-field&gt;</h2>
+          <p>
+            A form-associated one-time-password input that manages focus, validation, and submissions. Customize
+            appearance using CSS properties or <code>::part</code> selectors.
+          </p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Classic six-digit numeric code</h3>
+            <form id="otp-demo" onsubmit="event.preventDefault();">
+              <wc-otp-field
+                name="otp"
+                length="6"
+                validation-type="numeric"
+                placeholder="•"
+                auto-submit
+                autocomplete="one-time-code"
+                style="
+                  --otp-gap: 0.75rem;
+                  --otp-input-size: 56px;
+                  --otp-font-size: 20px;
+                  --otp-radius: 14px;
+                  --otp-bg: rgba(255,255,255,0.9);
+                  --otp-border: 1px solid rgba(148, 163, 184, 0.4);
+                  --otp-border-focus: 2px solid #4f46e5;
+                  --otp-shadow-focus: 0 0 0 6px rgba(79,70,229,0.15);
+                "
+              ></wc-otp-field>
+              <button type="submit">Submit</button>
+            </form>
+            <pre class="log" id="otp-log">Waiting for input…</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Vertical alphanumeric with masking</h3>
+            <wc-otp-field
+              id="otp-advanced"
+              length="8"
+              validation-type="alphanumeric"
+              orientation="vertical"
+              type="password"
+              placeholder="✶"
+              dir="ltr"
+              style="
+                --otp-gap: 0.35rem;
+                --otp-input-size: 44px;
+                --otp-bg: rgba(15, 23, 42, 0.85);
+                --otp-color: #f8fafc;
+                --otp-border: 1px solid rgba(148, 163, 184, 0.5);
+                --otp-border-focus: 2px solid #f97316;
+                --otp-shadow-focus: 0 0 0 4px rgba(249, 115, 22, 0.35);
+              "
+            ></wc-otp-field>
+            <pre class="log" id="otp-advanced-log">Type to see updates…</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const otpForm = document.getElementById('otp-demo');
+      const otpLog = document.getElementById('otp-log');
+      const otpAdvanced = document.getElementById('otp-advanced');
+      const otpAdvancedLog = document.getElementById('otp-advanced-log');
+
+      if (otpForm && otpLog) {
+        otpForm.addEventListener('submit', (event) => {
+          const formData = new FormData(event.target);
+          otpLog.textContent = `Submitted code: ${formData.get('otp') || '(empty)'}`;
+        });
+        otpForm.querySelector('wc-otp-field')?.addEventListener('valuechange', (event) => {
+          const value = event.detail?.value || '';
+          otpLog.textContent = `Typing: ${value}`;
+        });
+      }
+
+      if (otpAdvanced && otpAdvancedLog) {
+        otpAdvanced.addEventListener('valuechange', (event) => {
+          const value = event.detail?.value || '';
+          otpAdvancedLog.textContent = `Current value: ${value}`;
+        });
+      }
+    </script>
+  </body>
+</html>

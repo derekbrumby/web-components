@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-accordion&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/accordion.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-accordion&gt;</h2>
+          <p>
+            Accessible accordion primitives with keyboard support, horizontal or vertical layouts, and multi-open
+            configurations.
+          </p>
+        </header>
+
+        <div class="example-grid">
+          <div class="example-card">
+            <h3>Single item open at a time</h3>
+            <wc-accordion id="accordion-single" type="single" collapsible>
+              <wc-accordion-item value="item-1">
+                <span slot="trigger">Is it accessible?</span>
+                <p slot="content">
+                  Yes. It adheres to the WAI-ARIA accordion pattern and exposes keyboard navigation.
+                </p>
+              </wc-accordion-item>
+              <wc-accordion-item value="item-2">
+                <span slot="trigger">Can I restyle it?</span>
+                <p slot="content">
+                  Absolutely. Use CSS custom properties like <code>--accordion-trigger-background</code> or target parts
+                  such as <code>::part(trigger)</code> and <code>::part(panel-inner)</code>.
+                </p>
+              </wc-accordion-item>
+              <wc-accordion-item value="item-3">
+                <span slot="trigger">Will it collapse?</span>
+                <p slot="content">
+                  When <code>collapsible</code> is set, users can close the active item, leaving all sections collapsed.
+                </p>
+              </wc-accordion-item>
+            </wc-accordion>
+            <pre class="log" id="accordion-single-log">Interact with the accordion to see state updates.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Multiple expansion with horizontal layout</h3>
+            <wc-accordion
+              id="accordion-multi"
+              type="multiple"
+              orientation="horizontal"
+              values="item-a,item-c"
+              style="
+                --accordion-gap: 1rem;
+                --accordion-surface: transparent;
+              "
+            >
+              <wc-accordion-item value="item-a" heading-level="4" style="--accordion-trigger-background: rgba(14, 165, 233, 0.12);">
+                <span slot="trigger">Design tokens</span>
+                <div slot="content">
+                  <ul>
+                    <li>--accordion-radius</li>
+                    <li>--accordion-trigger-padding</li>
+                    <li>--accordion-transition-duration</li>
+                  </ul>
+                </div>
+              </wc-accordion-item>
+              <wc-accordion-item value="item-b" heading-level="4" style="--accordion-trigger-background: rgba(249, 115, 22, 0.12);">
+                <span slot="trigger">Animation</span>
+                <p slot="content">
+                  Panels animate using height transitions that respect <code>--accordion-transition-duration</code> and
+                  <code>--accordion-transition-easing</code>.
+                </p>
+              </wc-accordion-item>
+              <wc-accordion-item value="item-c" heading-level="4" style="--accordion-trigger-background: rgba(34, 197, 94, 0.12);">
+                <span slot="trigger">Accessibility</span>
+                <p slot="content">
+                  Built-in keyboard handling supports arrow keys, Home/End navigation, and respects disabled items.
+                </p>
+              </wc-accordion-item>
+            </wc-accordion>
+            <pre class="log" id="accordion-multi-log">Open and close multiple panels to inspect emitted values.</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const accordionSingle = document.getElementById('accordion-single');
+      const accordionSingleLog = document.getElementById('accordion-single-log');
+      if (accordionSingle && accordionSingleLog) {
+        accordionSingle.addEventListener('change', (event) => {
+          accordionSingleLog.textContent = `Open value: ${event.detail?.value || 'none'}`;
+        });
+      }
+
+      const accordionMulti = document.getElementById('accordion-multi');
+      const accordionMultiLog = document.getElementById('accordion-multi-log');
+      if (accordionMulti && accordionMultiLog) {
+        accordionMulti.addEventListener('change', (event) => {
+          const values = event.detail?.values || [];
+          accordionMultiLog.textContent = `Open values: ${values.join(', ') || 'none'}`;
+        });
+      }
+    </script>
+  </body>
+</html>

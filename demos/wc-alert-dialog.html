@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-alert-dialog&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/alert-dialog.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-alert-dialog&gt;</h2>
+          <p>
+            Modal confirmation dialogs with focus trapping, accessible labelling, and customizable styling hooks. Use
+            slots for triggers, titles, descriptions, and action buttons.
+          </p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Destructive confirmation</h3>
+            <wc-alert-dialog id="alert-dialog-destructive">
+              <button slot="trigger" class="danger-button">Delete account</button>
+              <span slot="title">Delete this account?</span>
+              <span slot="description">
+                This action is permanent. All saved projects, data exports, and automation hooks will be removed.
+              </span>
+              <div>
+                <ul>
+                  <li>Billing will be cancelled immediately.</li>
+                  <li>Team members will lose workspace access.</li>
+                  <li>You can contact support within 7 days to undo this action.</li>
+                </ul>
+              </div>
+              <button slot="cancel" class="ghost-button">Cancel</button>
+              <button slot="action" class="danger-button">Yes, delete it</button>
+            </wc-alert-dialog>
+            <pre class="log" id="alert-dialog-destructive-log">Choose an action to view emitted events.</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Async confirmation with custom theming</h3>
+            <wc-alert-dialog
+              id="alert-dialog-async"
+              style="
+                --alert-dialog-overlay-background: rgba(15, 23, 42, 0.55);
+                --alert-dialog-background: #0f172a;
+                --alert-dialog-color: #f8fafc;
+                --alert-dialog-description-color: rgba(226, 232, 240, 0.88);
+                --alert-dialog-body-margin: 1rem 0 1.75rem;
+                --alert-dialog-action-background: #38bdf8;
+                --alert-dialog-button-radius: 0.75rem;
+              "
+            >
+              <button slot="trigger" class="button-soft">Archive project</button>
+              <span slot="title">Archive this project?</span>
+              <span slot="description">
+                Archiving hides the project from active views. You can restore it at any time within the next 30 days.
+              </span>
+              <div>
+                <label class="dialog-check">
+                  <input type="checkbox" id="alert-dialog-async-keep" checked />
+                  Keep analytics data available
+                </label>
+              </div>
+              <button slot="cancel" class="ghost-button">Go back</button>
+              <button slot="action" class="button-soft">Archive</button>
+            </wc-alert-dialog>
+            <pre class="log" id="alert-dialog-async-log">Archive to simulate an asynchronous workflow.</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const alertDestructive = document.getElementById('alert-dialog-destructive');
+      const alertDestructiveLog = document.getElementById('alert-dialog-destructive-log');
+      if (alertDestructive && alertDestructiveLog) {
+        alertDestructive.addEventListener('cancel', () => {
+          alertDestructiveLog.textContent = 'Deletion cancelled.';
+        });
+        alertDestructive.addEventListener('confirm', () => {
+          alertDestructiveLog.textContent = 'Account deletion confirmed.';
+        });
+      }
+
+      const alertAsync = document.getElementById('alert-dialog-async');
+      const alertAsyncLog = document.getElementById('alert-dialog-async-log');
+      if (alertAsync && alertAsyncLog) {
+        const actionButton = alertAsync.querySelector('[slot="action"]');
+        const defaultActionLabel =
+          actionButton instanceof HTMLButtonElement ? actionButton.textContent || 'Archive' : 'Archive';
+        let alertAsyncTimer = 0;
+
+        const resetActionButton = () => {
+          if (actionButton instanceof HTMLButtonElement) {
+            actionButton.disabled = false;
+            actionButton.textContent = defaultActionLabel;
+          }
+        };
+
+        alertAsync.addEventListener('cancel', () => {
+          if (alertAsyncTimer) {
+            clearTimeout(alertAsyncTimer);
+            alertAsyncTimer = 0;
+          }
+          resetActionButton();
+          alertAsyncLog.textContent = 'Archive cancelled.';
+        });
+
+        alertAsync.addEventListener('confirm', (event) => {
+          event.preventDefault();
+          if (actionButton instanceof HTMLButtonElement) {
+            actionButton.disabled = true;
+            actionButton.textContent = 'Archiving…';
+          }
+          alertAsyncLog.textContent = 'Archiving project…';
+
+          const keepAnalyticsCheckbox = document.getElementById('alert-dialog-async-keep');
+
+          alertAsyncTimer = window.setTimeout(() => {
+            const keepAnalytics =
+              keepAnalyticsCheckbox instanceof HTMLInputElement && keepAnalyticsCheckbox.checked;
+            resetActionButton();
+            alertAsyncLog.textContent = keepAnalytics
+              ? 'Project archived with analytics preserved.'
+              : 'Project archived. Analytics purged.';
+            if (typeof alertAsync.hide === 'function') {
+              alertAsync.hide();
+            } else {
+              alertAsync.removeAttribute('open');
+            }
+            alertAsyncTimer = 0;
+          }, 1200);
+        });
+      }
+    </script>
+  </body>
+</html>

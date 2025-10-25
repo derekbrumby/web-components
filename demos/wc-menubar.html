@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-menubar&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/menubar.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-menubar&gt;</h2>
+          <p>Desktop-style menus with nested submenus, checkable items, and roving keyboard focus.</p>
+        </header>
+
+        <div class="example-card">
+          <h3>Browser command suite</h3>
+          <wc-menubar
+            id="menubar-demo"
+            style="
+              --menubar-surface: rgba(255, 255, 255, 0.98);
+              --menubar-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.45);
+              --menubar-trigger-color: #4c1d95;
+              --menubar-item-color: #4c1d95;
+            "
+          ></wc-menubar>
+          <p>
+            Use the arrow keys, Enter, or your pointer to explore the menu bar. Checkbox and radio selections stay
+            persistent until changed, and emitted events mirror the Radix UI demo.
+          </p>
+          <pre class="log" id="menubar-log">Interact with the menubar to see emitted events…</pre>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const menubarDemo = document.getElementById('menubar-demo');
+      const menubarLog = document.getElementById('menubar-log');
+      if (menubarDemo && menubarLog) {
+        const updateLog = (message) => {
+          menubarLog.textContent = message;
+        };
+
+        menubarDemo.addEventListener('menubar-select', (event) => {
+          const rawMenu = event.detail?.menu || 'unknown';
+          const menuName = rawMenu.charAt(0).toUpperCase() + rawMenu.slice(1);
+          const label = event.detail?.label || 'item';
+          updateLog(`Selected "${label}" from the ${menuName} menu.`);
+        });
+
+        menubarDemo.addEventListener('menubar-checkbox-toggle', (event) => {
+          const item = event.detail?.item || 'option';
+          updateLog(`${event.detail?.checked ? 'Checked' : 'Unchecked'} "${item}".`);
+        });
+
+        menubarDemo.addEventListener('menubar-radio-change', (event) => {
+          updateLog(`Active profile: ${event.detail?.value || 'unknown'}.`);
+        });
+      }
+    </script>
+  </body>
+</html>

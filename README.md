@@ -12,8 +12,13 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/otp-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/label.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/hover-card.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/form.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -57,6 +62,96 @@ Tune presentation with CSS custom properties and parts:
   `--label-line-height`, `--label-color`, `--label-background`, `--label-radius`, `--label-focus-outline`, and
   more.
 - Parts: `::part(label)`, `::part(text)`, `::part(control)` for scoped theming without breaking internals.
+### `<wc-form>`
+
+An opinionated contact form that mirrors the Radix UI demo experience. It wires native constraint
+validation to accessible inline messages, automatically focuses the first invalid control, and exposes
+helpers for server-driven errors.
+
+```html
+<wc-form id="support-form" submit-label="Post question"></wc-form>
+
+<script type="module" src="https://cdn.example.com/web-components/form.js"></script>
+<script type="module">
+  const form = document.getElementById('support-form');
+  form?.addEventListener('wc-form-data', (event) => {
+    console.log('Form payload', event.detail);
+  });
+  form?.addEventListener('wc-form-submit', (event) => {
+    // Forward FormData to your API endpoint
+    fetch('/api/support', { method: 'POST', body: event.detail });
+  });
+</script>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `submit-label` | string | `"Post question"` | Customises the text shown on the submit button. |
+
+#### Methods
+
+- `reset()` — clears the form, removes validation messages, and resets custom errors.
+- `setCustomError(name: string, message: string)` — toggles a custom validation message for a field
+  (`"email"` or `"question"`).
+- `clearCustomError(name: string)` — convenience wrapper around `setCustomError(name, "")`.
+
+#### Events
+
+- `wc-form-submit` — fired after successful validation. `event.detail` is the `FormData` instance ready
+  for network submission.
+- `wc-form-data` — fired alongside `wc-form-submit` with a plain object version of the current values.
+
+#### Styling hooks
+
+- Custom properties: `--wc-form-background`, `--wc-form-foreground`, `--wc-form-muted`,
+  `--wc-form-field-background`, `--wc-form-field-border`, `--wc-form-field-border-hover`,
+  `--wc-form-field-border-focus`, `--wc-form-submit-background`, `--wc-form-submit-color`,
+  `--wc-form-submit-hover`, `--wc-form-radius`, `--wc-form-field-radius`, `--wc-form-shadow`,
+  `--wc-form-input-padding`, `--wc-form-message-error`, `--wc-form-message-error-color`, and more.
+- Parts: `::part(container)`, `::part(header)`, `::part(title)`, `::part(description)`, `::part(form)`,
+  `::part(field)`, `::part(label)`, `::part(messages)`, `::part(message)`, `::part(control)`,
+  `::part(submit)` allow deep theming.
+### `<wc-checkbox>`
+
+An accessible, tri-state checkbox control that mirrors Radix UI’s anatomy without runtime dependencies. It
+supports indeterminate states, full keyboard navigation, and form association.
+
+```html
+<form onsubmit="event.preventDefault();">
+  <wc-checkbox name="terms" value="accepted" required checked>
+    Accept terms and conditions.
+  </wc-checkbox>
+</form>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | boolean | `false` | Sets the checkbox to the checked state. Reflects to the `checked` property. |
+| `indeterminate` | boolean | `false` | Displays the indeterminate (mixed) state without marking it as checked. |
+| `disabled` | boolean | `false` | Removes the checkbox from the focus order and blocks interaction. |
+| `required` | boolean | `false` | Marks the checkbox as required when used inside a form. |
+| `value` | string | `"on"` | Value submitted with the parent form whenever the checkbox is checked. |
+| `name` | string | `""` | Associates the element with form submission entries. |
+
+Imperatively call `toggle(force?: boolean)` to flip the state or force a particular value.
+
+#### Events
+
+- `input`: Fired whenever user interaction updates the state. Bubbles and is composed.
+- `change`: Mirrors the native checkbox `change` event semantics.
+
+#### Styling hooks
+
+- CSS custom properties: `--checkbox-size`, `--checkbox-radius`, `--checkbox-border-width`,
+  `--checkbox-border-color`, `--checkbox-background`, `--checkbox-background-checked`,
+  `--checkbox-background-indeterminate`, `--checkbox-foreground`, `--checkbox-shadow`, `--checkbox-focus-ring`,
+  `--checkbox-gap`, `--checkbox-label-color`.
+- Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
+- Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
 
 ### `<wc-otp-field>`
 
@@ -169,6 +264,53 @@ Both the root and items expose rich customization options:
 - Parts: `::part(item)`, `::part(trigger)`, `::part(trigger-label)`, `::part(indicator)`,
   `::part(panel)`, `::part(panel-inner)` allow precise targeting.
 
+### `<wc-collapsible>`
+
+An interactive disclosure that mirrors the Radix UI Collapsible primitive. It exposes dedicated slots for
+the summary line, an optional preview area, and the collapsible body so you can recreate complex layouts
+without extra wrappers.
+
+```html
+<wc-collapsible style="--collapsible-width: 300px;">
+  <span slot="summary">@peduarte starred 3 repositories</span>
+  <div slot="peek">@radix-ui/primitives</div>
+  <div>
+    <div>@radix-ui/colors</div>
+    <div>@radix-ui/themes</div>
+  </div>
+</wc-collapsible>
+```
+
+The component manages keyboard interaction (Enter/Space), exposes imperative `show()`, `hide()`, and
+`toggle()` methods, and emits an `openchange` event whenever the visibility switches.
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. Can be set declaratively or via the `open` property. |
+| `disabled` | boolean | `false` | Disables interaction and updates the button's focusability. |
+
+#### Slots
+
+- `summary`: Required. Text or elements displayed alongside the toggle button.
+- `peek`: Optional. Content that remains visible regardless of state (for featured items or previews).
+- _default_: Collapsible body content shown when expanded.
+
+#### Events
+
+- `openchange`: Bubbles with `{ open: boolean }` whenever the panel expands or collapses.
+
+#### Styling hooks
+
+Tune the component using custom properties or part selectors:
+
+- Custom properties: `--collapsible-width`, `--collapsible-background`, `--collapsible-trigger-size`,
+  `--collapsible-trigger-background`, `--collapsible-summary-color`, `--collapsible-content-background`,
+  `--collapsible-content-gap`, and more.
+- Parts: `::part(container)`, `::part(header)`, `::part(summary)`, `::part(trigger)`, `::part(preview)`,
+  `::part(content)`, `::part(icon-open)`, `::part(icon-closed)`.
+
 ### `<wc-aspect-ratio>`
 
 A lightweight container that locks its slotted content to a specific ratio. Useful for media, embeds,
@@ -200,6 +342,59 @@ Tune the container with CSS custom properties or target internal parts:
   `--aspect-ratio-shadow`, `--aspect-ratio-overflow`, `--aspect-ratio-content-align`,
   `--aspect-ratio-content-justify`, `--aspect-ratio-object-fit`.
 - Parts: `::part(frame)`, `::part(content)` allow scoped overrides.
+
+### `<wc-dialog>`
+
+An adaptable dialog window supporting modal and non-modal presentations. Inspired by Radix UI's Dialog, the
+component handles focus management, labelling, and overlay rendering without external dependencies.
+
+```html
+<wc-dialog id="profile-dialog">
+  <button slot="trigger">Edit profile</button>
+  <span slot="title">Edit profile</span>
+  <span slot="description">Make changes to your profile and save when you're done.</span>
+  <form style="display: grid; gap: 1rem;">
+    <label style="display: grid; gap: 0.35rem;">
+      <span>Name</span>
+      <input type="text" value="Pedro Duarte" />
+    </label>
+    <label style="display: grid; gap: 0.35rem;">
+      <span>Username</span>
+      <input type="text" value="@peduarte" />
+    </label>
+  </form>
+  <div slot="footer" style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+    <button type="button" class="ghost-button">Cancel</button>
+    <button type="button">Save changes</button>
+  </div>
+</wc-dialog>
+```
+
+Slots cover the trigger, title, description, an optional footer region, and a default slot for arbitrary
+content. Provide a `slot="close"` element to override the built-in close button.
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. Use the `open` property or `show()`/`hide()` methods for imperative control. |
+| `modal` | boolean | `true` | When `false`, the dialog behaves non-modally (no overlay, no focus trap, page remains scrollable). |
+
+#### Methods
+
+- `show()` – opens the dialog.
+- `hide()` – closes the dialog.
+- `toggle(force?: boolean)` – toggles open state, optionally forcing a boolean value.
+
+#### Styling hooks
+
+Tune the presentation with CSS custom properties and parts:
+
+- Custom properties: `--dialog-width`, `--dialog-max-height`, `--dialog-padding`, `--dialog-radius`,
+  `--dialog-background`, `--dialog-color`, `--dialog-overlay-background`, `--dialog-shadow`,
+  `--dialog-close-background`, etc.
+- Parts: `::part(trigger)`, `::part(portal)`, `::part(overlay)`, `::part(content)`, `::part(header)`,
+  `::part(title)`, `::part(description)`, `::part(body)`, `::part(footer)`, `::part(close-button)`.
 
 ### `<wc-alert-dialog>`
 
@@ -238,6 +433,21 @@ Programmatic helpers `show()`, `hide()`, and `toggle(force?: boolean)` are expos
 - `confirm`: Fired when the primary action is activated. Cancel the event to keep the dialog open (for async
   work) and call `hide()` when ready.
 - `cancel`: Emitted when the user dismisses the dialog (Cancel button, overlay click, or Escape key).
+
+#### Keyboard support
+
+- `Esc` closes the dialog and refocuses the trigger.
+- `Tab`/`Shift+Tab` cycle focus within the dialog.
+- Focus is trapped while open and returns to the invoking trigger on close.
+
+#### Styling hooks
+
+Customize via CSS custom properties and exposed parts:
+
+- Custom properties: `--alert-dialog-overlay-background`, `--alert-dialog-transition-duration`,
+  `--alert-dialog-padding`, `--alert-dialog-radius`, `--alert-dialog-action-background`, and more.
+- Parts: `::part(overlay)`, `::part(content)`, `::part(title)`, `::part(description)`, `::part(body)`,
+  `::part(footer)`, `::part(cancel-button)`, `::part(action-button)`.
 
 ### `<wc-avatar>`
 
@@ -293,20 +503,176 @@ property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperativ
   `--avatar-transition`, `--avatar-fallback-background`, `--avatar-fallback-color`,
   `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
 - Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
-#### Keyboard support
 
-- `Esc` closes the dialog and refocuses the trigger.
-- `Tab`/`Shift+Tab` cycle focus within the dialog.
-- Focus is trapped while open and returns to the invoking trigger on close.
+### `<wc-hover-card>`
+
+A hover-activated preview surface that reveals supplemental information next to a trigger element. Inspired by
+the Radix UI Hover Card, it remains focus-aware, delay-configurable, and ships with collision-aware styling hooks.
+
+```html
+<wc-hover-card open-delay="0" close-delay="120">
+  <button slot="trigger" type="button" style="border-radius: 999px; padding: 0.25rem 0.75rem;">
+    Hover for profile
+  </button>
+  <div slot="content" style="display: grid; gap: 0.5rem;">
+    <strong>Radix UI</strong>
+    <p style="margin: 0;">Accessible components, icons, and design tokens for building better UI.</p>
+  </div>
+</wc-hover-card>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. When set the card stays open until cleared. |
+| `default-open` | boolean | `false` | Opens the card on first render without setting `open`. Useful for demos. |
+| `open-delay` | number | `700` | Milliseconds to wait before opening after pointer hover/focus. |
+| `close-delay` | number | `300` | Milliseconds to wait before closing once the pointer/focus leaves. |
+| `side` | `top` \| `right` \| `bottom` \| `left` | `bottom` | Placement of the content relative to the trigger. |
+| `align` | `start` \| `center` \| `end` | `center` | Alignment along the cross axis for the chosen side. |
+| `side-offset` | number | `8` | Gap between the trigger and the card, in pixels. |
+| `align-offset` | number | `0` | Fine-tunes alignment in pixels along the cross axis. |
+| `hide-arrow` | boolean | `false` | Removes the pointing arrow from the rendered content. |
+
+The element mirrors these attributes with camelCase properties (`openDelay`, `closeDelay`, etc.).
+
+#### Events
+
+- `openchange`: fired whenever visibility toggles. Detail payload: `{ open: boolean }`.
+
+#### Methods
+
+- `show()`: Opens immediately, bypassing delays.
+- `hide()`: Closes immediately.
+- `toggle(force?: boolean)`: Toggles visibility or forces a state when `force` is provided.
 
 #### Styling hooks
 
-Customize via CSS custom properties and exposed parts:
+Customize using CSS custom properties and parts:
 
-- Custom properties: `--alert-dialog-overlay-background`, `--alert-dialog-transition-duration`,
-  `--alert-dialog-padding`, `--alert-dialog-radius`, `--alert-dialog-action-background`, and more.
-- Parts: `::part(overlay)`, `::part(content)`, `::part(title)`, `::part(description)`, `::part(body)`,
-  `::part(footer)`, `::part(cancel-button)`, `::part(action-button)`.
+- Custom properties: `--hover-card-surface`, `--hover-card-color`, `--hover-card-radius`,
+  `--hover-card-shadow`, `--hover-card-border`, `--hover-card-padding`, `--hover-card-gap`,
+  `--hover-card-side-offset`, `--hover-card-align-offset`, `--hover-card-transition-duration`,
+  `--hover-card-transition-timing`, `--hover-card-arrow-size`, `--hover-card-arrow-shadow`.
+-- Parts: `::part(trigger)`, `::part(content)`, `::part(arrow)` and the default `::part(trigger-button)`
+  fallback.
+
+#### Keyboard support
+
+### `<wc-dropdown-menu>` and friends
+
+A composable dropdown menu system inspired by Radix UI. It offers a declarative API for menu triggers, items,
+separators, labels, submenus, checkbox items, and radio groups while keeping focus management and keyboard
+navigation accessible by default.
+
+```html
+<wc-dropdown-menu>
+  <button slot="trigger" aria-label="Customise options" class="menu-trigger">
+    ☰
+  </button>
+
+  <wc-dropdown-item shortcut="⌘+T">New Tab</wc-dropdown-item>
+  <wc-dropdown-item shortcut="⌘+N">New Window</wc-dropdown-item>
+  <wc-dropdown-item shortcut="⇧+⌘+N" disabled>New Private Window</wc-dropdown-item>
+
+  <wc-dropdown-submenu>
+    More Tools
+    <wc-dropdown-item slot="submenu" shortcut="⌘+S">Save Page As…</wc-dropdown-item>
+    <wc-dropdown-item slot="submenu">Create Shortcut…</wc-dropdown-item>
+    <wc-dropdown-item slot="submenu">Name Window…</wc-dropdown-item>
+    <wc-dropdown-separator slot="submenu"></wc-dropdown-separator>
+    <wc-dropdown-item slot="submenu">Developer Tools</wc-dropdown-item>
+  </wc-dropdown-submenu>
+
+  <wc-dropdown-separator></wc-dropdown-separator>
+  <wc-dropdown-checkbox-item shortcut="⌘+B" checked>Show Bookmarks</wc-dropdown-checkbox-item>
+  <wc-dropdown-checkbox-item>Show Full URLs</wc-dropdown-checkbox-item>
+
+  <wc-dropdown-separator></wc-dropdown-separator>
+  <wc-dropdown-label>People</wc-dropdown-label>
+  <wc-dropdown-radio-group value="pedro">
+    <wc-dropdown-radio-item value="pedro">Pedro Duarte</wc-dropdown-radio-item>
+    <wc-dropdown-radio-item value="colm">Colm Tuite</wc-dropdown-radio-item>
+  </wc-dropdown-radio-group>
+</wc-dropdown-menu>
+```
+
+#### Root attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls menu visibility. Toggle with the `open` property or `toggle()` method. |
+
+#### Menu building blocks
+
+| Element | Purpose |
+| --- | --- |
+| `<wc-dropdown-item>` | Standard actionable menu row supporting optional shortcut text via the `shortcut` attribute. |
+| `<wc-dropdown-checkbox-item>` | Toggleable checkbox item. Reflects `checked`/`indeterminate` states and emits `wc-dropdown-checkbox-change`. |
+| `<wc-dropdown-radio-group>` | Groups radio items. Control the active value with the `value` attribute/property. |
+| `<wc-dropdown-radio-item>` | Exclusive selection item inside a radio group. Emits `wc-dropdown-radio-change` on selection. |
+| `<wc-dropdown-submenu>` | Opens a nested fly-out menu. Place submenu children with `slot="submenu"`. |
+| `<wc-dropdown-label>` | Visual label for a section. |
+| `<wc-dropdown-separator>` | Renders a horizontal rule between sections. |
+
+#### Events
+
+- `wc-dropdown-select`: Fired whenever a menu item (including checkbox/radio items) is activated.
+- `wc-dropdown-checkbox-change`: Emitted from `<wc-dropdown-checkbox-item>` with `{ checked, item }`.
+- `wc-dropdown-radio-change`: Emitted from `<wc-dropdown-radio-item>` with `{ value, item }` when a new option is chosen.
+- `wc-dropdown-toggle`: Emitted from `<wc-dropdown-menu>` whenever the root open state changes.
+
+#### Styling hooks
+
+- Root custom properties: `--wc-dropdown-width`, `--wc-dropdown-radius`, `--wc-dropdown-background`,
+  `--wc-dropdown-padding`, `--wc-dropdown-shadow`, `--wc-dropdown-border-color`, `--wc-dropdown-offset`,
+  `--wc-dropdown-trigger-background`, `--wc-dropdown-trigger-color`.
+- Item custom properties: `--wc-dropdown-item-radius`, `--wc-dropdown-item-padding`,
+  `--wc-dropdown-item-background`, `--wc-dropdown-item-background-hover`, `--wc-dropdown-item-background-active`,
+  `--wc-dropdown-item-shortcut-color`, `--wc-dropdown-focus-outline`.
+- Parts: `::part(trigger)`, `::part(trigger-button)`, `::part(content)`, `::part(button)`, `::part(label)`,
+  `::part(indicator)`, `::part(submenu)`, `::part(submenu-indicator)` for fine-grained overrides.
+
+The component manages focus, supports `Escape`, arrow key navigation, Home/End, and closes on outside interaction
+by default. Nested submenus inherit keyboard support (Arrow Right/Left) and reuse the same styling tokens for
+consistent theming.
+### `<wc-context-menu>`
+
+A pointer-positioned context menu that mirrors the Radix UI anatomy while remaining dependency free. Right-click,
+keyboard shortcuts, or long-press on touch devices to summon the menu.
+
+```html
+<wc-context-menu></wc-context-menu>
+```
+
+The element renders a fully working menu with submenus, checkable items, and a radio group. It manages focus,
+collision-aware positioning (including horizontal/vertical flipping to avoid viewport overflow), and dismiss
+behaviour automatically.
+
+#### Events
+
+- `select`: Fired when a standard menu item (non-checkbox/radio) is activated. The `detail` includes
+  `{ command: string | null }`.
+- `toggle`: Fired when a checkbox or radio item changes. The detail is
+  `{ type: 'checkbox', name: string | undefined, checked: boolean }` for checkboxes and
+  `{ type: 'radio', group: string | undefined, value: string }` for radios.
+
+#### Interaction features
+
+- Context menu triggers on right-click, `Shift+F10`, the dedicated context-menu key, or a 550&nbsp;ms long press.
+- Arrow keys, Home/End, and Escape work as expected for navigating and dismissing.
+- Submenus open on hover, focus, arrow-right, or click, with responsive collision handling.
+- Checkboxes and radios reflect their state visually with built-in indicators and emit change events.
+
+#### Styling hooks
+
+Tune the appearance with CSS properties or style parts directly:
+
+- Custom properties: `--context-menu-trigger-background`, `--context-menu-trigger-border`,
+  `--context-menu-trigger-color`, `--context-menu-background`, `--context-menu-shadow`,
+  `--context-menu-item-highlight`, `--context-menu-separator-color`, `--context-menu-indicator-color`, etc.
+- Parts: `::part(trigger)`, `::part(menu)`, `::part(submenu)`.
 
 ### Examples
 
@@ -316,6 +682,8 @@ See [`index.html`](./index.html) for live demos showcasing:
 - Accordion setups demonstrating `single`/`multiple` behavior, custom theming, and horizontal orientation.
 - Alert dialogs with destructive confirmations, async flows, and custom styling via CSS properties.
 - Aspect ratio containers framing responsive images and responsive embeds.
+- Hover cards that preview Radix UI social metadata with delayed entry/exit.
+- Dropdown menus with submenus, checkboxes, and radio groups mirroring Radix UI ergonomics.
 
 ## Contributing
 

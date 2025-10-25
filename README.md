@@ -11,6 +11,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 ```html
 <script type="module" src="https://cdn.example.com/web-components/otp-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -161,12 +162,66 @@ Tune the container with CSS custom properties or target internal parts:
   `--aspect-ratio-content-justify`, `--aspect-ratio-object-fit`.
 - Parts: `::part(frame)`, `::part(content)` allow scoped overrides.
 
+### `<wc-alert-dialog>`
+
+An accessible, focus-trapped confirmation dialog that mirrors the Radix UI alert dialog experience while
+remaining dependency-free.
+
+```html
+<wc-alert-dialog>
+  <button slot="trigger">Delete account</button>
+  <span slot="title">Are you absolutely sure?</span>
+  <span slot="description">
+    This action cannot be undone. This will permanently delete your account and remove your data from our
+    servers.
+  </span>
+  <div>
+    <p>You can export your account data before continuing.</p>
+  </div>
+  <button slot="cancel">Cancel</button>
+  <button slot="action">Yes, delete account</button>
+</wc-alert-dialog>
+```
+
+Slots include `trigger`, `title`, `description`, optional default content for rich bodies, and paired
+`cancel`/`action` buttons. The component provides fallback buttons when the action slots are omitted.
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. Can be set declaratively or via the `open` property. |
+
+Programmatic helpers `show()`, `hide()`, and `toggle(force?: boolean)` are exposed for imperative control.
+
+#### Events
+
+- `confirm`: Fired when the primary action is activated. Cancel the event to keep the dialog open (for async
+  work) and call `hide()` when ready.
+- `cancel`: Emitted when the user dismisses the dialog (Cancel button, overlay click, or Escape key).
+
+#### Keyboard support
+
+- `Esc` closes the dialog and refocuses the trigger.
+- `Tab`/`Shift+Tab` cycle focus within the dialog.
+- Focus is trapped while open and returns to the invoking trigger on close.
+
+#### Styling hooks
+
+Customize via CSS custom properties and exposed parts:
+
+- Custom properties: `--alert-dialog-overlay-background`, `--alert-dialog-transition-duration`,
+  `--alert-dialog-padding`, `--alert-dialog-radius`, `--alert-dialog-action-background`, and more.
+- Parts: `::part(overlay)`, `::part(content)`, `::part(title)`, `::part(description)`, `::part(body)`,
+  `::part(footer)`, `::part(cancel-button)`, `::part(action-button)`.
+
 ### Examples
 
 See [`index.html`](./index.html) for live demos showcasing:
 
 - OTP field variations (numeric, masked, vertical layouts) with event logging.
 - Accordion setups demonstrating `single`/`multiple` behavior, custom theming, and horizontal orientation.
+- Alert dialogs with destructive confirmations, async flows, and custom styling via CSS properties.
 - Aspect ratio containers framing responsive images and responsive embeds.
 
 ## Contributing

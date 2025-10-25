@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-resizable-group&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/resizable.js"></script>
+    <style>
+      .example-card p {
+        margin-bottom: 1rem;
+      }
+
+      .resizable-preview {
+        display: flex;
+        justify-content: center;
+      }
+
+      .resizable-demo {
+        width: min(100%, 32rem);
+        height: 220px;
+        --wc-resizable-background: rgba(255, 255, 255, 0.85);
+        --wc-resizable-border-radius: 0.9rem;
+        --wc-resizable-border: 1px solid rgba(15, 23, 42, 0.08);
+        --wc-resizable-gap: 0;
+        box-shadow: 0 25px 45px -40px rgba(15, 23, 42, 0.65);
+      }
+
+      .resizable-demo.is-vertical {
+        height: 260px;
+      }
+
+      wc-resizable-panel::part(panel) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem;
+        font-weight: 600;
+        color: rgba(15, 23, 42, 0.8);
+        background: linear-gradient(135deg, rgba(236, 233, 254, 0.9), rgba(255, 255, 255, 0.9));
+      }
+
+      wc-resizable-group.resizable-demo--nested wc-resizable-panel:first-of-type::part(panel) {
+        background: linear-gradient(135deg, rgba(191, 219, 254, 0.9), rgba(255, 255, 255, 0.9));
+      }
+
+      wc-resizable-group.resizable-demo--nested wc-resizable-panel:last-of-type::part(panel) {
+        background: linear-gradient(135deg, rgba(221, 214, 254, 0.9), rgba(255, 255, 255, 0.95));
+      }
+
+      wc-resizable-handle {
+        --wc-resizable-handle-color: rgba(99, 102, 241, 0.25);
+        --wc-resizable-handle-hover-color: rgba(79, 70, 229, 0.75);
+        --wc-resizable-handle-active-color: rgba(55, 48, 163, 0.9);
+      }
+
+      .resizable-log {
+        font-family: var(--demo-font-mono, 'Fira Code', 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace);
+        font-size: 0.85rem;
+        background: rgba(15, 23, 42, 0.04);
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        margin-top: 1rem;
+        color: rgba(15, 23, 42, 0.75);
+      }
+
+      .resizable-log strong {
+        color: rgba(55, 48, 163, 0.9);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Split editor</h3>
+            <p>Combine nested groups to create multi-directional layouts. Drag handles or use the arrow keys.</p>
+            <div class="resizable-preview">
+              <wc-resizable-group class="resizable-demo resizable-demo--nested" direction="horizontal">
+                <wc-resizable-panel default-size="45" min-size="20">
+                  <div>Outline</div>
+                </wc-resizable-panel>
+                <wc-resizable-handle></wc-resizable-handle>
+                <wc-resizable-panel default-size="55">
+                  <wc-resizable-group direction="vertical">
+                    <wc-resizable-panel default-size="35">
+                      <div>Preview</div>
+                    </wc-resizable-panel>
+                    <wc-resizable-handle></wc-resizable-handle>
+                    <wc-resizable-panel default-size="65">
+                      <div>Notes</div>
+                    </wc-resizable-panel>
+                  </wc-resizable-group>
+                </wc-resizable-panel>
+              </wc-resizable-group>
+            </div>
+          </div>
+
+          <div class="example-card">
+            <h3>Vertical stack</h3>
+            <p>Switch the <code>direction</code> attribute to rearrange the axis without changing markup.</p>
+            <div class="resizable-preview">
+              <wc-resizable-group class="resizable-demo is-vertical" direction="vertical">
+                <wc-resizable-panel default-size="30">
+                  <div>Header</div>
+                </wc-resizable-panel>
+                <wc-resizable-handle></wc-resizable-handle>
+                <wc-resizable-panel default-size="70">
+                  <div>Content</div>
+                </wc-resizable-panel>
+              </wc-resizable-group>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="example-card">
+          <h3>Resizable inspector</h3>
+          <p>
+            Handles expose <code>with-handle</code> for visible grips and dispatch <code>wc-resize</code> events with updated
+            percentages.
+          </p>
+          <div class="resizable-preview">
+            <wc-resizable-group id="resizable-inspector" class="resizable-demo" direction="horizontal">
+              <wc-resizable-panel default-size="35" min-size="20">
+                <div>Sidebar</div>
+              </wc-resizable-panel>
+              <wc-resizable-handle with-handle></wc-resizable-handle>
+              <wc-resizable-panel default-size="65" min-size="40">
+                <div>Inspector</div>
+              </wc-resizable-panel>
+            </wc-resizable-group>
+          </div>
+          <pre class="resizable-log" id="resizable-log">Drag the handle or press arrow keys to see updates…</pre>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const inspector = document.getElementById('resizable-inspector');
+      const log = document.getElementById('resizable-log');
+
+      if (inspector && log) {
+        inspector.addEventListener('wc-resize', (event) => {
+          const { previous, next, sizes, orientation } = event.detail || {};
+          if (!previous || !next || !Array.isArray(sizes)) {
+            return;
+          }
+          const [prevSize = 0, nextSize = 0] = sizes;
+          log.innerHTML = `
+<strong>${orientation}</strong> resize →
+Sidebar: <strong>${prevSize.toFixed(1)}%</strong>
+Inspector: <strong>${nextSize.toFixed(1)}%</strong>
+          `.trim();
+        });
+      }
+    </script>
+  </body>
+</html>

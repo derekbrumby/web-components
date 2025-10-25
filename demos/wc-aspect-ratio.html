@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-aspect-ratio&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/aspect-ratio.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-aspect-ratio&gt;</h2>
+          <p>Maintain fixed ratios for media and containers with zero layout shift.</p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Landscape preview</h3>
+            <wc-aspect-ratio ratio="16 / 9" style="--aspect-border-radius: 1rem; --aspect-overlay: rgba(15, 23, 42, 0.2);">
+              <img
+                alt="Lake and mountains"
+                src="https://images.unsplash.com/photo-1526481280695-3c46973ed134?w=640&h=360&fit=crop&auto=format"
+                style="display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit;"
+              />
+            </wc-aspect-ratio>
+            <p>Slot any content inside—the element enforces the ratio using pure CSS and avoids nested wrappers.</p>
+          </div>
+
+          <div class="example-card">
+            <h3>Responsive square</h3>
+            <wc-aspect-ratio ratio="1 / 1" style="--aspect-border-radius: 24px;">
+              <div
+                style="
+                  display: grid;
+                  place-items: center;
+                  width: 100%;
+                  height: 100%;
+                  border-radius: inherit;
+                  background: radial-gradient(circle at 30% 30%, #6366f1, #312e81);
+                  color: white;
+                  font-weight: 600;
+                  letter-spacing: 0.08em;
+                "
+              >
+                SQUARE
+              </div>
+            </wc-aspect-ratio>
+            <p>Perfect for avatars, icon grids, or embedding videos without stretching.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-label&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/label.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-label&gt;</h2>
+          <p>Render accessible labels that stay linked to their controls—inline or slotted.</p>
+        </header>
+
+        <div class="label-example-grid">
+          <div class="label-row">
+            <wc-label class="label-primary" for="demo-first-name">First name</wc-label>
+            <input
+              id="demo-first-name"
+              type="text"
+              value="Pedro Duarte"
+              aria-label="First name"
+            />
+          </div>
+          <div class="label-callout">
+            <wc-label class="label-checkbox">
+              Enable weekly updates
+              <input slot="control" type="checkbox" checked aria-label="Enable weekly updates" />
+            </wc-label>
+            <p>
+              Double-clicking the label text avoids accidental selection while nested controls remain fully
+              interactive.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

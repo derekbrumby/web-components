@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-collapsible&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/collapsible.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-collapsible&gt;</h2>
+          <p>Build expandable summaries with optional preview content and animated icons.</p>
+        </header>
+
+        <div class="collapsible-demo">
+          <div class="collapsible-callout">
+            <h3>Starred repositories</h3>
+            <wc-collapsible
+              style="
+                --collapsible-width: min(100%, 320px);
+                --collapsible-background: linear-gradient(135deg, #312e81, #1e1b4b);
+                --collapsible-summary-color: #ede9fe;
+                --collapsible-trigger-background: #ffffff;
+                --collapsible-trigger-color: #5b21b6;
+                --collapsible-preview-background: rgba(255, 255, 255, 0.98);
+                --collapsible-preview-color: #312e81;
+                --collapsible-content-background: rgba(255, 255, 255, 0.98);
+                --collapsible-content-color: #312e81;
+              "
+            >
+              <span slot="summary">@peduarte starred 3 repositories</span>
+              <div slot="peek" class="collapsible-card">
+                <span>@radix-ui/primitives</span>
+                <strong>+24 ★</strong>
+              </div>
+              <div class="collapsible-card">
+                <span>@radix-ui/colors</span>
+                <strong>+12 ★</strong>
+              </div>
+              <div class="collapsible-card">
+                <span>@radix-ui/themes</span>
+                <strong>+9 ★</strong>
+              </div>
+            </wc-collapsible>
+          </div>
+
+          <div class="collapsible-supporting">
+            <p>
+              Slot <code>summary</code> for the header, <code>peek</code> for a preview row, and default slot for the
+              expanded body. CSS custom properties control widths, colors, and transitions.
+            </p>
+            <div class="collapsible-card">
+              <span>Keyboard support</span>
+              <strong>Space / Enter</strong>
+            </div>
+            <div class="collapsible-card">
+              <span>Animation timing</span>
+              <strong>180ms ease-out</strong>
+            </div>
+            <div class="collapsible-card">
+              <span>Parts exposed</span>
+              <strong>summary, trigger, peek, content</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

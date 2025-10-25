@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-dropdown-menu&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/dropdown-menu.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header>
+          <h2>&lt;wc-dropdown-menu&gt;</h2>
+          <p>
+            Radix-inspired dropdown menus with nested fly-outs, checkboxes, radio groups, and full keyboard support.
+            Style everything with CSS custom properties and <code>::part</code> selectors.
+          </p>
+        </header>
+
+        <div class="example-card">
+          <h3>Browser actions menu</h3>
+          <div class="dropdown-demo">
+            <wc-dropdown-menu
+              id="dropdown-demo"
+              style="
+                --wc-dropdown-width: 240px;
+                --wc-dropdown-background: #ffffff;
+                --wc-dropdown-border-color: rgba(148, 163, 184, 0.28);
+                --wc-dropdown-shadow: 0 28px 60px -32px rgba(15, 23, 42, 0.4);
+                --wc-dropdown-item-background-hover: rgba(79, 70, 229, 0.14);
+                --wc-dropdown-item-background-active: rgba(79, 70, 229, 0.2);
+                --wc-dropdown-item-shortcut-color: #64748b;
+                --wc-dropdown-focus-outline: 2px solid #4f46e5;
+              "
+            >
+              <button slot="trigger" class="menu-trigger" aria-label="Open actions menu">
+                <span aria-hidden="true">☰</span>
+              </button>
+
+              <wc-dropdown-item shortcut="⌘+T">New Tab</wc-dropdown-item>
+              <wc-dropdown-item shortcut="⌘+N">New Window</wc-dropdown-item>
+              <wc-dropdown-item shortcut="⇧+⌘+N" disabled>New Private Window</wc-dropdown-item>
+
+              <wc-dropdown-submenu>
+                More Tools
+                <wc-dropdown-item slot="submenu" shortcut="⌘+S">Save Page As…</wc-dropdown-item>
+                <wc-dropdown-item slot="submenu">Create Shortcut…</wc-dropdown-item>
+                <wc-dropdown-item slot="submenu">Name Window…</wc-dropdown-item>
+                <wc-dropdown-separator slot="submenu"></wc-dropdown-separator>
+                <wc-dropdown-item slot="submenu">Developer Tools</wc-dropdown-item>
+              </wc-dropdown-submenu>
+
+              <wc-dropdown-separator></wc-dropdown-separator>
+              <wc-dropdown-checkbox-item shortcut="⌘+B" checked>Show Bookmarks</wc-dropdown-checkbox-item>
+              <wc-dropdown-checkbox-item>Show Full URLs</wc-dropdown-checkbox-item>
+
+              <wc-dropdown-separator></wc-dropdown-separator>
+              <wc-dropdown-label>People</wc-dropdown-label>
+              <wc-dropdown-radio-group value="pedro">
+                <wc-dropdown-radio-item value="pedro">Pedro Duarte</wc-dropdown-radio-item>
+                <wc-dropdown-radio-item value="colm">Colm Tuite</wc-dropdown-radio-item>
+              </wc-dropdown-radio-group>
+            </wc-dropdown-menu>
+
+            <div class="dropdown-help">
+              <strong>Keyboard friendly</strong>
+              <p>
+                Press <kbd>Enter</kbd> or <kbd>Space</kbd> to open, then explore with arrow keys. Submenus open with
+                <kbd>→</kbd> and close with <kbd>←</kbd>.
+              </p>
+            </div>
+          </div>
+          <pre class="log" id="dropdown-log">Interact with the menu to see emitted events.</pre>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const dropdownMenu = document.getElementById('dropdown-demo');
+      const dropdownLog = document.getElementById('dropdown-log');
+      if (dropdownMenu && dropdownLog) {
+        const entries = [];
+        const updateLog = () => {
+          dropdownLog.textContent = entries.slice(-4).join('\n') || 'Interact with the menu to see emitted events.';
+        };
+
+        const describeItem = (item) => {
+          if (!(item instanceof HTMLElement)) return 'Unknown item';
+          if (item.shadowRoot) {
+            const slot = item.shadowRoot.querySelector('slot:not([name])');
+            if (slot instanceof HTMLSlotElement) {
+              const label = slot
+                .assignedNodes({ flatten: true })
+                .map((node) => (node.textContent || '').trim())
+                .join(' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+              if (label) return label;
+            }
+          }
+          const text = item.textContent || '';
+          return text.replace(/\s+/g, ' ').trim();
+        };
+
+        dropdownMenu.addEventListener('wc-dropdown-toggle', (event) => {
+          entries.push(event.detail?.open ? 'Menu opened.' : 'Menu closed.');
+          updateLog();
+        });
+
+        dropdownMenu.addEventListener('wc-dropdown-select', (event) => {
+          const item = event.detail?.item;
+          const tagName = item?.tagName || '';
+          if (tagName.includes('CHECKBOX') || tagName.includes('RADIO')) {
+            return;
+          }
+          entries.push(`Selected: ${describeItem(item)}`);
+          updateLog();
+        });
+
+        dropdownMenu.addEventListener('wc-dropdown-checkbox-change', (event) => {
+          const { item, checked } = event.detail || {};
+          let state = 'unchecked';
+          if (checked === true) state = 'checked';
+          else if (checked === 'indeterminate') state = 'indeterminate';
+          entries.push(`Checkbox ${describeItem(item)} → ${state}`);
+          updateLog();
+        });
+
+        dropdownMenu.addEventListener('wc-dropdown-radio-change', (event) => {
+          const { value } = event.detail || {};
+          entries.push(`Radio selection: ${value || 'unknown'}`);
+          updateLog();
+        });
+
+        updateLog();
+      }
+    </script>
+  </body>
+</html>

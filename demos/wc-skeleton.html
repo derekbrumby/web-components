@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-skeleton&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/skeleton.js"></script>
+    <style>
+      .skeleton-grid {
+        display: grid;
+        gap: 2rem;
+      }
+
+      @media (min-width: 960px) {
+        .skeleton-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .skeleton-card {
+        display: grid;
+        gap: 1.5rem;
+        padding: 1.75rem;
+        border-radius: 1.25rem;
+        background: rgba(15, 23, 42, 0.04);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        box-shadow: 0 24px 48px -36px rgba(15, 23, 42, 0.35);
+      }
+
+      .skeleton-card h3 {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+
+      .skeleton-copy {
+        margin: 0;
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      .skeleton-profile {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .skeleton-profile wc-skeleton.avatar {
+        --wc-skeleton-width: 3.25rem;
+        --wc-skeleton-height: 3.25rem;
+        --wc-skeleton-radius: 9999px;
+      }
+
+      .skeleton-profile wc-skeleton.line {
+        --wc-skeleton-width: 12rem;
+        --wc-skeleton-height: 0.75rem;
+      }
+
+      .skeleton-profile wc-skeleton.line:last-of-type {
+        --wc-skeleton-width: 8rem;
+      }
+
+      .skeleton-content {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .skeleton-content wc-skeleton {
+        --wc-skeleton-height: 0.8rem;
+      }
+
+      .skeleton-content wc-skeleton:last-of-type {
+        --wc-skeleton-width: 60%;
+      }
+
+      .skeleton-list {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .skeleton-item {
+        display: grid;
+        gap: 0.65rem;
+        padding: 1.25rem;
+        border-radius: 1rem;
+        background: rgba(79, 70, 229, 0.08);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+      }
+
+      .skeleton-item-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .skeleton-item-header wc-skeleton {
+        --wc-skeleton-width: 2.75rem;
+        --wc-skeleton-height: 2.75rem;
+        --wc-skeleton-radius: 9999px;
+      }
+
+      .skeleton-item-body {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .skeleton-item-body wc-skeleton {
+        --wc-skeleton-height: 0.7rem;
+      }
+
+      .skeleton-item-body wc-skeleton:nth-child(2) {
+        --wc-skeleton-width: 75%;
+      }
+
+      .skeleton-item-body wc-skeleton:last-child {
+        --wc-skeleton-width: 40%;
+      }
+
+      .skeleton-controls {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .skeleton-controls wc-skeleton {
+        --wc-skeleton-height: 2.5rem;
+        --wc-skeleton-width: 6.5rem;
+        --wc-skeleton-radius: 9999px;
+      }
+
+      .skeleton-controls wc-skeleton:last-child {
+        --wc-skeleton-width: 5rem;
+      }
+
+      .skeleton-still wc-skeleton {
+        --wc-skeleton-width: 100%;
+        --wc-skeleton-height: 1.25rem;
+      }
+
+      .skeleton-still wc-skeleton + wc-skeleton {
+        --wc-skeleton-width: 80%;
+      }
+
+      .skeleton-still wc-skeleton:last-child {
+        --wc-skeleton-width: 40%;
+      }
+
+      .skeleton-still wc-skeleton[still] {
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        background-color: rgba(226, 232, 240, 0.6);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="skeleton-grid">
+        <article class="skeleton-card">
+          <h3>Team profile loading</h3>
+          <div class="skeleton-profile">
+            <wc-skeleton class="avatar" aria-label="Loading team member avatar"></wc-skeleton>
+            <div>
+              <wc-skeleton class="line" aria-label="Loading team member name"></wc-skeleton>
+              <wc-skeleton class="line" aria-label="Loading role"></wc-skeleton>
+            </div>
+          </div>
+          <p class="skeleton-copy">
+            Layer multiple skeletons to mimic the layout of the final card. Adjust width, height, and radii with CSS
+            custom properties per instance.
+          </p>
+          <div class="skeleton-content" aria-hidden="true">
+            <wc-skeleton></wc-skeleton>
+            <wc-skeleton></wc-skeleton>
+            <wc-skeleton></wc-skeleton>
+          </div>
+          <div class="skeleton-controls" aria-hidden="true">
+            <wc-skeleton></wc-skeleton>
+            <wc-skeleton></wc-skeleton>
+          </div>
+        </article>
+
+        <article class="skeleton-card">
+          <h3>Static placeholders</h3>
+          <p class="skeleton-copy">
+            Apply the <code>still</code> attribute when you prefer a calm loading state with no animation. This can help
+            when the shimmer could distract from surrounding content.
+          </p>
+          <div class="skeleton-still">
+            <wc-skeleton still aria-label="Headline loading"></wc-skeleton>
+            <wc-skeleton still aria-label="Supporting text loading"></wc-skeleton>
+            <wc-skeleton still aria-label="Metadata loading"></wc-skeleton>
+          </div>
+          <div class="skeleton-list" aria-hidden="true">
+            <div class="skeleton-item">
+              <div class="skeleton-item-header">
+                <wc-skeleton></wc-skeleton>
+                <div class="skeleton-item-body">
+                  <wc-skeleton></wc-skeleton>
+                  <wc-skeleton></wc-skeleton>
+                  <wc-skeleton></wc-skeleton>
+                </div>
+              </div>
+              <div class="skeleton-controls">
+                <wc-skeleton></wc-skeleton>
+                <wc-skeleton></wc-skeleton>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

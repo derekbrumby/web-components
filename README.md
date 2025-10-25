@@ -30,6 +30,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toggle.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/spinner.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/skeleton.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/scroll-area.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/separator.js"></script>
@@ -116,6 +117,33 @@ CSS custom properties while keeping a polite status message for assistive techno
 
 The element defaults to `role="status"`, `aria-live="polite"`, and `aria-busy="true"` so updates are announced without
 stealing focus.
+
+### `<wc-skeleton>`
+
+Skeleton placeholders help communicate that content is still loading while maintaining the layout of the final UI.
+Adjust each instance’s width, height, and border radius with CSS custom properties or host styles.
+
+```html
+<wc-skeleton style="--wc-skeleton-width: 12rem; --wc-skeleton-height: 1rem;"></wc-skeleton>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `still` | boolean | `false` | When present, pauses the shimmer animation for a calmer loading state. |
+| `rounded` | string | `""` | Set to `"full"` to force a perfectly round radius without adjusting CSS variables. |
+
+#### Accessibility
+
+- Defaults to `role="presentation"` and `aria-hidden="true"` so assistive tech ignores purely decorative placeholders.
+- Supply `aria-label` when the skeleton should describe its purpose (e.g. “Loading user avatar”).
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-skeleton-width`, `--wc-skeleton-height`, `--wc-skeleton-radius`,
+  `--wc-skeleton-base-color`, `--wc-skeleton-highlight-color`, `--wc-skeleton-animation-duration`.
+- Parts: `::part(base)` exposes the animated surface for advanced overrides.
 
 ### `<wc-label>`
 

@@ -13,12 +13,54 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
 examples for each component.
 
 ## Components
+
+### `<wc-checkbox>`
+
+An accessible, tri-state checkbox control that mirrors Radix UI’s anatomy without runtime dependencies. It
+supports indeterminate states, full keyboard navigation, and form association.
+
+```html
+<form onsubmit="event.preventDefault();">
+  <wc-checkbox name="terms" value="accepted" required checked>
+    Accept terms and conditions.
+  </wc-checkbox>
+</form>
+```
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `checked` | boolean | `false` | Sets the checkbox to the checked state. Reflects to the `checked` property. |
+| `indeterminate` | boolean | `false` | Displays the indeterminate (mixed) state without marking it as checked. |
+| `disabled` | boolean | `false` | Removes the checkbox from the focus order and blocks interaction. |
+| `required` | boolean | `false` | Marks the checkbox as required when used inside a form. |
+| `value` | string | `"on"` | Value submitted with the parent form whenever the checkbox is checked. |
+| `name` | string | `""` | Associates the element with form submission entries. |
+
+Imperatively call `toggle(force?: boolean)` to flip the state or force a particular value.
+
+#### Events
+
+- `input`: Fired whenever user interaction updates the state. Bubbles and is composed.
+- `change`: Mirrors the native checkbox `change` event semantics.
+
+#### Styling hooks
+
+- CSS custom properties: `--checkbox-size`, `--checkbox-radius`, `--checkbox-border-width`,
+  `--checkbox-border-color`, `--checkbox-background`, `--checkbox-background-checked`,
+  `--checkbox-background-indeterminate`, `--checkbox-foreground`, `--checkbox-shadow`, `--checkbox-focus-ring`,
+  `--checkbox-gap`, `--checkbox-label-color`.
+- Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
+- Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
 
 ### `<wc-otp-field>`
 
@@ -130,6 +172,53 @@ Both the root and items expose rich customization options:
   `--accordion-transition-duration`, `--accordion-content-background`, and more.
 - Parts: `::part(item)`, `::part(trigger)`, `::part(trigger-label)`, `::part(indicator)`,
   `::part(panel)`, `::part(panel-inner)` allow precise targeting.
+
+### `<wc-collapsible>`
+
+An interactive disclosure that mirrors the Radix UI Collapsible primitive. It exposes dedicated slots for
+the summary line, an optional preview area, and the collapsible body so you can recreate complex layouts
+without extra wrappers.
+
+```html
+<wc-collapsible style="--collapsible-width: 300px;">
+  <span slot="summary">@peduarte starred 3 repositories</span>
+  <div slot="peek">@radix-ui/primitives</div>
+  <div>
+    <div>@radix-ui/colors</div>
+    <div>@radix-ui/themes</div>
+  </div>
+</wc-collapsible>
+```
+
+The component manages keyboard interaction (Enter/Space), exposes imperative `show()`, `hide()`, and
+`toggle()` methods, and emits an `openchange` event whenever the visibility switches.
+
+#### Attributes & properties
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | boolean | `false` | Controls visibility. Can be set declaratively or via the `open` property. |
+| `disabled` | boolean | `false` | Disables interaction and updates the button's focusability. |
+
+#### Slots
+
+- `summary`: Required. Text or elements displayed alongside the toggle button.
+- `peek`: Optional. Content that remains visible regardless of state (for featured items or previews).
+- _default_: Collapsible body content shown when expanded.
+
+#### Events
+
+- `openchange`: Bubbles with `{ open: boolean }` whenever the panel expands or collapses.
+
+#### Styling hooks
+
+Tune the component using custom properties or part selectors:
+
+- Custom properties: `--collapsible-width`, `--collapsible-background`, `--collapsible-trigger-size`,
+  `--collapsible-trigger-background`, `--collapsible-summary-color`, `--collapsible-content-background`,
+  `--collapsible-content-gap`, and more.
+- Parts: `::part(container)`, `::part(header)`, `::part(summary)`, `::part(trigger)`, `::part(preview)`,
+  `::part(content)`, `::part(icon-open)`, `::part(icon-closed)`.
 
 ### `<wc-aspect-ratio>`
 

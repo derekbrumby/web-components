@@ -12,6 +12,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/otp-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -200,6 +201,60 @@ Programmatic helpers `show()`, `hide()`, and `toggle(force?: boolean)` are expos
   work) and call `hide()` when ready.
 - `cancel`: Emitted when the user dismisses the dialog (Cancel button, overlay click, or Escape key).
 
+### `<wc-avatar>`
+
+An inline avatar element that progressively loads an image and gracefully falls back to initials or any custom
+content. Fallback rendering can be delayed to avoid flashing while the image loads, mirroring the ergonomics of
+Radix UI's Avatar component.
+
+```html
+<div class="avatar-row">
+  <wc-avatar
+    src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?w=128&h=128&dpr=2&q=80"
+    alt="Colm Tuite"
+    initials="CT"
+    fallback-delay="600"
+  ></wc-avatar>
+  <wc-avatar
+    src="https://images.unsplash.com/photo-1511485977113-f34c92461ad9?w=128&h=128&dpr=2&q=80"
+    alt="Pedro Duarte"
+    initials="PD"
+    fallback-delay="600"
+    loading="lazy"
+  ></wc-avatar>
+  <wc-avatar
+    alt="Polly Doe"
+    style="--avatar-fallback-background: #1e1b4b; --avatar-fallback-color: #ede9fe;"
+  >
+    PD
+  </wc-avatar>
+</div>
+```
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `src` | string | `""` | Image source URL. When omitted the fallback content renders. |
+| `alt` | string | `""` | Accessible label for the avatar. Use an empty string for decorative avatars. |
+| `initials` | string | `""` | Default fallback text when no slotted content is supplied. Auto-generated from `alt` if omitted. |
+| `fallback-delay` | number | `0` | Milliseconds to wait before revealing the fallback while the image is loading. |
+| `loading` | `lazy` \| `eager` \| `auto` | `auto` | Native image loading hint forwarded to the internal `<img>`. |
+| `size` | CSS length | `45px` | Convenience attribute that sets the `--avatar-size` custom property. |
+
+The element also exposes a read-only `state` property (`"empty"`, `"loading"`, `"loaded"`, or `"error"`) and
+property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperative control.
+
+#### Slots
+
+- _default_: optional fallback content. When empty the component uses `initials` or derives them from `alt`.
+
+#### Styling hooks
+
+- Custom properties: `--avatar-size`, `--avatar-radius`, `--avatar-background`, `--avatar-border`,
+  `--avatar-transition`, `--avatar-fallback-background`, `--avatar-fallback-color`,
+  `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
+- Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
 #### Keyboard support
 
 - `Esc` closes the dialog and refocuses the trigger.

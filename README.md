@@ -23,6 +23,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/radio-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/spinner.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/scroll-area.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/separator.js"></script>
@@ -51,6 +52,13 @@ hooks for theming.
 <wc-markdown-viewer src="/docs/welcome.md">
   <span slot="loading">Loading documentation…</span>
 </wc-markdown-viewer>
+### `<wc-spinner>`
+
+An accessible loading indicator with no runtime dependencies. Customize the spinner’s size, stroke, and color with
+CSS custom properties while keeping a polite status message for assistive technologies.
+
+```html
+<wc-spinner label="Processing payment"></wc-spinner>
 ```
 
 #### Attributes & properties
@@ -82,6 +90,22 @@ hooks for theming.
   `--markdown-viewer-inline-code-color`, `--markdown-viewer-link-color`,
   `--markdown-viewer-heading-margin`, and more.
 - Parts: `::part(container)`, `::part(empty)`, `::part(error)`.
+| `label` | string | `"Loading"` | Sets the accessible status text announced to assistive technologies. Mirrors to `aria-label` when one is not provided. |
+| `visual-label` | boolean | `false` | Reveals the accessible label next to the indicator so the status is shown visually as well. |
+
+#### Slots
+
+- _(default)_ — Optional inline content displayed after the spinner. Useful for custom status text or icons.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-spinner-size`, `--wc-spinner-stroke-width`, `--wc-spinner-track-color`,
+  `--wc-spinner-color`, `--wc-spinner-gap`, `--wc-spinner-duration`.
+- Parts: `::part(icon)` for the SVG container, `::part(label)` for the accessible status text (visible when
+  `visual-label` is present).
+
+The element defaults to `role="status"`, `aria-live="polite"`, and `aria-busy="true"` so updates are announced without
+stealing focus.
 
 ### `<wc-label>`
 

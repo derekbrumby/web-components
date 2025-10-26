@@ -486,6 +486,16 @@
     #reflectingValue = false;
     /** @type {string} */
     #labelId;
+    /** @type {EventListener} */
+    #boundOnGridClick;
+    /** @type {EventListener} */
+    #boundOnGridKeyDown;
+    /** @type {EventListener} */
+    #boundOnNavClick;
+    /** @type {EventListener} */
+    #boundOnMonthChange;
+    /** @type {EventListener} */
+    #boundOnYearChange;
 
     constructor() {
       super();
@@ -518,11 +528,11 @@
         dateStyle: 'full',
       });
 
-      this.#onGridClick = this.#onGridClick.bind(this);
-      this.#onGridKeyDown = this.#onGridKeyDown.bind(this);
-      this.#onNavClick = this.#onNavClick.bind(this);
-      this.#onMonthChange = this.#onMonthChange.bind(this);
-      this.#onYearChange = this.#onYearChange.bind(this);
+      this.#boundOnGridClick = this.#onGridClick.bind(this);
+      this.#boundOnGridKeyDown = this.#onGridKeyDown.bind(this);
+      this.#boundOnNavClick = this.#onNavClick.bind(this);
+      this.#boundOnMonthChange = this.#onMonthChange.bind(this);
+      this.#boundOnYearChange = this.#onYearChange.bind(this);
     }
 
     connectedCallback() {
@@ -535,12 +545,12 @@
       upgradeProperty(this, 'captionLayout');
       upgradeProperty(this, 'showOutsideDays');
 
-      this.#grid.addEventListener('click', this.#onGridClick);
-      this.#grid.addEventListener('keydown', this.#onGridKeyDown);
-      this.#previousButton.addEventListener('click', this.#onNavClick);
-      this.#nextButton.addEventListener('click', this.#onNavClick);
-      this.#monthSelect.addEventListener('change', this.#onMonthChange);
-      this.#yearSelect.addEventListener('change', this.#onYearChange);
+      this.#grid.addEventListener('click', this.#boundOnGridClick);
+      this.#grid.addEventListener('keydown', this.#boundOnGridKeyDown);
+      this.#previousButton.addEventListener('click', this.#boundOnNavClick);
+      this.#nextButton.addEventListener('click', this.#boundOnNavClick);
+      this.#monthSelect.addEventListener('change', this.#boundOnMonthChange);
+      this.#yearSelect.addEventListener('change', this.#boundOnYearChange);
 
       if (!this.hasAttribute('role')) {
         this.setAttribute('role', 'application');
@@ -555,12 +565,12 @@
     }
 
     disconnectedCallback() {
-      this.#grid.removeEventListener('click', this.#onGridClick);
-      this.#grid.removeEventListener('keydown', this.#onGridKeyDown);
-      this.#previousButton.removeEventListener('click', this.#onNavClick);
-      this.#nextButton.removeEventListener('click', this.#onNavClick);
-      this.#monthSelect.removeEventListener('change', this.#onMonthChange);
-      this.#yearSelect.removeEventListener('change', this.#onYearChange);
+      this.#grid.removeEventListener('click', this.#boundOnGridClick);
+      this.#grid.removeEventListener('keydown', this.#boundOnGridKeyDown);
+      this.#previousButton.removeEventListener('click', this.#boundOnNavClick);
+      this.#nextButton.removeEventListener('click', this.#boundOnNavClick);
+      this.#monthSelect.removeEventListener('change', this.#boundOnMonthChange);
+      this.#yearSelect.removeEventListener('change', this.#boundOnYearChange);
     }
 
     attributeChangedCallback(name, oldValue, newValue) {

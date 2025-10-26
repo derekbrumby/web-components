@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-pricing-card&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/pricing-card.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .pricing-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 960px) {
+        .pricing-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      .pricing-card {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .pricing-card h3 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .pricing-card p {
+        margin: 0;
+        color: #475569;
+      }
+
+      .toggles {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .toggles button {
+        appearance: none;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: rgba(241, 245, 249, 0.9);
+        padding: 0.6rem 1.1rem;
+        border-radius: 0.75rem;
+        font: inherit;
+        color: #0f172a;
+        cursor: pointer;
+        transition: border-color 140ms ease, background-color 140ms ease;
+      }
+
+      .toggles button:hover,
+      .toggles button:focus-visible {
+        border-color: rgba(37, 99, 235, 0.55);
+        background: rgba(224, 231, 255, 0.9);
+        outline: none;
+      }
+
+      .minimal::part(container) {
+        --wc-pricing-card-background: rgba(15, 23, 42, 0.9);
+        --wc-pricing-card-border: rgba(148, 163, 184, 0.3);
+        --wc-pricing-card-foreground: #f8fafc;
+        --wc-pricing-card-muted: rgba(226, 232, 240, 0.75);
+        --wc-pricing-card-accent: #38bdf8;
+        --wc-pricing-card-feature-icon: #38bdf8;
+        box-shadow: 0 40px 72px -42px rgba(8, 47, 73, 0.6);
+      }
+
+      .minimal::part(cta) {
+        background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+        color: #082f49;
+      }
+
+      .side-by-side {
+        display: grid;
+        gap: 1.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="pricing-grid">
+        <div class="pricing-card" data-code-example>
+          <div>
+            <h3>Team billing</h3>
+            <p>Use slots to customise supporting copy and pass feature bullets directly from light DOM.</p>
+          </div>
+          <wc-pricing-card
+            recommended
+            plan="Growth"
+            price="$59"
+            period="/seat"
+            href="#upgrade"
+            cta-label="Upgrade now"
+            badge-label="Most popular"
+          >
+            <span slot="eyebrow">Best for startups</span>
+            <p slot="description">Collaborate in real-time with analytics, workspace permissions, and shared automation.</p>
+            <li>5 workspaces with role-based access</li>
+            <li>Automated usage insights and CSV exports</li>
+            <li>Custom integrations through webhooks</li>
+          </wc-pricing-card>
+        </div>
+
+        <div class="pricing-card" data-code-example>
+          <div>
+            <h3>Dark mode ready</h3>
+            <p>Override CSS custom properties or individual parts to match editorial surfaces.</p>
+          </div>
+          <wc-pricing-card class="minimal" plan="Enterprise" price="Contact" period="• talk to sales" cta-label="Book a consultation">
+            <span slot="eyebrow">Tailored onboarding</span>
+            <p slot="description">A dedicated success manager and bespoke rollout plan across regions.</p>
+            <li>Unlimited environments and SSO</li>
+            <li>Quarterly architecture reviews</li>
+            <li>Multi-region data residency</li>
+          </wc-pricing-card>
+        </div>
+
+        <div class="pricing-card" data-code-example>
+          <div>
+            <h3>Interactive example</h3>
+            <p>Toggle billing cadence to update pricing and CTA copy via the public API.</p>
+          </div>
+          <div class="side-by-side">
+            <wc-pricing-card id="usage-card" plan="Maker" price="$24" period="/month" cta-label="Start building">
+              <span slot="description">Perfect for indie hackers shipping side projects.</span>
+              <li>Unlimited API keys</li>
+              <li>100k background jobs per month</li>
+              <li>Email support with 24h response time</li>
+            </wc-pricing-card>
+            <div class="toggles">
+              <button type="button" data-price="$24" data-period="/month" data-cta="Start building">Bill monthly</button>
+              <button type="button" data-price="$240" data-period="/year" data-cta="Switch to annual">Bill annually</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      const usageCard = document.querySelector('#usage-card');
+      const toggleButtons = Array.from(document.querySelectorAll('.toggles button'));
+
+      toggleButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          usageCard.price = button.dataset.price ?? usageCard.price;
+          usageCard.period = button.dataset.period ?? usageCard.period;
+          usageCard.ctaLabel = button.dataset.cta ?? usageCard.ctaLabel;
+          toggleButtons.forEach((btn) => btn.classList.toggle('is-active', btn === button));
+        });
+      });
+    </script>
+  </body>
+</html>

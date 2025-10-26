@@ -47,6 +47,8 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/kbd.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/audio-player.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/pricing-card.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -2506,6 +2508,112 @@ Customise appearance with CSS properties or the exposed parts:
   `--wc-toast-action-color`, `--wc-toast-close-color`, `--wc-toast-swipe-move-x`, `--wc-toast-swipe-end-x`, etc.
 - Parts: `::part(viewport)`, `::part(toast)`, `::part(title)`, `::part(description)`, `::part(actions)`,
   `::part(action)`, `::part(close)`.
+
+### `<wc-audio-player>`
+
+Custom audio controls with built-in keyboard support, scrubbing, mute toggling,
+and optional artwork. The component wraps a native `<audio>` element so you can
+feed a `src` attribute or call the JavaScript API directly.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/audio-player.js"></script>
+
+<wc-audio-player
+  src="/media/focus-loop.mp3"
+  track-title="Morning focus"
+  track-subtitle="1:30 • Synthwave"
+>
+  <img slot="artwork" src="/media/focus.jpg" alt="Album cover" />
+</wc-audio-player>
+
+<script type="module">
+  const player = document.querySelector('wc-audio-player');
+  await player.play();
+</script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `src` | string | `""` | Audio source forwarded to the internal `<audio>` element. |
+| `preload` | string | `"metadata"` | Native preload strategy (`none`, `metadata`, or `auto`). |
+| `autoplay` | boolean | `false` | Attempts to begin playback automatically when allowed by the browser. |
+| `loop` | boolean | `false` | When present, restarts playback once the track ends. |
+| `track-title` | string | `"Now playing"` | Fallback label shown when no `slot="title"` content is provided. |
+| `track-subtitle` | string | `"Use the controls to listen."` | Secondary text when the subtitle slot is empty. |
+
+#### Slots
+
+- `artwork` — Display cover artwork beside the transport controls.
+- `title` — Primary track label; defaults to the `track-title` attribute.
+- `subtitle` — Secondary metadata (e.g. duration, artist) with a `track-subtitle` fallback.
+
+#### Methods
+
+- `play(): Promise<void>` — Starts playback, mirroring the native `<audio>` API.
+- `pause(): void` — Pauses playback.
+- `currentTime: number` (getter/setter) — Read or seek the playback position.
+- `duration: number` (getter) — Duration of the media when metadata is available.
+- `paused: boolean` (getter) — Reflects whether playback is paused.
+
+#### Events
+
+- `audio-scrub` — Fired continuously while the user drags the progress slider. `event.detail.time` contains the pending timestamp.
+- `audio-play-error` — Emitted when `play()` rejects (for example when autoplay is blocked). Access the thrown `error` through `event.detail.error`.
+
+#### Styling hooks
+
+- Custom properties: `--wc-audio-player-background`, `--wc-audio-player-foreground`, `--wc-audio-player-accent`,
+  `--wc-audio-player-muted`, `--wc-audio-player-radius`, `--wc-audio-player-gap`,
+  `--wc-audio-player-track-height`, `--wc-audio-player-progress-color`, `--wc-audio-player-progress-background`.
+- Parts: `::part(container)`, `::part(artwork)`, `::part(title)`, `::part(subtitle)`, `::part(play-button)`,
+  `::part(mute-button)`, `::part(progress-group)`, `::part(progress)`, `::part(time)`, `::part(current-time)`,
+  `::part(duration)`.
+
+### `<wc-pricing-card>`
+
+Commerce-ready pricing surface with slots for copy, a feature list, and a call
+to action. Highlight plans with the `recommended` badge and adjust the visual
+design through CSS variables and parts.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/pricing-card.js"></script>
+
+<wc-pricing-card plan="Growth" price="$59" period="/seat" recommended badge-label="Popular">
+  <span slot="eyebrow">Great for startups</span>
+  <p slot="description">Collaborate in real time with shared automation.</p>
+  <li>Role-based access controls</li>
+  <li>Unlimited API calls</li>
+  <li>Priority chat support</li>
+</wc-pricing-card>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `plan` | string | `"Scale"` | Headline displayed at the top of the card. |
+| `price` | string | `"$49"` | Price string shown in the emphasis area. |
+| `period` | string | `"/month"` | Billing cadence appended next to the price. |
+| `cta-label` | string | `"Start free trial"` | Text for the call-to-action control. |
+| `href` | string | `"#"` | Destination URL for the CTA link. |
+| `recommended` | boolean | `false` | When present, surfaces the badge and highlights the card. |
+| `badge-label` | string | `"Recommended"` | Text displayed inside the badge when `recommended` is set. |
+
+#### Slots
+
+- `eyebrow` — Short label that appears above the plan name.
+- `description` — Paragraph providing additional context.
+- _(default)_ — Render feature bullet points; list items are styled automatically.
+
+#### Styling hooks
+
+- Custom properties: `--wc-pricing-card-background`, `--wc-pricing-card-border`, `--wc-pricing-card-radius`,
+  `--wc-pricing-card-shadow`, `--wc-pricing-card-accent`, `--wc-pricing-card-foreground`,
+  `--wc-pricing-card-muted`, `--wc-pricing-card-feature-icon`.
+- Parts: `::part(container)`, `::part(badge)`, `::part(header)`, `::part(eyebrow)`, `::part(title)`,
+  `::part(description)`, `::part(price)`, `::part(amount)`, `::part(period)`, `::part(features)`, `::part(cta)`.
 
 ### Examples
 

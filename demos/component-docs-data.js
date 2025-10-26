@@ -1793,6 +1793,95 @@ export const componentDocs = {
       "--drawer-z-index"
     ]
   },
+  "wc-sheet": {
+    "title": "<wc-sheet>",
+    "tagline": "Documentation for <wc-sheet>",
+    "usage": {
+      "snippet": "<wc-sheet side=\"right\">\n  <button slot=\"trigger\">Open sheet</button>\n  <span slot=\"title\">Edit profile</span>\n  <span slot=\"description\">Make changes to your profile here.</span>\n  <form>\n    <!-- sheet body -->\n  </form>\n  <div slot=\"footer\">\n    <button type=\"submit\">Save</button>\n    <button type=\"button\" data-sheet-close>Cancel</button>\n  </div>\n</wc-sheet>"
+    },
+    "attributes": [
+      {
+        "name": "`open` / `open`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Controls whether the sheet is visible."
+      },
+      {
+        "name": "`side` / `side`",
+        "type": "`\"top\" | \"right\" | \"bottom\" | \"left\"`",
+        "default": "`\"right\"`",
+        "description": "Chooses the viewport edge the sheet appears from."
+      }
+    ],
+    "properties": [
+      {
+        "name": "`show()`",
+        "type": "`() => void`",
+        "default": "—",
+        "description": "Opens the sheet programmatically."
+      },
+      {
+        "name": "`hide()`",
+        "type": "`() => void`",
+        "default": "—",
+        "description": "Closes the sheet programmatically."
+      },
+      {
+        "name": "`toggle(force?)`",
+        "type": "`(force?: boolean) => void`",
+        "default": "—",
+        "description": "Toggles the open state or forces a specific value."
+      }
+    ],
+    "events": [
+      {
+        "name": "`sheet-open`",
+        "detail": "`void`",
+        "description": "Fires after the sheet finishes opening."
+      },
+      {
+        "name": "`sheet-close`",
+        "detail": "`void`",
+        "description": "Fires after the sheet finishes closing."
+      }
+    ],
+    "slots": [
+      { "name": "`trigger`", "description": "Element that toggles the sheet." },
+      { "name": "`title`", "description": "Heading content announced by assistive technology." },
+      { "name": "`description`", "description": "Supplementary description for the sheet." },
+      { "name": "`close`", "description": "Optional close control rendered beside the title." },
+      { "name": "`footer`", "description": "Footer actions such as Save/Cancel buttons." },
+      { "name": "`default`", "description": "Main body content for the sheet." }
+    ],
+    "css": [
+      "--sheet-background",
+      "--sheet-body-gap",
+      "--sheet-color",
+      "--sheet-description-color",
+      "--sheet-description-size",
+      "--sheet-footer-gap",
+      "--sheet-header-gap",
+      "--sheet-max-height",
+      "--sheet-max-width",
+      "--sheet-overlay-backdrop-filter",
+      "--sheet-overlay-background",
+      "--sheet-padding",
+      "--sheet-radius",
+      "--sheet-section-gap",
+      "--sheet-shadow",
+      "--sheet-title-size",
+      "--sheet-title-tracking",
+      "--sheet-title-weight",
+      "--sheet-transition-duration",
+      "--sheet-transition-easing",
+      "--sheet-width",
+      "--sheet-z-index"
+    ],
+    "notes": [
+      "Slot elements with `[data-sheet-close]` close the sheet automatically when activated.",
+      "Trigger elements receive `aria-expanded` to mirror the open state."
+    ]
+  },
   "wc-dropdown-menu": {
     "title": "<wc-dropdown-menu>",
     "tagline": "Documentation for <wc-dropdown-menu>",

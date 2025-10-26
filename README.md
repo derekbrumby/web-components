@@ -121,6 +121,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-separator>` | Semantic divider with vertical orientation support. |
 | `<wc-resizable>` | Wrapper that turns any element into a draggable resizable panel. |
 | `<wc-drawer>` | Sliding panel with trap-focus behaviour. |
+| `<wc-sheet>` | Dialog-inspired sheet for supplementary workflows. |
 | `<wc-dialog>` / `<wc-alert-dialog>` | Modal primitives with configurable titles, descriptions, and actions. |
 | `<wc-aspect-ratio>` | Enforces intrinsic ratios for responsive media. |
 | `<wc-avatar>` | Avatar component with fallbacks and status badges. |
@@ -1034,4 +1035,81 @@ assistive technologies understand its purpose.
   `--separator-radius`, `--separator-margin`.
 - Parts: `::part(separator)` targets the internal rule element without breaking encapsulation.
 - Data attributes: `[data-orientation="horizontal" | "vertical"]` for orientation-aware styling.
+
+### `<wc-sheet>`
+
+Slide-in companion panel that extends the dialog foundation. Use it to present tasks that complement the
+primary screen—profile editors, filters, or automation presets—without fully leaving the current
+context. The component traps focus, restores it on close, and exposes slots and styling hooks for
+complete control.
+
+#### Usage
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/sheet.js"></script>
+
+<wc-sheet side="right">
+  <button slot="trigger">Open sheet</button>
+  <span slot="title">Edit profile</span>
+  <span slot="description">Make changes to your profile here.</span>
+  <form>
+    <!-- sheet body -->
+  </form>
+  <div slot="footer">
+    <button type="submit">Save</button>
+    <button type="button" data-sheet-close>Cancel</button>
+  </div>
+</wc-sheet>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `false` | Toggles whether the sheet is visible. Reflects to the `open` property. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Controls which edge the sheet slides from. Reflects to the `side` property. |
+| `open` (property) | `boolean` | `false` | Programmatic alias for the `open` attribute. |
+| `side` (property) | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Property helper that updates the `side` attribute. |
+
+#### Methods
+
+| Name | Signature | Description |
+| --- | --- | --- |
+| `show()` | `(): void` | Opens the sheet. |
+| `hide()` | `(): void` | Closes the sheet. |
+| `toggle(force?)` | `(force?: boolean): void` | Toggles the open state, optionally forcing a specific value. |
+
+#### Events
+
+| Event | `detail` | Description |
+| --- | --- | --- |
+| `sheet-open` | `void` | Fired after the sheet finishes opening. |
+| `sheet-close` | `void` | Fired after the sheet finishes closing. |
+
+#### Slots
+
+- `trigger` — Interactive element that toggles the sheet.
+- `title` — Heading text announced to assistive technology.
+- `description` — Additional context for the sheet's content.
+- `close` — Custom close control rendered next to the title.
+- `footer` — Action buttons displayed in the footer.
+- `default` — Main body content of the sheet.
+
+#### Styling hooks
+
+- CSS custom properties: `--sheet-background`, `--sheet-body-gap`, `--sheet-color`, `--sheet-description-color`,
+  `--sheet-description-size`, `--sheet-footer-gap`, `--sheet-header-gap`, `--sheet-max-height`,
+  `--sheet-max-width`, `--sheet-overlay-backdrop-filter`, `--sheet-overlay-background`, `--sheet-padding`,
+  `--sheet-radius`, `--sheet-section-gap`, `--sheet-shadow`, `--sheet-title-size`, `--sheet-title-tracking`,
+  `--sheet-title-weight`, `--sheet-transition-duration`, `--sheet-transition-easing`, `--sheet-width`,
+  `--sheet-z-index`.
+- Parts: `::part(portal)`, `::part(overlay)`, `::part(positioner)`, `::part(panel)`, `::part(header)`,
+  `::part(title)`, `::part(description)`, `::part(close)`, `::part(body)`, `::part(footer)`.
+- Data attributes: `[data-side]` on the internal positioner and panel to target slide-in direction,
+  `[data-sheet-close]` on slotted elements to wire up close controls.
+
+#### Notes
+
+- Elements slotted with `data-sheet-close` automatically close the sheet when activated.
+- Trigger elements receive `aria-expanded` to indicate the current state to assistive technology.
 

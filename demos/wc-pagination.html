@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-pagination&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/pagination.js"></script>
+    <style>
+      .pagination-stack {
+        display: grid;
+        gap: 1.75rem;
+      }
+
+      .pagination-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .pagination-card p {
+        margin: 0;
+        color: rgba(15, 23, 42, 0.72);
+      }
+
+      .pagination-centered {
+        display: flex;
+        justify-content: center;
+      }
+
+      .pagination-themed {
+        --wc-pagination-gap: 0.5rem;
+        --wc-pagination-min-width: 2.75rem;
+        --wc-pagination-padding-inline: 0.85rem;
+        --wc-pagination-height: 2.4rem;
+        --wc-pagination-radius: 999px;
+        --wc-pagination-background: rgba(15, 23, 42, 0.04);
+        --wc-pagination-border-color: transparent;
+        --wc-pagination-hover-background: rgba(59, 130, 246, 0.12);
+        --wc-pagination-hover-color: #1d4ed8;
+        --wc-pagination-focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.35);
+        --wc-pagination-active-background: #1d4ed8;
+        --wc-pagination-active-color: #f8fafc;
+        --wc-pagination-active-border-color: #1d4ed8;
+        --wc-pagination-disabled-background: rgba(148, 163, 184, 0.16);
+        --wc-pagination-disabled-color: rgba(148, 163, 184, 0.9);
+        --wc-pagination-ellipsis-background: rgba(59, 130, 246, 0.12);
+        --wc-pagination-ellipsis-color: #1d4ed8;
+      }
+
+      .pagination-themed [part="link"] {
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .pagination-event-output {
+        margin: 0;
+        font-size: 0.95rem;
+        color: rgba(15, 23, 42, 0.75);
+      }
+
+      @media (max-width: 720px) {
+        .pagination-stack {
+          gap: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="pagination-stack">
+        <div class="example-card pagination-card">
+          <h3>Basic pagination</h3>
+          <p>Switch between sequential pages with previous/next shortcuts and numbered links.</p>
+          <div class="pagination-centered" data-code-example>
+            <wc-pagination label="Invoice pages">
+              <wc-pagination-content>
+                <wc-pagination-item>
+                  <wc-pagination-previous href="#invoices-prev"></wc-pagination-previous>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#invoices-1" value="1">1</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#invoices-2" current value="2">2</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#invoices-3" value="3">3</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-next href="#invoices-next"></wc-pagination-next>
+                </wc-pagination-item>
+              </wc-pagination-content>
+            </wc-pagination>
+          </div>
+        </div>
+
+        <div class="example-card pagination-card">
+          <h3>Long lists with ellipsis</h3>
+          <p>Disable edges and mix in ellipsis separators to represent truncated ranges.</p>
+          <div class="pagination-centered" data-code-example>
+            <wc-pagination label="Documentation pages">
+              <wc-pagination-content>
+                <wc-pagination-item>
+                  <wc-pagination-previous href="#docs-prev" disabled></wc-pagination-previous>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#docs-1" current value="1">1</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#docs-2" value="2">2</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#docs-3" value="3">3</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-ellipsis label="More documentation pages"></wc-pagination-ellipsis>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#docs-10" value="10">10</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-next href="#docs-next"></wc-pagination-next>
+                </wc-pagination-item>
+              </wc-pagination-content>
+            </wc-pagination>
+          </div>
+        </div>
+
+        <div class="example-card pagination-card">
+          <h3>Themed controls with events</h3>
+          <p>Apply your own palette and react to the <code>wc-pagination-activate</code> event.</p>
+          <div class="pagination-centered" data-code-example>
+            <wc-pagination class="pagination-themed" label="Activity pages" data-pagination-event>
+              <wc-pagination-content>
+                <wc-pagination-item>
+                  <wc-pagination-previous href="#activity-prev" disabled></wc-pagination-previous>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#activity-1" current value="1">1</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#activity-2" value="2">2</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-link href="#activity-3" value="3">3</wc-pagination-link>
+                </wc-pagination-item>
+                <wc-pagination-item>
+                  <wc-pagination-next href="#activity-next"></wc-pagination-next>
+                </wc-pagination-item>
+              </wc-pagination-content>
+            </wc-pagination>
+          </div>
+          <p class="pagination-event-output" id="pagination-event-output" role="status">
+            Choose a page to see activation details here.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      const paginationEventDemo = document.querySelector('[data-pagination-event]');
+      const output = document.getElementById('pagination-event-output');
+
+      paginationEventDemo?.addEventListener('wc-pagination-activate', (event) => {
+        const { value, href, source, current } = event.detail;
+        if (!output) return;
+
+        const nextText = [
+          `Activated from ${source} input`,
+          value ? `page ${value}` : null,
+          href ? `(${href})` : null,
+          current ? 'which is already the current page' : null,
+        ]
+          .filter(Boolean)
+          .join(' ');
+
+        output.textContent = nextText || 'Activation fired.';
+      });
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>
+

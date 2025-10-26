@@ -949,6 +949,64 @@ export const componentDocs = {
       "--card-shadow"
     ]
   },
+  "wc-chat-message": {
+    "title": "<wc-chat-message>",
+    "tagline": "Documentation for <wc-chat-message>",
+    "usage": {
+      "snippet": "<wc-chat-message align=\"end\" variant=\"success\">\n  <img slot=\"avatar\" src=\"https://img.daisyui.com/images/profile/demo/anakeen@192.webp\" alt=\"Anakin\" />\n  This is where the fun begins.\n  <span slot=\"footer\">Seen</span>\n</wc-chat-message>"
+    },
+    "attributes": [
+      {
+        "name": "`align` / `align`",
+        "type": "`\"start\" | \"end\"`",
+        "default": "`\"start\"`",
+        "description": "Positions the bubble on the leading (`start`) or trailing (`end`) edge of the thread."
+      },
+      {
+        "name": "`variant` / `variant`",
+        "type": "`string`",
+        "default": "`\"neutral\"`",
+        "description": "Colour theme for the bubble. Accepts `neutral`, `primary`, `secondary`, `accent`, `info`, `success`, `warning`, or `error`."
+      }
+    ],
+    "events": [],
+    "slots": [
+      {
+        "name": "`avatar`",
+        "description": "Circular media well used for author imagery or initials."
+      },
+      {
+        "name": "`header`",
+        "description": "Metadata displayed above the chat bubble, such as author names or timestamps."
+      },
+      {
+        "name": "`(default)`",
+        "description": "Main chat body content. Accepts rich inline markup."
+      },
+      {
+        "name": "`footer`",
+        "description": "Supplementary metadata positioned below the bubble (e.g. delivery status)."
+      }
+    ],
+    "css": [
+      "--wc-chat-gap",
+      "--wc-chat-avatar-size",
+      "--wc-chat-bubble-radius",
+      "--wc-chat-bubble-padding-inline",
+      "--wc-chat-bubble-padding-block",
+      "--wc-chat-bubble-background",
+      "--wc-chat-bubble-color",
+      "--wc-chat-bubble-shadow",
+      "--wc-chat-bubble-max-width",
+      "--wc-chat-bubble-font-size",
+      "--wc-chat-meta-color",
+      "--wc-chat-meta-font-size"
+    ],
+    "notes": [
+      "Slots automatically hide when empty so avatars, headers, and footers are optional per message.",
+      "Tweak bubble radius, alignment gap, and colour tokens via CSS properties to match your system."
+    ]
+  },
   "wc-carousel": {
     "title": "<wc-carousel>",
     "tagline": "Documentation for <wc-carousel>",

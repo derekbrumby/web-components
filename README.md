@@ -31,6 +31,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-skeleton>`](#wc-skeleton)
   - [`<wc-countdown>`](#wc-countdown)
 - [`<wc-badge>`](#wc-badge)
+- [`<wc-chat-message>`](#wc-chat-message)
 - [`<wc-button>`](#wc-button)
 - [`<wc-input>`](#wc-input)
 - [`<wc-alert>`](#wc-alert)
@@ -135,6 +136,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-dialog>` / `<wc-alert-dialog>` | Modal primitives with configurable titles, descriptions, and actions. |
 | `<wc-aspect-ratio>` | Enforces intrinsic ratios for responsive media. |
 | `<wc-avatar>` | Avatar component with fallbacks and status badges. |
+| `<wc-chat-message>` | Chat bubble line item with avatar, metadata, and colour variants. |
 | `<wc-mockup-phone>` | Presentation frame for screenshot marketing. |
 | `<wc-calendar>` / `<wc-date-picker>` | Calendar grid and date picker built on the same foundation. |
 | `<wc-accordion>` / `<wc-collapsible>` | Disclosure widgets for stacked or inline content. |
@@ -1155,6 +1157,53 @@ variants while remaining fully stylable through CSS variables and part hooks.
   `--wc-badge-min-width`, `--wc-badge-min-height`, `--wc-badge-shadow`,
   `--wc-badge-text-transform`.
 - Parts: `::part(surface)` targets the pill surface for advanced customisation.
+
+### `<wc-chat-message>`
+
+Display a single line of conversation with optional avatar, header, and footer slots. Alignment and
+colour variants mirror daisyUI chat bubbles while remaining fully themeable through CSS custom
+properties.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/chat.js"></script>
+
+<wc-chat-message align="start">
+  <img slot="avatar" src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp" alt="Obi-Wan" />
+  <span slot="header">Obi-Wan Kenobi <time>12:45</time></span>
+  You were the Chosen One!
+  <span slot="footer">Delivered</span>
+</wc-chat-message>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `align` | string | `"start"` | Sets bubble alignment. Accepts `start` (left) or `end` (right). |
+| `variant` | string | `"neutral"` | Visual style. Choose from `neutral`, `primary`, `secondary`, `accent`, `info`, `success`, `warning`, or `error`. |
+
+#### Slots
+
+- `avatar` — Optional media or initials displayed inside the circular portrait well.
+- `header` — Metadata positioned above the bubble (e.g. author name and timestamp).
+- _(default)_ — Chat message body content. Accepts rich inline HTML.
+- `footer` — Subtext below the bubble for delivery status or reactions.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-chat-gap`, `--wc-chat-avatar-size`, `--wc-chat-bubble-radius`,
+  `--wc-chat-bubble-padding-inline`, `--wc-chat-bubble-padding-block`, `--wc-chat-bubble-background`,
+  `--wc-chat-bubble-color`, `--wc-chat-bubble-shadow`, `--wc-chat-bubble-max-width`,
+  `--wc-chat-bubble-font-size`, `--wc-chat-meta-color`, `--wc-chat-meta-font-size`.
+- Parts: `::part(root)`, `::part(avatar)`, `::part(body)`, `::part(header)`, `::part(bubble)`,
+  `::part(footer)`.
+
+#### Accessibility
+
+- Wrap transcripts in a parent element with `aria-label` or headings to give context to assistive
+  technologies.
+- Provide `alt` text for avatars or slot alternative content so authors are identifiable when the
+  image fails to load.
 
 ### `<wc-button>`
 

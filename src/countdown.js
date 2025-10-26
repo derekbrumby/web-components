@@ -121,7 +121,7 @@
             height: 1em;
             direction: ltr;
             visibility: hidden;
-            color: transparent;
+            color: inherit;
             transition:
               width var(--wc-countdown-width-duration) var(--wc-countdown-width-easing)
                 var(--wc-countdown-width-delay);

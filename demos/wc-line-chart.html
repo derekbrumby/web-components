@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-line-chart&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/chart-variants.js"></script>
+    <style>
+      .example-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .chart-compact {
+        --wc-chart-background: rgba(15, 23, 42, 0.88);
+        --wc-chart-foreground: rgba(226, 232, 240, 0.95);
+        --wc-chart-border: rgba(148, 163, 184, 0.2);
+        --wc-chart-grid: rgba(148, 163, 184, 0.25);
+        --wc-chart-muted: rgba(203, 213, 225, 0.8);
+        --wc-chart-tooltip-background: rgba(15, 23, 42, 0.95);
+        --wc-chart-tooltip-foreground: rgba(226, 232, 240, 0.98);
+        backdrop-filter: blur(12px);
+      }
+
+      .chart-compact::part(container) {
+        border: 1px solid rgba(148, 163, 184, 0.35);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="example-grid two-column">
+        <div class="example-card" data-code-example>
+          <h3>Device performance</h3>
+          <p>
+            Plot multiple series at once. Hover any point to compare desktop and mobile visitors for the
+            selected day.
+          </p>
+          <wc-line-chart
+            id="interactive-line"
+            caption="Visitors by device"
+            category-key="date"
+            legend="false"
+            class="chart-compact"
+          >
+            <span slot="title">Line chart – interactive</span>
+            <span slot="description">90 days of traffic</span>
+          </wc-line-chart>
+        </div>
+
+        <div class="example-card" data-code-example>
+          <h3>Linear trend</h3>
+          <p>A minimal line chart showing a single series without dots.</p>
+          <wc-line-chart
+            id="linear-line"
+            caption="Desktop visitors"
+            category-key="month"
+            legend="false"
+          >
+            <span slot="title">Line chart – linear</span>
+            <span slot="description">January – June 2024</span>
+          </wc-line-chart>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const interactiveLine = document.getElementById('interactive-line');
+      const linearLine = document.getElementById('linear-line');
+      const lineData = [
+        { date: '2024-06-01', desktop: 178, mobile: 200 },
+        { date: '2024-06-02', desktop: 470, mobile: 410 },
+        { date: '2024-06-03', desktop: 103, mobile: 160 },
+        { date: '2024-06-04', desktop: 439, mobile: 380 },
+        { date: '2024-06-05', desktop: 88, mobile: 140 },
+        { date: '2024-06-06', desktop: 294, mobile: 250 },
+        { date: '2024-06-07', desktop: 323, mobile: 370 },
+        { date: '2024-06-08', desktop: 385, mobile: 320 },
+        { date: '2024-06-09', desktop: 438, mobile: 480 },
+        { date: '2024-06-10', desktop: 155, mobile: 200 },
+      ];
+
+      const initLineCharts = () => {
+        if (interactiveLine) {
+          interactiveLine.config = {
+            desktop: { label: 'Desktop', color: 'hsl(221 83% 53%)' },
+            mobile: { label: 'Mobile', color: 'hsl(213 94% 68%)' },
+          };
+          interactiveLine.data = lineData;
+        }
+
+        if (linearLine) {
+          linearLine.config = {
+            desktop: { label: 'Desktop', color: 'hsl(221 83% 53%)' },
+          };
+          linearLine.data = [
+            { month: 'January', desktop: 186 },
+            { month: 'February', desktop: 305 },
+            { month: 'March', desktop: 237 },
+            { month: 'April', desktop: 173 },
+            { month: 'May', desktop: 209 },
+            { month: 'June', desktop: 214 },
+          ];
+        }
+      };
+
+      initLineCharts();
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

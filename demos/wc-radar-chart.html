@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-radar-chart&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/chart-variants.js"></script>
+    <style>
+      .example-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .chart-duo {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .chart-glass {
+        --wc-chart-background: rgba(15, 23, 42, 0.85);
+        --wc-chart-foreground: rgba(226, 232, 240, 0.95);
+        --wc-chart-muted: rgba(203, 213, 225, 0.8);
+        --wc-chart-grid: rgba(148, 163, 184, 0.25);
+        --wc-chart-tooltip-background: rgba(15, 23, 42, 0.95);
+        --wc-chart-tooltip-foreground: rgba(226, 232, 240, 0.98);
+        backdrop-filter: blur(12px);
+      }
+
+      .chart-glass::part(container) {
+        border: 1px solid rgba(148, 163, 184, 0.35);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="example-grid two-column">
+        <div class="example-card" data-code-example>
+          <h3>Monthly performance</h3>
+          <p>Plot values around a circular axis. Provide the `category-key` for spoke labels.</p>
+          <wc-radar-chart
+            id="radar-chart"
+            caption="Visitors by month"
+            category-key="month"
+          >
+            <span slot="title">Radar chart – default</span>
+            <span slot="description">January – June 2024</span>
+          </wc-radar-chart>
+        </div>
+
+        <div class="example-card" data-code-example>
+          <h3>Glassmorphism</h3>
+          <p>Combine CSS variables and parts for bespoke aesthetics.</p>
+          <wc-radar-chart
+            id="glass-radar"
+            caption="Sales velocity"
+            category-key="segment"
+            class="chart-glass"
+          >
+            <span slot="title">Radar chart – themed</span>
+            <span slot="description">Top performing regions</span>
+          </wc-radar-chart>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const radarChart = document.getElementById('radar-chart');
+      const glassRadar = document.getElementById('glass-radar');
+
+      const radarData = [
+        { month: 'January', desktop: 186 },
+        { month: 'February', desktop: 305 },
+        { month: 'March', desktop: 237 },
+        { month: 'April', desktop: 273 },
+        { month: 'May', desktop: 209 },
+        { month: 'June', desktop: 214 },
+      ];
+
+      const glassData = [
+        { segment: 'North', revenue: 480 },
+        { segment: 'South', revenue: 365 },
+        { segment: 'East', revenue: 420 },
+        { segment: 'West', revenue: 390 },
+        { segment: 'Central', revenue: 310 },
+      ];
+
+      const initRadarCharts = () => {
+        if (radarChart) {
+          radarChart.config = {
+            desktop: { label: 'Desktop', color: 'hsl(221 83% 53%)' },
+          };
+          radarChart.data = radarData;
+        }
+
+        if (glassRadar) {
+          glassRadar.config = {
+            revenue: { label: 'Revenue', color: 'hsl(213 94% 68%)' },
+          };
+          glassRadar.data = glassData;
+        }
+      };
+
+      initRadarCharts();
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

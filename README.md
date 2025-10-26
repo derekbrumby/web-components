@@ -49,6 +49,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/drawer.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/chart.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/chart-variants.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/button.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/kbd.js"></script>
@@ -209,6 +210,70 @@ interactivity.
 - Bars are focusable and support keyboard-triggered tooltips (Space/Enter to show, Escape to hide).
 - Tooltips expose the current category and series values while legends provide textual colour keys.
 - Provide an `aria-label` or `caption` for screen-reader friendly summaries.
+
+### `<wc-area-chart>`, `<wc-line-chart>`, `<wc-pie-chart>`, `<wc-radar-chart>`, `<wc-radial-chart>`
+
+Ship lightweight SVG-driven chart variants without pulling in a charting framework. Import
+[`chart-variants.js`](./src/chart-variants.js) once and access five focused custom elements covering
+area, line, pie, radar, and radial bar visualisations. Each element mirrors the API surface of
+`<wc-chart>` so you can reuse the same `data` and `config` objects across chart types.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/chart-variants.js"></script>
+
+<wc-area-chart
+  id="traffic-area"
+  caption="Stacked traffic by device"
+  category-key="date"
+></wc-area-chart>
+
+<script type="module">
+  const chart = document.querySelector('#traffic-area');
+  chart.config = {
+    desktop: { label: 'Desktop', color: 'hsl(221 83% 53%)' },
+    mobile: { label: 'Mobile', color: 'hsl(213 94% 68%)' },
+  };
+  chart.data = [
+    { date: '2024-06-01', desktop: 178, mobile: 200 },
+    { date: '2024-06-02', desktop: 470, mobile: 410 },
+    { date: '2024-06-03', desktop: 103, mobile: 160 },
+  ];
+</script>
+```
+
+#### Shared attributes & properties
+
+| Name | Applies to | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `data` | all | string | `[]` | JSON-serialised array of records. Prefer the property setter for large datasets. |
+| `config` | all | string | `{}` | JSON-serialised object describing each series (`{ [key]: { label, color } }`). |
+| `caption` | all | string | `""` | Optional label surfaced to assistive tech when `aria-label` is not set. |
+| `legend` | all | boolean | `true` | Toggle the legend. Set `legend="false"` or `element.legend = false` to hide it. |
+
+#### Axis-based charts (`<wc-area-chart>`, `<wc-line-chart>`, `<wc-radar-chart>`)
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `category-key` | string | `"category"` | Property name used for category labels (x-axis for area/line, spokes for radar). |
+| `stacked` | boolean | `true` | (Area only) When false, each series renders independently instead of stacking. |
+
+#### Pie & radial charts
+
+Pass objects with `value`/`visitors` keys along with optional `label`/`name` properties. Colours can be
+provided in the dataset (`{ color: "hsl(...)" }`) or through the `config` object using matching keys.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-chart-background`, `--wc-chart-foreground`, `--wc-chart-border`,
+  `--wc-chart-grid`, `--wc-chart-muted`, `--wc-chart-tooltip-background`,
+  `--wc-chart-tooltip-foreground`, `--wc-chart-tooltip-muted`.
+- Parts: `::part(container)`, `::part(body)`, `::part(svg)`, `::part(legend)`, `::part(tooltip)`.
+
+#### Accessibility
+
+- Charts expose grouped roles and fall back to the `caption` or `aria-label` for screen reader copy.
+- Tooltips follow pointer interactions to reveal series breakdowns without requiring focus shifts.
+- Provide short, descriptive captions for each chart to summarise the metric being visualised.
 
 ### `<wc-data-table>`
 

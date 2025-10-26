@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-area-chart&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/chart-variants.js"></script>
+    <style>
+      .example-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .chart-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+
+      .chart-actions button,
+      .chart-actions label {
+        padding: 0.45rem 0.85rem;
+        border-radius: 0.65rem;
+        border: 1px solid rgba(79, 70, 229, 0.2);
+        background: rgba(99, 102, 241, 0.08);
+        color: rgb(67, 56, 202);
+        font: inherit;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .chart-actions button:hover,
+      .chart-actions label:hover {
+        background: rgba(99, 102, 241, 0.16);
+      }
+
+      .chart-muted {
+        --wc-chart-background: transparent;
+        --wc-chart-border: rgba(148, 163, 184, 0.25);
+        --wc-chart-grid: rgba(148, 163, 184, 0.35);
+        --wc-chart-muted: rgba(100, 116, 139, 0.75);
+        box-shadow: none;
+      }
+
+      .chart-muted::part(container) {
+        box-shadow: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="example-grid two-column">
+        <div class="example-card" data-code-example>
+          <h3>Interactive traffic overview</h3>
+          <p>
+            Update the <code>data</code> set and toggle stacking at runtime. Hover a category to reveal the
+            tooltip for each series.
+          </p>
+          <wc-area-chart
+            id="interactive-area"
+            caption="Visitors by device"
+            category-key="date"
+            class="chart-muted"
+          >
+            <span slot="title">Area chart – interactive</span>
+            <span slot="description">90 days of traffic</span>
+          </wc-area-chart>
+          <div class="chart-actions">
+            <button type="button" id="area-refresh">Randomise data</button>
+            <label>
+              <input type="checkbox" id="area-stacked" checked />
+              Stacked
+            </label>
+          </div>
+        </div>
+
+        <div class="example-card" data-code-example>
+          <h3>Single series</h3>
+          <p>Use the <code>stacked</code> attribute to disable stacking for single series area charts.</p>
+          <wc-area-chart
+            id="single-area"
+            caption="Desktop visitors"
+            category-key="month"
+            legend="false"
+            stacked="false"
+          >
+            <span slot="title">Area chart – linear</span>
+            <span slot="description">January – June 2024</span>
+          </wc-area-chart>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const areaChart = document.getElementById('interactive-area');
+      const areaRefresh = document.getElementById('area-refresh');
+      const areaStacked = document.getElementById('area-stacked');
+      const singleArea = document.getElementById('single-area');
+
+      const baseData = [
+        { date: '2024-06-01', desktop: 178, mobile: 200 },
+        { date: '2024-06-02', desktop: 470, mobile: 410 },
+        { date: '2024-06-03', desktop: 103, mobile: 160 },
+        { date: '2024-06-04', desktop: 439, mobile: 380 },
+        { date: '2024-06-05', desktop: 88, mobile: 140 },
+        { date: '2024-06-06', desktop: 294, mobile: 250 },
+        { date: '2024-06-07', desktop: 323, mobile: 370 },
+        { date: '2024-06-08', desktop: 385, mobile: 320 },
+        { date: '2024-06-09', desktop: 438, mobile: 480 },
+        { date: '2024-06-10', desktop: 155, mobile: 200 },
+      ];
+
+      const initAreaCharts = () => {
+        if (areaChart) {
+          areaChart.config = {
+            desktop: { label: 'Desktop', color: 'hsl(221 83% 53%)' },
+            mobile: { label: 'Mobile', color: 'hsl(213 94% 68%)' },
+          };
+          areaChart.data = baseData;
+        }
+
+        if (singleArea) {
+          singleArea.config = {
+            desktop: { label: 'Desktop', color: 'hsl(221 83% 53%)' },
+          };
+          singleArea.data = [
+            { month: 'January', desktop: 186 },
+            { month: 'February', desktop: 305 },
+            { month: 'March', desktop: 237 },
+            { month: 'April', desktop: 173 },
+            { month: 'May', desktop: 209 },
+            { month: 'June', desktop: 214 },
+          ];
+        }
+      };
+
+      const randomiseArea = () =>
+        baseData.map((entry) => ({
+          ...entry,
+          desktop: Math.max(64, Math.round(entry.desktop * (0.7 + Math.random() * 0.6))),
+          mobile: Math.max(64, Math.round(entry.mobile * (0.7 + Math.random() * 0.6))),
+        }));
+
+      areaRefresh?.addEventListener('click', () => {
+        if (!areaChart) return;
+        areaChart.data = randomiseArea();
+      });
+
+      areaStacked?.addEventListener('change', (event) => {
+        if (!areaChart) return;
+        const target = event.target;
+        areaChart.stacked = !!target?.checked;
+      });
+
+      initAreaCharts();
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

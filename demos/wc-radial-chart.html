@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-radial-chart&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/chart-variants.js"></script>
+    <style>
+      .example-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .chart-metric {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        background: rgba(99, 102, 241, 0.12);
+        color: rgb(67, 56, 202);
+        font-weight: 600;
+      }
+
+      .chart-muted {
+        --wc-chart-background: transparent;
+        --wc-chart-border: rgba(148, 163, 184, 0.25);
+        --wc-chart-grid: rgba(148, 163, 184, 0.35);
+        box-shadow: none;
+      }
+
+      .chart-muted::part(container) {
+        box-shadow: none;
+      }
+
+      .chart-half {
+        --wc-chart-background: rgba(15, 23, 42, 0.85);
+        --wc-chart-foreground: rgba(226, 232, 240, 0.95);
+        --wc-chart-muted: rgba(203, 213, 225, 0.8);
+        --wc-chart-tooltip-background: rgba(15, 23, 42, 0.95);
+        --wc-chart-tooltip-foreground: rgba(226, 232, 240, 0.98);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="example-grid two-column">
+        <div class="example-card" data-code-example>
+          <h3>Browser distribution</h3>
+          <p>Visualise proportional values with a radial bar chart. Tooltips reveal individual totals.</p>
+          <wc-radial-chart id="radial-chart" caption="Browser visitors" class="chart-muted">
+            <span slot="title">Radial chart – simple</span>
+            <span slot="description">January – June 2024</span>
+          </wc-radial-chart>
+        </div>
+
+        <div class="example-card" data-code-example>
+          <h3>Half gauge</h3>
+          <p>Combine a single data point with CSS theming for gauge-like displays.</p>
+          <div class="chart-metric">72% positive sentiment</div>
+          <wc-radial-chart id="radial-gauge" caption="Positive sentiment" legend="false" class="chart-half">
+            <span slot="title">Radial chart – gauge</span>
+            <span slot="description">Customer feedback</span>
+          </wc-radial-chart>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const radialChart = document.getElementById('radial-chart');
+      const radialGauge = document.getElementById('radial-gauge');
+
+      const radialData = [
+        { label: 'Chrome', value: 275, color: 'hsl(213 94% 68%)' },
+        { label: 'Safari', value: 200, color: 'hsl(221 83% 53%)' },
+        { label: 'Firefox', value: 187, color: 'hsl(142 76% 45%)' },
+        { label: 'Edge', value: 173, color: 'hsl(24 95% 53%)' },
+        { label: 'Other', value: 90, color: 'hsl(12 83% 60%)' },
+      ];
+
+      const gaugeData = [{ label: 'Positive', value: 72, color: 'hsl(142 76% 45%)' }];
+
+      const initRadialCharts = () => {
+        if (radialChart) {
+          radialChart.config = {
+            chrome: { label: 'Chrome' },
+            safari: { label: 'Safari' },
+            firefox: { label: 'Firefox' },
+            edge: { label: 'Edge' },
+            other: { label: 'Other' },
+          };
+          radialChart.data = radialData;
+        }
+
+        if (radialGauge) {
+          radialGauge.data = gaugeData;
+        }
+      };
+
+      initRadialCharts();
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

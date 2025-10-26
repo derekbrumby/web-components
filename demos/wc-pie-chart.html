@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-pie-chart&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/chart-variants.js"></script>
+    <style>
+      .example-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .chart-stack {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .chart-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 999px;
+        background: rgba(99, 102, 241, 0.12);
+        color: rgb(67, 56, 202);
+        font-weight: 600;
+      }
+
+      .chart-pill svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .chart-muted {
+        --wc-chart-background: transparent;
+        --wc-chart-border: rgba(148, 163, 184, 0.25);
+        --wc-chart-grid: rgba(148, 163, 184, 0.35);
+        box-shadow: none;
+      }
+
+      .chart-muted::part(container) {
+        box-shadow: none;
+      }
+
+      .pie-themed {
+        --wc-chart-background: rgba(15, 23, 42, 0.85);
+        --wc-chart-foreground: rgba(226, 232, 240, 0.95);
+        --wc-chart-muted: rgba(203, 213, 225, 0.8);
+        --wc-chart-tooltip-background: rgba(15, 23, 42, 0.95);
+        --wc-chart-tooltip-foreground: rgba(226, 232, 240, 0.98);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="example-grid two-column">
+        <div class="example-card" data-code-example>
+          <h3>Browser share</h3>
+          <p>Feed the pie chart with labelled records. Tooltips expose absolute values and percentage share.</p>
+          <wc-pie-chart id="browser-pie" caption="Browser visitors">
+            <span slot="title">Pie chart – simple</span>
+            <span slot="description">January – June 2024</span>
+          </wc-pie-chart>
+        </div>
+
+        <div class="example-card" data-code-example>
+          <h3>Monochrome variant</h3>
+          <p>Combine dataset colours with custom CSS variables for themed pie charts.</p>
+          <div class="chart-pill">
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M9.5 2a1 1 0 0 1 1-1 9 9 0 1 1-9 9 1 1 0 0 1 1-1h7V2Z" fill="currentColor" />
+            </svg>
+            5.2% increase this month
+          </div>
+          <wc-pie-chart id="monochrome-pie" caption="Traffic sources" legend="false" class="pie-themed">
+            <span slot="title">Pie chart – themed</span>
+            <span slot="description">Visitors per source</span>
+          </wc-pie-chart>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const browserPie = document.getElementById('browser-pie');
+      const monochromePie = document.getElementById('monochrome-pie');
+
+      const pieData = [
+        { label: 'Chrome', value: 275, color: 'hsl(213 94% 68%)' },
+        { label: 'Safari', value: 200, color: 'hsl(221 83% 53%)' },
+        { label: 'Firefox', value: 187, color: 'hsl(142 76% 45%)' },
+        { label: 'Edge', value: 173, color: 'hsl(24 95% 53%)' },
+        { label: 'Other', value: 90, color: 'hsl(12 83% 60%)' },
+      ];
+
+      const themedData = [
+        { label: 'Organic', value: 512 },
+        { label: 'Paid', value: 286 },
+        { label: 'Email', value: 198 },
+        { label: 'Referral', value: 156 },
+      ];
+
+      const initPieCharts = () => {
+        if (browserPie) {
+          browserPie.config = {
+            chrome: { label: 'Chrome' },
+            safari: { label: 'Safari' },
+            firefox: { label: 'Firefox' },
+            edge: { label: 'Edge' },
+            other: { label: 'Other' },
+          };
+          browserPie.data = pieData;
+        }
+
+        if (monochromePie) {
+          monochromePie.classList.add('chart-muted');
+          monochromePie.data = themedData.map((entry, index) => ({
+            ...entry,
+            color: `hsla(220, 85%, ${70 - index * 10}%, 1)`,
+          }));
+        }
+      };
+
+      initPieCharts();
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

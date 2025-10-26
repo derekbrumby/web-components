@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-ascii-icon&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/ascii-icon.js"></script>
+    <style>
+      .ascii-showcase {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .ascii-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .ascii-grid[data-layout="row"] {
+        grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+        align-items: center;
+        justify-items: center;
+      }
+
+      .ascii-grid figure {
+        display: grid;
+        gap: 0.75rem;
+        margin: 0;
+        justify-items: center;
+        text-align: center;
+      }
+
+      .ascii-grid figcaption {
+        font-size: 0.85rem;
+        color: rgba(15, 23, 42, 0.7);
+      }
+
+      .ascii-contrast {
+        background: radial-gradient(circle at 25% 25%, rgba(15, 23, 42, 0.08), transparent 60%);
+        border-radius: 1rem;
+        padding: 2rem;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .ascii-grid figcaption {
+          color: rgba(226, 232, 240, 0.75);
+        }
+
+        .ascii-contrast {
+          background: radial-gradient(circle at 20% 20%, rgba(148, 163, 184, 0.18), transparent 60%);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <header class="demo-section-intro">
+          <h1>&lt;wc-ascii-icon&gt;</h1>
+          <p>
+            Feed any single-colour SVG path into the component and it will render a text-based mosaic using
+            your chosen character.
+          </p>
+        </header>
+
+        <div class="ascii-showcase">
+          <div class="ascii-grid" data-layout="row" data-code-example>
+            <figure>
+              <wc-ascii-icon
+                style="--wc-ascii-icon-size: 6rem;"
+                aria-label="Play button"
+                path="M12 2a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm-1 6.5v7l6-3.5l-6-3.5z"
+              ></wc-ascii-icon>
+              <figcaption>Default block characters sampled from a circular play icon.</figcaption>
+            </figure>
+
+            <figure>
+              <wc-ascii-icon
+                style="--wc-ascii-icon-size: 6rem; --wc-ascii-icon-character-color: #be123c;"
+                character="❤"
+                columns="28"
+                aria-label="Heart outline"
+                path="M11.995 5.91c1.357-2.288 4.52-2.524 6.148-0.43c1.628 2.095 0.995 5.31-1.16 6.996l-4.988 3.96l-4.985-3.96c-2.158-1.686-2.79-4.901-1.162-6.996c1.628-2.094 4.79-1.858 6.147 0.43z"
+              ></wc-ascii-icon>
+              <figcaption>Custom character, palette, and column count.</figcaption>
+            </figure>
+
+            <figure class="ascii-contrast">
+              <wc-ascii-icon
+                style="--wc-ascii-icon-size: 6rem; --wc-ascii-icon-background: rgba(15, 23, 42, 0.9); --wc-ascii-icon-character-color: #facc15;"
+                character="✶"
+                padding="6"
+                cell-size="5"
+                aria-label="Sparkle"
+                path="M12 2.25l1.61 5.24l5.14 1.65l-5.14 1.64l-1.61 5.27l-1.6-5.27l-5.15-1.64l5.15-1.65z"
+              ></wc-ascii-icon>
+              <figcaption>Increase padding and reduce cell size for denser art.</figcaption>
+            </figure>
+          </div>
+
+          <div class="ascii-grid" data-code-example>
+            <p>
+              Tweak `columns`, `rows`, or `cell-size` to control the sampling resolution. The SVG output
+              scales with `--wc-ascii-icon-size`, so the ASCII art stays crisp at any display size.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

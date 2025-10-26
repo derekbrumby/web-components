@@ -26,12 +26,13 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-checkbox>`](#wc-checkbox)
   - [`<wc-spinner>`](#wc-spinner)
   - [`<wc-skeleton>`](#wc-skeleton)
-  - [`<wc-badge>`](#wc-badge)
-  - [`<wc-button>`](#wc-button)
-  - [`<wc-alert>`](#wc-alert)
-  - [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
-  - [`<wc-label>`](#wc-label)
-  - [`<wc-separator>`](#wc-separator)
+- [`<wc-badge>`](#wc-badge)
+- [`<wc-button>`](#wc-button)
+- [`<wc-alert>`](#wc-alert)
+- [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
+- [`<wc-label>`](#wc-label)
+- [`<wc-ascii-icon>`](#wc-ascii-icon)
+- [`<wc-separator>`](#wc-separator)
 
 ## Getting started
 
@@ -78,6 +79,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-progress>` | Determinate and indeterminate progress indicator with ARIA semantics. | — |
 | `<wc-skeleton>` | Shimmering skeleton placeholder for loading states. | [Docs](#wc-skeleton) |
 | `<wc-spinner>` | Polite loading spinner with customisable stroke and messaging. | [Docs](#wc-spinner) |
+| `<wc-ascii-icon>` | Converts single-colour SVG paths into scalable ASCII art glyphs. | [Docs](#wc-ascii-icon) |
 
 ### Inputs & forms
 
@@ -860,6 +862,40 @@ attribute or nest the control inside the component.
   `--label-font-weight`, `--label-line-height`, `--label-color`, `--label-background`,
   `--label-radius`, `--label-focus-outline`, and more.
 - Parts: `::part(label)`, `::part(text)`, `::part(control)`.
+
+### `<wc-ascii-icon>`
+
+Transform any single-colour SVG path into playful ASCII art rendered inside a scalable SVG. Supply the
+`path` attribute with the `d` data from your icon set and the component will sample the silhouette into a
+character grid.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/ascii-icon.js"></script>
+
+<wc-ascii-icon
+  path="M12 2a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm-1 6.5v7l6-3.5z"
+  character="@"
+  aria-label="Play icon rendered as ASCII"
+></wc-ascii-icon>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `path` | string | — | SVG path data (`d` attribute) that will be sampled into ASCII characters. |
+| `character` | string | `"█"` | Glyph used for filled cells; accepts any printable character(s). |
+| `columns` | number | auto | Preferred column count for the ASCII grid. |
+| `rows` | number | auto | Preferred row count for the ASCII grid. |
+| `cell-size` | number | `8` | Target pixel size for cells when `columns`/`rows` aren’t provided. |
+| `padding` | number | `0` | Expands the measured path bounds before sampling to add breathing room. |
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-ascii-icon-size`, `--wc-ascii-icon-character-color`,
+  `--wc-ascii-icon-background`, `--wc-ascii-icon-font-family`, `--wc-ascii-icon-font-weight`,
+  `--wc-ascii-icon-letter-spacing`.
+- Parts: `::part(wrapper)` targets the flex container, `::part(art)` exposes the generated SVG.
 
 ### `<wc-separator>`
 

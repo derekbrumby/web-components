@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-field&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/field.js"></script>
+    <script type="module" src="../src/checkbox.js"></script>
+    <script type="module" src="../src/button.js"></script>
+    <script type="module" src="../src/radio-group.js"></script>
+    <script type="module" src="../src/switch.js"></script>
+    <style>
+      .field-demo-card {
+        display: grid;
+        gap: 1.5rem;
+        padding: 1.75rem;
+        border-radius: 1.25rem;
+        background: var(--demo-card-surface, rgba(255, 255, 255, 0.75));
+        box-shadow: 0 32px 64px -40px rgba(15, 23, 42, 0.4);
+      }
+
+      .field-demo-card form,
+      .field-demo-card wc-field-group::part(group) {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .field-demo-card wc-field-set::part(fieldset) {
+        border: 1px solid rgba(15, 23, 42, 0.1);
+        border-radius: 1rem;
+        padding: 1.25rem;
+        background: rgba(249, 250, 251, 0.8);
+        gap: 1rem;
+      }
+
+      .field-demo-card wc-field-legend::part(legend) {
+        font-size: 1rem;
+      }
+
+      .field-demo-card wc-field::part(root) {
+        gap: 0.75rem;
+      }
+
+      .field-demo-card wc-field[data-orientation="horizontal"]::part(root) {
+        align-items: center;
+      }
+
+      .field-demo-card wc-field-description::part(description) {
+        font-size: 0.85rem;
+        color: rgba(71, 85, 105, 0.85);
+      }
+
+      .field-demo-card input,
+      .field-demo-card select,
+      .field-demo-card textarea {
+        font: inherit;
+        padding: 0.65rem 0.75rem;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(148, 163, 184, 0.75);
+        background: rgba(255, 255, 255, 0.95);
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      .field-demo-card input:focus-visible,
+      .field-demo-card select:focus-visible,
+      .field-demo-card textarea:focus-visible {
+        outline: none;
+        border-color: rgba(99, 102, 241, 0.7);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+      }
+
+      .grid-three {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+      }
+
+      .field-demo-card wc-field-separator::part(separator) {
+        color: rgba(100, 116, 139, 0.85);
+      }
+
+      .field-demo-card wc-field-error::part(error) {
+        border: 1px solid rgba(248, 113, 113, 0.3);
+      }
+
+      .field-demo-card .action-row wc-button::part(control) {
+        min-inline-size: 7.5rem;
+      }
+
+      .field-demo-card .radio-stack wc-field::part(root) {
+        gap: 0.5rem;
+      }
+
+      .field-demo-card .radio-stack wc-field-label::part(label) {
+        font-weight: 500;
+      }
+
+      .field-demo-card wc-field[data-orientation="responsive"]::part(root) {
+        gap: 1rem;
+      }
+
+      .field-demo-card wc-field[data-orientation="responsive"] textarea {
+        min-block-size: 120px;
+        resize: vertical;
+      }
+
+      .field-demo-card .layout-bordered wc-field::part(root) {
+        padding-inline-start: 0.75rem;
+        border-inline-start: 2px solid rgba(99, 102, 241, 0.28);
+      }
+
+      .field-demo-card .layout-bordered wc-field[data-invalid]::part(root) {
+        border-inline-color: rgba(220, 38, 38, 0.45);
+      }
+
+      .field-demo-card .layout-bordered wc-field-label::part(label) {
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-field"></section>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card field-demo-card">
+            <h3>Checkout field groups</h3>
+            <form class="field-demo-checkout" data-code-example>
+              <wc-field-group>
+                <wc-field-set>
+                  <wc-field-legend>Payment Method</wc-field-legend>
+                  <wc-field-description>All transactions are secure and encrypted.</wc-field-description>
+                  <wc-field-group>
+                    <wc-field>
+                      <wc-field-label for="field-card-name">Name on card</wc-field-label>
+                      <input id="field-card-name" name="cardName" autocomplete="cc-name" placeholder="Evelyn Rabbit" required />
+                    </wc-field>
+                    <wc-field>
+                      <wc-field-label for="field-card-number">Card number</wc-field-label>
+                      <input id="field-card-number" name="cardNumber" inputmode="numeric" pattern="[0-9 ]*" placeholder="1234 5678 9012 3456" required />
+                      <wc-field-description>Enter the 16-digit number on the front of your card.</wc-field-description>
+                    </wc-field>
+                    <div class="grid-three">
+                      <wc-field>
+                        <wc-field-label for="field-exp-month">Month</wc-field-label>
+                        <select id="field-exp-month" name="expMonth" required>
+                          <option value="">MM</option>
+                          <option>01</option>
+                          <option>02</option>
+                          <option>03</option>
+                          <option>04</option>
+                          <option>05</option>
+                          <option>06</option>
+                          <option>07</option>
+                          <option>08</option>
+                          <option>09</option>
+                          <option>10</option>
+                          <option>11</option>
+                          <option>12</option>
+                        </select>
+                      </wc-field>
+                      <wc-field>
+                        <wc-field-label for="field-exp-year">Year</wc-field-label>
+                        <select id="field-exp-year" name="expYear" required>
+                          <option value="">YYYY</option>
+                          <option>2024</option>
+                          <option>2025</option>
+                          <option>2026</option>
+                          <option>2027</option>
+                          <option>2028</option>
+                          <option>2029</option>
+                        </select>
+                      </wc-field>
+                      <wc-field>
+                        <wc-field-label for="field-cvv">CVV</wc-field-label>
+                        <input id="field-cvv" name="cvv" inputmode="numeric" pattern="[0-9]*" placeholder="123" required />
+                      </wc-field>
+                    </div>
+                  </wc-field-group>
+                </wc-field-set>
+                <wc-field-separator></wc-field-separator>
+                <wc-field-set>
+                  <wc-field-legend>Billing address</wc-field-legend>
+                  <wc-field-description>The billing address associated with your payment method.</wc-field-description>
+                  <wc-field-group>
+                    <wc-field orientation="horizontal">
+                      <wc-checkbox id="field-billing-same" name="sameAsShipping" checked></wc-checkbox>
+                      <wc-field-label for="field-billing-same">Same as shipping address</wc-field-label>
+                    </wc-field>
+                  </wc-field-group>
+                </wc-field-set>
+                <wc-field-set>
+                  <wc-field-group>
+                    <wc-field>
+                      <wc-field-label for="field-comments">Comments</wc-field-label>
+                      <textarea id="field-comments" name="comments" rows="3" placeholder="Add any additional notes"></textarea>
+                    </wc-field>
+                  </wc-field-group>
+                </wc-field-set>
+                <wc-field orientation="horizontal" class="action-row">
+                  <wc-button type="submit">Submit</wc-button>
+                  <wc-button variant="outline" type="button">Cancel</wc-button>
+                </wc-field>
+              </wc-field-group>
+            </form>
+          </div>
+
+          <div class="example-card field-demo-card">
+            <h3>Preference stacks</h3>
+            <div class="layout-bordered" data-code-example>
+              <wc-field-set>
+                <wc-field-legend>Notification channels</wc-field-legend>
+                <wc-field-description>Choose how we keep you up to date.</wc-field-description>
+                <wc-field-group class="radio-stack">
+                  <wc-radio-group name="channel" value="push">
+                    <wc-field orientation="horizontal">
+                      <wc-radio-group-item value="push" id="field-channel-push"></wc-radio-group-item>
+                      <wc-field-label for="field-channel-push">Push notifications</wc-field-label>
+                    </wc-field>
+                    <wc-field orientation="horizontal">
+                      <wc-radio-group-item value="email" id="field-channel-email"></wc-radio-group-item>
+                      <wc-field-label for="field-channel-email">Email digests</wc-field-label>
+                    </wc-field>
+                    <wc-field orientation="horizontal">
+                      <wc-radio-group-item value="sms" id="field-channel-sms"></wc-radio-group-item>
+                      <wc-field-label for="field-channel-sms">SMS alerts</wc-field-label>
+                    </wc-field>
+                  </wc-radio-group>
+                </wc-field-group>
+              </wc-field-set>
+              <wc-field-separator>Workspace</wc-field-separator>
+              <wc-field orientation="responsive">
+                <wc-field-content>
+                  <wc-field-title>Team message</wc-field-title>
+                  <wc-field-description>Include a short note when inviting collaborators.</wc-field-description>
+                </wc-field-content>
+                <textarea id="field-message" placeholder="Hello team, let's sync tomorrow at 10am."></textarea>
+              </wc-field>
+              <wc-field orientation="horizontal">
+                <wc-field-content>
+                  <wc-field-label for="field-two-factor">Two-factor authentication</wc-field-label>
+                  <wc-field-description>Protect your account with an extra verification step.</wc-field-description>
+                </wc-field-content>
+                <wc-switch id="field-two-factor"></wc-switch>
+              </wc-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="example-card field-demo-card">
+          <h3>Validation helpers</h3>
+          <wc-field-group class="layout-bordered" id="field-validation" data-code-example>
+            <wc-field data-invalid>
+              <wc-field-label for="field-email">Email</wc-field-label>
+              <input id="field-email" type="email" placeholder="invalid@example" aria-invalid="true" />
+              <wc-field-error>Enter a valid email address.</wc-field-error>
+            </wc-field>
+            <wc-field>
+              <wc-field-label for="field-username">Username</wc-field-label>
+              <input id="field-username" minlength="4" placeholder="Choose a username" />
+              <wc-field-error id="field-username-errors"></wc-field-error>
+            </wc-field>
+            <wc-field orientation="horizontal">
+              <wc-button id="field-inject-errors" type="button" variant="outline">Inject errors</wc-button>
+              <wc-button id="field-clear-errors" type="button">Clear errors</wc-button>
+            </wc-field>
+          </wc-field-group>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const usernameErrors = document.getElementById('field-username-errors');
+      const injectButton = document.getElementById('field-inject-errors');
+      const clearButton = document.getElementById('field-clear-errors');
+
+      if (usernameErrors && injectButton && clearButton) {
+        injectButton.addEventListener('click', () => {
+          usernameErrors.errors = [
+            { message: 'Usernames must start with a letter.' },
+            { message: 'Avoid using spaces or special symbols.' }
+          ];
+        });
+
+        clearButton.addEventListener('click', () => {
+          usernameErrors.errors = null;
+        });
+      }
+    </script>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-field');
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

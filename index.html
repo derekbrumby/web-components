@@ -209,6 +209,7 @@
                   <li><button type="button" aria-current="false" data-demo-target="wc-kbd">&lt;wc-kbd&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-progress">&lt;wc-progress&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-data-table">&lt;wc-data-table&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-table">&lt;wc-table&gt;</button></li>
                 </ol>
               </section>
 
@@ -237,6 +238,7 @@
                   <li><button type="button" aria-current="false" data-demo-target="wc-button">&lt;wc-button&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-input">&lt;wc-input&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-form">&lt;wc-form&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-field">&lt;wc-field&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-label">&lt;wc-label&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-checkbox">&lt;wc-checkbox&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-switch">&lt;wc-switch&gt;</button></li>
@@ -245,6 +247,7 @@
                   <li><button type="button" aria-current="false" data-demo-target="wc-button-group">&lt;wc-button-group&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-radio-group">&lt;wc-radio-group&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-password-toggle-field">&lt;wc-password-toggle-field&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-textarea">&lt;wc-textarea&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-otp-field">&lt;wc-otp-field&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-slider">&lt;wc-slider&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-calendar">&lt;wc-calendar&gt;</button></li>
@@ -264,8 +267,10 @@
                   <li><button type="button" aria-current="false" data-demo-target="wc-popover">&lt;wc-popover&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-dialog">&lt;wc-dialog&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-drawer">&lt;wc-drawer&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-sheet">&lt;wc-sheet&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-alert-dialog">&lt;wc-alert-dialog&gt;</button></li>
                   <li><button type="button" aria-current="false" data-demo-target="wc-toast">&lt;wc-toast&gt;</button></li>
+                  <li><button type="button" aria-current="false" data-demo-target="wc-sonner">&lt;wc-sonner&gt;</button></li>
                 </ol>
               </section>
 
@@ -574,6 +579,22 @@
                 src="./demos/wc-form.html"
                 loading="lazy"
                 height="620"
+              ></iframe>
+            </div>
+          </section>
+
+          <section data-demo-id="wc-field" hidden>
+            <header>
+              <h2>&lt;wc-field&gt;</h2>
+              <p>Compose accessible fieldsets, helper text, and validation states with responsive orientation options.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-field&gt; demo"
+                src="./demos/wc-field.html"
+                loading="lazy"
+                height="820"
               ></iframe>
             </div>
           </section>
@@ -900,6 +921,22 @@
             </div>
           </section>
 
+          <section data-demo-id="wc-table" hidden>
+            <header>
+              <h2>&lt;wc-table&gt;</h2>
+              <p>Semantic table surface with responsive overflow, caption support, and shadcn/ui-inspired styling.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-table&gt; demo"
+                src="./demos/wc-table.html"
+                loading="lazy"
+                height="560"
+              ></iframe>
+            </div>
+          </section>
+
           <section data-demo-id="wc-collapsible" hidden>
             <header>
               <h2>&lt;wc-collapsible&gt;</h2>
@@ -993,6 +1030,25 @@
                 class="demo-frame"
                 title="&lt;wc-password-toggle-field&gt; demo"
                 src="./demos/wc-password-toggle-field.html"
+                loading="lazy"
+                height="520"
+              ></iframe>
+            </div>
+          </section>
+
+          <section data-demo-id="wc-textarea" hidden>
+            <header>
+              <h2>&lt;wc-textarea&gt;</h2>
+              <p>
+                A form-associated multiline textarea with Radix-inspired focus styling, native attribute
+                passthroughs, and ergonomic CSS custom properties.
+              </p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-textarea&gt; demo"
+                src="./demos/wc-textarea.html"
                 loading="lazy"
                 height="520"
               ></iframe>
@@ -1166,6 +1222,25 @@
             </div>
           </section>
 
+          <section data-demo-id="wc-sheet" hidden>
+            <header>
+              <h2>&lt;wc-sheet&gt;</h2>
+              <p>
+                Dialog-inspired sheets for complementary workflows. Slide them from any edge, keep focus contained, and
+                customise styling with CSS properties and slots.
+              </p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-sheet&gt; demo"
+                src="./demos/wc-sheet.html"
+                loading="lazy"
+                height="660"
+              ></iframe>
+            </div>
+          </section>
+
           <section data-demo-id="wc-alert-dialog" hidden>
             <header>
               <h2>&lt;wc-alert-dialog&gt;</h2>
@@ -1217,6 +1292,22 @@
                 class="demo-frame"
                 title="&lt;wc-toast&gt; demo"
                 src="./demos/wc-toast.html"
+                loading="lazy"
+                height="420"
+              ></iframe>
+            </div>
+          </section>
+
+          <section data-demo-id="wc-sonner" hidden>
+            <header>
+              <h2>&lt;wc-sonner&gt;</h2>
+              <p>Opinionated Sonner-style toaster with typed variants and promise helpers.</p>
+            </header>
+            <div class="demo-frame-wrapper">
+              <iframe
+                class="demo-frame"
+                title="&lt;wc-sonner&gt; demo"
+                src="./demos/wc-sonner.html"
                 loading="lazy"
                 height="420"
               ></iframe>

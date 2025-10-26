@@ -33,6 +33,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
 - [`<wc-label>`](#wc-label)
 - [`<wc-ascii-icon>`](#wc-ascii-icon)
 - [`<wc-separator>`](#wc-separator)
+- [`<qr-code>`](#qr-code)
 
 ## Getting started
 
@@ -143,6 +144,7 @@ to the detailed reference for deeper usage notes.
 | --- | --- | --- |
 | `<wc-markdown-viewer>` | Renders sanitised Markdown from inline strings or remote files. | [Docs](#wc-markdown-viewer) |
 | `<wc-code-viewer>` | Syntax highlighted code blocks with remote loading support. | [Docs](#wc-code-viewer) |
+| `<qr-code>` | Generates an SVG QR code for URLs or text values. | [Docs](#qr-code) |
 | `<wc-label>` | Accessible label helper that mirrors native `<label>` semantics. | [Docs](#wc-label) |
 | `<wc-kbd>` / `<wc-kbd-group>` | Inline keyboard hints styled like keycaps. | [Docs](#wc-kbd--wc-kbd-group) |
 | `<wc-badge>` | Pill-style badges and status chips. | [Docs](#wc-badge) |
@@ -247,6 +249,41 @@ export const useCounter = () => {
   `--code-viewer-attribute-color`, `--code-viewer-tag-color`, `--code-viewer-entity-color`,
   `--code-viewer-variable-color`, `--code-viewer-punctuation-color`, `--code-viewer-accent`.
 - Parts: `::part(container)`, `::part(surface)`, `::part(code)`, `::part(empty)`, `::part(error)`.
+
+### `<qr-code>`
+
+Render a crisp SVG QR code for URLs or arbitrary text. The component wraps a battle-tested encoder and
+lets you tweak size, quiet zone, and error correction without additional dependencies.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/qr-code.js"></script>
+
+<qr-code value="https://example.com" size="180" error-correction="H">
+  <span>Scan to visit our docs</span>
+</qr-code>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Data encoded in the QR code. Supports UTF-8 strings such as URLs. |
+| `size` | number | `160` | Render size in CSS pixels for the square SVG. |
+| `quiet-zone` | number | `4` | Padding around the QR modules, measured in module units. |
+| `error-correction` | `'L' \| 'M' \| 'Q' \| 'H'` | `'M'` | Error correction strength following the QR specification. |
+
+#### Slots
+
+- _(default)_ — Optional caption or instructions displayed beneath the QR code.
+
+#### Events
+
+- `qr-code-error` — Fired if encoding fails. `event.detail` carries the error message.
+
+#### Styling hooks
+
+- Custom properties: `--qr-background`, `--qr-foreground`, `--qr-size`.
+- Parts: `::part(container)`.
 
 ### `<wc-chart>`
 

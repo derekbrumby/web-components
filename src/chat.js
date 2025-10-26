@@ -209,15 +209,15 @@
           }
 
           :host([align="end"]) [part="bubble"] {
-            border-end-start-radius: var(--wc-chat-bubble-tail-radius, 0.25rem);
-            border-end-end-radius: var(--wc-chat-bubble-radius);
+            border-end-end-radius: var(--wc-chat-bubble-tail-radius, 0.25rem);
+            border-end-start-radius: var(--wc-chat-bubble-radius);
             border-start-start-radius: var(--wc-chat-bubble-radius);
             border-start-end-radius: var(--wc-chat-bubble-radius);
           }
 
           :host(:not([align="end"])) [part="bubble"] {
-            border-end-end-radius: var(--wc-chat-bubble-tail-radius, 0.25rem);
-            border-end-start-radius: var(--wc-chat-bubble-radius);
+            border-end-start-radius: var(--wc-chat-bubble-tail-radius, 0.25rem);
+            border-end-end-radius: var(--wc-chat-bubble-radius);
             border-start-start-radius: var(--wc-chat-bubble-radius);
             border-start-end-radius: var(--wc-chat-bubble-radius);
           }

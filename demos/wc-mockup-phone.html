@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-mockup-phone&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/mockup-phone.js"></script>
+    <style>
+      .mockup-grid {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .mockup-row {
+        display: grid;
+        gap: 1.5rem;
+        justify-items: center;
+      }
+
+      .mockup-wallpaper {
+        display: grid;
+        gap: 1rem;
+        justify-items: center;
+      }
+
+      .mockup-wallpaper p {
+        margin: 0;
+        font-size: 0.95rem;
+        color: var(--demo-muted-foreground);
+        text-align: center;
+      }
+
+      .mockup-callout {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.95);
+      }
+
+      .mockup-callout strong {
+        display: block;
+        font-size: 1.65rem;
+        letter-spacing: 0.01em;
+      }
+
+      .mockup-callout span {
+        font-size: 0.95rem;
+        opacity: 0.8;
+      }
+
+      @media (min-width: 768px) {
+        .mockup-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .mockup-row {
+          justify-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="mockup-grid">
+        <div class="example-card">
+          <h3>Hero copy on dark glass</h3>
+          <div class="mockup-row" data-code-example>
+            <wc-mockup-phone style="max-width: 18rem; color: white;">
+              <div class="mockup-callout">
+                <strong>It's Glowtime.</strong>
+                <span>Launch your midnight updates with confidence.</span>
+              </div>
+            </wc-mockup-phone>
+          </div>
+          <p>
+            Slot any markup inside the display for fast marketing comps. Flex and grid utilities stay available via
+            the light DOM.
+          </p>
+        </div>
+
+        <div class="example-card">
+          <h3>Wallpapers &amp; UI previews</h3>
+          <div class="mockup-wallpaper" data-code-example>
+            <wc-mockup-phone
+              wallpaper="https://img.daisyui.com/images/stock/453966.webp?1"
+              alt="Abstract neon wallpaper"
+              style="--mockup-phone-border-color: #ff8938;"
+            ></wc-mockup-phone>
+            <p>Swap wallpapers on the fly or pair the frame with screenshots from your product.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

@@ -30,6 +30,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-spinner>`](#wc-spinner)
   - [`<wc-skeleton>`](#wc-skeleton)
   - [`<wc-countdown>`](#wc-countdown)
+  - [`<wc-diff>`](#wc-diff)
 - [`<wc-badge>`](#wc-badge)
 - [`<wc-chat-message>`](#wc-chat-message)
 - [`<wc-button>`](#wc-button)
@@ -86,6 +87,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-pricing-card>` | Pricing layout with highlighted tiers and call-to-action slots. | — |
 | `<wc-carousel>` | Accessible carousel with autoplay controls and pagination dots. | — |
 | `<wc-progress>` | Determinate and indeterminate progress indicator with ARIA semantics. | — |
+| `<wc-diff>` | Before/after comparison slider for images or text. | — |
 | `<wc-skeleton>` | Shimmering skeleton placeholder for loading states. | [Docs](#wc-skeleton) |
 | `<wc-spinner>` | Polite loading spinner with customisable stroke and messaging. | [Docs](#wc-spinner) |
 | `<wc-countdown>` | Animated numeric ticker for timers and stat transitions. | [Docs](#wc-countdown) |
@@ -1617,4 +1619,47 @@ complete control.
 
 - Elements slotted with `data-sheet-close` automatically close the sheet when activated.
 - Trigger elements receive `aria-expanded` to indicate the current state to assistive technology.
+
+### `<wc-diff>`
+
+Reveal visual or textual changes with an accessible before/after slider. Users can drag the handle,
+click anywhere on the surface, or use the keyboard to adjust the split between the two slotted
+panes.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/diff.js"></script>
+
+<wc-diff value="45" aria-label="Compare original and retouched imagery">
+  <img slot="first" src="/images/before.jpg" alt="Before editing" />
+  <img slot="second" src="/images/after.jpg" alt="After editing" />
+</wc-diff>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | number | `50` | Current divider position between `min` and `max`. Values snap to `step` increments. |
+| `min` | number | `0` | Smallest allowed position. Useful when working with custom ranges. |
+| `max` | number | `100` | Largest allowed position. |
+| `step` | number | `1` | Amount the slider moves per arrow-key press or drag snap. |
+| `disabled` | boolean | `false` | Prevents pointer and keyboard interaction while maintaining the visual state. |
+
+#### Slots
+
+- `first` — Content displayed on top of the second slot. It is progressively revealed as the value increases.
+- `second` — Baseline content that remains visible at all times.
+
+#### Events
+
+- `input` — Fires continuously as the divider moves. `event.detail.value` exposes the numeric position.
+- `change` — Emits after pointer drags end or keyboard interactions settle. `event.detail.value` mirrors `input`.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-diff-min-height`, `--wc-diff-background`, `--wc-diff-border-radius`,
+  `--wc-diff-border`, `--wc-diff-shadow`, `--wc-diff-divider-width`, `--wc-diff-divider-color`,
+  `--wc-diff-handle-size`, `--wc-diff-handle-color`, `--wc-diff-handle-shadow`,
+  `--wc-diff-focus-ring`, `--wc-diff-handle-hit-area`, `--wc-diff-object-fit`.
+- Parts: `::part(container)`, `::part(first)`, `::part(second)`, `::part(handle)`.
 

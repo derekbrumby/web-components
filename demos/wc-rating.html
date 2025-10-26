@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-rating&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/rating.js"></script>
+    <style>
+      .rating-feedback-form {
+        display: grid;
+        gap: 0.75rem;
+        align-items: start;
+      }
+
+      .rating-feedback-form label {
+        font-weight: 600;
+        font-size: 1rem;
+        color: rgba(15, 23, 42, 0.85);
+      }
+
+      .rating-feedback-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .rating-feedback-actions .ghost-button {
+        font-weight: 500;
+      }
+
+      .rating-variant-grid {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      }
+
+      .rating-variant-grid > div {
+        display: grid;
+        gap: 0.5rem;
+        justify-items: start;
+      }
+
+      .rating-variant-grid strong {
+        font-size: 0.95rem;
+        color: rgba(15, 23, 42, 0.85);
+      }
+
+      .rating-size-stack {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .rating-size-stack > div {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .rating-size-stack span {
+        min-inline-size: 120px;
+        font-weight: 600;
+        color: rgba(30, 41, 59, 0.75);
+      }
+
+      .rating-size-stack wc-rating {
+        --wc-rating-active-color: #fb923c;
+      }
+
+      .rating-size-stack wc-rating[data-variant="success"] {
+        --wc-rating-active-color: #22c55e;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-rating"></section>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card">
+            <h3>Collecting product feedback</h3>
+            <p>
+              Combine fractional steps with the <code>clearable</code> flag so customers can adjust or remove their
+              response before submitting.
+            </p>
+            <form
+              id="rating-feedback-form"
+              class="rating-feedback-form"
+              onsubmit="event.preventDefault();"
+              data-code-example
+            >
+              <label id="rating-feedback-label" for="rating-feedback">Onboarding experience</label>
+              <wc-rating
+                id="rating-feedback"
+                name="onboarding"
+                value="3.5"
+                step="0.5"
+                clearable
+                aria-labelledby="rating-feedback-label"
+              ></wc-rating>
+              <div class="rating-feedback-actions">
+                <button type="submit">Submit rating</button>
+                <button type="button" class="ghost-button" id="rating-feedback-reset">Clear</button>
+              </div>
+            </form>
+            <pre class="log" id="rating-feedback-log">Waiting for interaction…</pre>
+          </div>
+
+          <div class="example-card">
+            <h3>Visual variants</h3>
+            <p>
+              Switch the icon mask, palette, and state to present read-only scores or themed accents without
+              sacrificing accessibility.
+            </p>
+            <div class="rating-variant-grid" data-code-example>
+              <div>
+                <strong>Default star</strong>
+                <wc-rating value="2" aria-label="Two star rating"></wc-rating>
+              </div>
+              <div>
+                <strong>Read-only result</strong>
+                <wc-rating value="3" readonly aria-label="Three star read-only rating"></wc-rating>
+              </div>
+              <div>
+                <strong>Orange star-2</strong>
+                <wc-rating
+                  value="2"
+                  shape="star-2"
+                  style="--wc-rating-active-color: #fb923c;"
+                  aria-label="Orange star rating"
+                ></wc-rating>
+              </div>
+              <div>
+                <strong>Multi-colour hearts</strong>
+                <wc-rating
+                  value="2"
+                  shape="heart"
+                  palette="#f87171,#fb923c,#facc15,#a3e635,#22c55e"
+                  aria-label="Rainbow heart rating"
+                ></wc-rating>
+              </div>
+              <div>
+                <strong>Emerald star-2</strong>
+                <wc-rating
+                  value="3"
+                  shape="star-2"
+                  style="--wc-rating-active-color: #22c55e;"
+                  aria-label="Green star rating"
+                ></wc-rating>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="example-card">
+          <h3>Sizes and half increments</h3>
+          <p>Use the size presets and fractional steps to match surrounding typography and scoring needs.</p>
+          <div class="rating-size-stack" data-code-example>
+            <div>
+              <span>Extra small</span>
+              <wc-rating size="xs" value="2" shape="star-2" aria-label="Extra small rating"></wc-rating>
+            </div>
+            <div>
+              <span>Small</span>
+              <wc-rating size="sm" value="3" shape="star-2" aria-label="Small rating"></wc-rating>
+            </div>
+            <div>
+              <span>Medium</span>
+              <wc-rating size="md" value="4" shape="star-2" aria-label="Medium rating"></wc-rating>
+            </div>
+            <div>
+              <span>Large</span>
+              <wc-rating size="lg" value="4" shape="star-2" aria-label="Large rating"></wc-rating>
+            </div>
+            <div>
+              <span>Extra large</span>
+              <wc-rating size="xl" value="5" shape="star-2" aria-label="Extra large rating"></wc-rating>
+            </div>
+            <div>
+              <span>Half steps</span>
+              <wc-rating
+                size="lg"
+                value="2.5"
+                step="0.5"
+                clearable
+                shape="star-2"
+                data-variant="success"
+                aria-label="Half star rating"
+              ></wc-rating>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const ratingFeedback = document.getElementById('rating-feedback');
+      const ratingFeedbackForm = document.getElementById('rating-feedback-form');
+      const ratingFeedbackLog = document.getElementById('rating-feedback-log');
+      const ratingFeedbackReset = document.getElementById('rating-feedback-reset');
+
+      if (ratingFeedback && ratingFeedbackLog) {
+        const updateLog = () => {
+          const value = ratingFeedback.value;
+          const display = Array.isArray(value) ? value[0] : value;
+          if (display && Number(display) > 0) {
+            ratingFeedbackLog.textContent = `Current value: ${display}`;
+          } else {
+            ratingFeedbackLog.textContent = 'Rating cleared. Awaiting selection…';
+          }
+        };
+
+        ratingFeedback.addEventListener('input', updateLog);
+        updateLog();
+      }
+
+      if (ratingFeedbackForm && ratingFeedbackLog) {
+        ratingFeedbackForm.addEventListener('submit', () => {
+          const data = new FormData(ratingFeedbackForm);
+          const submitted = data.get('onboarding');
+          ratingFeedbackLog.textContent = submitted
+            ? `Submitted with onboarding=${submitted}.`
+            : 'Submitted without a rating.';
+        });
+      }
+
+      if (ratingFeedback && ratingFeedbackReset && ratingFeedbackLog) {
+        ratingFeedbackReset.addEventListener('click', () => {
+          ratingFeedback.value = 0;
+          ratingFeedbackLog.textContent = 'Rating cleared. Awaiting selection…';
+        });
+      }
+    </script>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-rating');
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

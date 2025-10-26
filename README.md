@@ -27,15 +27,15 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-checkbox>`](#wc-checkbox)
   - [`<wc-spinner>`](#wc-spinner)
   - [`<wc-skeleton>`](#wc-skeleton)
-  - [`<wc-sonner>`](#wc-sonner)
-  - [`<wc-badge>`](#wc-badge)
-  - [`<wc-button>`](#wc-button)
-  - [`<wc-alert>`](#wc-alert)
-  - [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
-  - [`<wc-label>`](#wc-label)
-  - [`<wc-ascii-icon>`](#wc-ascii-icon)
-  - [`<wc-separator>`](#wc-separator)
-  - [`<qr-code>`](#qr-code)
+- [`<wc-badge>`](#wc-badge)
+- [`<wc-button>`](#wc-button)
+- [`<wc-alert>`](#wc-alert)
+- [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
+- [`<wc-label>`](#wc-label)
+- [`<wc-textarea>`](#wc-textarea)
+- [`<wc-ascii-icon>`](#wc-ascii-icon)
+- [`<wc-separator>`](#wc-separator)
+- [`<qr-code>`](#qr-code)
 
 ## Getting started
 
@@ -100,6 +100,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-switch>` | Toggle switch with form integration and ARIA roles. | — |
 | `<wc-otp-field>` | Multi-input one-time passcode entry with auto-focus handling. | — |
 | `<wc-password-toggle-field>` | Password input that exposes a reveal button. | — |
+| `<wc-textarea>` | Multiline textarea with Radix-inspired styling and form association. | — |
 
 ### Navigation
 
@@ -1041,6 +1042,48 @@ attribute or nest the control inside the component.
   `--label-font-weight`, `--label-line-height`, `--label-color`, `--label-background`,
   `--label-radius`, `--label-focus-outline`, and more.
 - Parts: `::part(label)`, `::part(text)`, `::part(control)`.
+
+### `<wc-textarea>`
+
+A multiline textarea inspired by shadcn/ui with accessible defaults, form association, and rich styling
+hooks. The component mirrors native textarea behaviour while exposing CSS custom properties and
+Shadow Parts so you can tweak borders, focus rings, and sizing without writing selectors against the
+internal markup.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/textarea.js"></script>
+
+<wc-textarea name="message" placeholder="Type your message here."></wc-textarea>
+```
+
+#### Key attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Current textarea value. Updates whenever the user types or the property changes. |
+| `name` | string | `""` | Name submitted with the form when the component is inside a `<form>`. |
+| `placeholder` | string | `""` | Hint text displayed while the field is empty. |
+| `rows` | number | `4` | Preferred row count, mirroring the native attribute. |
+| `disabled` | boolean | `false` | Disables user input and dims the control. |
+| `readonly` | boolean | `false` | Prevents editing while keeping the value selectable. |
+| `required` | boolean | `false` | Marks the field as required for native constraint validation. |
+| `maxlength` | number | — | Maximum character count allowed. |
+| `minlength` | number | — | Minimum character count required. |
+| `autocomplete` | string | `""` | Passes through to the inner textarea for autofill hints. |
+
+#### Events
+
+- `input` — Fires whenever the value changes.
+- `change` — Fires when the value is committed, typically on blur.
+
+#### Styling hooks
+
+- Custom properties: `--wc-textarea-color`, `--wc-textarea-min-block-size`, `--wc-textarea-padding`,
+  `--wc-textarea-radius`, `--wc-textarea-border`, `--wc-textarea-border-hover`,
+  `--wc-textarea-border-focus`, `--wc-textarea-background`, `--wc-textarea-background-hover`,
+  `--wc-textarea-background-focus`, `--wc-textarea-resize`, `--wc-textarea-shadow`,
+  `--wc-textarea-shadow-focus`, `--wc-textarea-placeholder`.
+- Parts: `::part(base)` for the wrapper span and `::part(textarea)` for the internal control.
 
 ### `<wc-ascii-icon>`
 

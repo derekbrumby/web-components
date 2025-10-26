@@ -74,6 +74,10 @@
               <input type="checkbox" id="area-stacked" checked />
               Stacked
             </label>
+            <label>
+              <input type="checkbox" id="area-smooth" />
+              Smooth curves
+            </label>
           </div>
         </div>
 
@@ -86,8 +90,9 @@
             category-key="month"
             legend="false"
             stacked="false"
+            curve="smooth"
           >
-            <span slot="title">Area chart – linear</span>
+            <span slot="title">Area chart – smooth</span>
             <span slot="description">January – June 2024</span>
           </wc-area-chart>
         </div>
@@ -98,6 +103,7 @@
       const areaChart = document.getElementById('interactive-area');
       const areaRefresh = document.getElementById('area-refresh');
       const areaStacked = document.getElementById('area-stacked');
+      const areaSmooth = document.getElementById('area-smooth');
       const singleArea = document.getElementById('single-area');
 
       const baseData = [
@@ -120,6 +126,7 @@
             mobile: { label: 'Mobile', color: 'hsl(213 94% 68%)' },
           };
           areaChart.data = baseData;
+          areaChart.curve = areaSmooth?.checked ? 'smooth' : 'linear';
         }
 
         if (singleArea) {
@@ -134,6 +141,7 @@
             { month: 'May', desktop: 209 },
             { month: 'June', desktop: 214 },
           ];
+          singleArea.curve = 'smooth';
         }
       };
 
@@ -153,6 +161,12 @@
         if (!areaChart) return;
         const target = event.target;
         areaChart.stacked = !!target?.checked;
+      });
+
+      areaSmooth?.addEventListener('change', (event) => {
+        if (!areaChart) return;
+        const target = event.target;
+        areaChart.curve = target?.checked ? 'smooth' : 'linear';
       });
 
       initAreaCharts();

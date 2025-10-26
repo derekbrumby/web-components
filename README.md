@@ -335,6 +335,10 @@ area, line, pie, radar, and radial bar visualisations. Each element mirrors the 
 | --- | --- | --- | --- |
 | `category-key` | string | `"category"` | Property name used for category labels (x-axis for area/line, spokes for radar). |
 | `stacked` | boolean | `true` | (Area only) When `false`, each series renders independently instead of stacking. |
+| `curve` | string | `"linear"` | (Area/line) Set to `"smooth"` for monotone cubic interpolation between points. |
+
+Toggle the `curve` attribute or property at runtime to transition between angular (`"linear"`) and
+smoothed (`"smooth"`) area and line charts without reconfiguring the dataset.
 
 #### Pie & radial charts
 

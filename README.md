@@ -39,6 +39,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
 - [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
 - [`<wc-label>`](#wc-label)
 - [`<wc-textarea>`](#wc-textarea)
+- [`<wc-rating>`](#wc-rating)
 - [`<wc-ascii-icon>`](#wc-ascii-icon)
 - [`<wc-separator>`](#wc-separator)
 - [`<qr-code>`](#qr-code)
@@ -106,6 +107,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-combobox>` | Filterable combo box backed by native listbox semantics. | — |
 | `<wc-select>` | Custom select with searchable list and keyboard support. | — |
 | `<wc-slider>` | Single or range slider with custom styling. | — |
+| `<wc-rating>` | Star rating input with fractional values and colour palettes. | — |
 | `<wc-switch>` | Toggle switch with form integration and ARIA roles. | — |
 | `<wc-otp-field>` | Multi-input one-time passcode entry with auto-focus handling. | — |
 | `<wc-password-toggle-field>` | Password input that exposes a reveal button. | — |
@@ -908,6 +910,57 @@ element that implements the same semantics.
 
 Simple text wrapper for inline metrics (“12 results”, “USD”, etc.). Use Tailwind utility classes or
 CSS to tweak the typography.
+
+### `<wc-rating>`
+
+`<wc-rating>` renders a row of tappable shapes that behave like a native rating input. It supports
+fractional steps, RTL layouts, per-item colour palettes, and form participation via
+`ElementInternals`. Keyboard users can adjust the value with the arrow keys, Home/End, and delete to
+clear when `clearable` is present.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/rating.js"></script>
+
+<wc-rating
+  value="3.5"
+  step="0.5"
+  shape="star-2"
+  palette="#fb923c,#facc15,#a3e635,#22c55e"
+  aria-label="Rate support quality"
+>
+  Support quality
+</wc-rating>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | number | `0` | Current rating value. Rounded to the nearest multiple of `step`. |
+| `max` | number | `5` | Number of shapes rendered across the track. |
+| `step` | number | `1` | Minimum increment between values. Accepts fractional values such as `0.5`. |
+| `shape` | `"star" \| "star-2" \| "heart"` | `"star"` | Shape mask applied to every item. |
+| `size` | `"xs" \| "sm" \| "md" \| "lg" \| "xl"` | `"md"` | Predefined scale for icon size and spacing. |
+| `clearable` | boolean | `false` | When present, toggling the active value or pressing Delete resets the control to `0` and omits it from form submissions. |
+| `palette` | string | `""` | Comma-separated list of CSS colours applied to successive items. Fallbacks to `--wc-rating-active-color` when shorter than `max`. |
+| `readonly` | boolean | `false` | Disables interaction while keeping the current value visible. |
+| `disabled` | boolean | `false` | Removes the component from the tab order and dims the icons. |
+| `name` | string | `""` | Associates the control with a form. Only submitted when the value is greater than `0`. |
+
+#### Events
+
+- `input` — Fired whenever a pointer or keyboard interaction updates the value.
+- `change` — Emitted after a committed value change, mirroring native radio controls.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-rating-size`, `--wc-rating-gap`, `--wc-rating-active-color`,
+  `--wc-rating-inactive-color`, `--wc-rating-focus-ring`, `--wc-rating-hit-area`,
+  `--wc-rating-focus-padding`, `--wc-rating-focus-radius`, `--wc-rating-disabled-opacity`,
+  `--wc-rating-label-gap`.
+- Parts: `::part(root)`, `::part(track)`, `::part(item)`, `::part(icon)`, `::part(label)`.
+- Data attributes: `[data-size]`, `[data-shape]`, `[data-disabled="true"]`,
+  `[data-readonly="true"]`, `[data-direction="rtl"]`.
 
 ### `<wc-spinner>`
 

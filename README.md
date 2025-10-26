@@ -45,6 +45,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/drawer.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/chart.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/kbd.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/audio-player.js"></script>
@@ -153,6 +154,56 @@ export const useCounter = () => {
 
 - CSS custom properties: `--code-viewer-background`, `--code-viewer-foreground`, `--code-viewer-padding`, `--code-viewer-radius`, `--code-viewer-shadow`, `--code-viewer-font-family`, `--code-viewer-font-size`, `--code-viewer-comment-color`, `--code-viewer-keyword-color`, `--code-viewer-string-color`, `--code-viewer-number-color`, `--code-viewer-attribute-color`, `--code-viewer-tag-color`, `--code-viewer-entity-color`, `--code-viewer-variable-color`, `--code-viewer-punctuation-color`, `--code-viewer-accent`.
 - Parts: `::part(container)`, `::part(surface)`, `::part(code)`, `::part(empty)`, `::part(error)`.
+
+### `<wc-chart>`
+
+Render responsive grouped bar charts without shipping a client-side framework. Configure each data
+series with human-readable labels and colors, then pass data objects to plot your metrics.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/chart.js"></script>
+
+<wc-chart id="sessions-chart" caption="Monthly sessions"></wc-chart>
+<script type="module">
+  const chart = document.querySelector('#sessions-chart');
+  chart.categoryKey = 'month';
+  chart.config = {
+    desktop: { label: 'Desktop', color: 'hsl(221 83% 53%)' },
+    mobile: { label: 'Mobile', color: 'hsl(213 94% 68%)' },
+  };
+  chart.data = [
+    { month: 'January', desktop: 186, mobile: 80 },
+    { month: 'February', desktop: 305, mobile: 200 },
+    { month: 'March', desktop: 237, mobile: 120 },
+  ];
+</script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | string | `[]` | JSON-serialised array of records rendered as bars. Use the `data` property for larger datasets. |
+| `config` | string | `{}` | JSON-serialised object describing each series (`{ [key]: { label, color } }`). |
+| `category-key` | string | `"category"` | Property name on each record used for the x-axis label. |
+| `caption` | string | `""` | Optional label announced with the chart when `aria-label` is not provided. |
+| `hide-legend` | boolean | `false` | Hides the legend element. Toggle via the `hideLegend` property at runtime. |
+
+Set the `data`, `config`, `categoryKey`, and `hideLegend` properties from JavaScript for rich
+interactivity.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-chart-background`, `--wc-chart-foreground`, `--wc-chart-border`,
+  `--wc-chart-grid`, `--wc-chart-muted`, `--wc-chart-tooltip-background`,
+  `--wc-chart-tooltip-foreground`, `--wc-chart-tooltip-muted`, `--wc-chart-bar-radius`.
+- Parts: `::part(container)`, `::part(chart)`, `::part(legend)`, `::part(tooltip)`, `::part(empty)`.
+
+#### Accessibility
+
+- Bars are focusable and support keyboard-triggered tooltips (Space/Enter to show, Escape to hide).
+- Tooltips expose the current category and series values while legends provide textual colour keys.
+- Provide an `aria-label` or `caption` for screen-reader friendly summaries.
 
 ### `<wc-data-table>`
 

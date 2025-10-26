@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-audio-player&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/audio-player.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .audio-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 960px) {
+        .audio-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .audio-card {
+        display: grid;
+        gap: 1.25rem;
+        padding: 1.75rem;
+        border-radius: 1.5rem;
+        background: rgba(15, 23, 42, 0.05);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        box-shadow: 0 32px 48px -36px rgba(15, 23, 42, 0.4);
+      }
+
+      .audio-card h3 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .audio-card p {
+        margin: 0;
+        color: #475569;
+      }
+
+      .audio-card footer {
+        display: grid;
+        gap: 0.5rem;
+        color: #0f172a;
+        font-size: 0.9rem;
+      }
+
+      .playlist {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .playlist button {
+        appearance: none;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: rgba(241, 245, 249, 0.85);
+        color: #0f172a;
+        padding: 0.75rem 1rem;
+        border-radius: 0.85rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font: inherit;
+        cursor: pointer;
+        transition: border-color 140ms ease, background-color 140ms ease;
+      }
+
+      .playlist button:hover,
+      .playlist button:focus-visible {
+        border-color: rgba(37, 99, 235, 0.5);
+        background: rgba(224, 231, 255, 0.85);
+        outline: none;
+      }
+
+      wc-audio-player.focused {
+        --wc-audio-player-background: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(59, 130, 246, 0.85));
+        --wc-audio-player-foreground: #f8fafc;
+        --wc-audio-player-accent: #facc15;
+        --wc-audio-player-progress-color: #facc15;
+        box-shadow: 0 48px 80px -48px rgba(37, 99, 235, 0.65);
+      }
+
+      .minimal {
+        --wc-audio-player-background: rgba(15, 23, 42, 0.08);
+        --wc-audio-player-foreground: #0f172a;
+        --wc-audio-player-accent: #0ea5e9;
+        --wc-audio-player-progress-color: #0ea5e9;
+        --wc-audio-player-progress-background: rgba(148, 163, 184, 0.35);
+        --wc-audio-player-muted: #475569;
+        max-inline-size: 28rem;
+      }
+
+      .minimal::part(container) {
+        box-shadow: 0 24px 48px -32px rgba(14, 116, 144, 0.35);
+      }
+
+      .minimal::part(mute-button) {
+        background: rgba(14, 116, 144, 0.08);
+        color: #0ea5e9;
+      }
+
+      .minimal::part(play-button) {
+        background: linear-gradient(135deg, #0ea5e9, #22d3ee);
+        color: #0f172a;
+      }
+
+      .minimal footer {
+        color: #0ea5e9;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="audio-grid">
+        <div class="audio-card" data-code-example>
+          <div>
+            <h3>Editorial spotlight</h3>
+            <p>Pair imagery and metadata with the built-in artwork slot and fallback titles.</p>
+          </div>
+          <wc-audio-player class="focused" src="https://sound-effects-media.bbcrewind.co.uk/mp3/NHU05104236.mp3" track-title="Morning focus" track-subtitle="1:30 • C major chime">
+            <img
+              slot="artwork"
+              src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=400&q=80"
+              alt="Close-up of studio headphones"
+            />
+            <span slot="title">Morning focus</span>
+            <span slot="subtitle">1:30 • C major chime</span>
+          </wc-audio-player>
+          <footer>
+            <span>Expose artwork, title, and subtitle slots to blend with playlists or show recommendations.</span>
+            <span>The component emits <code>audio-scrub</code> events while the user drags the timeline.</span>
+          </footer>
+        </div>
+
+        <div class="audio-card" data-code-example>
+          <div>
+            <h3>Compact controls</h3>
+            <p>Use attributes to set fallback metadata and wire up playlist switching with a few lines of JS.</p>
+          </div>
+          <wc-audio-player class="minimal" id="playlist-player" src="https://sound-effects-media.bbcrewind.co.uk/mp3/NHU05104236.mp3" track-title="Deep work chime"></wc-audio-player>
+          <div class="playlist">
+            <button type="button" data-src="https://sound-effects-media.bbcrewind.co.uk/mp3/NHU05104236.mp3" data-title="Deep work chime" data-subtitle="C5 sine wave">
+              Deep work chime
+              <span>1:30</span>
+            </button>
+            <button type="button" data-src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3" data-title="Field recording" data-subtitle="CC0 ambience">
+              Field recording
+              <span>0:12</span>
+            </button>
+            <button type="button" data-src="https://interactive-examples.mdn.mozilla.net/media/examples/t-rex-roar.mp3" data-title="Classic roar" data-subtitle="MDN sample">
+              Classic roar
+              <span>0:04</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      const player = document.querySelector('#playlist-player');
+      const buttons = Array.from(document.querySelectorAll('.playlist button'));
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', async () => {
+          const src = button.dataset.src ?? '';
+          const title = button.dataset.title ?? '';
+          const subtitle = button.dataset.subtitle ?? '';
+
+          player.src = src;
+          player.trackTitle = title;
+          player.trackSubtitle = subtitle;
+
+          buttons.forEach((btn) => btn.classList.toggle('is-active', btn === button));
+          try {
+            await player.play();
+          } catch (error) {
+            // Autoplay might be blocked; the built-in control remains available.
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

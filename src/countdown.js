@@ -142,7 +142,7 @@
             white-space: pre;
             text-align: end;
             direction: rtl;
-            color: inherit;
+            color: currentColor;
             transition:
               transform var(--wc-countdown-transition-duration) var(--wc-countdown-transition-easing),
               width 0.2s ease-out var(--wc-countdown-width-delay),

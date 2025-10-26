@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-chart&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/chart.js"></script>
+    <style>
+      .chart-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .chart-preview {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .chart-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .chart-controls button {
+        padding: 0.45rem 0.85rem;
+        border-radius: 0.65rem;
+        border: 1px solid rgba(79, 70, 229, 0.22);
+        background: rgba(99, 102, 241, 0.08);
+        color: rgb(67, 56, 202);
+        cursor: pointer;
+        font: inherit;
+        transition: background-color 160ms ease, transform 160ms ease;
+      }
+
+      .chart-controls button:hover {
+        background: rgba(99, 102, 241, 0.16);
+      }
+
+      .chart-controls button:active {
+        transform: translateY(1px);
+      }
+
+      .chart-themed {
+        --wc-chart-background: rgba(15, 23, 42, 0.88);
+        --wc-chart-foreground: rgba(226, 232, 240, 0.95);
+        --wc-chart-border: rgba(148, 163, 184, 0.25);
+        --wc-chart-grid: rgba(148, 163, 184, 0.25);
+        --wc-chart-muted: rgba(203, 213, 225, 0.8);
+        --wc-chart-tooltip-background: rgba(15, 23, 42, 0.95);
+        --wc-chart-tooltip-foreground: rgba(226, 232, 240, 0.98);
+        --wc-chart-tooltip-muted: rgba(148, 163, 184, 0.85);
+        --wc-chart-bar-radius: 10;
+        backdrop-filter: blur(12px);
+      }
+
+      .chart-themed::part(container) {
+        background: rgba(30, 41, 59, 0.75);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .chart-themed::part(legend) {
+        justify-content: center;
+      }
+
+      .chart-themed::part(tooltip) {
+        backdrop-filter: blur(8px);
+      }
+
+      .chart-minimal {
+        --wc-chart-background: transparent;
+        --wc-chart-border: rgba(148, 163, 184, 0.2);
+        --wc-chart-grid: rgba(148, 163, 184, 0.3);
+        box-shadow: none;
+        border-radius: 0.75rem;
+      }
+
+      .chart-minimal::part(container) {
+        box-shadow: none;
+      }
+
+      @media (max-width: 960px) {
+        .chart-grid {
+          gap: 1.25rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card chart-grid" data-code-example>
+            <h3>Monthly traffic</h3>
+            <p>
+              Pass JavaScript objects for <code>data</code> and <code>config</code>. Hover or focus a bar to reveal the tooltip. Use the
+              exposed properties to toggle the legend or update values at runtime.
+            </p>
+            <div class="chart-preview">
+              <wc-chart id="traffic-chart" caption="Monthly visitors" class="chart-minimal"></wc-chart>
+              <div class="chart-controls">
+                <button type="button" id="traffic-refresh">Shuffle data</button>
+                <button type="button" id="traffic-legend">Toggle legend</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="example-card chart-grid" data-code-example>
+            <h3>Dark glassmorphism</h3>
+            <p>
+              Override the CSS variables or target the exposed <code>::part</code> selectors to theme the chart without touching its
+              internal markup.
+            </p>
+            <wc-chart id="audience-chart" class="chart-themed" caption="Audience composition" hide-legend></wc-chart>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const trafficChart = document.getElementById('traffic-chart');
+      const trafficRefresh = document.getElementById('traffic-refresh');
+      const trafficLegend = document.getElementById('traffic-legend');
+      const audienceChart = document.getElementById('audience-chart');
+
+      const trafficData = [
+        { month: 'January', desktop: 186, mobile: 80 },
+        { month: 'February', desktop: 305, mobile: 200 },
+        { month: 'March', desktop: 237, mobile: 120 },
+        { month: 'April', desktop: 173, mobile: 190 },
+        { month: 'May', desktop: 209, mobile: 130 },
+        { month: 'June', desktop: 214, mobile: 140 },
+      ];
+
+      const trafficConfig = {
+        desktop: {
+          label: 'Desktop',
+          color: 'hsl(221 83% 53%)',
+        },
+        mobile: {
+          label: 'Mobile',
+          color: 'hsl(213 94% 68%)',
+        },
+      };
+
+      const audienceData = [
+        { segment: 'Returning', value: 1248 },
+        { segment: 'New', value: 986 },
+        { segment: 'Referral', value: 642 },
+      ];
+
+      const randomiseTraffic = () =>
+        trafficData.map((entry) => ({
+          ...entry,
+          desktop: Math.max(64, Math.round(entry.desktop * (0.75 + Math.random() * 0.5))),
+          mobile: Math.max(40, Math.round(entry.mobile * (0.8 + Math.random() * 0.6))),
+        }));
+
+      const initCharts = () => {
+        if (trafficChart) {
+          trafficChart.categoryKey = 'month';
+          trafficChart.config = trafficConfig;
+          trafficChart.data = trafficData;
+        }
+
+        if (audienceChart) {
+          audienceChart.categoryKey = 'segment';
+          audienceChart.config = {
+            value: {
+              label: 'Visitors',
+              color: 'hsl(200 98% 62%)',
+            },
+          };
+          audienceChart.data = audienceData;
+        }
+      };
+
+      trafficRefresh?.addEventListener('click', () => {
+        if (!trafficChart) return;
+        trafficChart.data = randomiseTraffic();
+      });
+
+      trafficLegend?.addEventListener('click', () => {
+        if (!trafficChart) return;
+        trafficChart.hideLegend = !trafficChart.hideLegend;
+        updateLegendButton();
+      });
+
+      const updateLegendButton = () => {
+        if (!trafficLegend || !trafficChart) return;
+        trafficLegend.textContent = trafficChart.hideLegend ? 'Show legend' : 'Hide legend';
+      };
+
+      initCharts();
+      updateLegendButton();
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

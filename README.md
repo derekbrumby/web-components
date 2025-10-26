@@ -23,6 +23,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toggle-group.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/button-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/radio-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/combobox.js"></script>
@@ -697,6 +698,66 @@ ARIA pressed states.
 - Parts: `::part(root)` for the container and `::part(item)` for each toggle button.
 - Data attributes: host `[data-orientation]`, `[data-disabled]`; items `[data-state]`, `[data-disabled]`,
   `[data-position]`, and `[data-focus]` for granular styling.
+
+### `<wc-button-group>`
+
+Visually group related actions so they feel like a single control. The component normalises spacing, collapses
+adjacent borders, and supports nested clusters for split buttons or grouped toolbars. Helper elements provide
+accessible separators and inline text without additional wrappers.
+
+```html
+<wc-button-group aria-label="Mailbox actions">
+  <button type="button">Archive</button>
+  <button type="button">Report</button>
+  <button type="button">Snooze</button>
+</wc-button-group>
+
+<wc-button-group aria-label="Follow actions">
+  <button type="button">Follow</button>
+  <wc-button-group-separator></wc-button-group-separator>
+  <button type="button" aria-label="More options">⋯</button>
+</wc-button-group>
+
+<wc-button-group orientation="vertical" aria-label="Zoom controls">
+  <button type="button">Zoom in</button>
+  <button type="button">Reset</button>
+  <button type="button">Zoom out</button>
+</wc-button-group>
+```
+
+Nest `<wc-button-group>` elements to introduce spacing between clusters while keeping buttons inside each cluster
+flush. Combine `<wc-button-group-text>` and `<wc-button-group-separator>` for richer layouts like input groups or
+split buttons.
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Controls the flex direction and inherited orientation for nested groups. |
+
+#### Slots
+
+- _(default)_ — Place any focusable controls (buttons, inputs, selects) plus helper elements inside the group.
+
+#### Styling hooks
+
+- CSS custom properties: `--button-group-radius`, `--button-group-padding`, `--button-group-background`,
+  `--button-group-shadow`, `--button-group-item-radius`, `--button-group-item-gap`, `--button-group-nested-gap`,
+  `--button-group-font-family`.
+- Parts: `::part(root)` for the container, `wc-button-group-text::part(text)` for inline labels,
+  `wc-button-group-separator::part(separator)` for dividers.
+- Data attributes: host `[data-orientation]`; interactive children receive `[data-button-group-role]`,
+  `[data-button-group-index]`, `[data-button-group-first]`, `[data-button-group-last]`, and
+  `[data-button-group-offset]` for fine-grained styling.
+
+#### Supporting elements
+
+- `<wc-button-group-separator>` — Visual divider between segments. Accepts an optional `orientation` attribute
+  (`"vertical"` by default). In horizontal groups the separator renders vertically; in vertical groups it renders
+  horizontally.
+- `<wc-button-group-text>` — Inline text or custom content that aligns with the rest of the group. Set the
+  `data-fill="true"` attribute to let the text stretch and consume remaining space.
+
 ### `<wc-radio-group>`
 
 An accessible radio group with roving focus, loopable keyboard navigation, and form association built in. Each

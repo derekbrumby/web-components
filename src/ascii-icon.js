@@ -100,6 +100,8 @@
           width: var(--wc-ascii-icon-size);
           height: var(--wc-ascii-icon-size);
           display: block;
+          -webkit-user-select: none;
+          user-select: none;
         }
 
         svg[part="art"] text {
@@ -109,6 +111,9 @@
           letter-spacing: var(--wc-ascii-icon-letter-spacing);
           text-anchor: middle;
           dominant-baseline: middle;
+          pointer-events: none;
+          -webkit-user-select: none;
+          user-select: none;
         }
 
         svg[part="measure"] {
@@ -131,6 +136,8 @@
       this.#asciiSvg = asciiSvg;
 
       const textGroup = document.createElementNS(SVG_NS, 'g');
+      textGroup.setAttribute('aria-hidden', 'true');
+      textGroup.setAttribute('role', 'presentation');
       this.#textGroup = textGroup;
       this.#asciiSvg.append(textGroup);
 
@@ -461,6 +468,8 @@
           hasFill = true;
           const text = document.createElementNS(SVG_NS, 'text');
           text.textContent = character;
+          text.setAttribute('aria-hidden', 'true');
+          text.setAttribute('role', 'presentation');
           text.setAttribute('x', String((columnIndex + 0.5) * cellWidth));
           text.setAttribute('y', String((rowIndex + 0.5) * cellHeight));
           const maxCellSize = Math.min(cellWidth, cellHeight);

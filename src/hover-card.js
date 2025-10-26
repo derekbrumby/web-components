@@ -174,121 +174,153 @@
           :host([data-side="bottom"][data-align="center"]) [part="content"] {
             top: calc(100% + var(--hover-card-side-offset));
             left: 50%;
-            transform: translate(-50%, 8px) scale(0.97);
+            transform: translate(
+              calc(-50% + var(--hover-card-align-offset)),
+              8px
+            )
+              scale(0.97);
           }
 
           :host([data-state="open"][data-side="bottom"][data-align="center"]) [part="content"] {
-            transform: translate(-50%, 0) scale(1);
+            transform: translate(
+              calc(-50% + var(--hover-card-align-offset)),
+              0
+            )
+              scale(1);
           }
 
           :host([data-side="bottom"][data-align="start"]) [part="content"] {
             top: calc(100% + var(--hover-card-side-offset));
             left: 0;
-            transform: translate(0, 8px) scale(0.97);
+            transform: translate(var(--hover-card-align-offset), 8px) scale(0.97);
           }
 
           :host([data-state="open"][data-side="bottom"][data-align="start"]) [part="content"] {
-            transform: translate(0, 0) scale(1);
+            transform: translate(var(--hover-card-align-offset), 0) scale(1);
           }
 
           :host([data-side="bottom"][data-align="end"]) [part="content"] {
             top: calc(100% + var(--hover-card-side-offset));
             right: 0;
-            transform: translate(0, 8px) scale(0.97);
+            transform: translate(var(--hover-card-align-offset), 8px) scale(0.97);
           }
 
           :host([data-state="open"][data-side="bottom"][data-align="end"]) [part="content"] {
-            transform: translate(0, 0) scale(1);
+            transform: translate(var(--hover-card-align-offset), 0) scale(1);
           }
 
           :host([data-side="top"][data-align="center"]) [part="content"] {
             bottom: calc(100% + var(--hover-card-side-offset));
             left: 50%;
-            transform: translate(-50%, -8px) scale(0.97);
+            transform: translate(
+              calc(-50% + var(--hover-card-align-offset)),
+              -8px
+            )
+              scale(0.97);
           }
 
           :host([data-state="open"][data-side="top"][data-align="center"]) [part="content"] {
-            transform: translate(-50%, 0) scale(1);
+            transform: translate(
+              calc(-50% + var(--hover-card-align-offset)),
+              0
+            )
+              scale(1);
           }
 
           :host([data-side="top"][data-align="start"]) [part="content"] {
             bottom: calc(100% + var(--hover-card-side-offset));
             left: 0;
-            transform: translate(0, -8px) scale(0.97);
+            transform: translate(var(--hover-card-align-offset), -8px) scale(0.97);
           }
 
           :host([data-state="open"][data-side="top"][data-align="start"]) [part="content"] {
-            transform: translate(0, 0) scale(1);
+            transform: translate(var(--hover-card-align-offset), 0) scale(1);
           }
 
           :host([data-side="top"][data-align="end"]) [part="content"] {
             bottom: calc(100% + var(--hover-card-side-offset));
             right: 0;
-            transform: translate(0, -8px) scale(0.97);
+            transform: translate(var(--hover-card-align-offset), -8px) scale(0.97);
           }
 
           :host([data-state="open"][data-side="top"][data-align="end"]) [part="content"] {
-            transform: translate(0, 0) scale(1);
+            transform: translate(var(--hover-card-align-offset), 0) scale(1);
           }
 
           :host([data-side="left"][data-align="center"]) [part="content"] {
             right: calc(100% + var(--hover-card-side-offset));
             top: 50%;
-            transform: translate(-8px, -50%) scale(0.97);
+            transform: translate(
+              -8px,
+              calc(-50% + var(--hover-card-align-offset))
+            )
+              scale(0.97);
           }
 
           :host([data-state="open"][data-side="left"][data-align="center"]) [part="content"] {
-            transform: translate(0, -50%) scale(1);
+            transform: translate(
+              0,
+              calc(-50% + var(--hover-card-align-offset))
+            )
+              scale(1);
           }
 
           :host([data-side="left"][data-align="start"]) [part="content"] {
             right: calc(100% + var(--hover-card-side-offset));
             top: 0;
-            transform: translate(-8px, 0) scale(0.97);
+            transform: translate(-8px, var(--hover-card-align-offset)) scale(0.97);
           }
 
           :host([data-state="open"][data-side="left"][data-align="start"]) [part="content"] {
-            transform: translate(0, 0) scale(1);
+            transform: translate(0, var(--hover-card-align-offset)) scale(1);
           }
 
           :host([data-side="left"][data-align="end"]) [part="content"] {
             right: calc(100% + var(--hover-card-side-offset));
             bottom: 0;
-            transform: translate(-8px, 0) scale(0.97);
+            transform: translate(-8px, var(--hover-card-align-offset)) scale(0.97);
           }
 
           :host([data-state="open"][data-side="left"][data-align="end"]) [part="content"] {
-            transform: translate(0, 0) scale(1);
+            transform: translate(0, var(--hover-card-align-offset)) scale(1);
           }
 
           :host([data-side="right"][data-align="center"]) [part="content"] {
             left: calc(100% + var(--hover-card-side-offset));
             top: 50%;
-            transform: translate(8px, -50%) scale(0.97);
+            transform: translate(
+              8px,
+              calc(-50% + var(--hover-card-align-offset))
+            )
+              scale(0.97);
           }
 
           :host([data-state="open"][data-side="right"][data-align="center"]) [part="content"] {
-            transform: translate(0, -50%) scale(1);
+            transform: translate(
+              0,
+              calc(-50% + var(--hover-card-align-offset))
+            )
+              scale(1);
           }
 
           :host([data-side="right"][data-align="start"]) [part="content"] {
             left: calc(100% + var(--hover-card-side-offset));
             top: 0;
-            transform: translate(8px, 0) scale(0.97);
+            transform: translate(8px, var(--hover-card-align-offset)) scale(0.97);
           }
 
           :host([data-state="open"][data-side="right"][data-align="start"]) [part="content"] {
-            transform: translate(0, 0) scale(1);
+            transform: translate(0, var(--hover-card-align-offset)) scale(1);
           }
 
           :host([data-side="right"][data-align="end"]) [part="content"] {
             left: calc(100% + var(--hover-card-side-offset));
             bottom: 0;
-            transform: translate(8px, 0) scale(0.97);
+            transform: translate(8px, var(--hover-card-align-offset)) scale(0.97);
           }
 
           :host([data-state="open"][data-side="right"][data-align="end"]) [part="content"] {
-            transform: translate(0, 0) scale(1);
+            transform: translate(0, var(--hover-card-align-offset)) scale(1);
           }
 
           [part="arrow"] {
@@ -333,12 +365,12 @@
 
           :host([data-align="start"][data-side="bottom"]) [part="arrow"],
           :host([data-align="start"][data-side="top"]) [part="arrow"] {
-            left: calc(16px + var(--hover-card-align-offset));
+            left: 16px;
           }
 
           :host([data-align="end"][data-side="bottom"]) [part="arrow"],
           :host([data-align="end"][data-side="top"]) [part="arrow"] {
-            right: calc(16px - var(--hover-card-align-offset));
+            right: 16px;
           }
 
           :host([data-align="center"][data-side="left"]) [part="arrow"],
@@ -348,12 +380,12 @@
 
           :host([data-align="start"][data-side="left"]) [part="arrow"],
           :host([data-align="start"][data-side="right"]) [part="arrow"] {
-            top: calc(16px + var(--hover-card-align-offset));
+            top: 16px;
           }
 
           :host([data-align="end"][data-side="left"]) [part="arrow"],
           :host([data-align="end"][data-side="right"]) [part="arrow"] {
-            bottom: calc(16px - var(--hover-card-align-offset));
+            bottom: 16px;
           }
 
           :host([data-hide-arrow="true"]) [part="arrow"] {

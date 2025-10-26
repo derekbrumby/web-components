@@ -25,6 +25,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/toggle-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/radio-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/combobox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/slider.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/carousel.js"></script>
@@ -725,6 +726,73 @@ dependencies and exposes rich styling hooks.
     <wc-select-option value="carrot" disabled>Carrot</wc-select-option>
   </wc-select-group>
 </wc-select>
+### `<wc-combobox>`
+
+Search and filter through grouped options in a keyboard-friendly popover. The component toggles open with a trigger
+button, highlights items on hover or arrow keys, and supports clearing the selection by choosing the active option a
+second time.
+
+```html
+<wc-combobox placeholder="Select framework…">
+  <wc-combobox-group label="Frameworks">
+    <wc-combobox-option value="next.js">Next.js</wc-combobox-option>
+    <wc-combobox-option value="sveltekit">SvelteKit</wc-combobox-option>
+    <wc-combobox-option value="nuxt.js">Nuxt.js</wc-combobox-option>
+    <wc-combobox-option value="remix">Remix</wc-combobox-option>
+    <wc-combobox-option value="astro">Astro</wc-combobox-option>
+  </wc-combobox-group>
+</wc-combobox>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | string | `""` | Currently selected option value. Set to an empty string (or omit) to clear the selection. |
+| `open` | boolean | `false` | Forces the listbox open when present. Remove the attribute to let the component manage its own state. |
+| `placeholder` | string | `"Select option…"` | Trigger label displayed when no item is selected. |
+| `search-placeholder` | string | `"Search…"` | Placeholder text rendered inside the filter input. |
+| `search-label` | string | `"Filter options"` | Accessible label announced for the search input. |
+| `empty-label` | string | `"No results found."` | Text shown when filtering yields zero matches and no `slot="empty"` content is provided. |
+| `disabled` | boolean | `false` | Disables the trigger and search input, closing the listbox if it is open. |
+
+#### Child elements
+
+- `<wc-combobox-option>` — individual item with `value`, optional `text-value` for filtering, `display-value` for
+  custom trigger text, and `disabled` for non-interactive options.
+- `<wc-combobox-group>` — wraps related options and exposes a `label` attribute for grouped headings.
+- `slot="empty"` — optional slot to replace the default “No results found.” message.
+
+#### Slots
+
+- _(default)_ — Place `<wc-combobox-option>` and `<wc-combobox-group>` children here.
+- `empty` — Displayed when the current filter hides every option.
+
+#### Events
+
+- `wc-combobox-toggle` — fired whenever the panel opens or closes. `event.detail.open` is a boolean.
+- `wc-combobox-change` — emitted after the selection updates. `event.detail.value` contains the new value (or `""` when
+  cleared) and `event.detail.option` references the selected `<wc-combobox-option>` element when available.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-combobox-width`, `--wc-combobox-trigger-padding`, `--wc-combobox-trigger-radius`,
+  `--wc-combobox-trigger-border`, `--wc-combobox-trigger-background`, `--wc-combobox-trigger-color`,
+  `--wc-combobox-trigger-focus-ring`, `--wc-combobox-trigger-height`, `--wc-combobox-placeholder-color`,
+  `--wc-combobox-icon-color`, `--wc-combobox-panel-offset`, `--wc-combobox-panel-width`,
+  `--wc-combobox-panel-background`, `--wc-combobox-panel-border`, `--wc-combobox-panel-radius`,
+  `--wc-combobox-panel-shadow`, `--wc-combobox-panel-z-index`, `--wc-combobox-panel-padding`,
+  `--wc-combobox-search-padding`, `--wc-combobox-search-radius`, `--wc-combobox-search-border`,
+  `--wc-combobox-search-background`, `--wc-combobox-search-icon-color`, `--wc-combobox-list-max-height`,
+  `--wc-combobox-empty-color`, `--wc-combobox-option-radius`, `--wc-combobox-option-padding`,
+  `--wc-combobox-option-gap`, `--wc-combobox-option-color`, `--wc-combobox-option-background`,
+  `--wc-combobox-option-highlighted-background`, `--wc-combobox-option-highlighted-color`,
+  `--wc-combobox-option-disabled-color`, `--wc-combobox-option-indicator-color`,
+  `--wc-combobox-group-label-color`.
+- Parts: `::part(container)`, `::part(trigger)`, `::part(label)`, `::part(icon)`, `::part(panel)`, `::part(search)`,
+  `::part(search-input)`, `::part(empty)`, `::part(viewport)`, `::part(list)`, `::part(option)`, `::part(indicator)`,
+  `::part(group)`, `::part(group-label)`, `::part(group-options)`.
+
 ### `<wc-progress>`
 
 Display task completion with a lightweight, accessible progress indicator. The component mirrors the Radix UI

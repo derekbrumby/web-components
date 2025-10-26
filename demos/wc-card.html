@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-card&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/card.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .example-grid {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .example-card {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .login-card::part(surface) {
+        max-width: 26rem;
+        margin-inline: auto;
+      }
+
+      form {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .field-group {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      label {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        appearance: none;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(148, 163, 184, 0.55);
+        padding: 0.65rem 0.75rem;
+        font: inherit;
+        color: inherit;
+        background: rgba(248, 250, 252, 0.75);
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      input[type="email"]:focus,
+      input[type="password"]:focus {
+        outline: none;
+        border-color: rgba(99, 102, 241, 0.65);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
+      }
+
+      .inline-link {
+        margin-left: auto;
+        font-size: 0.85rem;
+        text-decoration: none;
+        color: rgba(79, 70, 229, 0.95);
+        text-underline-offset: 0.25rem;
+      }
+
+      .inline-link:hover,
+      .inline-link:focus-visible {
+        text-decoration: underline;
+        outline: none;
+      }
+
+      .button-row {
+        display: grid;
+        gap: 0.65rem;
+        width: 100%;
+      }
+
+      .button {
+        appearance: none;
+        border-radius: 0.75rem;
+        padding: 0.75rem 1rem;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        border: none;
+        transition: transform 140ms ease, box-shadow 140ms ease;
+      }
+
+      .button.primary {
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.95), rgba(59, 130, 246, 0.95));
+        color: white;
+        box-shadow: 0 20px 40px -24px rgba(79, 70, 229, 0.65);
+      }
+
+      .button.secondary {
+        border: 1px solid rgba(148, 163, 184, 0.5);
+        background: rgba(255, 255, 255, 0.85);
+        color: inherit;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 36px -26px rgba(15, 23, 42, 0.4);
+        outline: none;
+      }
+
+      .button.secondary:hover,
+      .button.secondary:focus-visible {
+        box-shadow: 0 16px 32px -26px rgba(15, 23, 42, 0.25);
+      }
+
+      .stacked-actions {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .stacked-actions wc-card::part(surface) {
+        --card-background: rgba(15, 23, 42, 0.92);
+        --card-foreground: rgba(226, 232, 240, 0.98);
+        --card-border-color: rgba(148, 163, 184, 0.25);
+        --card-shadow: 0 30px 60px -32px rgba(15, 23, 42, 0.7);
+      }
+
+      .stacked-actions wc-card-action::part(action) {
+        color: rgba(148, 163, 184, 0.9);
+      }
+
+      .stacked-actions wc-card-footer::part(footer) {
+        justify-content: flex-end;
+      }
+
+      .stacked-actions .button.primary {
+        background: linear-gradient(135deg, #22d3ee, #0ea5e9);
+        color: #082f49;
+      }
+
+      .muted {
+        font-size: 0.9rem;
+        color: rgba(148, 163, 184, 0.9);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="example-grid">
+        <div class="example-card">
+          <h3>Login form layout</h3>
+          <wc-card class="login-card" data-code-example>
+            <wc-card-header>
+              <wc-card-title>Login to your account</wc-card-title>
+              <wc-card-description>
+                Enter your email below to login to your account.
+              </wc-card-description>
+              <wc-card-action>
+                <a class="inline-link" href="#">Sign up</a>
+              </wc-card-action>
+            </wc-card-header>
+            <wc-card-content>
+              <form>
+                <div class="field-group">
+                  <label for="card-demo-email">Email</label>
+                  <input id="card-demo-email" type="email" name="email" placeholder="m@example.com" required />
+                </div>
+                <div class="field-group">
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <label for="card-demo-password">Password</label>
+                    <a class="inline-link" href="#">Forgot your password?</a>
+                  </div>
+                  <input id="card-demo-password" type="password" name="password" required />
+                </div>
+              </form>
+            </wc-card-content>
+            <wc-card-footer>
+              <div class="button-row">
+                <button type="submit" class="button primary">Login</button>
+                <button type="button" class="button secondary">Login with Google</button>
+              </div>
+            </wc-card-footer>
+          </wc-card>
+        </div>
+
+        <div class="example-card stacked-actions">
+          <h3>Dark surface with stacked actions</h3>
+          <wc-card data-code-example>
+            <wc-card-header>
+              <wc-card-title level="3">Your workspace</wc-card-title>
+              <wc-card-description>
+                Manage members, billing, and integrations from a single panel.
+              </wc-card-description>
+              <wc-card-action>
+                <button type="button" class="ghost-button">Invite teammate</button>
+              </wc-card-action>
+            </wc-card-header>
+            <wc-card-content>
+              <p>
+                Review analytics and configure data exports without leaving the dashboard.
+                You can theme the card via CSS custom properties or override specific parts.
+              </p>
+            </wc-card-content>
+            <wc-card-footer>
+              <span class="muted">Last updated 2 hours ago</span>
+              <button type="button" class="button primary">Open settings</button>
+            </wc-card-footer>
+          </wc-card>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

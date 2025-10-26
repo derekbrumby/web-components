@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-file-input&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/file-input.js"></script>
+    <style>
+      .file-input-grid {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .file-input-stack {
+        display: grid;
+        gap: 1.1rem;
+      }
+
+      .file-input-group {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .file-input-size-grid,
+      .file-input-color-grid {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .file-input-color-grid {
+        grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+      }
+
+      fieldset.file-input-fieldset {
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        border-radius: 0.85rem;
+        padding: 1rem 1.25rem 1.25rem;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      fieldset.file-input-fieldset legend {
+        font-weight: 600;
+        color: rgb(30, 41, 59);
+      }
+
+      .file-input-muted {
+        margin: 0;
+        font-size: 0.9rem;
+        color: rgba(71, 85, 105, 0.9);
+      }
+
+      .file-input-size-grid wc-file-input[data-size='xl'] {
+        --wc-file-input-inline-size: clamp(12rem, 60vw, 22rem);
+      }
+
+      .file-input-log {
+        margin: 0;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        background: rgba(79, 70, 229, 0.08);
+        color: rgb(55, 48, 163);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-file-input"></section>
+      <section>
+        <div class="example-grid two-column file-input-grid">
+          <div class="example-card file-input-stack">
+            <h3>Core usage</h3>
+            <div class="file-input-group" data-code-example>
+              <wc-file-input id="file-input-default" aria-label="Upload resume"></wc-file-input>
+            </div>
+            <p class="file-input-muted">Use without attributes for a balanced size and neutral styling.</p>
+
+            <div class="file-input-group" data-code-example>
+              <label for="file-input-ghost">Ghost variant</label>
+              <wc-file-input id="file-input-ghost" variant="ghost" aria-label="Upload cover letter"></wc-file-input>
+            </div>
+
+            <fieldset class="file-input-fieldset" data-code-example>
+              <legend>Proposal attachments</legend>
+              <wc-file-input id="file-input-fieldset" name="proposal" multiple></wc-file-input>
+              <p class="file-input-muted">Attach up to three PDF or image files. Multiple selection is enabled.</p>
+            </fieldset>
+
+            <pre id="file-input-log" class="file-input-log">Select files to preview their names.</pre>
+          </div>
+
+          <div class="example-card file-input-stack">
+            <h3>Variants and states</h3>
+            <div class="file-input-size-grid" data-code-example>
+              <wc-file-input size="xs" aria-label="Upload avatar (xs)"></wc-file-input>
+              <wc-file-input size="sm" aria-label="Upload avatar (sm)"></wc-file-input>
+              <wc-file-input size="md" aria-label="Upload avatar (md)"></wc-file-input>
+              <wc-file-input size="lg" aria-label="Upload avatar (lg)"></wc-file-input>
+              <wc-file-input size="xl" aria-label="Upload avatar (xl)"></wc-file-input>
+            </div>
+
+            <div class="file-input-color-grid" data-code-example>
+              <wc-file-input color="primary" aria-label="Upload primary asset"></wc-file-input>
+              <wc-file-input color="secondary" aria-label="Upload secondary asset"></wc-file-input>
+              <wc-file-input color="accent" aria-label="Upload accent asset"></wc-file-input>
+              <wc-file-input color="neutral" aria-label="Upload neutral asset"></wc-file-input>
+              <wc-file-input color="info" aria-label="Upload info asset"></wc-file-input>
+              <wc-file-input color="success" aria-label="Upload success asset"></wc-file-input>
+              <wc-file-input color="warning" aria-label="Upload warning asset"></wc-file-input>
+              <wc-file-input color="error" aria-label="Upload error asset"></wc-file-input>
+            </div>
+
+            <div class="file-input-group" data-code-example>
+              <label for="file-input-disabled">Disabled</label>
+              <wc-file-input id="file-input-disabled" disabled placeholder="Disabled"></wc-file-input>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const defaultInput = document.getElementById('file-input-default');
+      const ghostInput = document.getElementById('file-input-ghost');
+      const fieldsetInput = document.getElementById('file-input-fieldset');
+      const log = document.getElementById('file-input-log');
+
+      const updateLog = (input) => {
+        if (!(input instanceof HTMLElement) || !log) {
+          return;
+        }
+
+        const files = /** @type {any} */ (input).files;
+        if (!files || files.length === 0) {
+          log.textContent = 'Select files to preview their names.';
+          return;
+        }
+
+        const names = Array.from(files).map((file) => file.name);
+        log.textContent = `Selected: ${names.join(', ')}`;
+      };
+
+      [defaultInput, ghostInput, fieldsetInput].forEach((input) => {
+        if (input) {
+          input.addEventListener('change', () => updateLog(input));
+        }
+      });
+    </script>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-file-input');
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

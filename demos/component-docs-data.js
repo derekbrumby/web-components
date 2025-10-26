@@ -2335,6 +2335,138 @@ export const componentDocs = {
       "--radix-hover-card-trigger-width"
     ]
   },
+  "wc-file-input": {
+    "title": "<wc-file-input>",
+    "tagline": "Documentation for <wc-file-input>",
+    "usage": {
+      "snippet": "<wc-file-input name=\"documents\" accept=\".pdf,.png\" multiple></wc-file-input>"
+    },
+    "attributes": [
+      {
+        "name": "`value` / `value`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Read the native value. Set to an empty string to clear the current selection.",
+      },
+      {
+        "name": "`name` / `name`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Field name submitted with the parent form.",
+      },
+      {
+        "name": "`accept` / `accept`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Comma-separated list of accepted MIME types or extensions.",
+      },
+      {
+        "name": "`capture` / `capture`",
+        "type": "`string`",
+        "default": "`null`",
+        "description": "Hint that requests camera or microphone capture on supporting devices.",
+      },
+      {
+        "name": "`multiple` / `multiple`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Allows selecting more than one file.",
+      },
+      {
+        "name": "`disabled` / `disabled`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Disables interaction and applies a `[data-disabled]` styling hook.",
+      },
+      {
+        "name": "`required` / `required`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Marks the control as required for constraint validation.",
+      },
+      {
+        "name": "`variant` / `variant`",
+        "type": "`\"solid\" | \"ghost\"`",
+        "default": "`\"solid\"`",
+        "description": "Switches between filled and ghost chrome.",
+      },
+      {
+        "name": "`color` / `color`",
+        "type": "`string`",
+        "default": "`\"neutral\"`",
+        "description": "Theme token for the call-to-action button (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `error`).",
+      },
+      {
+        "name": "`size` / `size`",
+        "type": "`string`",
+        "default": "`\"md\"`",
+        "description": "Size preset controlling height and typography (`xs`, `sm`, `md`, `lg`, `xl`).",
+      }
+    ],
+    "properties": [
+      {
+        "name": "`files`",
+        "type": "`FileList | null`",
+        "default": "`null`",
+        "description": "Currently selected files exposed from the underlying input element.",
+      },
+      {
+        "name": "`form`",
+        "type": "`HTMLFormElement | null`",
+        "default": "`null`",
+        "description": "Associated form when the component participates in submission.",
+      }
+    ],
+    "events": [
+      {
+        "name": "`input`",
+        "detail": "—",
+        "description": "Re-dispatched when the internal control emits `input`.",
+      },
+      {
+        "name": "`change`",
+        "detail": "—",
+        "description": "Re-dispatched whenever the selected files change.",
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--wc-file-input-font-family",
+      "--wc-file-input-font-size",
+      "--wc-file-input-font-weight",
+      "--wc-file-input-letter-spacing",
+      "--wc-file-input-line-height",
+      "--wc-file-input-radius",
+      "--wc-file-input-height",
+      "--wc-file-input-inline-size",
+      "--wc-file-input-border-width",
+      "--wc-file-input-background",
+      "--wc-file-input-background-hover",
+      "--wc-file-input-background-disabled",
+      "--wc-file-input-border-color",
+      "--wc-file-input-border-color-hover",
+      "--wc-file-input-border-color-focus",
+      "--wc-file-input-shadow",
+      "--wc-file-input-shadow-focus",
+      "--wc-file-input-color",
+      "--wc-file-input-placeholder",
+      "--wc-file-input-disabled-color",
+      "--wc-file-input-button-background",
+      "--wc-file-input-button-background-hover",
+      "--wc-file-input-button-border",
+      "--wc-file-input-button-color",
+      "--wc-file-input-button-shadow",
+      "--wc-file-input-button-radius",
+      "--wc-file-input-transition",
+      "::part(container)",
+      "::part(input)"
+    ],
+    "notes": [
+      "Form-associated element that submits FileList values alongside other inputs.",
+      "Applies `[data-has-files]`, `[data-disabled]`, `[data-variant]`, `[data-color]`, and `[data-size]` attributes for styling hooks.",
+      "Set `variant=\"ghost\"` or adjust the `color` attribute to mirror daisyUI modifiers without additional CSS."
+    ]
+  },
   "wc-input": {
     "title": "<wc-input>",
     "tagline": "Documentation for <wc-input>",

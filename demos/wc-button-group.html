@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-button-group&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/button-group.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .group-card {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .group-card p {
+        margin: 0;
+      }
+
+      .mail-actions {
+        --button-group-item-radius: 0.625rem;
+        --button-group-nested-gap: 0.75rem;
+      }
+
+      .mail-actions button {
+        font-weight: 600;
+      }
+
+      .outline-button,
+      .chip-button,
+      .icon-button,
+      .search-group button,
+      .mail-actions button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.35rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 0.5rem;
+        border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+        background: color-mix(in srgb, currentColor 6%, transparent 94%);
+        color: inherit;
+        font: inherit;
+        font-weight: 600;
+        line-height: 1.2;
+        cursor: pointer;
+        transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      .outline-button:hover,
+      .chip-button:hover,
+      .icon-button:hover,
+      .search-group button:hover,
+      .mail-actions button:hover {
+        background: color-mix(in srgb, currentColor 12%, transparent 88%);
+      }
+
+      .outline-button:focus-visible,
+      .chip-button:focus-visible,
+      .icon-button:focus-visible,
+      .search-group button:focus-visible,
+      .mail-actions button:focus-visible,
+      .search-input:focus-visible {
+        outline: 3px solid color-mix(in srgb, var(--demo-accent, rgb(99 102 241)) 65%, transparent);
+        outline-offset: 3px;
+      }
+
+      .icon-button {
+        padding: 0.45rem;
+        width: 2.5rem;
+        min-height: 2.5rem;
+      }
+
+      .icon-button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .chip-button {
+        border-radius: 999px;
+        font-size: 0.9rem;
+        background: transparent;
+      }
+
+      .chip-button[data-state="active"] {
+        background: color-mix(in srgb, var(--demo-accent, rgb(99 102 241)) 16%, transparent);
+        color: var(--demo-accent-strong, rgb(67 56 202));
+        border-color: color-mix(in srgb, var(--demo-accent, rgb(99 102 241)) 40%, transparent);
+      }
+
+      .filter-group {
+        --button-group-item-gap: -0.5px;
+        --button-group-nested-gap: 0.75rem;
+      }
+
+      .filter-group wc-button-group-text {
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        color: color-mix(in srgb, currentColor 65%, transparent);
+      }
+
+      .filter-badges {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+        color: color-mix(in srgb, currentColor 68%, transparent);
+      }
+
+      .filter-badges span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.35rem 0.6rem;
+        border-radius: 999px;
+        border: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+        background: color-mix(in srgb, currentColor 4%, transparent);
+      }
+
+      .vertical-group {
+        --button-group-radius: 0.75rem;
+        --button-group-item-radius: 0.5rem;
+        width: min(13rem, 100%);
+      }
+
+      .vertical-group button {
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      .search-group {
+        --button-group-radius: 999px;
+        --button-group-item-gap: 0;
+        width: min(26rem, 100%);
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 0.5rem 0.85rem;
+        border-radius: 999px;
+        border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+        background: color-mix(in srgb, currentColor 4%, transparent);
+        font: inherit;
+        color: inherit;
+        min-width: 0;
+      }
+
+      .search-input::placeholder {
+        color: color-mix(in srgb, currentColor 60%, transparent);
+      }
+
+      .search-status {
+        margin: 0;
+        font-size: 0.85rem;
+        color: color-mix(in srgb, currentColor 66%, transparent);
+      }
+
+      .search-group button {
+        border-radius: 999px;
+      }
+
+      .search-group button svg {
+        width: 18px;
+        height: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card group-card">
+            <h3>Mailbox actions</h3>
+            <p>
+              Nest button groups to cluster related controls. Outer groups introduce spacing while inner groups keep
+              buttons flush.
+            </p>
+            <wc-button-group class="mail-actions" aria-label="Mailbox actions" data-code-example>
+              <wc-button-group>
+                <button type="button" class="icon-button" aria-label="Go back">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </button>
+              </wc-button-group>
+              <wc-button-group>
+                <button type="button" class="outline-button">Archive</button>
+                <button type="button" class="outline-button">Report</button>
+              </wc-button-group>
+              <wc-button-group>
+                <button type="button" class="outline-button">Snooze</button>
+                <button type="button" class="icon-button" aria-label="More options">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="7" r="1.5"></circle>
+                    <circle cx="12" cy="12" r="1.5"></circle>
+                    <circle cx="12" cy="17" r="1.5"></circle>
+                  </svg>
+                </button>
+              </wc-button-group>
+            </wc-button-group>
+          </div>
+
+          <div class="example-card group-card">
+            <h3>Filters with helper text</h3>
+            <p>
+              Combine inline text and separators for pill-based filters. Click a pill to toggle its active state in the
+              summary below.
+            </p>
+            <wc-button-group class="filter-group" aria-label="Filter tasks" data-code-example>
+              <wc-button-group-text>Filters</wc-button-group-text>
+              <button type="button" class="chip-button" data-filter="all" data-state="active">All</button>
+              <button type="button" class="chip-button" data-filter="assigned">Assigned</button>
+              <button type="button" class="chip-button" data-filter="mentions">Mentions</button>
+              <wc-button-group-separator></wc-button-group-separator>
+              <button type="button" class="chip-button" data-filter="new">New</button>
+              <button type="button" class="chip-button" data-filter="archived">Archived</button>
+            </wc-button-group>
+            <div class="filter-badges" id="filter-output">
+              <span><strong>Active filters:</strong> All</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card group-card">
+            <h3>Vertical orientation</h3>
+            <p>
+              Set the <code>orientation</code> attribute to stack buttons vertically. Layout gaps adapt automatically
+              and nested groups inherit the orientation.
+            </p>
+            <wc-button-group class="vertical-group" orientation="vertical" aria-label="Zoom controls" data-code-example>
+              <button type="button" class="outline-button">Zoom in</button>
+              <button type="button" class="outline-button">Reset zoom</button>
+              <button type="button" class="outline-button">Zoom out</button>
+            </wc-button-group>
+          </div>
+
+          <div class="example-card group-card">
+            <h3>Input pairing</h3>
+            <p>
+              Wrap form controls inside the group to create balanced input layouts. The input stretches while the
+              trailing button keeps its compact width.
+            </p>
+            <wc-button-group class="search-group" aria-label="Search conversations" data-code-example>
+              <input type="search" class="search-input" placeholder="Search messages..." aria-label="Search" />
+              <button type="button" aria-label="Submit search">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="m16.5 16.5 3.5 3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </button>
+            </wc-button-group>
+            <p class="search-status" id="search-status">Waiting for input…</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const filterGroup = document.querySelector('.filter-group');
+      const filterOutput = document.getElementById('filter-output');
+      const activeFilters = new Set(['All']);
+
+      if (filterGroup && filterOutput) {
+        filterGroup.addEventListener('click', (event) => {
+          const target = event.target.closest('button[data-filter]');
+          if (!target) return;
+
+          const filter = target.dataset.filter;
+          const isActive = target.getAttribute('data-state') === 'active';
+
+          if (filter === 'all') {
+            activeFilters.clear();
+            activeFilters.add('All');
+            for (const button of filterGroup.querySelectorAll('button[data-filter]')) {
+              if (button.dataset.filter === 'all') {
+                button.setAttribute('data-state', 'active');
+              } else {
+                button.removeAttribute('data-state');
+              }
+            }
+          } else {
+            const allButton = filterGroup.querySelector('[data-filter="all"]');
+            allButton?.removeAttribute('data-state');
+            activeFilters.delete('All');
+
+            const label = target.textContent?.trim() || '';
+
+            if (isActive) {
+              target.removeAttribute('data-state');
+              if (label) {
+                activeFilters.delete(label);
+              }
+            } else {
+              target.setAttribute('data-state', 'active');
+              if (label) {
+                activeFilters.add(label);
+                activeFilters.delete('None');
+              }
+            }
+
+            if (activeFilters.size === 0) {
+              activeFilters.add('None');
+            }
+          }
+
+          filterOutput.innerHTML = '';
+          for (const value of activeFilters) {
+            const badge = document.createElement('span');
+            if (filterOutput.childElementCount === 0) {
+              const strong = document.createElement('strong');
+              strong.textContent = 'Active filters:';
+              badge.append(strong, document.createTextNode(` ${value}`));
+            } else {
+              badge.textContent = value;
+            }
+            filterOutput.appendChild(badge);
+          }
+        });
+      }
+
+      const searchGroup = document.querySelector('.search-group');
+      const searchStatus = document.getElementById('search-status');
+      const searchInput = searchGroup?.querySelector('.search-input');
+      const searchButton = searchGroup?.querySelector('button');
+
+      if (searchInput && searchButton && searchStatus) {
+        const renderStatus = (value) => {
+          if (!value) {
+            searchStatus.textContent = 'Waiting for input…';
+            return;
+          }
+          searchStatus.textContent = `Searching for “${value}”…`;
+        };
+
+        searchInput.addEventListener('input', () => {
+          renderStatus(searchInput.value.trim());
+        });
+
+        searchButton.addEventListener('click', () => {
+          renderStatus(searchInput.value.trim());
+        });
+      }
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

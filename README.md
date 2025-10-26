@@ -12,6 +12,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/otp-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/alert.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/navigation-menu.js"></script>
@@ -23,6 +24,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/collapsible.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/checkbox.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toggle-group.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/button-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/radio-group.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/combobox.js"></script>
@@ -33,6 +35,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/resizable.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/breadcrumb.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toggle.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/spinner.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/skeleton.js"></script>
@@ -45,7 +48,9 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/progress.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/drawer.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/chart.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/button.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/kbd.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/audio-player.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/card.js"></script>
@@ -154,6 +159,56 @@ export const useCounter = () => {
 
 - CSS custom properties: `--code-viewer-background`, `--code-viewer-foreground`, `--code-viewer-padding`, `--code-viewer-radius`, `--code-viewer-shadow`, `--code-viewer-font-family`, `--code-viewer-font-size`, `--code-viewer-comment-color`, `--code-viewer-keyword-color`, `--code-viewer-string-color`, `--code-viewer-number-color`, `--code-viewer-attribute-color`, `--code-viewer-tag-color`, `--code-viewer-entity-color`, `--code-viewer-variable-color`, `--code-viewer-punctuation-color`, `--code-viewer-accent`.
 - Parts: `::part(container)`, `::part(surface)`, `::part(code)`, `::part(empty)`, `::part(error)`.
+
+### `<wc-chart>`
+
+Render responsive grouped bar charts without shipping a client-side framework. Configure each data
+series with human-readable labels and colors, then pass data objects to plot your metrics.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/chart.js"></script>
+
+<wc-chart id="sessions-chart" caption="Monthly sessions"></wc-chart>
+<script type="module">
+  const chart = document.querySelector('#sessions-chart');
+  chart.categoryKey = 'month';
+  chart.config = {
+    desktop: { label: 'Desktop', color: 'hsl(221 83% 53%)' },
+    mobile: { label: 'Mobile', color: 'hsl(213 94% 68%)' },
+  };
+  chart.data = [
+    { month: 'January', desktop: 186, mobile: 80 },
+    { month: 'February', desktop: 305, mobile: 200 },
+    { month: 'March', desktop: 237, mobile: 120 },
+  ];
+</script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | string | `[]` | JSON-serialised array of records rendered as bars. Use the `data` property for larger datasets. |
+| `config` | string | `{}` | JSON-serialised object describing each series (`{ [key]: { label, color } }`). |
+| `category-key` | string | `"category"` | Property name on each record used for the x-axis label. |
+| `caption` | string | `""` | Optional label announced with the chart when `aria-label` is not provided. |
+| `hide-legend` | boolean | `false` | Hides the legend element. Toggle via the `hideLegend` property at runtime. |
+
+Set the `data`, `config`, `categoryKey`, and `hideLegend` properties from JavaScript for rich
+interactivity.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-chart-background`, `--wc-chart-foreground`, `--wc-chart-border`,
+  `--wc-chart-grid`, `--wc-chart-muted`, `--wc-chart-tooltip-background`,
+  `--wc-chart-tooltip-foreground`, `--wc-chart-tooltip-muted`, `--wc-chart-bar-radius`.
+- Parts: `::part(container)`, `::part(chart)`, `::part(legend)`, `::part(tooltip)`, `::part(empty)`.
+
+#### Accessibility
+
+- Bars are focusable and support keyboard-triggered tooltips (Space/Enter to show, Escape to hide).
+- Tooltips expose the current category and series values while legends provide textual colour keys.
+- Provide an `aria-label` or `caption` for screen-reader friendly summaries.
 
 ### `<wc-data-table>`
 
@@ -324,6 +379,148 @@ variants while remaining fully stylable through CSS variables and the exposed pa
   `--wc-badge-min-width`, `--wc-badge-min-height`, `--wc-badge-shadow`,
   `--wc-badge-text-transform`.
 - Parts: `::part(surface)` targets the pill surface for advanced customisation.
+
+### `<wc-button>`
+
+Display accessible call-to-action buttons or anchored links with consistent styling, hover states,
+and focus rings. The component mirrors shadcn/ui variants and now includes dedicated icon sizes for
+compact controls.
+
+> **Updated:** New `icon-sm` and `icon-lg` sizes join the existing `icon` option. Use them for tighter
+> toolbars or prominent icon buttons.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/button.js"></script>
+
+<wc-button variant="outline">Button</wc-button>
+<wc-button variant="outline" size="icon" aria-label="Submit">
+  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+    <path d="M12 5v14m7-7H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+  </svg>
+</wc-button>
+### `<wc-alert>`
+
+Display inline callouts for success, info, or destructive messaging with optional icon, title, and
+rich description content. Slots mirror the shadcn/ui structure so existing markup ports cleanly.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/alert.js"></script>
+
+<wc-alert>
+  <svg slot="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path
+      d="M9.5 12.5l1.75 1.75L15 10.5"
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.5"
+    ></path>
+    <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+  </svg>
+  <span slot="title">Success! Your changes have been saved.</span>
+  <p>This is an alert with icon, title, and description.</p>
+</wc-alert>
+
+<wc-alert variant="destructive">
+  <svg slot="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path
+      d="M12 9v4"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="1.5"
+    ></path>
+    <path d="M12 17h.01" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path>
+    <path
+      d="M10.29 3.86L2.82 17.14A1.5 1.5 0 0 0 4.13 19.5h15.74a1.5 1.5 0 0 0 1.31-2.36L13.69 3.86a1.5 1.5 0 0 0-2.6 0z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+    ></path>
+  </svg>
+  <span slot="title">Unable to process your payment.</span>
+  <ul>
+    <li>Check your card details</li>
+    <li>Ensure sufficient funds</li>
+    <li>Verify billing address</li>
+  </ul>
+</wc-alert>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | string | `"default"` | Visual style. Choose from `default`, `outline`, `ghost`, `destructive`, `secondary`, or `link`. |
+| `size` | string | `"default"` | Spacing preset. Supports `sm`, `default`, `lg`, `icon`, `icon-sm`, and `icon-lg`. |
+| `disabled` | boolean | `false` | Disables interaction, removes hover/active effects, and sets `aria-disabled` when rendering as a link. |
+| `href` | string | `""` | When provided the control renders as an anchor, keeping button visuals while navigating to the supplied URL. |
+| `target` | string | `""` | Optional anchor target such as `_blank`. Ignored when `href` is omitted. |
+| `rel` | string | `""` | Relationship metadata for linked buttons. Useful with external targets. |
+| `type` | string | `"button"` | Forwarded to the underlying `<button>` when no `href` is present. Accepts `button`, `submit`, or `reset`. |
+
+#### Slots
+
+- _(default)_ — Button label, icons, or spinner elements. Icons inherit the foreground colour
+  automatically; add `aria-label` when the button contains only an icon.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-button-font-family`, `--wc-button-font-weight`,
+  `--wc-button-font-size`, `--wc-button-letter-spacing`, `--wc-button-radius`, `--wc-button-gap`,
+  `--wc-button-border-width`, `--wc-button-padding-inline`, `--wc-button-padding-block`,
+  `--wc-button-min-inline-size`, `--wc-button-min-block-size`, `--wc-button-background`,
+  `--wc-button-background-hover`, `--wc-button-foreground`, `--wc-button-foreground-hover`,
+  `--wc-button-border-color`, `--wc-button-border-color-hover`, `--wc-button-focus-ring`,
+  `--wc-button-disabled-opacity`, `--wc-button-shadow`, `--wc-button-shadow-hover`.
+- Parts: `::part(control)` targets the interactive surface.
+
+#### Pointer cursor
+
+Tailwind CSS v4 switched the base button cursor to `default`. To keep pointer feedback for all button
+roles in your global styles, add:
+
+```css
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+```
+
+#### Accessibility
+
+- Supply an `aria-label` (or descriptive text) for icon-only buttons.
+- Disabled anchor buttons expose `aria-disabled="true"` and become unfocusable while preserving link
+  URLs for later re-enablement.
+
+#### Changelog
+
+- **2025-09-24:** Added `icon-sm` and `icon-lg` size presets to better match compact and spacious
+  toolbar layouts.
+| `variant` | string | `"default"` | Visual treatment for the alert. Supports `default` (subtle) or `destructive`. |
+
+#### Slots
+
+- `icon` — Optional leading graphic. SVG icons inherit the configured icon color.
+- `title` — Prominent heading rendered with semibold styling.
+- _(default)_ — Rich body content such as paragraphs, lists, or links.
+
+#### Accessibility
+
+- Defaults to `role="status"` and `aria-live="polite"` so updates announce without stealing focus.
+- Switch to `role="alert"` for urgent, high-priority messages that require immediate attention.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-alert-background`, `--wc-alert-border-color`, `--wc-alert-color`,
+  `--wc-alert-icon-color`, `--wc-alert-icon-background`, `--wc-alert-icon-size`, `--wc-alert-radius`,
+  `--wc-alert-padding-inline`, `--wc-alert-padding-block`, `--wc-alert-gap`,
+  `--wc-alert-content-gap`, `--wc-alert-title-color`, `--wc-alert-title-font-size`,
+  `--wc-alert-title-font-weight`, `--wc-alert-description-color`,
+  `--wc-alert-description-font-size`, `--wc-alert-shadow`.
+- Parts: `::part(surface)`, `::part(icon)`, `::part(content)`, `::part(title)`, `::part(description)`.
 
 ### `<wc-kbd>`
 
@@ -698,6 +895,66 @@ ARIA pressed states.
 - Parts: `::part(root)` for the container and `::part(item)` for each toggle button.
 - Data attributes: host `[data-orientation]`, `[data-disabled]`; items `[data-state]`, `[data-disabled]`,
   `[data-position]`, and `[data-focus]` for granular styling.
+
+### `<wc-button-group>`
+
+Visually group related actions so they feel like a single control. The component normalises spacing, collapses
+adjacent borders, and supports nested clusters for split buttons or grouped toolbars. Helper elements provide
+accessible separators and inline text without additional wrappers.
+
+```html
+<wc-button-group aria-label="Mailbox actions">
+  <button type="button">Archive</button>
+  <button type="button">Report</button>
+  <button type="button">Snooze</button>
+</wc-button-group>
+
+<wc-button-group aria-label="Follow actions">
+  <button type="button">Follow</button>
+  <wc-button-group-separator></wc-button-group-separator>
+  <button type="button" aria-label="More options">⋯</button>
+</wc-button-group>
+
+<wc-button-group orientation="vertical" aria-label="Zoom controls">
+  <button type="button">Zoom in</button>
+  <button type="button">Reset</button>
+  <button type="button">Zoom out</button>
+</wc-button-group>
+```
+
+Nest `<wc-button-group>` elements to introduce spacing between clusters while keeping buttons inside each cluster
+flush. Combine `<wc-button-group-text>` and `<wc-button-group-separator>` for richer layouts like input groups or
+split buttons.
+
+#### Attributes
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Controls the flex direction and inherited orientation for nested groups. |
+
+#### Slots
+
+- _(default)_ — Place any focusable controls (buttons, inputs, selects) plus helper elements inside the group.
+
+#### Styling hooks
+
+- CSS custom properties: `--button-group-radius`, `--button-group-padding`, `--button-group-background`,
+  `--button-group-shadow`, `--button-group-item-radius`, `--button-group-item-gap`, `--button-group-nested-gap`,
+  `--button-group-font-family`.
+- Parts: `::part(root)` for the container, `wc-button-group-text::part(text)` for inline labels,
+  `wc-button-group-separator::part(separator)` for dividers.
+- Data attributes: host `[data-orientation]`; interactive children receive `[data-button-group-role]`,
+  `[data-button-group-index]`, `[data-button-group-first]`, `[data-button-group-last]`, and
+  `[data-button-group-offset]` for fine-grained styling.
+
+#### Supporting elements
+
+- `<wc-button-group-separator>` — Visual divider between segments. Accepts an optional `orientation` attribute
+  (`"vertical"` by default). In horizontal groups the separator renders vertically; in vertical groups it renders
+  horizontally.
+- `<wc-button-group-text>` — Inline text or custom content that aligns with the rest of the group. Set the
+  `data-fill="true"` attribute to let the text stretch and consume remaining space.
+
 ### `<wc-radio-group>`
 
 An accessible radio group with roving focus, loopable keyboard navigation, and form association built in. Each
@@ -1092,6 +1349,91 @@ thanks to the roving tabindex implementation.
   `--toolbar-hover-contrast`, `--toolbar-focus-ring`, `--toolbar-separator-color`, `--toolbar-font-family`.
 - Parts: `::part(toolbar)`, `::part(toggle-group)`, `::part(toggle)`, `::part(separator)`, `::part(metadata)`,
   `::part(share)`.
+
+### `<wc-breadcrumb>`
+
+Display the path to the current resource with a semantic breadcrumb trail. The
+primitives mirror the shadcn/ui API so you can port React examples to
+framework-agnostic markup while keeping accessible navigation semantics.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/breadcrumb.js"></script>
+
+<wc-breadcrumb label="Components">
+  <wc-breadcrumb-item>
+    <wc-breadcrumb-link href="/">Home</wc-breadcrumb-link>
+  </wc-breadcrumb-item>
+  <wc-breadcrumb-separator></wc-breadcrumb-separator>
+  <wc-breadcrumb-item>
+    <wc-breadcrumb-link href="/docs">Docs</wc-breadcrumb-link>
+  </wc-breadcrumb-item>
+  <wc-breadcrumb-separator></wc-breadcrumb-separator>
+  <wc-breadcrumb-item>
+    <wc-breadcrumb-page>Breadcrumb</wc-breadcrumb-page>
+  </wc-breadcrumb-item>
+</wc-breadcrumb>
+```
+
+#### Elements
+
+| Element | Description |
+| --- | --- |
+| `<wc-breadcrumb>` | Wraps the list in a `<nav>` and manages the accessible label. |
+| `<wc-breadcrumb-item>` | Semantic `<li>` wrapper that aligns its slotted child. |
+| `<wc-breadcrumb-link>` | Anchor-like crumb with hover/focus states and optional `aria-current`. |
+| `<wc-breadcrumb-page>` | Displays the current page label with `aria-current="page"`. |
+| `<wc-breadcrumb-separator>` | Presentation-only list item that renders a customisable separator. |
+| `<wc-breadcrumb-ellipsis>` | Visual ellipsis used for collapsed breadcrumb ranges. |
+
+#### `<wc-breadcrumb>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | string | `"Breadcrumb"` | Accessible name applied to the underlying `<nav>`. Accepts any string. |
+| `aria-label` | string | `"Breadcrumb"` | Overrides the accessible label. Takes precedence over `label`. |
+| `aria-labelledby` | string | `""` | References external elements for labelling. When set, `aria-label` is removed. |
+
+#### `<wc-breadcrumb-link>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `href` | string | `""` | Optional URL forwarded to the internal anchor. When omitted the link is not focusable. |
+| `target` | string | `""` | Standard anchor target attribute. |
+| `rel` | string | `""` | Relationship hints forwarded to the anchor. |
+| `download` | string | `""` | Download attribute passed to the anchor. |
+| `aria-current` | string | `""` | Set to `"page"` to mark the crumb as the current location. |
+
+#### `<wc-breadcrumb-page>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| _(none)_ | — | — | Displays slotted text and exposes `aria-current="page"`. |
+
+#### `<wc-breadcrumb-separator>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| _(default slot)_ | node | `/` | Slot any icon or text node to change the divider. |
+
+#### `<wc-breadcrumb-ellipsis>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | string | `""` | Optional accessible label describing the collapsed items. |
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-breadcrumb-gap`, `--wc-breadcrumb-font-size`,
+  `--wc-breadcrumb-color`, `--wc-breadcrumb-page-color`,
+  `--wc-breadcrumb-page-weight`, `--wc-breadcrumb-link-color`,
+  `--wc-breadcrumb-link-hover-color`,
+  `--wc-breadcrumb-link-hover-background`,
+  `--wc-breadcrumb-link-focus-ring`, `--wc-breadcrumb-link-padding`,
+  `--wc-breadcrumb-link-radius`, `--wc-breadcrumb-separator-color`,
+  `--wc-breadcrumb-ellipsis-color`, `--wc-breadcrumb-ellipsis-size`,
+  `--wc-breadcrumb-ellipsis-radius`, `--wc-breadcrumb-ellipsis-background`.
+- Parts: `::part(nav)`, `::part(list)`, `::part(item)`, `::part(link)`,
+  `::part(page)`, `::part(separator)`, `::part(icon)`.
 
 ### `<wc-pagination>`
 

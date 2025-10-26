@@ -9,6 +9,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-form"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card">
@@ -79,6 +80,11 @@
           serverFormLog.textContent = 'Injected server-side errors. Start typing to clear them.';
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-form');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

@@ -139,6 +139,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-spinner"></section>
       <section>
         <div class="spinner-grid">
           <div class="spinner-card" data-code-example>
@@ -205,6 +206,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-spinner');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

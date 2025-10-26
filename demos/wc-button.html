@@ -57,6 +57,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-button"></section>
       <section class="example-stack button-stack">
         <div class="example-card button-card">
           <h3>Variants</h3>
@@ -191,6 +192,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-button');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

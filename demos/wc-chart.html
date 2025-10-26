@@ -90,6 +90,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-chart"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card chart-grid" data-code-example>
@@ -195,6 +196,11 @@
 
       initCharts();
       updateLegendButton();
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-chart');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

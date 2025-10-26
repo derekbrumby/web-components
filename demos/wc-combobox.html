@@ -86,6 +86,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-combobox"></section>
       <section>
         <header>
           <h2>&lt;wc-combobox&gt;</h2>
@@ -180,6 +181,11 @@
           statusOutput.textContent = `Status set to ${label}.`;
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-combobox');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

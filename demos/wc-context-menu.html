@@ -9,6 +9,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-context-menu"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card">
@@ -85,6 +86,11 @@
           }
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-context-menu');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

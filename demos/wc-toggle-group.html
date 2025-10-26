@@ -48,6 +48,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-toggle-group"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card toggle-card">
@@ -195,6 +196,11 @@
           verticalLog.textContent = value ? `Cadence set to ${value}.` : 'No cadence selected.';
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-toggle-group');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

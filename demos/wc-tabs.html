@@ -92,6 +92,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-tabs"></section>
       <section>
         <header>
           <h2>&lt;wc-tabs&gt;</h2>
@@ -211,6 +212,11 @@
           reportsLog.textContent = `Active tab: ${event.detail.value}`;
         }
       });
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-tabs');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

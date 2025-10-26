@@ -37,6 +37,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-badge"></section>
       <section class="badge-stack">
         <div class="example-card badge-card">
           <h3>Variants</h3>
@@ -132,6 +133,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-badge');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

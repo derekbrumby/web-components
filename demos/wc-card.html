@@ -149,6 +149,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-card"></section>
       <section class="example-grid">
         <div class="example-card">
           <h3>Login form layout</h3>
@@ -213,6 +214,11 @@
       </section>
     </main>
 
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-card');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

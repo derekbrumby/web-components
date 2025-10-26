@@ -71,6 +71,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-resizable-group"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card">
@@ -169,6 +170,11 @@ Inspector: <strong>${nextSize.toFixed(1)}%</strong>
           `.trim();
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-resizable-group');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

@@ -9,6 +9,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-menubar"></section>
       <section>
         <div class="example-card">
           <h3>Browser command suite</h3>
@@ -55,6 +56,11 @@
           updateLog(`Active profile: ${event.detail?.value || 'unknown'}.`);
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-menubar');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

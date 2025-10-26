@@ -54,6 +54,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-progress"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card progress-grid">
@@ -154,6 +155,11 @@
       });
 
       updateLabel();
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-progress');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

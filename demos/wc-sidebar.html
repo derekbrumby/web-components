@@ -169,6 +169,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-sidebar"></section>
       <section>
         <div class="example-card">
           <h3>Collapsible workspace sidebar</h3>
@@ -312,6 +313,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-sidebar');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

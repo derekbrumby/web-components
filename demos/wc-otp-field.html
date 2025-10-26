@@ -9,6 +9,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-otp-field"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card">
@@ -87,6 +88,11 @@
           otpAdvancedLog.textContent = `Current value: ${value}`;
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-otp-field');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

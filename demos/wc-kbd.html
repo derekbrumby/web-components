@@ -71,6 +71,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-kbd"></section>
       <section class="kbd-stack">
         <div class="example-card">
           <h3>Keycaps</h3>
@@ -154,6 +155,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-kbd');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

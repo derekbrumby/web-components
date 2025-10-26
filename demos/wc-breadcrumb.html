@@ -93,6 +93,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-breadcrumb"></section>
       <section class="breadcrumb-stack">
         <div class="example-card breadcrumb-card">
           <h3>Basic navigation trail</h3>
@@ -212,6 +213,11 @@
       </section>
     </main>
 
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-breadcrumb');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

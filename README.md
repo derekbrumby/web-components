@@ -22,6 +22,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-chart>`](#wc-chart)
   - [Chart variants](#chart-variants)
   - [`<wc-data-table>`](#wc-data-table)
+  - [`<wc-table>`](#wc-table)
   - [`<wc-form>`](#wc-form)
   - [`<wc-checkbox>`](#wc-checkbox)
   - [`<wc-spinner>`](#wc-spinner)
@@ -75,6 +76,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-chart>` | Responsive grouped bar chart with keyboard-friendly tooltips. | [Docs](#wc-chart) |
 | `<wc-area-chart>` / `<wc-line-chart>` / `<wc-pie-chart>` / `<wc-radar-chart>` / `<wc-radial-chart>` | SVG chart variants that reuse the base chart API. | [Docs](#chart-variants) |
 | `<wc-data-table>` | Headless data grid with sorting, filters, pagination, and row actions. | [Docs](#wc-data-table) |
+| `<wc-table>` | Responsive table surface with caption, header, body, and footer primitives. | [Docs](#wc-table) |
 | `<wc-card>` | Flexible content container mirroring shadcn/ui card styling. | — |
 | `<wc-pricing-card>` | Pricing layout with highlighted tiers and call-to-action slots. | — |
 | `<wc-carousel>` | Accessible carousel with autoplay controls and pagination dots. | — |
@@ -122,6 +124,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-separator>` | Semantic divider with vertical orientation support. |
 | `<wc-resizable>` | Wrapper that turns any element into a draggable resizable panel. |
 | `<wc-drawer>` | Sliding panel with trap-focus behaviour. |
+| `<wc-sheet>` | Dialog-inspired sheet for supplementary workflows. |
 | `<wc-dialog>` / `<wc-alert-dialog>` | Modal primitives with configurable titles, descriptions, and actions. |
 | `<wc-aspect-ratio>` | Enforces intrinsic ratios for responsive media. |
 | `<wc-avatar>` | Avatar component with fallbacks and status badges. |
@@ -135,6 +138,7 @@ to the detailed reference for deeper usage notes.
 | --- | --- |
 | `<wc-alert>` | Inline callouts for success, info, or destructive messaging. |
 | `<wc-toast>` | Toast notifications with queueing support. |
+| `<wc-sonner>` | Opinionated multi-type toaster with promise helpers. [Docs](#wc-sonner) |
 | `<wc-audio-player>` | Minimal audio player with timeline and volume controls. |
 | `<wc-progress>` | Visualises task completion. |
 | `<wc-spinner>` | Loading spinner with accessible announcements. |
@@ -494,6 +498,83 @@ JavaScript without shipping a framework runtime.
   `::part(pagination)`, `::part(selection-summary)`, `::part(pagination-previous)`,
   `::part(pagination-next)`, `::part(column-menu-empty)`.
 
+### `<wc-table>`
+
+Lightweight table surface that mirrors the shadcn/ui table primitives. Compose captions, headers,
+bodies, and footers declaratively with `wc-table-*` child elements and the component renders a
+semantic `<table>` with responsive overflow handling inside its shadow root.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/table.js"></script>
+
+<wc-table>
+  <wc-table-caption>A list of your recent invoices.</wc-table-caption>
+  <wc-table-header>
+    <wc-table-row>
+      <wc-table-head style="width: 7.5rem;">Invoice</wc-table-head>
+      <wc-table-head>Status</wc-table-head>
+      <wc-table-head>Method</wc-table-head>
+      <wc-table-head align="right">Amount</wc-table-head>
+    </wc-table-row>
+  </wc-table-header>
+  <wc-table-body>
+    <wc-table-row>
+      <wc-table-cell>INV001</wc-table-cell>
+      <wc-table-cell>Paid</wc-table-cell>
+      <wc-table-cell>Credit Card</wc-table-cell>
+      <wc-table-cell align="right">$250.00</wc-table-cell>
+    </wc-table-row>
+    <wc-table-row>
+      <wc-table-cell>INV002</wc-table-cell>
+      <wc-table-cell>Pending</wc-table-cell>
+      <wc-table-cell>PayPal</wc-table-cell>
+      <wc-table-cell align="right">$150.00</wc-table-cell>
+    </wc-table-row>
+  </wc-table-body>
+  <wc-table-footer>
+    <wc-table-row>
+      <wc-table-cell colspan="3">Total</wc-table-cell>
+      <wc-table-cell align="right">$400.00</wc-table-cell>
+    </wc-table-row>
+  </wc-table-footer>
+</wc-table>
+```
+
+Rows accept `data-state="selected"` (or the shorthand `state="selected"`) to highlight the current
+selection, and header or data cells respect `align="left|center|right"` for text alignment. Inline
+`style`, `aria-*`, and `data-*` attributes set on the declarative child elements are forwarded to the
+rendered table cells so you can surface tooltips or additional metadata.
+
+#### Declarative children
+
+| Element | Description |
+| --- | --- |
+| `<wc-table-caption>` | Provides an accessible caption rendered beneath the table surface. |
+| `<wc-table-header>` | Wraps header rows that should render inside `<thead>`. |
+| `<wc-table-body>` | Declares one or more body row groups rendered inside `<tbody>`. |
+| `<wc-table-footer>` | Optional summary or totals rendered inside `<tfoot>`. |
+| `<wc-table-row>` | Defines a table row. Place `wc-table-head`/`wc-table-cell` elements inside. |
+| `<wc-table-head>` | Header cell rendered as `<th scope="col">` by default. |
+| `<wc-table-cell>` | Data cell rendered as `<td>`. |
+
+#### Styling hooks
+
+- CSS custom properties: `--table-background`, `--table-border-color`, `--table-radius`,
+  `--table-shadow`, `--table-text-color`, `--table-muted-color`, `--table-header-background`,
+  `--table-header-color`, `--table-footer-background`, `--table-row-border`, `--table-row-hover`,
+  `--table-row-selected`, `--table-cell-padding-block`, `--table-cell-padding-inline`,
+  `--table-caption-color`.
+- Parts: `::part(surface)`, `::part(wrapper)`, `::part(table)`, `::part(caption)`, `::part(section)`,
+  `::part(row)`, `::part(cell)`.
+
+#### Accessibility
+
+- The declarative caption is rendered as a semantic `<caption>` for screen reader support.
+- Header cells default to `scope="col"` so column associations remain intact. Override `scope` on a
+  `<wc-table-head>` element for row headers.
+- Overflow is handled within a focusable wrapper so keyboard users can scroll horizontally on small
+  screens without losing context.
+
 ### `<wc-form>`
 
 An opinionated contact form that mirrors the Radix UI demo experience. It wires native constraint
@@ -615,6 +696,66 @@ technologies.
 
 The element defaults to `role="status"`, `aria-live="polite"`, and `aria-busy="true"` so updates are
 announced without stealing focus.
+
+### `<wc-sonner>`
+
+Opinionated toaster that mirrors the Sonner React API in a framework-agnostic package. Queue
+multiple notifications, switch between success/info/warning/error variants, and track async work with
+`toast.promise` helpers.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/sonner.js"></script>
+
+<wc-sonner id="demo-sonner" position="bottom-right"></wc-sonner>
+<button id="sonner-trigger" type="button">Show toast</button>
+
+<script type="module">
+  const toaster = document.getElementById('demo-sonner');
+  document.getElementById('sonner-trigger')?.addEventListener('click', () => {
+    toaster.toast.success('Event has been created', {
+      description: 'Sunday, December 03, 2023 at 9:00 AM',
+      action: {
+        label: 'Undo',
+        onClick: () => console.log('Undo'),
+      },
+    });
+  });
+</script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `position` | `'top-left' \| 'top-right' \| 'top-center' \| 'bottom-left' \| 'bottom-right' \| 'bottom-center'` | `'top-right'` | Controls where the viewport is anchored on screen. |
+| `duration` | number | `4000` | Default auto-dismiss timeout in milliseconds when none is supplied per toast. Use `Infinity` to persist. |
+| `close-on-click` | boolean | `false` | When present, clicking the toast surface dismisses it (action and close buttons are unaffected). |
+| `toast` (property) | `function` | — | Bound helper that mirrors Sonner’s `toast` API (see helpers below). |
+
+#### Helpers
+
+- `toast(title, options?)` — Push a neutral toast. `options` accepts `description`,
+  `duration`, `label`, `dismissible`, and `action: { label, onClick }`.
+- `toast.success/info/warning/error/loading(title, options?)` — Typed variants with matching icons.
+- `toast.promise(promiseOrFactory, { loading, success, error })` — Show a loading toast while the
+  promise runs, replacing it with success or error messaging afterwards.
+- `toast.dismiss(id?)` — Dismiss a toast by id or clear the queue when no id is provided.
+
+#### Events
+
+- `wc-sonner-open` — Fired whenever a toast is enqueued. `event.detail` exposes `{ id, record }`.
+- `wc-sonner-action` — Emitted after the action button runs. `event.detail` includes `{ id, record }`.
+- `wc-sonner-dismiss` — Fired when a toast leaves. `event.detail` contains `{ id, record, reason }` with
+  `reason` set to `"manual"`, `"action"`, `"timeout"`, or `"click"`.
+
+#### Styling hooks
+
+- CSS custom properties: `--sonner-z-index`, `--sonner-gap`, `--sonner-max-width`, `--sonner-radius`,
+  `--sonner-font-family`, `--sonner-color`, `--sonner-background`, `--sonner-border`, `--sonner-shadow`,
+  `--sonner-success`, `--sonner-info`, `--sonner-warning`, `--sonner-error`, `--sonner-loading`.
+- Data attributes: `[data-type]` and `[data-state]` on each toast for variant/transition styling.
+- Parts: `::part(viewport)`, `::part(toast)`, `::part(icon)`, `::part(body)`, `::part(title)`,
+  `::part(description)`, `::part(actions)`, `::part(action-button)`, `::part(close-button)`.
 
 ### `<wc-skeleton>`
 
@@ -1016,4 +1157,81 @@ assistive technologies understand its purpose.
   `--separator-radius`, `--separator-margin`.
 - Parts: `::part(separator)` targets the internal rule element without breaking encapsulation.
 - Data attributes: `[data-orientation="horizontal" | "vertical"]` for orientation-aware styling.
+
+### `<wc-sheet>`
+
+Slide-in companion panel that extends the dialog foundation. Use it to present tasks that complement the
+primary screen—profile editors, filters, or automation presets—without fully leaving the current
+context. The component traps focus, restores it on close, and exposes slots and styling hooks for
+complete control.
+
+#### Usage
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/sheet.js"></script>
+
+<wc-sheet side="right">
+  <button slot="trigger">Open sheet</button>
+  <span slot="title">Edit profile</span>
+  <span slot="description">Make changes to your profile here.</span>
+  <form>
+    <!-- sheet body -->
+  </form>
+  <div slot="footer">
+    <button type="submit">Save</button>
+    <button type="button" data-sheet-close>Cancel</button>
+  </div>
+</wc-sheet>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `open` | `boolean` | `false` | Toggles whether the sheet is visible. Reflects to the `open` property. |
+| `side` | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Controls which edge the sheet slides from. Reflects to the `side` property. |
+| `open` (property) | `boolean` | `false` | Programmatic alias for the `open` attribute. |
+| `side` (property) | `"top" \| "right" \| "bottom" \| "left"` | `"right"` | Property helper that updates the `side` attribute. |
+
+#### Methods
+
+| Name | Signature | Description |
+| --- | --- | --- |
+| `show()` | `(): void` | Opens the sheet. |
+| `hide()` | `(): void` | Closes the sheet. |
+| `toggle(force?)` | `(force?: boolean): void` | Toggles the open state, optionally forcing a specific value. |
+
+#### Events
+
+| Event | `detail` | Description |
+| --- | --- | --- |
+| `sheet-open` | `void` | Fired after the sheet finishes opening. |
+| `sheet-close` | `void` | Fired after the sheet finishes closing. |
+
+#### Slots
+
+- `trigger` — Interactive element that toggles the sheet.
+- `title` — Heading text announced to assistive technology.
+- `description` — Additional context for the sheet's content.
+- `close` — Custom close control rendered next to the title.
+- `footer` — Action buttons displayed in the footer.
+- `default` — Main body content of the sheet.
+
+#### Styling hooks
+
+- CSS custom properties: `--sheet-background`, `--sheet-body-gap`, `--sheet-color`, `--sheet-description-color`,
+  `--sheet-description-size`, `--sheet-footer-gap`, `--sheet-header-gap`, `--sheet-max-height`,
+  `--sheet-max-width`, `--sheet-overlay-backdrop-filter`, `--sheet-overlay-background`, `--sheet-padding`,
+  `--sheet-radius`, `--sheet-section-gap`, `--sheet-shadow`, `--sheet-title-size`, `--sheet-title-tracking`,
+  `--sheet-title-weight`, `--sheet-transition-duration`, `--sheet-transition-easing`, `--sheet-width`,
+  `--sheet-z-index`.
+- Parts: `::part(portal)`, `::part(overlay)`, `::part(positioner)`, `::part(panel)`, `::part(header)`,
+  `::part(title)`, `::part(description)`, `::part(close)`, `::part(body)`, `::part(footer)`.
+- Data attributes: `[data-side]` on the internal positioner and panel to target slide-in direction,
+  `[data-sheet-close]` on slotted elements to wire up close controls.
+
+#### Notes
+
+- Elements slotted with `data-sheet-close` automatically close the sheet when activated.
+- Trigger elements receive `aria-expanded` to indicate the current state to assistive technology.
 

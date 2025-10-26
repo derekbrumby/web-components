@@ -1600,6 +1600,39 @@ export const componentDocs = {
       "--data-table-muted-color"
     ]
   },
+  "wc-table": {
+    "title": "<wc-table>",
+    "tagline": "Documentation for <wc-table>",
+    "usage": {
+      "snippet": "<wc-table>\n  <wc-table-caption>Recent invoices</wc-table-caption>\n  <wc-table-header>\n    <wc-table-row>\n      <wc-table-head style=\"width: 7.5rem;\">Invoice</wc-table-head>\n      <wc-table-head>Status</wc-table-head>\n      <wc-table-head>Method</wc-table-head>\n      <wc-table-head align=\"right\">Amount</wc-table-head>\n    </wc-table-row>\n  </wc-table-header>\n  <wc-table-body>\n    <wc-table-row>\n      <wc-table-cell>INV001</wc-table-cell>\n      <wc-table-cell>Paid</wc-table-cell>\n      <wc-table-cell>Credit Card</wc-table-cell>\n      <wc-table-cell align=\"right\">$250.00</wc-table-cell>\n    </wc-table-row>\n  </wc-table-body>\n</wc-table>",
+      "description": "Compose captions, headers, bodies, and footers declaratively."
+    },
+    "attributes": [],
+    "events": [],
+    "slots": [],
+    "css": [
+      "--table-background",
+      "--table-border-color",
+      "--table-radius",
+      "--table-shadow",
+      "--table-text-color",
+      "--table-muted-color",
+      "--table-header-background",
+      "--table-header-color",
+      "--table-footer-background",
+      "--table-row-border",
+      "--table-row-hover",
+      "--table-row-selected",
+      "--table-cell-padding-block",
+      "--table-cell-padding-inline",
+      "--table-caption-color"
+    ],
+    "notes": [
+      "Child elements such as <wc-table-header> are mirrored into a semantic <table> and stay hidden in light DOM.",
+      "Set data-state=\"selected\" on <wc-table-row> to highlight rows.",
+      "Use align or scope attributes on <wc-table-head> / <wc-table-cell> for alignment and semantics."
+    ]
+  },
   "wc-date-picker": {
     "title": "<wc-date-picker>",
     "tagline": "Documentation for <wc-date-picker>",
@@ -1791,6 +1824,95 @@ export const componentDocs = {
       "--drawer-transition-easing",
       "--drawer-width",
       "--drawer-z-index"
+    ]
+  },
+  "wc-sheet": {
+    "title": "<wc-sheet>",
+    "tagline": "Documentation for <wc-sheet>",
+    "usage": {
+      "snippet": "<wc-sheet side=\"right\">\n  <button slot=\"trigger\">Open sheet</button>\n  <span slot=\"title\">Edit profile</span>\n  <span slot=\"description\">Make changes to your profile here.</span>\n  <form>\n    <!-- sheet body -->\n  </form>\n  <div slot=\"footer\">\n    <button type=\"submit\">Save</button>\n    <button type=\"button\" data-sheet-close>Cancel</button>\n  </div>\n</wc-sheet>"
+    },
+    "attributes": [
+      {
+        "name": "`open` / `open`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Controls whether the sheet is visible."
+      },
+      {
+        "name": "`side` / `side`",
+        "type": "`\"top\" | \"right\" | \"bottom\" | \"left\"`",
+        "default": "`\"right\"`",
+        "description": "Chooses the viewport edge the sheet appears from."
+      }
+    ],
+    "properties": [
+      {
+        "name": "`show()`",
+        "type": "`() => void`",
+        "default": "—",
+        "description": "Opens the sheet programmatically."
+      },
+      {
+        "name": "`hide()`",
+        "type": "`() => void`",
+        "default": "—",
+        "description": "Closes the sheet programmatically."
+      },
+      {
+        "name": "`toggle(force?)`",
+        "type": "`(force?: boolean) => void`",
+        "default": "—",
+        "description": "Toggles the open state or forces a specific value."
+      }
+    ],
+    "events": [
+      {
+        "name": "`sheet-open`",
+        "detail": "`void`",
+        "description": "Fires after the sheet finishes opening."
+      },
+      {
+        "name": "`sheet-close`",
+        "detail": "`void`",
+        "description": "Fires after the sheet finishes closing."
+      }
+    ],
+    "slots": [
+      { "name": "`trigger`", "description": "Element that toggles the sheet." },
+      { "name": "`title`", "description": "Heading content announced by assistive technology." },
+      { "name": "`description`", "description": "Supplementary description for the sheet." },
+      { "name": "`close`", "description": "Optional close control rendered beside the title." },
+      { "name": "`footer`", "description": "Footer actions such as Save/Cancel buttons." },
+      { "name": "`default`", "description": "Main body content for the sheet." }
+    ],
+    "css": [
+      "--sheet-background",
+      "--sheet-body-gap",
+      "--sheet-color",
+      "--sheet-description-color",
+      "--sheet-description-size",
+      "--sheet-footer-gap",
+      "--sheet-header-gap",
+      "--sheet-max-height",
+      "--sheet-max-width",
+      "--sheet-overlay-backdrop-filter",
+      "--sheet-overlay-background",
+      "--sheet-padding",
+      "--sheet-radius",
+      "--sheet-section-gap",
+      "--sheet-shadow",
+      "--sheet-title-size",
+      "--sheet-title-tracking",
+      "--sheet-title-weight",
+      "--sheet-transition-duration",
+      "--sheet-transition-easing",
+      "--sheet-width",
+      "--sheet-z-index"
+    ],
+    "notes": [
+      "Slot elements with `[data-sheet-close]` close the sheet automatically when activated.",
+      "Trigger elements receive `aria-expanded` to mirror the open state."
     ]
   },
   "wc-dropdown-menu": {
@@ -3905,6 +4027,73 @@ export const componentDocs = {
       "--wc-spinner-size",
       "--wc-spinner-stroke-width",
       "--wc-spinner-track-color"
+    ]
+  },
+  "wc-sonner": {
+    "title": "<wc-sonner>",
+    "tagline": "Documentation for <wc-sonner>",
+    "usage": {
+      "snippet": "<wc-sonner id=\"toaster\"></wc-sonner>\n<script type=\"module\">\n  const toaster = document.getElementById('toaster');\n  toaster.toast.success('Saved changes');\n</script>"
+    },
+    "attributes": [
+      {
+        "name": "`position` / `position`",
+        "type": "`'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right' | 'bottom-center'`",
+        "default": "`'top-right'`",
+        "description": "Anchors the toast viewport to a screen edge."
+      },
+      {
+        "name": "`duration` / `duration`",
+        "type": "`number`",
+        "default": "`4000`",
+        "description": "Default timeout for automatically dismissing toasts (ms)."
+      },
+      {
+        "name": "`close-on-click` / `closeOnClick`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Dismiss the toast when its surface is clicked."
+      }
+    ],
+    "events": [
+      {
+        "name": "`wc-sonner-open`",
+        "detail": "`{ id, record }`",
+        "description": "Fires when a toast is enqueued."
+      },
+      {
+        "name": "`wc-sonner-action`",
+        "detail": "`{ id, record }`",
+        "description": "Dispatched after an action button runs."
+      },
+      {
+        "name": "`wc-sonner-dismiss`",
+        "detail": "`{ id, record, reason }`",
+        "description": "Emitted when a toast leaves the viewport."
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--sonner-z-index",
+      "--sonner-gap",
+      "--sonner-max-width",
+      "--sonner-radius",
+      "--sonner-font-family",
+      "--sonner-color",
+      "--sonner-background",
+      "--sonner-border",
+      "--sonner-shadow",
+      "--sonner-success",
+      "--sonner-info",
+      "--sonner-warning",
+      "--sonner-error",
+      "--sonner-loading"
+    ],
+    "notes": [
+      "Provides Sonner-style helpers such as `toast.success`, `toast.error`, and `toast.promise`.",
+      "Supports imperative dismissal via `toast.dismiss(id?)`.",
+      "Action buttons emit `wc-sonner-action` events after running the provided callback.",
+      "Styling hooks exposed via ::part(viewport|toast|icon|body|title|description|actions|action-button|close-button)."
     ]
   },
   "wc-switch": {

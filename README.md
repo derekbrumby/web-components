@@ -12,6 +12,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/otp-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/accordion.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/alert-dialog.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/alert.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/dialog.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/avatar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/navigation-menu.js"></script>
@@ -323,6 +324,82 @@ variants while remaining fully stylable through CSS variables and the exposed pa
   `--wc-badge-min-width`, `--wc-badge-min-height`, `--wc-badge-shadow`,
   `--wc-badge-text-transform`.
 - Parts: `::part(surface)` targets the pill surface for advanced customisation.
+
+### `<wc-alert>`
+
+Display inline callouts for success, info, or destructive messaging with optional icon, title, and
+rich description content. Slots mirror the shadcn/ui structure so existing markup ports cleanly.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/alert.js"></script>
+
+<wc-alert>
+  <svg slot="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path
+      d="M9.5 12.5l1.75 1.75L15 10.5"
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.5"
+    ></path>
+    <circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5"></circle>
+  </svg>
+  <span slot="title">Success! Your changes have been saved.</span>
+  <p>This is an alert with icon, title, and description.</p>
+</wc-alert>
+
+<wc-alert variant="destructive">
+  <svg slot="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <path
+      d="M12 9v4"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-width="1.5"
+    ></path>
+    <path d="M12 17h.01" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path>
+    <path
+      d="M10.29 3.86L2.82 17.14A1.5 1.5 0 0 0 4.13 19.5h15.74a1.5 1.5 0 0 0 1.31-2.36L13.69 3.86a1.5 1.5 0 0 0-2.6 0z"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+    ></path>
+  </svg>
+  <span slot="title">Unable to process your payment.</span>
+  <ul>
+    <li>Check your card details</li>
+    <li>Ensure sufficient funds</li>
+    <li>Verify billing address</li>
+  </ul>
+</wc-alert>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | string | `"default"` | Visual treatment for the alert. Supports `default` (subtle) or `destructive`. |
+
+#### Slots
+
+- `icon` — Optional leading graphic. SVG icons inherit the configured icon color.
+- `title` — Prominent heading rendered with semibold styling.
+- _(default)_ — Rich body content such as paragraphs, lists, or links.
+
+#### Accessibility
+
+- Defaults to `role="status"` and `aria-live="polite"` so updates announce without stealing focus.
+- Switch to `role="alert"` for urgent, high-priority messages that require immediate attention.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-alert-background`, `--wc-alert-border-color`, `--wc-alert-color`,
+  `--wc-alert-icon-color`, `--wc-alert-icon-background`, `--wc-alert-icon-size`, `--wc-alert-radius`,
+  `--wc-alert-padding-inline`, `--wc-alert-padding-block`, `--wc-alert-gap`,
+  `--wc-alert-content-gap`, `--wc-alert-title-color`, `--wc-alert-title-font-size`,
+  `--wc-alert-title-font-weight`, `--wc-alert-description-color`,
+  `--wc-alert-description-font-size`, `--wc-alert-shadow`.
+- Parts: `::part(surface)`, `::part(icon)`, `::part(content)`, `::part(title)`, `::part(description)`.
 
 ### `<wc-kbd>`
 

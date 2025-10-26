@@ -1600,6 +1600,39 @@ export const componentDocs = {
       "--data-table-muted-color"
     ]
   },
+  "wc-table": {
+    "title": "<wc-table>",
+    "tagline": "Documentation for <wc-table>",
+    "usage": {
+      "snippet": "<wc-table>\n  <wc-table-caption>Recent invoices</wc-table-caption>\n  <wc-table-header>\n    <wc-table-row>\n      <wc-table-head style=\"width: 7.5rem;\">Invoice</wc-table-head>\n      <wc-table-head>Status</wc-table-head>\n      <wc-table-head>Method</wc-table-head>\n      <wc-table-head align=\"right\">Amount</wc-table-head>\n    </wc-table-row>\n  </wc-table-header>\n  <wc-table-body>\n    <wc-table-row>\n      <wc-table-cell>INV001</wc-table-cell>\n      <wc-table-cell>Paid</wc-table-cell>\n      <wc-table-cell>Credit Card</wc-table-cell>\n      <wc-table-cell align=\"right\">$250.00</wc-table-cell>\n    </wc-table-row>\n  </wc-table-body>\n</wc-table>",
+      "description": "Compose captions, headers, bodies, and footers declaratively."
+    },
+    "attributes": [],
+    "events": [],
+    "slots": [],
+    "css": [
+      "--table-background",
+      "--table-border-color",
+      "--table-radius",
+      "--table-shadow",
+      "--table-text-color",
+      "--table-muted-color",
+      "--table-header-background",
+      "--table-header-color",
+      "--table-footer-background",
+      "--table-row-border",
+      "--table-row-hover",
+      "--table-row-selected",
+      "--table-cell-padding-block",
+      "--table-cell-padding-inline",
+      "--table-caption-color"
+    ],
+    "notes": [
+      "Child elements such as <wc-table-header> are mirrored into a semantic <table> and stay hidden in light DOM.",
+      "Set data-state=\"selected\" on <wc-table-row> to highlight rows.",
+      "Use align or scope attributes on <wc-table-head> / <wc-table-cell> for alignment and semantics."
+    ]
+  },
   "wc-date-picker": {
     "title": "<wc-date-picker>",
     "tagline": "Documentation for <wc-date-picker>",

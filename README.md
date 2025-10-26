@@ -22,6 +22,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-chart>`](#wc-chart)
   - [Chart variants](#chart-variants)
   - [`<wc-data-table>`](#wc-data-table)
+  - [`<wc-table>`](#wc-table)
   - [`<wc-form>`](#wc-form)
   - [`<wc-checkbox>`](#wc-checkbox)
   - [`<wc-spinner>`](#wc-spinner)
@@ -74,6 +75,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-chart>` | Responsive grouped bar chart with keyboard-friendly tooltips. | [Docs](#wc-chart) |
 | `<wc-area-chart>` / `<wc-line-chart>` / `<wc-pie-chart>` / `<wc-radar-chart>` / `<wc-radial-chart>` | SVG chart variants that reuse the base chart API. | [Docs](#chart-variants) |
 | `<wc-data-table>` | Headless data grid with sorting, filters, pagination, and row actions. | [Docs](#wc-data-table) |
+| `<wc-table>` | Responsive table surface with caption, header, body, and footer primitives. | [Docs](#wc-table) |
 | `<wc-card>` | Flexible content container mirroring shadcn/ui card styling. | — |
 | `<wc-pricing-card>` | Pricing layout with highlighted tiers and call-to-action slots. | — |
 | `<wc-carousel>` | Accessible carousel with autoplay controls and pagination dots. | — |
@@ -491,6 +493,83 @@ JavaScript without shipping a framework runtime.
   `::part(surface)`, `::part(table)`, `::part(header)`, `::part(row)`, `::part(cell)`, `::part(empty)`,
   `::part(pagination)`, `::part(selection-summary)`, `::part(pagination-previous)`,
   `::part(pagination-next)`, `::part(column-menu-empty)`.
+
+### `<wc-table>`
+
+Lightweight table surface that mirrors the shadcn/ui table primitives. Compose captions, headers,
+bodies, and footers declaratively with `wc-table-*` child elements and the component renders a
+semantic `<table>` with responsive overflow handling inside its shadow root.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/table.js"></script>
+
+<wc-table>
+  <wc-table-caption>A list of your recent invoices.</wc-table-caption>
+  <wc-table-header>
+    <wc-table-row>
+      <wc-table-head style="width: 7.5rem;">Invoice</wc-table-head>
+      <wc-table-head>Status</wc-table-head>
+      <wc-table-head>Method</wc-table-head>
+      <wc-table-head align="right">Amount</wc-table-head>
+    </wc-table-row>
+  </wc-table-header>
+  <wc-table-body>
+    <wc-table-row>
+      <wc-table-cell>INV001</wc-table-cell>
+      <wc-table-cell>Paid</wc-table-cell>
+      <wc-table-cell>Credit Card</wc-table-cell>
+      <wc-table-cell align="right">$250.00</wc-table-cell>
+    </wc-table-row>
+    <wc-table-row>
+      <wc-table-cell>INV002</wc-table-cell>
+      <wc-table-cell>Pending</wc-table-cell>
+      <wc-table-cell>PayPal</wc-table-cell>
+      <wc-table-cell align="right">$150.00</wc-table-cell>
+    </wc-table-row>
+  </wc-table-body>
+  <wc-table-footer>
+    <wc-table-row>
+      <wc-table-cell colspan="3">Total</wc-table-cell>
+      <wc-table-cell align="right">$400.00</wc-table-cell>
+    </wc-table-row>
+  </wc-table-footer>
+</wc-table>
+```
+
+Rows accept `data-state="selected"` (or the shorthand `state="selected"`) to highlight the current
+selection, and header or data cells respect `align="left|center|right"` for text alignment. Inline
+`style`, `aria-*`, and `data-*` attributes set on the declarative child elements are forwarded to the
+rendered table cells so you can surface tooltips or additional metadata.
+
+#### Declarative children
+
+| Element | Description |
+| --- | --- |
+| `<wc-table-caption>` | Provides an accessible caption rendered beneath the table surface. |
+| `<wc-table-header>` | Wraps header rows that should render inside `<thead>`. |
+| `<wc-table-body>` | Declares one or more body row groups rendered inside `<tbody>`. |
+| `<wc-table-footer>` | Optional summary or totals rendered inside `<tfoot>`. |
+| `<wc-table-row>` | Defines a table row. Place `wc-table-head`/`wc-table-cell` elements inside. |
+| `<wc-table-head>` | Header cell rendered as `<th scope="col">` by default. |
+| `<wc-table-cell>` | Data cell rendered as `<td>`. |
+
+#### Styling hooks
+
+- CSS custom properties: `--table-background`, `--table-border-color`, `--table-radius`,
+  `--table-shadow`, `--table-text-color`, `--table-muted-color`, `--table-header-background`,
+  `--table-header-color`, `--table-footer-background`, `--table-row-border`, `--table-row-hover`,
+  `--table-row-selected`, `--table-cell-padding-block`, `--table-cell-padding-inline`,
+  `--table-caption-color`.
+- Parts: `::part(surface)`, `::part(wrapper)`, `::part(table)`, `::part(caption)`, `::part(section)`,
+  `::part(row)`, `::part(cell)`.
+
+#### Accessibility
+
+- The declarative caption is rendered as a semantic `<caption>` for screen reader support.
+- Header cells default to `scope="col"` so column associations remain intact. Override `scope` on a
+  `<wc-table-head>` element for row headers.
+- Overflow is handled within a focusable wrapper so keyboard users can scroll horizontally on small
+  screens without losing context.
 
 ### `<wc-form>`
 

@@ -26,14 +26,15 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-checkbox>`](#wc-checkbox)
   - [`<wc-spinner>`](#wc-spinner)
   - [`<wc-skeleton>`](#wc-skeleton)
-- [`<wc-badge>`](#wc-badge)
-- [`<wc-button>`](#wc-button)
-- [`<wc-alert>`](#wc-alert)
-- [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
-- [`<wc-label>`](#wc-label)
-- [`<wc-ascii-icon>`](#wc-ascii-icon)
-- [`<wc-separator>`](#wc-separator)
-- [`<qr-code>`](#qr-code)
+  - [`<wc-sonner>`](#wc-sonner)
+  - [`<wc-badge>`](#wc-badge)
+  - [`<wc-button>`](#wc-button)
+  - [`<wc-alert>`](#wc-alert)
+  - [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
+  - [`<wc-label>`](#wc-label)
+  - [`<wc-ascii-icon>`](#wc-ascii-icon)
+  - [`<wc-separator>`](#wc-separator)
+  - [`<qr-code>`](#qr-code)
 
 ## Getting started
 
@@ -133,6 +134,7 @@ to the detailed reference for deeper usage notes.
 | --- | --- |
 | `<wc-alert>` | Inline callouts for success, info, or destructive messaging. |
 | `<wc-toast>` | Toast notifications with queueing support. |
+| `<wc-sonner>` | Opinionated multi-type toaster with promise helpers. [Docs](#wc-sonner) |
 | `<wc-audio-player>` | Minimal audio player with timeline and volume controls. |
 | `<wc-progress>` | Visualises task completion. |
 | `<wc-spinner>` | Loading spinner with accessible announcements. |
@@ -613,6 +615,66 @@ technologies.
 
 The element defaults to `role="status"`, `aria-live="polite"`, and `aria-busy="true"` so updates are
 announced without stealing focus.
+
+### `<wc-sonner>`
+
+Opinionated toaster that mirrors the Sonner React API in a framework-agnostic package. Queue
+multiple notifications, switch between success/info/warning/error variants, and track async work with
+`toast.promise` helpers.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/sonner.js"></script>
+
+<wc-sonner id="demo-sonner" position="bottom-right"></wc-sonner>
+<button id="sonner-trigger" type="button">Show toast</button>
+
+<script type="module">
+  const toaster = document.getElementById('demo-sonner');
+  document.getElementById('sonner-trigger')?.addEventListener('click', () => {
+    toaster.toast.success('Event has been created', {
+      description: 'Sunday, December 03, 2023 at 9:00 AM',
+      action: {
+        label: 'Undo',
+        onClick: () => console.log('Undo'),
+      },
+    });
+  });
+</script>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `position` | `'top-left' \| 'top-right' \| 'top-center' \| 'bottom-left' \| 'bottom-right' \| 'bottom-center'` | `'top-right'` | Controls where the viewport is anchored on screen. |
+| `duration` | number | `4000` | Default auto-dismiss timeout in milliseconds when none is supplied per toast. Use `Infinity` to persist. |
+| `close-on-click` | boolean | `false` | When present, clicking the toast surface dismisses it (action and close buttons are unaffected). |
+| `toast` (property) | `function` | — | Bound helper that mirrors Sonner’s `toast` API (see helpers below). |
+
+#### Helpers
+
+- `toast(title, options?)` — Push a neutral toast. `options` accepts `description`,
+  `duration`, `label`, `dismissible`, and `action: { label, onClick }`.
+- `toast.success/info/warning/error/loading(title, options?)` — Typed variants with matching icons.
+- `toast.promise(promiseOrFactory, { loading, success, error })` — Show a loading toast while the
+  promise runs, replacing it with success or error messaging afterwards.
+- `toast.dismiss(id?)` — Dismiss a toast by id or clear the queue when no id is provided.
+
+#### Events
+
+- `wc-sonner-open` — Fired whenever a toast is enqueued. `event.detail` exposes `{ id, record }`.
+- `wc-sonner-action` — Emitted after the action button runs. `event.detail` includes `{ id, record }`.
+- `wc-sonner-dismiss` — Fired when a toast leaves. `event.detail` contains `{ id, record, reason }` with
+  `reason` set to `"manual"`, `"action"`, `"timeout"`, or `"click"`.
+
+#### Styling hooks
+
+- CSS custom properties: `--sonner-z-index`, `--sonner-gap`, `--sonner-max-width`, `--sonner-radius`,
+  `--sonner-font-family`, `--sonner-color`, `--sonner-background`, `--sonner-border`, `--sonner-shadow`,
+  `--sonner-success`, `--sonner-info`, `--sonner-warning`, `--sonner-error`, `--sonner-loading`.
+- Data attributes: `[data-type]` and `[data-state]` on each toast for variant/transition styling.
+- Parts: `::part(viewport)`, `::part(toast)`, `::part(icon)`, `::part(body)`, `::part(title)`,
+  `::part(description)`, `::part(actions)`, `::part(action-button)`, `::part(close-button)`.
 
 ### `<wc-skeleton>`
 

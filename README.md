@@ -30,6 +30,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-skeleton>`](#wc-skeleton)
 - [`<wc-badge>`](#wc-badge)
 - [`<wc-button>`](#wc-button)
+- [`<wc-input>`](#wc-input)
 - [`<wc-alert>`](#wc-alert)
 - [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
 - [`<wc-label>`](#wc-label)
@@ -91,7 +92,7 @@ to the detailed reference for deeper usage notes.
 | Component | Summary | Reference |
 | --- | --- | --- |
 | `<wc-form>` | Drop-in contact form with validation helpers and error slots. | [Docs](#wc-form) |
-| `<wc-field>` | Layout primitives for grouping labels, inputs, and helper text. | [Docs](#wc-field) |
+| `<wc-input>` | Single-line input with file support and shadcn-inspired styling. | [Docs](#wc-input) |
 | `<wc-checkbox>` | Tri-state checkbox with form association. | [Docs](#wc-checkbox) |
 | `<wc-radio-group>` | Accessible radio group mirroring Radix UI behaviour. | — |
 | `<wc-toggle-group>` | Single or multi-select toggle buttons. | — |
@@ -628,6 +629,16 @@ helpers for server-driven errors.
   `::part(field)`, `::part(label)`, `::part(messages)`, `::part(message)`, `::part(control)`,
   `::part(submit)`.
 
+### `<wc-input>`
+
+Single-line text input that mirrors the shadcn/ui aesthetic while staying purely web-component based. It
+is form associated, exposes native methods such as `focus()` and `setSelectionRange()`, and forwards
+the majority of HTML input attributes.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/input.js"></script>
+
+<wc-input type="email" placeholder="Email address"></wc-input>
 ### `<wc-field>`
 
 Composable form layout primitives for stacking labels, controls, helper text, and error messaging. The
@@ -659,6 +670,50 @@ retaining semantic `<fieldset>` and `<legend>` structure.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
+| `value` / `value` | string | `""` | Current value of the control. Setting it programmatically keeps the internal input in sync. |
+| `type` / `type` | string | `"text"` | Native input type (`email`, `password`, `search`, `file`, etc.). |
+| `placeholder` / `placeholder` | string | `""` | Hint text shown while the field is empty. |
+| `name` / `name` | string | `""` | Name submitted with the parent form. |
+| `disabled` / `disabled` | boolean | `false` | Disables interaction and applies a `data-disabled` attribute for styling. |
+| `readonly` / `readOnly` | boolean | `false` | Keeps the value visible while blocking edits. |
+| `required` / `required` | boolean | `false` | Marks the field as required for native constraint validation. |
+| `autocomplete` / `autocomplete` | string | `""` | Browser autocomplete hint (for example `email`, `name`). |
+| `inputmode` / `inputMode` | string | `""` | Suggests an on-screen keyboard layout on touch devices. |
+| `pattern` / `pattern` | string | `""` | Regular expression checked during native validation. |
+| `min` / `min` | string | `""` | Lower bound for numeric, date, or time inputs. |
+| `max` / `max` | string | `""` | Upper bound for numeric, date, or time inputs. |
+| `step` / `step` | string | `""` | Value granularity for numeric interfaces. |
+| `minlength` / `minLength` | number | `null` | Minimum number of characters required. |
+| `maxlength` / `maxLength` | number | `null` | Maximum number of characters accepted. |
+| `enterkeyhint` / `enterKeyHint` | string | `""` | Sets the action hint for software keyboards. |
+| `autocapitalize` / `autocapitalize` | string | `""` | Controls automatic capitalisation behaviour. |
+| `autocorrect` / `autocorrect` | string | `""` | Toggles autocorrect on supporting platforms. |
+| `spellcheck` / `spellcheck` | string | `""` | Enables or disables spell checking. |
+| `form` (readonly) | `HTMLFormElement \| null` | `null` | Parent form when the element is associated. |
+| `files` (readonly) | `FileList \| null` | `null` | Selected files when `type="file"`. |
+| `inputElement` (readonly) | `HTMLInputElement` | — | Direct reference to the underlying `<input>`. |
+
+#### Events
+
+- `input` — Mirrors the native event whenever the value changes.
+- `change` — Fired when the underlying control emits `change`.
+- `invalid` — Re-emitted when native constraint validation fails.
+
+#### Styling hooks
+
+- Custom properties: `--wc-input-inline-size`, `--wc-input-font-family`, `--wc-input-font-size`,
+  `--wc-input-font-weight`, `--wc-input-letter-spacing`, `--wc-input-line-height`, `--wc-input-radius`,
+  `--wc-input-padding-inline`, `--wc-input-padding-block`, `--wc-input-background`,
+  `--wc-input-background-hover`, `--wc-input-background-disabled`, `--wc-input-border`,
+  `--wc-input-border-hover`, `--wc-input-border-focus`, `--wc-input-shadow-focus`, `--wc-input-color`,
+  `--wc-input-placeholder`, `--wc-input-caret-color`, `--wc-input-transition-duration`.
+- Parts: `::part(container)`, `::part(input)`.
+
+#### Notes
+
+- Form-associated: participates in native submission, reset, and state restoration cycles.
+- Exposes `data-empty`, `data-disabled`, and `data-has-files` attributes to target common UI states.
+- Supports file uploads via `type="file"`; the `files` property surfaces the active `FileList`.
 | `orientation` | `"vertical" \| "horizontal" \| "responsive"` | `"vertical"` | Switches the layout for the slotted controls. `responsive` swaps to columns when the host crosses a `min-width: 640px` container query. |
 
 #### Slots

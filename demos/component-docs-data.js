@@ -2240,6 +2240,196 @@ export const componentDocs = {
       "--radix-hover-card-trigger-width"
     ]
   },
+  "wc-input": {
+    "title": "<wc-input>",
+    "tagline": "Documentation for <wc-input>",
+    "usage": {
+      "snippet": "<wc-input type=\"email\" placeholder=\"Email\"></wc-input>"
+    },
+    "attributes": [
+      {
+        "name": "`value` / `value`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Current value of the control."
+      },
+      {
+        "name": "`type` / `type`",
+        "type": "`string`",
+        "default": "`\"text\"`",
+        "description": "Native input type passed through to the underlying control."
+      },
+      {
+        "name": "`placeholder` / `placeholder`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Hint text displayed when the field is empty."
+      },
+      {
+        "name": "`name` / `name`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Form field name used during submission."
+      },
+      {
+        "name": "`disabled` / `disabled`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Disables interaction and applies `data-disabled` styling hooks."
+      },
+      {
+        "name": "`readonly` / `readOnly`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Prevents user edits while keeping the value selectable."
+      },
+      {
+        "name": "`required` / `required`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Marks the field as required for native constraint validation."
+      },
+      {
+        "name": "`autocomplete` / `autocomplete`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Hints the browser about expected values such as `email` or `name`."
+      },
+      {
+        "name": "`inputmode` / `inputMode`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Suggests a virtual keyboard layout on touch devices."
+      },
+      {
+        "name": "`pattern` / `pattern`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Regular expression used for native validation."
+      },
+      {
+        "name": "`min` / `min`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Lower bound for numeric, date, or time inputs."
+      },
+      {
+        "name": "`max` / `max`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Upper bound for numeric, date, or time inputs."
+      },
+      {
+        "name": "`step` / `step`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Value granularity for numeric interfaces."
+      },
+      {
+        "name": "`minlength` / `minLength`",
+        "type": "`number | null`",
+        "default": "`null`",
+        "description": "Minimum number of characters required."
+      },
+      {
+        "name": "`maxlength` / `maxLength`",
+        "type": "`number | null`",
+        "default": "`null`",
+        "description": "Maximum number of characters accepted."
+      },
+      {
+        "name": "`enterkeyhint` / `enterKeyHint`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Sets the action hint for on-screen keyboards."
+      },
+      {
+        "name": "`autocapitalize` / `autocapitalize`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Controls automatic capitalisation on supporting devices."
+      },
+      {
+        "name": "`autocorrect` / `autocorrect`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Toggles platform autocorrect behaviour."
+      },
+      {
+        "name": "`spellcheck` / `spellcheck`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Controls spell checking for the field."
+      }
+    ],
+    "properties": [
+      {
+        "name": "`form`",
+        "type": "`HTMLFormElement | null`",
+        "default": "`null`",
+        "description": "Parent form when the input is associated."
+      },
+      {
+        "name": "`files`",
+        "type": "`FileList | null`",
+        "default": "`null`",
+        "description": "Selected files when `type` is set to `file`."
+      },
+      {
+        "name": "`inputElement`",
+        "type": "`HTMLInputElement`",
+        "default": "—",
+        "description": "Direct reference to the internal `<input>` element."
+      }
+    ],
+    "events": [
+      {
+        "name": "`input`",
+        "detail": "—",
+        "description": "Mirrors the native `input` event when the value changes."
+      },
+      {
+        "name": "`change`",
+        "detail": "—",
+        "description": "Dispatched when the underlying input emits `change`."
+      },
+      {
+        "name": "`invalid`",
+        "detail": "—",
+        "description": "Re-emitted when browser validation fails."
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--wc-input-inline-size",
+      "--wc-input-font-family",
+      "--wc-input-font-size",
+      "--wc-input-font-weight",
+      "--wc-input-letter-spacing",
+      "--wc-input-line-height",
+      "--wc-input-radius",
+      "--wc-input-padding-inline",
+      "--wc-input-padding-block",
+      "--wc-input-background",
+      "--wc-input-background-hover",
+      "--wc-input-background-disabled",
+      "--wc-input-border",
+      "--wc-input-border-hover",
+      "--wc-input-border-focus",
+      "--wc-input-shadow-focus",
+      "--wc-input-color",
+      "--wc-input-placeholder",
+      "--wc-input-caret-color",
+      "--wc-input-transition-duration",
+      "::part(container)",
+      "::part(input)"
+    ],
+    "notes": [
+      "Form-associated element that participates in native submission, reset, and state restoration.",
+      "Supports `type=\"file\"` with FileList form values and a `data-has-files` host attribute when files are selected.",
+      "Applies `data-empty` and `data-disabled` attributes so empty or disabled states are easy to style."
+    ]
+  },
   "wc-kbd": {
     "title": "<wc-kbd>",
     "tagline": "Documentation for <wc-kbd>",

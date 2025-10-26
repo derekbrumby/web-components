@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-kbd&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/kbd.js"></script>
+    <style>
+      .kbd-stack {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .kbd-grid {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .kbd-paragraph {
+        margin: 0;
+        color: rgba(15, 23, 42, 0.75);
+        font-size: 0.95rem;
+        line-height: 1.7;
+      }
+
+      .kbd-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .kbd-buttons button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.45rem 0.85rem;
+        border-radius: 0.65rem;
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        background: rgba(255, 255, 255, 0.9);
+        color: rgba(15, 23, 42, 0.8);
+        font: inherit;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease;
+      }
+
+      .kbd-buttons button:hover {
+        border-color: rgba(99, 102, 241, 0.55);
+        color: rgba(67, 56, 202, 0.95);
+      }
+
+      .kbd-shortcuts {
+        display: grid;
+        gap: 1rem;
+      }
+
+      @media (max-width: 720px) {
+        .kbd-grid {
+          gap: 0.5rem;
+        }
+
+        .kbd-buttons {
+          gap: 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="kbd-stack">
+        <div class="example-card">
+          <h3>Keycaps</h3>
+          <div class="kbd-grid" data-code-example>
+            <wc-kbd>⌘</wc-kbd>
+            <wc-kbd>⌥</wc-kbd>
+            <wc-kbd>⇧</wc-kbd>
+            <wc-kbd>⌃</wc-kbd>
+            <wc-kbd>Esc</wc-kbd>
+            <wc-kbd>Tab</wc-kbd>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <h3>Shortcut group</h3>
+          <div class="kbd-shortcuts" data-code-example>
+            <wc-kbd-group>
+              <wc-kbd>Ctrl</wc-kbd>
+              <span>+</span>
+              <wc-kbd>B</wc-kbd>
+            </wc-kbd-group>
+            <wc-kbd-group>
+              <wc-kbd>Ctrl</wc-kbd>
+              <span>+</span>
+              <wc-kbd>Shift</wc-kbd>
+              <span>+</span>
+              <wc-kbd>P</wc-kbd>
+            </wc-kbd-group>
+            <wc-kbd-group orientation="vertical" style="--wc-kbd-group-gap: 0.35rem;">
+              <wc-kbd style="--wc-kbd-min-width: 3ch;">W</wc-kbd>
+              <wc-kbd style="--wc-kbd-min-width: 3ch;">A</wc-kbd>
+              <wc-kbd style="--wc-kbd-min-width: 3ch;">S</wc-kbd>
+              <wc-kbd style="--wc-kbd-min-width: 3ch;">D</wc-kbd>
+            </wc-kbd-group>
+          </div>
+          <p class="kbd-paragraph">
+            Adjust orientation or spacing with CSS custom properties to suit different command layouts.
+          </p>
+        </div>
+
+        <div class="example-card">
+          <h3>Inline descriptions</h3>
+          <p class="kbd-paragraph" data-code-example>
+            Use
+            <wc-kbd-group>
+              <wc-kbd>Ctrl</wc-kbd>
+              <span>+</span>
+              <wc-kbd>K</wc-kbd>
+            </wc-kbd-group>
+            to open the command palette or tap
+            <wc-kbd style="--wc-kbd-background: rgba(99, 102, 241, 0.15); --wc-kbd-border-color: rgba(79, 70, 229, 0.35);">
+              ?
+            </wc-kbd>
+            anywhere for contextual help.
+          </p>
+        </div>
+
+        <div class="example-card">
+          <h3>Buttons</h3>
+          <div class="kbd-buttons" data-code-example>
+            <button type="button">
+              Accept
+              <wc-kbd style="--wc-kbd-background: rgba(34, 197, 94, 0.18); --wc-kbd-border-color: rgba(34, 197, 94, 0.45);">
+                ⏎
+              </wc-kbd>
+            </button>
+            <button type="button">
+              Cancel
+              <wc-kbd style="--wc-kbd-background: rgba(239, 68, 68, 0.16); --wc-kbd-border-color: rgba(239, 68, 68, 0.4);">
+                Esc
+              </wc-kbd>
+            </button>
+            <button type="button">
+              Search
+              <wc-kbd-group style="--wc-kbd-group-gap: 0.35rem;">
+                <wc-kbd>Ctrl</wc-kbd>
+                <wc-kbd>K</wc-kbd>
+              </wc-kbd-group>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

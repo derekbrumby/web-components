@@ -42,6 +42,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/drawer.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/kbd.js"></script>
 ```
 
 Alternatively, clone this repository and open [`index.html`](./index.html) to explore interactive
@@ -316,6 +317,55 @@ variants while remaining fully stylable through CSS variables and the exposed pa
   `--wc-badge-min-width`, `--wc-badge-min-height`, `--wc-badge-shadow`,
   `--wc-badge-text-transform`.
 - Parts: `::part(surface)` targets the pill surface for advanced customisation.
+
+### `<wc-kbd>`
+
+Display keyboard shortcuts, command palette hints, or game controls with inline keycaps. Pair the
+base `<wc-kbd>` element with `<wc-kbd-group>` to sequence keys and separators while keeping spacing
+consistent.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/kbd.js"></script>
+
+<p>
+  Press <wc-kbd>?</wc-kbd> anywhere to open help or use
+  <wc-kbd-group>
+    <wc-kbd>Ctrl</wc-kbd>
+    <span>+</span>
+    <wc-kbd>K</wc-kbd>
+  </wc-kbd-group>
+  for the command palette.
+</p>
+```
+
+#### `<wc-kbd>` slots
+
+- _(default)_ — Key label, icon, or glyph rendered within the semantic `<kbd>` element.
+
+#### `<wc-kbd>` styling hooks
+
+- CSS custom properties: `--wc-kbd-background`, `--wc-kbd-border-color`, `--wc-kbd-border-width`,
+  `--wc-kbd-border-style`, `--wc-kbd-shadow`, `--wc-kbd-radius`, `--wc-kbd-padding-inline`,
+  `--wc-kbd-padding-block`, `--wc-kbd-font-size`, `--wc-kbd-font-weight`, `--wc-kbd-font-family`,
+  `--wc-kbd-line-height`, `--wc-kbd-letter-spacing`, `--wc-kbd-color`, `--wc-kbd-min-width`,
+  `--wc-kbd-text-transform`, `--wc-kbd-align-items`.
+- Parts: `::part(surface)` targets the rendered keycap.
+
+#### `<wc-kbd-group>` attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Toggle layout direction for the grouped keys. Vertical orientation stacks entries top to bottom. |
+
+#### `<wc-kbd-group>` slots
+
+- _(default)_ — Keyboard keys, separators (such as `+`), or descriptive text nodes.
+
+#### `<wc-kbd-group>` styling hooks
+
+- CSS custom properties: `--wc-kbd-group-gap`, `--wc-kbd-group-align`,
+  `--wc-kbd-group-justify`, `--wc-kbd-group-wrap`.
+- Parts: `::part(container)` exposes the flex container for fine-grained styling.
 
 ### `<wc-label>`
 

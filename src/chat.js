@@ -316,13 +316,15 @@
 
     attributeChangedCallback(name, _oldValue, newValue) {
       if (name === 'align') {
-        if (newValue !== 'end') {
-          this.setAttribute('align', 'start');
+        const normalized = newValue === 'end' ? 'end' : 'start';
+        if (newValue !== normalized) {
+          this.setAttribute('align', normalized);
         }
       }
       if (name === 'variant') {
-        if (!newValue || !VARIANTS.has(newValue)) {
-          this.setAttribute('variant', 'neutral');
+        const normalized = newValue && VARIANTS.has(newValue) ? newValue : 'neutral';
+        if (newValue !== normalized) {
+          this.setAttribute('variant', normalized);
         }
       }
     }

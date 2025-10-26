@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-breadcrumb&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/breadcrumb.js"></script>
+    <script type="module" src="../src/dropdown-menu.js"></script>
+    <style>
+      .breadcrumb-stack {
+        display: grid;
+        gap: 1.75rem;
+      }
+
+      .breadcrumb-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .breadcrumb-card p {
+        margin: 0;
+        color: rgba(15, 23, 42, 0.72);
+      }
+
+      .breadcrumb-preview {
+        display: flex;
+        justify-content: center;
+      }
+
+      .breadcrumb-themed {
+        --wc-breadcrumb-gap: 0.5rem;
+        --wc-breadcrumb-font-size: 0.95rem;
+        --wc-breadcrumb-color: #1f2937;
+        --wc-breadcrumb-page-color: #111827;
+        --wc-breadcrumb-link-color: #2563eb;
+        --wc-breadcrumb-link-hover-color: #1d4ed8;
+        --wc-breadcrumb-link-hover-background: rgba(37, 99, 235, 0.12);
+        --wc-breadcrumb-link-focus-ring: 0 0 0 2px rgba(37, 99, 235, 0.4);
+        --wc-breadcrumb-separator-color: rgba(148, 163, 184, 0.9);
+        --wc-breadcrumb-page-weight: 600;
+        --wc-breadcrumb-ellipsis-color: #334155;
+      }
+
+      .breadcrumb-themed wc-breadcrumb-link::part(link) {
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .breadcrumb-themed wc-breadcrumb-page::part(page) {
+        padding-inline: 0.2rem;
+      }
+
+      .breadcrumb-dropdown-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.2rem 0.45rem;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(148, 163, 184, 0.4);
+        background: #ffffff;
+        color: #1f2937;
+        font: inherit;
+        cursor: pointer;
+        transition: background-color 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      .breadcrumb-dropdown-trigger:hover {
+        background: rgba(59, 130, 246, 0.12);
+        border-color: rgba(59, 130, 246, 0.4);
+      }
+
+      .breadcrumb-dropdown-trigger:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+      }
+
+      .breadcrumb-responsive {
+        --wc-breadcrumb-link-padding: 0.2rem 0.35rem;
+        --wc-breadcrumb-link-background: transparent;
+      }
+
+      .breadcrumb-responsive [data-hidden] {
+        display: none !important;
+      }
+
+      @media (max-width: 720px) {
+        .breadcrumb-card {
+          gap: 0.85rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="breadcrumb-stack">
+        <div class="example-card breadcrumb-card">
+          <h3>Basic navigation trail</h3>
+          <p>Compose a semantic breadcrumb with anchors, separators, and a current page indicator.</p>
+          <div class="breadcrumb-preview" data-code-example>
+            <wc-breadcrumb label="Documentation trail">
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/">Home</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/docs">Docs</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/docs/components">Components</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-page>Breadcrumb</wc-breadcrumb-page>
+              </wc-breadcrumb-item>
+            </wc-breadcrumb>
+          </div>
+        </div>
+
+        <div class="example-card breadcrumb-card">
+          <h3>Custom separators</h3>
+          <p>Slot any icon or character inside <code>&lt;wc-breadcrumb-separator&gt;</code> to change the divider.</p>
+          <div class="breadcrumb-preview" data-code-example>
+            <wc-breadcrumb class="breadcrumb-themed" label="Custom separator trail">
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/">Home</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator>
+                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path
+                    d="M6 3.5a.75.75 0 0 1 1.28-.53l3 3a.75.75 0 0 1 0 1.06l-3 3A.75.75 0 0 1 6 9.53L8.47 7 6 4.53A.75.75 0 0 1 6 3.5Z"
+                  ></path>
+                </svg>
+              </wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/components">Components</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator>
+                <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path
+                    d="M6 3.5a.75.75 0 0 1 1.28-.53l3 3a.75.75 0 0 1 0 1.06l-3 3A.75.75 0 0 1 6 9.53L8.47 7 6 4.53A.75.75 0 0 1 6 3.5Z"
+                  ></path>
+                </svg>
+              </wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-page>Breadcrumb</wc-breadcrumb-page>
+              </wc-breadcrumb-item>
+            </wc-breadcrumb>
+          </div>
+        </div>
+
+        <div class="example-card breadcrumb-card">
+          <h3>Dropdown composition</h3>
+          <p>Use dropdown menus or other interactive elements for intermediate breadcrumb nodes.</p>
+          <div class="breadcrumb-preview" data-code-example>
+            <wc-breadcrumb label="Dropdown breadcrumb">
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/">Home</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-dropdown-menu>
+                  <button slot="trigger" class="breadcrumb-dropdown-trigger" aria-label="Toggle sections menu">
+                    Sections
+                    <span aria-hidden="true">▾</span>
+                  </button>
+                  <wc-dropdown-item>Documentation</wc-dropdown-item>
+                  <wc-dropdown-item>Themes</wc-dropdown-item>
+                  <wc-dropdown-item>GitHub</wc-dropdown-item>
+                </wc-dropdown-menu>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/components">Components</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-page>Breadcrumb</wc-breadcrumb-page>
+              </wc-breadcrumb-item>
+            </wc-breadcrumb>
+          </div>
+        </div>
+
+        <div class="example-card breadcrumb-card">
+          <h3>Collapsed ranges</h3>
+          <p>Reveal truncated segments with <code>&lt;wc-breadcrumb-ellipsis&gt;</code> for long navigation paths.</p>
+          <div class="breadcrumb-preview" data-code-example>
+            <wc-breadcrumb class="breadcrumb-responsive" label="Collapsed breadcrumb">
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/">Home</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-ellipsis label="Collapsed breadcrumb items"></wc-breadcrumb-ellipsis>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/docs">Docs</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-link href="/docs/guides">Guides</wc-breadcrumb-link>
+              </wc-breadcrumb-item>
+              <wc-breadcrumb-separator></wc-breadcrumb-separator>
+              <wc-breadcrumb-item>
+                <wc-breadcrumb-page>Breadcrumb</wc-breadcrumb-page>
+              </wc-breadcrumb-item>
+            </wc-breadcrumb>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

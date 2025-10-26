@@ -53,6 +53,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/button.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/kbd.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/audio-player.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/card.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/pricing-card.js"></script>
 ```
 
@@ -2912,6 +2913,57 @@ feed a `src` attribute or call the JavaScript API directly.
 - Parts: `::part(container)`, `::part(artwork)`, `::part(title)`, `::part(subtitle)`, `::part(play-button)`,
   `::part(mute-button)`, `::part(progress-group)`, `::part(progress)`, `::part(time)`, `::part(current-time)`,
   `::part(duration)`.
+
+### `<wc-card>`
+
+Compose application surfaces with lightweight primitives for headers, content, actions, and stacked
+footers. The suite mirrors the shadcn/ui card API so you can migrate React examples directly into
+framework-agnostic markup.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/card.js"></script>
+
+<wc-card>
+  <wc-card-header>
+    <wc-card-title>Login to your account</wc-card-title>
+    <wc-card-description>Enter your email below to login to your account.</wc-card-description>
+    <wc-card-action><a href="#">Sign up</a></wc-card-action>
+  </wc-card-header>
+  <wc-card-content>
+    <form>
+      <label for="email">Email</label>
+      <input id="email" type="email" placeholder="m@example.com" required />
+      <label for="password">Password</label>
+      <input id="password" type="password" required />
+    </form>
+  </wc-card-content>
+  <wc-card-footer>
+    <button type="submit">Login</button>
+    <button type="button">Login with Google</button>
+  </wc-card-footer>
+</wc-card>
+```
+
+#### Attributes & properties
+
+| Element | Name | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `<wc-card-title>` | `level` | number | `2` | Sets the accessible heading level (`1`–`6`) exposed via `aria-level`. |
+
+#### Slots
+
+- `<wc-card>` _(default)_ — Place any of the supporting primitives (`wc-card-header`, `wc-card-content`,
+  `wc-card-footer`) or custom content.
+- `<wc-card-header>` _(default)_ — Titles, descriptions, and optional `<wc-card-action>` elements.
+- `<wc-card-content>` _(default)_ — Main body content such as forms, prose, or media.
+- `<wc-card-footer>` _(default)_ — Buttons, action groups, or status indicators rendered after content.
+
+#### Styling hooks
+
+- CSS custom properties (`<wc-card>` host): `--card-background`, `--card-foreground`,
+  `--card-border-color`, `--card-radius`, `--card-padding`, `--card-gap`, `--card-shadow`.
+- Parts: `::part(surface)`, `::part(header)`, `::part(content)`, `::part(footer)`, `::part(title)`,
+  `::part(description)`, `::part(action)`.
 
 ### `<wc-pricing-card>`
 

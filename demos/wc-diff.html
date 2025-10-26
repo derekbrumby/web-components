@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-diff&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/diff.js"></script>
+    <style>
+      .diff-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .diff-grid .example-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .diff-grid wc-diff {
+        --wc-diff-min-height: clamp(16rem, 50vw, 22rem);
+        --wc-diff-border-radius: 1.25rem;
+        --wc-diff-divider-color: rgba(99, 102, 241, 0.75);
+        --wc-diff-handle-color: rgba(255, 255, 255, 0.9);
+        --wc-diff-handle-shadow: 0 14px 45px -18px rgba(30, 41, 59, 0.65);
+      }
+
+      .diff-grid .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.95rem;
+        color: rgba(15, 23, 42, 0.75);
+      }
+
+      .diff-grid .label-row strong {
+        font-size: 1rem;
+        color: rgba(15, 23, 42, 0.9);
+      }
+
+      .diff-grid .caption {
+        font-size: 0.85rem;
+        color: rgba(15, 23, 42, 0.65);
+      }
+
+      .diff-text-panel {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+        gap: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+      }
+
+      .diff-text-panel > div {
+        display: grid;
+        place-items: center;
+        border-radius: 1rem;
+        padding: 2rem;
+        font-size: clamp(2.5rem, 8vw, 5rem);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-diff"></section>
+      <section>
+        <div class="diff-grid">
+          <div class="example-card">
+            <h3>Before and after photography</h3>
+            <p>Compare two images with a draggable handle. Keyboard users can focus the slider and press the arrow keys for precise adjustments.</p>
+            <div class="label-row">
+              <strong id="diff-hero-label">Reveal amount</strong>
+              <output id="diff-hero-output" for="diff-hero">50%</output>
+            </div>
+            <wc-diff id="diff-hero" aria-labelledby="diff-hero-label" value="50" data-code-example>
+              <img
+                slot="first"
+                alt="Unedited daisy photograph"
+                src="https://img.daisyui.com/images/stock/photo-1560717789-0ac7c58ac90a.webp"
+              />
+              <img
+                slot="second"
+                alt="Edited daisy photograph"
+                src="https://img.daisyui.com/images/stock/photo-1560717789-0ac7c58ac90a-blur.webp"
+              />
+            </wc-diff>
+            <p class="caption">Tip: click anywhere on the frame or drag the handle to update the split.</p>
+          </div>
+
+          <div class="example-card">
+            <h3>Copy comparison</h3>
+            <p>Slots accept any markup, so you can highlight textual changes or layout adjustments alongside imagery.</p>
+            <wc-diff id="diff-copy" value="35" aria-label="Compare colourways" data-code-example>
+              <div slot="first" class="diff-text-panel">
+                <div style="background: hsl(265 89% 58%); color: white">Daisy</div>
+              </div>
+              <div slot="second" class="diff-text-panel">
+                <div style="background: hsl(220 13% 90%); color: hsl(220 18% 18%)">Daisy</div>
+              </div>
+            </wc-diff>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const heroDiff = document.getElementById('diff-hero');
+      const heroOutput = document.getElementById('diff-hero-output');
+
+      if (heroDiff instanceof HTMLElement && heroOutput instanceof HTMLElement) {
+        const updateOutput = () => {
+          const value = /** @type {any} */ (heroDiff).value ?? Number(heroDiff.getAttribute('value')) ?? 0;
+          const min = Number(heroDiff.getAttribute('min') ?? 0);
+          const max = Number(heroDiff.getAttribute('max') ?? 100);
+          const range = max - min;
+          const ratio = range > 0 ? (value - min) / range : 0;
+          heroOutput.textContent = `${Math.round(ratio * 100)}%`;
+        };
+
+        heroDiff.addEventListener('input', updateOutput);
+        updateOutput();
+      }
+    </script>
+  </body>
+</html>

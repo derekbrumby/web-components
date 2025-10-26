@@ -240,6 +240,103 @@ export const componentDocs = {
       "--wc-alert-title-font-weight"
     ]
   },
+  "wc-ascii-icon": {
+    "title": "<wc-ascii-icon>",
+    "tagline": "Documentation for <wc-ascii-icon>",
+    "usage": {
+      "snippet": "<wc-ascii-icon path=\"M12 2a10 10 0 1 1 0 20a10 10 0 0 1 0-20Zm-1 6.5v7l6-3.5l-6-3.5z\"></wc-ascii-icon>"
+    },
+    "attributes": [
+      {
+        "name": "`path` / `path`",
+        "type": "`number | null`",
+        "default": "—",
+        "description": "Configures the `path` setting."
+      },
+      {
+        "name": "`character` / `character`",
+        "type": "`string`",
+        "default": "—",
+        "description": "Configures the `character` setting."
+      },
+      {
+        "name": "`columns` / `columns`",
+        "type": "`string`",
+        "default": "—",
+        "description": "Configures the `columns` setting."
+      },
+      {
+        "name": "`column` / `column`",
+        "type": "`string`",
+        "default": "—",
+        "description": "Configures the `column` setting."
+      },
+      {
+        "name": "`rows` / `rows`",
+        "type": "`string`",
+        "default": "—",
+        "description": "Configures the `rows` setting."
+      },
+      {
+        "name": "`row` / `row`",
+        "type": "`string`",
+        "default": "—",
+        "description": "Configures the `row` setting."
+      },
+      {
+        "name": "`cell-size` / `cellSize`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Configures the `cell-size` setting."
+      },
+      {
+        "name": "`padding` / `padding`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Configures the `padding` setting."
+      },
+      {
+        "name": "`gap` / `gap`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Configures the `gap` setting."
+      },
+      {
+        "name": "`aria-label` / `ariaLabel`",
+        "type": "",
+        "default": "—",
+        "description": "Accessible label forwarded to the underlying control."
+      },
+      {
+        "name": "`aria-labelledby` / `ariaLabelledby`",
+        "type": "",
+        "default": "—",
+        "description": "Associates the control with labelled element IDs."
+      },
+      {
+        "name": "`aria-hidden` / `ariaHidden`",
+        "type": "",
+        "default": "—",
+        "description": "Forwards the corresponding ARIA attribute for accessibility."
+      },
+      {
+        "name": "`role` / `role`",
+        "type": "",
+        "default": "—",
+        "description": "Configures the `role` setting."
+      }
+    ],
+    "events": [],
+    "slots": [],
+    "css": [
+      "--wc-ascii-icon-background",
+      "--wc-ascii-icon-character-color",
+      "--wc-ascii-icon-font-family",
+      "--wc-ascii-icon-font-weight",
+      "--wc-ascii-icon-letter-spacing",
+      "--wc-ascii-icon-size"
+    ]
+  },
   "wc-aspect-ratio": {
     "title": "<wc-aspect-ratio>",
     "tagline": "Documentation for <wc-aspect-ratio>",
@@ -986,6 +1083,12 @@ export const componentDocs = {
         "type": "`boolean`",
         "default": "—",
         "description": "Configures the `stacked` setting."
+      },
+      {
+        "name": "`curve` / `curve`",
+        "type": "`'linear' | 'smooth'`",
+        "default": "—",
+        "description": "Configures the `curve` setting."
       }
     ],
     "events": [],
@@ -998,7 +1101,20 @@ export const componentDocs = {
   "wc-line-chart": {
     "title": "<wc-line-chart>",
     "tagline": "Documentation for <wc-line-chart>",
-    "attributes": [],
+    "attributes": [
+      {
+        "name": "`...BaseChartElement.observedAttributes` / `...BaseChartElement.observedAttributes`",
+        "type": "",
+        "default": "—",
+        "description": "Configures the `...BaseChartElement.observedAttributes` setting."
+      },
+      {
+        "name": "`curve` / `curve`",
+        "type": "`'linear' | 'smooth'`",
+        "default": "—",
+        "description": "Configures the `curve` setting."
+      }
+    ],
     "events": [],
     "slots": [],
     "css": [
@@ -2824,6 +2940,49 @@ export const componentDocs = {
       "--progress-transition-duration",
       "--progress-transition-timing",
       "--progress-width"
+    ]
+  },
+  "qr-code": {
+    "title": "<qr-code>",
+    "tagline": "Documentation for <qr-code>",
+    "attributes": [
+      {
+        "name": "`value` / `value`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Currently selected value."
+      },
+      {
+        "name": "`size` / `size`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Adjusts spacing, padding, or icon sizing presets."
+      },
+      {
+        "name": "`quiet-zone` / `quietZone`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Configures the `quiet-zone` setting."
+      },
+      {
+        "name": "`error-correction` / `errorCorrection`",
+        "type": "`string`",
+        "default": "—",
+        "description": "Configures the `error-correction` setting."
+      }
+    ],
+    "events": [
+      {
+        "name": "`qr-code-error`",
+        "detail": "",
+        "description": "Emitted event."
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--qr-background",
+      "--qr-foreground",
+      "--qr-size"
     ]
   },
   "wc-radio-group": {

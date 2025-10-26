@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;qr-code&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/qr-code.js"></script>
+    <style>
+      .qr-stack {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .qr-examples {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+        align-items: center;
+      }
+
+      qr-code {
+        --qr-size: 180px;
+      }
+
+      qr-code.compact {
+        --qr-size: 140px;
+      }
+
+      .quiet-zone-example {
+        --qr-background: #0f172a;
+        --qr-foreground: #38bdf8;
+        padding: 1.25rem;
+        border-radius: 1rem;
+        background: rgba(15, 23, 42, 0.08);
+        display: inline-flex;
+      }
+
+      .qr-caption {
+        font-size: 0.875rem;
+        color: rgba(15, 23, 42, 0.7);
+      }
+
+      @media (max-width: 720px) {
+        .qr-examples {
+          gap: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="qr-code"></section>
+      <section class="qr-stack">
+        <div class="example-card">
+          <h3>Quick start</h3>
+          <div class="qr-examples" data-code-example>
+            <qr-code value="https://example.com/docs"></qr-code>
+            <qr-code value="mailto:hello@example.com" error-correction="H" size="200">
+              <span class="qr-caption">Scan to email support</span>
+            </qr-code>
+          </div>
+          <p>Drop the element anywhere to render an accessible, responsive QR code with optional captions.</p>
+        </div>
+
+        <div class="example-card">
+          <h3>Custom colours &amp; quiet zone</h3>
+          <div class="qr-examples" data-code-example>
+            <div class="quiet-zone-example">
+              <qr-code
+                class="compact"
+                value="https://example.com/app"
+                quiet-zone="2"
+                style="--qr-background: transparent; --qr-foreground: white;"
+              >
+                <span class="qr-caption">App download</span>
+              </qr-code>
+            </div>
+            <qr-code
+              class="compact"
+              value="WIFI:T:WPA;S:ExampleCafe;P:BestCoffee123;;"
+              quiet-zone="6"
+              error-correction="Q"
+              style="--qr-foreground: #16a34a; --qr-background: #ecfdf5;"
+            >
+              <span class="qr-caption">Connect to ExampleCafe Wi-Fi</span>
+            </qr-code>
+          </div>
+          <p>Adjust quiet zones, colours, and error correction to match brand palettes or scanning scenarios.</p>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('qr-code');
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

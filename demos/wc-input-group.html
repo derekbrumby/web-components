@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-input-group&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/input-group.js"></script>
+    <script type="module" src="../src/spinner.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2.5rem;
+      }
+
+      section {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.15rem;
+      }
+
+      p {
+        margin: 0;
+        color: color-mix(in srgb, currentColor 65%, transparent);
+      }
+
+      .group-grid {
+        display: grid;
+        gap: 1.5rem;
+        align-items: start;
+      }
+
+      .inline-group,
+      .textarea-group,
+      .status-group {
+        display: grid;
+        gap: 1rem;
+        width: min(32rem, 100%);
+      }
+
+      .stacked-grid {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      wc-input-group {
+        --input-group-radius: 1rem;
+        --input-group-background: color-mix(in srgb, var(--demo-surface, rgba(15, 23, 42, 0.05)) 100%, transparent);
+        --input-group-border-color: color-mix(in srgb, currentColor 22%, transparent);
+        --input-group-border-hover: color-mix(in srgb, currentColor 36%, transparent);
+        --input-group-border-focus: color-mix(in srgb, var(--demo-accent, rgb(99 102 241)) 70%, transparent);
+        --input-group-shadow-focus: 0 0 0 4px color-mix(in srgb, var(--demo-accent, rgb(99 102 241)) 20%, transparent);
+        --input-group-inline-padding-inline: 0.75rem;
+        --input-group-inline-padding-block: 0.4rem;
+        --input-group-block-gap: 0.75rem;
+        --input-group-block-padding-block: 0.85rem;
+      }
+
+      wc-input-group[disabled] {
+        --input-group-background: color-mix(in srgb, currentColor 6%, transparent);
+      }
+
+      wc-input-group-addon svg {
+        width: 1.05rem;
+        height: 1.05rem;
+      }
+
+      wc-input-group-button[variant="default"]::part(button) {
+        font-weight: 600;
+      }
+
+      .chip-avatars {
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
+        color: color-mix(in srgb, currentColor 70%, transparent);
+        font-size: 0.85rem;
+      }
+
+      .chip-avatars span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--demo-accent, rgb(99 102 241)) 18%, transparent);
+        color: var(--demo-accent-strong, rgb(67 56 202));
+        font-weight: 600;
+      }
+
+      .language-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: color-mix(in srgb, currentColor 60%, transparent);
+      }
+
+      .language-toggle button {
+        all: unset;
+        padding: 0.15rem 0.55rem;
+        border-radius: 999px;
+        background: color-mix(in srgb, currentColor 8%, transparent);
+        cursor: pointer;
+        font: inherit;
+      }
+
+      .language-toggle button[aria-pressed="true"] {
+        background: color-mix(in srgb, var(--demo-accent, rgb(99 102 241)) 20%, transparent);
+        color: var(--demo-accent-strong, rgb(67 56 202));
+        font-weight: 600;
+      }
+
+      .status-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .status-grid wc-input-group[data-disabled] {
+        --input-group-text-color: color-mix(in srgb, currentColor 65%, transparent);
+      }
+
+      .status-grid wc-input-group-text::part(text) {
+        font-size: 0.8rem;
+      }
+
+      .status-grid wc-spinner::part(label) {
+        display: none;
+      }
+
+      .status-grid .suffix-text {
+        display: inline-flex;
+        gap: 0.35rem;
+        align-items: center;
+        font-size: 0.8rem;
+        color: color-mix(in srgb, currentColor 68%, transparent);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="inline-group">
+        <div>
+          <h2>Inline addons</h2>
+          <p>Pair inputs with icons, counters, or buttons on the same row.</p>
+        </div>
+        <div class="group-grid">
+          <wc-input-group>
+            <wc-input-group-input placeholder="Search components" aria-label="Search components"></wc-input-group-input>
+            <wc-input-group-addon>
+              <svg aria-hidden="true" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="m15.5 14.1 2.4 2.4m-1.9-6.2a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </wc-input-group-addon>
+            <wc-input-group-addon align="inline-end">
+              <wc-input-group-text>12 results</wc-input-group-text>
+            </wc-input-group-addon>
+          </wc-input-group>
+
+          <wc-input-group>
+            <wc-input-group-input placeholder="acme" aria-label="Workspace handle"></wc-input-group-input>
+            <wc-input-group-addon>
+              <wc-input-group-text>https://</wc-input-group-text>
+            </wc-input-group-addon>
+            <wc-input-group-addon align="inline-end">
+              <wc-input-group-button size="icon-xs" class="rounded-full" aria-label="Copy URL">
+                <svg aria-hidden="true" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M7.5 5.5v-1A1.5 1.5 0 0 1 9 3h7a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 16 13h-1"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <rect
+                    x="2.5"
+                    y="7"
+                    width="10"
+                    height="10"
+                    rx="1.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                </svg>
+              </wc-input-group-button>
+            </wc-input-group-addon>
+          </wc-input-group>
+        </div>
+      </section>
+
+      <section class="textarea-group">
+        <div>
+          <h2>Stacked controls</h2>
+          <p>Textarea layouts can add toolbar content above or action bars below.</p>
+        </div>
+        <div class="stacked-grid">
+          <wc-input-group>
+            <wc-input-group-textarea rows="5" placeholder="Draft your update..."></wc-input-group-textarea>
+            <wc-input-group-addon align="block-start">
+              <div class="language-toggle" role="group" aria-label="Select syntax">
+                <span>Language</span>
+                <button type="button" aria-pressed="true">Markdown</button>
+                <button type="button" aria-pressed="false">Plain text</button>
+              </div>
+            </wc-input-group-addon>
+            <wc-input-group-addon align="block-end">
+              <div class="chip-avatars" aria-hidden="true">
+                <span>AB</span>
+                <span>CD</span>
+                <span>EF</span>
+              </div>
+              <wc-input-group-text>3 collaborators</wc-input-group-text>
+              <wc-input-group-button variant="default" size="sm">
+                Send update
+              </wc-input-group-button>
+            </wc-input-group-addon>
+          </wc-input-group>
+        </div>
+      </section>
+
+      <section class="status-group">
+        <div>
+          <h2>Disabled &amp; loading states</h2>
+          <p>Apply `disabled` to mute the surface and combine with `<wc-spinner>` for progress feedback.</p>
+        </div>
+        <div class="status-grid">
+          <wc-input-group disabled>
+            <wc-input-group-input value="Generating summary..." disabled></wc-input-group-input>
+            <wc-input-group-addon align="inline-end">
+              <wc-spinner></wc-spinner>
+            </wc-input-group-addon>
+          </wc-input-group>
+
+          <wc-input-group disabled>
+            <wc-input-group-textarea rows="3" disabled>Generating customer emails with the current prompt...</wc-input-group-textarea>
+            <wc-input-group-addon align="block-end">
+              <wc-input-group-text class="suffix-text">
+                <span>Saving draft</span>
+                <wc-spinner></wc-spinner>
+              </wc-input-group-text>
+            </wc-input-group-addon>
+          </wc-input-group>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -24,6 +24,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-data-table>`](#wc-data-table)
   - [`<wc-form>`](#wc-form)
   - [`<wc-checkbox>`](#wc-checkbox)
+  - [`<wc-input-group>`](#wc-input-group)
   - [`<wc-spinner>`](#wc-spinner)
   - [`<wc-skeleton>`](#wc-skeleton)
 - [`<wc-badge>`](#wc-badge)
@@ -97,6 +98,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-switch>` | Toggle switch with form integration and ARIA roles. | — |
 | `<wc-otp-field>` | Multi-input one-time passcode entry with auto-focus handling. | — |
 | `<wc-password-toggle-field>` | Password input that exposes a reveal button. | — |
+| `<wc-input-group>` suite | Compose inputs, text, and buttons with shared focus and styling. | [Docs](#wc-input-group) |
 
 ### Navigation
 
@@ -582,6 +584,102 @@ Call `toggle(force?: boolean)` to flip the state or force a particular value.
   `--checkbox-focus-ring`, `--checkbox-gap`, `--checkbox-label-color`.
 - Parts: `::part(root)`, `::part(control)`, `::part(indicator)`, `::part(label)`.
 - Data attributes: `[data-state="checked" | "unchecked" | "indeterminate"]`, `[data-disabled="true"]`.
+
+### `<wc-input-group>`
+
+Compose inputs, buttons, icons, and helper text inside a single surface. The input group keeps
+focus-visible styles in sync, supports stacked addons for textareas, and embraces custom
+controls by watching the shared `data-slot="input-group-control"` marker.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/input-group.js"></script>
+
+<wc-input-group>
+  <wc-input-group-input placeholder="Search..." aria-label="Search documentation"></wc-input-group-input>
+  <wc-input-group-addon>
+    <svg aria-hidden="true" viewBox="0 0 20 20" fill="none">
+      <path
+        d="m15.5 14.1 2.4 2.4m-1.9-6.2a6 6 0 1 1-12 0 6 6 0 0 1 12 0Z"
+        stroke="currentColor"
+        stroke-width="1.6"
+        stroke-linecap="round"
+      />
+    </svg>
+  </wc-input-group-addon>
+  <wc-input-group-addon align="inline-end">
+    <wc-input-group-button variant="secondary" size="xs">Search</wc-input-group-button>
+  </wc-input-group-addon>
+</wc-input-group>
+```
+
+#### Slots
+
+- `inline-start` — Auto-assigned to addons that appear before the control.
+- `inline-end` — Auto-assigned to addons that trail the control (usually buttons or counters).
+- `block-start` — For stacked content rendered above a multiline control.
+- `block-end` — For stacked content rendered below a multiline control.
+- `input-group-control` — Reserved for the primary input or textarea. `<wc-input-group-input>` and
+  `<wc-input-group-textarea>` set this automatically; custom elements can opt-in by adding the data
+  attribute.
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `disabled` | boolean | `false` | Applies `aria-disabled="true"`, mutes hover styles, and disables pointer interaction. |
+
+#### Styling hooks
+
+- CSS custom properties: `--input-group-radius`, `--input-group-background`,
+  `--input-group-background-disabled`, `--input-group-border-color`,
+  `--input-group-border-hover`, `--input-group-border-focus`,
+  `--input-group-shadow-focus`, `--input-group-inline-gap`,
+  `--input-group-inline-padding-block`, `--input-group-inline-padding-inline`,
+  `--input-group-block-gap`, `--input-group-block-padding-block`,
+  `--input-group-block-padding-inline`, `--input-group-divider-color`,
+  `--input-group-text-color`, `--input-group-min-height`.
+- Parts: `::part(wrapper)`, `::part(block-start)`, `::part(block-end)`, `::part(inline-start)`,
+  `::part(inline-end)`, `::part(control)`.
+- Data attributes: `[data-has-inline-start]`, `[data-has-inline-end]`, `[data-has-block-start]`,
+  `[data-has-block-end]`, `[data-disabled]`, `[data-focus-within]`, `[data-focus-visible]`.
+
+#### Related elements
+
+Each helper element lives in the same module and can be used individually:
+
+##### `<wc-input-group-addon>`
+
+Wraps icons, text, buttons, or dropdown triggers. Use the `align` attribute to control where it
+renders.
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `align` | `"inline-start" \| "inline-end" \| "block-start" \| "block-end"` | `"inline-start"` | Positions the addon next to the control or stacks it for textarea layouts. |
+
+##### `<wc-input-group-button>`
+
+Button primitive sized for dense toolbars.
+
+| Attribute | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "destructive" \| "outline" \| "secondary" \| "ghost" \| "link"` | `"ghost"` | Visual style. |
+| `size` | `"xs" \| "icon-xs" \| "sm" \| "icon-sm"` | `"xs"` | Adjusts padding and icon sizing. |
+| `disabled` | boolean | `false` | Forwards the disabled state to the underlying `<button>`. |
+
+##### `<wc-input-group-input>` & `<wc-input-group-textarea>`
+
+Form-associated controls that forward common attributes to the native input/textarea while applying
+group-friendly spacing. Add custom controls by setting `data-slot="input-group-control"` on any
+element that implements the same semantics.
+
+| Attribute | Type | Description |
+| --- | --- | --- |
+| `value`, `name`, `placeholder`, `min`, `max`, `step`, `autocomplete`, `inputmode`, `required`, `readonly`, `disabled`, `rows` (textarea) | string/boolean | Forwarded to the native element. |
+
+##### `<wc-input-group-text>`
+
+Simple text wrapper for inline metrics (“12 results”, “USD”, etc.). Use Tailwind utility classes or
+CSS to tweak the typography.
 
 ### `<wc-spinner>`
 

@@ -12,6 +12,29 @@
         gap: 1rem;
       }
 
+      .chart-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .chart-actions label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.4rem 0.75rem;
+        border-radius: 0.5rem;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        background: rgba(148, 163, 184, 0.12);
+        color: rgba(15, 23, 42, 0.8);
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .chart-actions label:hover {
+        background: rgba(148, 163, 184, 0.2);
+      }
+
       .chart-compact {
         --wc-chart-background: rgba(15, 23, 42, 0.88);
         --wc-chart-foreground: rgba(226, 232, 240, 0.95);
@@ -47,18 +70,25 @@
             <span slot="title">Line chart – interactive</span>
             <span slot="description">90 days of traffic</span>
           </wc-line-chart>
+          <div class="chart-actions">
+            <label>
+              <input type="checkbox" id="line-smooth" />
+              Smooth curves
+            </label>
+          </div>
         </div>
 
         <div class="example-card" data-code-example>
-          <h3>Linear trend</h3>
-          <p>A minimal line chart showing a single series without dots.</p>
+          <h3>Smoothed trend</h3>
+          <p>A minimal line chart showing a single series rendered with bezier smoothing.</p>
           <wc-line-chart
             id="linear-line"
             caption="Desktop visitors"
             category-key="month"
             legend="false"
+            curve="smooth"
           >
-            <span slot="title">Line chart – linear</span>
+            <span slot="title">Line chart – smooth</span>
             <span slot="description">January – June 2024</span>
           </wc-line-chart>
         </div>
@@ -68,6 +98,7 @@
     <script>
       const interactiveLine = document.getElementById('interactive-line');
       const linearLine = document.getElementById('linear-line');
+      const lineSmooth = document.getElementById('line-smooth');
       const lineData = [
         { date: '2024-06-01', desktop: 178, mobile: 200 },
         { date: '2024-06-02', desktop: 470, mobile: 410 },
@@ -88,6 +119,7 @@
             mobile: { label: 'Mobile', color: 'hsl(213 94% 68%)' },
           };
           interactiveLine.data = lineData;
+          interactiveLine.curve = lineSmooth?.checked ? 'smooth' : 'linear';
         }
 
         if (linearLine) {
@@ -102,8 +134,15 @@
             { month: 'May', desktop: 209 },
             { month: 'June', desktop: 214 },
           ];
+          linearLine.curve = 'smooth';
         }
       };
+
+      lineSmooth?.addEventListener('change', (event) => {
+        if (!interactiveLine) return;
+        const target = event.target;
+        interactiveLine.curve = target?.checked ? 'smooth' : 'linear';
+      });
 
       initLineCharts();
     </script>

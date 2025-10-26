@@ -96,6 +96,54 @@
     return Array.from({ length: tickCount + 1 }, (_, index) => index * niceStep).filter((tick) => tick <= niceMax + 1e-9);
   };
 
+  /**
+   * @typedef {{ x: number; y: number }} ChartPoint
+   */
+
+  /**
+   * Generates a polyline or smoothed bezier path description for a set of points.
+   *
+   * @param {ChartPoint[]} points
+   * @param {boolean} smooth
+   * @param {boolean} [move=true]
+   * @returns {string}
+   */
+  const buildPath = (points, smooth, move = true) => {
+    if (!points.length) return '';
+    if (points.length === 1) {
+      return `${move ? 'M' : 'L'} ${points[0].x} ${points[0].y}`;
+    }
+
+    if (!smooth) {
+      return points
+        .map((point, index) => `${index === 0 ? (move ? 'M' : 'L') : 'L'} ${point.x} ${point.y}`)
+        .join(' ');
+    }
+
+    const commands = [];
+    if (move) {
+      commands.push(`M ${points[0].x} ${points[0].y}`);
+    } else {
+      commands.push(`L ${points[0].x} ${points[0].y}`);
+    }
+
+    for (let index = 0; index < points.length - 1; index += 1) {
+      const p0 = points[index - 1] || points[index];
+      const p1 = points[index];
+      const p2 = points[index + 1];
+      const p3 = points[index + 2] || p2;
+
+      const control1x = p1.x + (p2.x - p0.x) / 6;
+      const control1y = p1.y + (p2.y - p0.y) / 6;
+      const control2x = p2.x - (p3.x - p1.x) / 6;
+      const control2y = p2.y - (p3.y - p1.y) / 6;
+
+      commands.push(`C ${control1x} ${control1y} ${control2x} ${control2y} ${p2.x} ${p2.y}`);
+    }
+
+    return commands.join(' ');
+  };
+
   const template = document.createElement('template');
   template.innerHTML = /* html */ `
     <style>
@@ -317,6 +365,7 @@
       this.#upgradeProperty('config');
       this.#upgradeProperty('categoryKey');
       this.#upgradeProperty('legend');
+      this.#upgradeProperty('curve');
       this.#render();
     }
 
@@ -602,14 +651,17 @@
 
   class WcAreaChart extends BaseChartElement {
     static get observedAttributes() {
-      return [...BaseChartElement.observedAttributes, 'stacked'];
+      return [...BaseChartElement.observedAttributes, 'stacked', 'curve'];
     }
 
     #stacked = true;
+    #curve = 'linear';
 
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'stacked') {
         this.#stacked = newValue !== 'false';
+      } else if (name === 'curve') {
+        this.#curve = newValue === 'smooth' ? 'smooth' : 'linear';
       } else {
         super.attributeChangedCallback(name, oldValue, newValue);
       }
@@ -627,6 +679,20 @@
      */
     set stacked(value) {
       this.setAttribute('stacked', value ? 'true' : 'false');
+    }
+
+    /**
+     * @returns {'linear' | 'smooth'}
+     */
+    get curve() {
+      return this.#curve;
+    }
+
+    /**
+     * @param {'linear' | 'smooth'} value
+     */
+    set curve(value) {
+      this.setAttribute('curve', value === 'smooth' ? 'smooth' : 'linear');
     }
 
     renderChart() {
@@ -710,6 +776,8 @@
       });
 
       const baseline = new Array(data.length).fill(0);
+      const isSmooth = this.#curve === 'smooth';
+      const max = ticks[ticks.length - 1] || 1;
       const areaGroup = document.createElementNS(SVG_NS, 'g');
       areaGroup.setAttribute('fill-opacity', '0.35');
       areaGroup.setAttribute('stroke-width', '2');
@@ -729,23 +797,19 @@
           if (this.#stacked) baseline[index] += value;
         }
 
+        const topPoints = upper.map((value, index) => ({
+          x: index * step,
+          y: chartHeight - (value / max) * chartHeight,
+        }));
+        const bottomPoints = lower.map((value, index) => ({
+          x: index * step,
+          y: chartHeight - (value / max) * chartHeight,
+        }));
+
         const path = document.createElementNS(SVG_NS, 'path');
-        const topPoints = upper
-          .map((value, index) => {
-            const x = index * step;
-            const y = chartHeight - (value / (ticks[ticks.length - 1] || 1)) * chartHeight;
-            return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
-          })
-          .join(' ');
-        const bottomPoints = [...lower]
-          .reverse()
-          .map((value, index) => {
-            const x = (data.length - 1 - index) * step;
-            const y = chartHeight - (value / (ticks[ticks.length - 1] || 1)) * chartHeight;
-            return `L ${x} ${y}`;
-          })
-          .join(' ');
-        path.setAttribute('d', `${topPoints} ${bottomPoints} Z`);
+        const topPath = buildPath(topPoints, isSmooth, true);
+        const bottomPath = buildPath([...bottomPoints].reverse(), isSmooth, false);
+        path.setAttribute('d', `${topPath} ${bottomPath} Z`);
         path.setAttribute('fill', color);
         path.setAttribute('stroke', color);
         areaGroup.appendChild(path);
@@ -806,6 +870,34 @@
   }
 
   class WcLineChart extends BaseChartElement {
+    static get observedAttributes() {
+      return [...BaseChartElement.observedAttributes, 'curve'];
+    }
+
+    #curve = 'linear';
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === 'curve') {
+        this.#curve = newValue === 'smooth' ? 'smooth' : 'linear';
+      } else {
+        super.attributeChangedCallback(name, oldValue, newValue);
+      }
+    }
+
+    /**
+     * @returns {'linear' | 'smooth'}
+     */
+    get curve() {
+      return this.#curve;
+    }
+
+    /**
+     * @param {'linear' | 'smooth'} value
+     */
+    set curve(value) {
+      this.setAttribute('curve', value === 'smooth' ? 'smooth' : 'linear');
+    }
+
     renderChart() {
       const data = this.getData();
       const config = this.getConfig();
@@ -880,6 +972,9 @@
         group.appendChild(tick);
       });
 
+      const isSmooth = this.#curve === 'smooth';
+      const max = ticks[ticks.length - 1] || 1;
+
       const lineGroup = document.createElementNS(SVG_NS, 'g');
       lineGroup.setAttribute('fill', 'none');
       lineGroup.setAttribute('stroke-width', '2.5');
@@ -890,16 +985,11 @@
       seriesKeys.forEach((key, seriesIndex) => {
         const color = config[key]?.color || DEFAULT_COLORS[seriesIndex % DEFAULT_COLORS.length];
         const path = document.createElementNS(SVG_NS, 'path');
-        path.setAttribute(
-          'd',
-          values
-            .map((entry, index) => {
-              const x = index * step;
-              const y = chartHeight - (entry[seriesIndex] / (ticks[ticks.length - 1] || 1)) * chartHeight;
-              return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
-            })
-            .join(' ')
-        );
+        const points = values.map((entry, index) => ({
+          x: index * step,
+          y: chartHeight - (entry[seriesIndex] / max) * chartHeight,
+        }));
+        path.setAttribute('d', buildPath(points, isSmooth, true));
         path.setAttribute('stroke', color);
         lineGroup.appendChild(path);
       });

@@ -34,6 +34,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/resizable.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/breadcrumb.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toggle.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/spinner.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/skeleton.js"></script>
@@ -1219,6 +1220,91 @@ thanks to the roving tabindex implementation.
   `--toolbar-hover-contrast`, `--toolbar-focus-ring`, `--toolbar-separator-color`, `--toolbar-font-family`.
 - Parts: `::part(toolbar)`, `::part(toggle-group)`, `::part(toggle)`, `::part(separator)`, `::part(metadata)`,
   `::part(share)`.
+
+### `<wc-breadcrumb>`
+
+Display the path to the current resource with a semantic breadcrumb trail. The
+primitives mirror the shadcn/ui API so you can port React examples to
+framework-agnostic markup while keeping accessible navigation semantics.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/breadcrumb.js"></script>
+
+<wc-breadcrumb label="Components">
+  <wc-breadcrumb-item>
+    <wc-breadcrumb-link href="/">Home</wc-breadcrumb-link>
+  </wc-breadcrumb-item>
+  <wc-breadcrumb-separator></wc-breadcrumb-separator>
+  <wc-breadcrumb-item>
+    <wc-breadcrumb-link href="/docs">Docs</wc-breadcrumb-link>
+  </wc-breadcrumb-item>
+  <wc-breadcrumb-separator></wc-breadcrumb-separator>
+  <wc-breadcrumb-item>
+    <wc-breadcrumb-page>Breadcrumb</wc-breadcrumb-page>
+  </wc-breadcrumb-item>
+</wc-breadcrumb>
+```
+
+#### Elements
+
+| Element | Description |
+| --- | --- |
+| `<wc-breadcrumb>` | Wraps the list in a `<nav>` and manages the accessible label. |
+| `<wc-breadcrumb-item>` | Semantic `<li>` wrapper that aligns its slotted child. |
+| `<wc-breadcrumb-link>` | Anchor-like crumb with hover/focus states and optional `aria-current`. |
+| `<wc-breadcrumb-page>` | Displays the current page label with `aria-current="page"`. |
+| `<wc-breadcrumb-separator>` | Presentation-only list item that renders a customisable separator. |
+| `<wc-breadcrumb-ellipsis>` | Visual ellipsis used for collapsed breadcrumb ranges. |
+
+#### `<wc-breadcrumb>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | string | `"Breadcrumb"` | Accessible name applied to the underlying `<nav>`. Accepts any string. |
+| `aria-label` | string | `"Breadcrumb"` | Overrides the accessible label. Takes precedence over `label`. |
+| `aria-labelledby` | string | `""` | References external elements for labelling. When set, `aria-label` is removed. |
+
+#### `<wc-breadcrumb-link>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `href` | string | `""` | Optional URL forwarded to the internal anchor. When omitted the link is not focusable. |
+| `target` | string | `""` | Standard anchor target attribute. |
+| `rel` | string | `""` | Relationship hints forwarded to the anchor. |
+| `download` | string | `""` | Download attribute passed to the anchor. |
+| `aria-current` | string | `""` | Set to `"page"` to mark the crumb as the current location. |
+
+#### `<wc-breadcrumb-page>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| _(none)_ | — | — | Displays slotted text and exposes `aria-current="page"`. |
+
+#### `<wc-breadcrumb-separator>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| _(default slot)_ | node | `/` | Slot any icon or text node to change the divider. |
+
+#### `<wc-breadcrumb-ellipsis>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | string | `""` | Optional accessible label describing the collapsed items. |
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-breadcrumb-gap`, `--wc-breadcrumb-font-size`,
+  `--wc-breadcrumb-color`, `--wc-breadcrumb-page-color`,
+  `--wc-breadcrumb-page-weight`, `--wc-breadcrumb-link-color`,
+  `--wc-breadcrumb-link-hover-color`,
+  `--wc-breadcrumb-link-hover-background`,
+  `--wc-breadcrumb-link-focus-ring`, `--wc-breadcrumb-link-padding`,
+  `--wc-breadcrumb-link-radius`, `--wc-breadcrumb-separator-color`,
+  `--wc-breadcrumb-ellipsis-color`, `--wc-breadcrumb-ellipsis-size`,
+  `--wc-breadcrumb-ellipsis-radius`, `--wc-breadcrumb-ellipsis-background`.
+- Parts: `::part(nav)`, `::part(list)`, `::part(item)`, `::part(link)`,
+  `::part(page)`, `::part(separator)`, `::part(icon)`.
 
 ### `<wc-pagination>`
 

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-button&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/button.js"></script>
+    <script type="module" src="../src/spinner.js"></script>
+    <style>
+      .button-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+      }
+
+      .button-columns {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 720px) {
+        .button-columns {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      .button-card h3 {
+        margin-bottom: 0.5rem;
+      }
+
+      .button-card p {
+        margin: 0.75rem 0 0;
+        color: rgba(15, 23, 42, 0.7);
+      }
+
+      .icon-row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .rounded-demo {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .rounded-demo span {
+        color: rgba(15, 23, 42, 0.7);
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="example-stack button-stack">
+        <div class="example-card button-card">
+          <h3>Variants</h3>
+          <div class="button-grid" data-code-example>
+            <wc-button>Default</wc-button>
+            <wc-button variant="secondary">Secondary</wc-button>
+            <wc-button variant="outline">Outline</wc-button>
+            <wc-button variant="ghost">Ghost</wc-button>
+            <wc-button variant="destructive">Destructive</wc-button>
+            <wc-button variant="link">Link</wc-button>
+            <wc-button href="https://example.com" target="_blank">Open docs</wc-button>
+          </div>
+          <p>Use the <code>href</code> attribute to turn the button into an anchor without losing styling.</p>
+        </div>
+
+        <div class="example-card button-card">
+          <h3>Sizes</h3>
+          <div class="button-columns">
+            <div>
+              <strong>Small</strong>
+              <div class="button-grid" data-code-example>
+                <wc-button variant="outline" size="sm">Small</wc-button>
+                <wc-button variant="outline" size="icon-sm" aria-label="Open" title="Open">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 17l10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path
+                      d="M8 7h9v9"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </wc-button>
+              </div>
+            </div>
+            <div>
+              <strong>Default</strong>
+              <div class="button-grid" data-code-example>
+                <wc-button variant="outline">Default</wc-button>
+                <wc-button variant="outline" size="icon" aria-label="Submit" title="Submit">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 5v14m7-7H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </wc-button>
+              </div>
+            </div>
+            <div>
+              <strong>Large</strong>
+              <div class="button-grid" data-code-example>
+                <wc-button variant="outline" size="lg">Large</wc-button>
+                <wc-button variant="outline" size="icon-lg" aria-label="Launch" title="Launch">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M5 12h14M12 5l7 7-7 7"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </wc-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="example-card button-card">
+          <h3>With icons</h3>
+          <div class="icon-row" data-code-example>
+            <wc-button variant="outline" size="sm">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14m7-7H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              New Item
+            </wc-button>
+            <wc-button>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 5a7 7 0 017 7 7 7 0 01-7 7 7 7 0 01-7-7 7 7 0 017-7z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              Schedule
+            </wc-button>
+            <wc-button variant="ghost">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M8 11l4 4 4-4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Move down
+            </wc-button>
+          </div>
+          <p>The spacing adapts automatically—no need for extra margins on the icons.</p>
+        </div>
+
+        <div class="example-card button-card">
+          <h3>Loading &amp; rounded</h3>
+          <div class="rounded-demo" data-code-example>
+            <wc-button size="sm" variant="outline" disabled>
+              <wc-spinner
+                style="--spinner-size: 1rem; --spinner-stroke-width: 2px; margin-inline-end: 0.4rem"
+                aria-hidden="true"
+              ></wc-spinner>
+              Saving
+            </wc-button>
+            <wc-button
+              variant="outline"
+              size="icon"
+              aria-label="Scroll to top"
+              style="--wc-button-radius: 999px"
+            >
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 5l7 7M12 5L5 12M12 5v14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </wc-button>
+            <span>Use the <code>--wc-button-radius</code> property to create fully rounded buttons.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

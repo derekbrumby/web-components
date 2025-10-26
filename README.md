@@ -46,6 +46,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/drawer.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/data-table.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/badge.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/button.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/kbd.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/audio-player.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/pricing-card.js"></script>
@@ -323,6 +324,79 @@ variants while remaining fully stylable through CSS variables and the exposed pa
   `--wc-badge-min-width`, `--wc-badge-min-height`, `--wc-badge-shadow`,
   `--wc-badge-text-transform`.
 - Parts: `::part(surface)` targets the pill surface for advanced customisation.
+
+### `<wc-button>`
+
+Display accessible call-to-action buttons or anchored links with consistent styling, hover states,
+and focus rings. The component mirrors shadcn/ui variants and now includes dedicated icon sizes for
+compact controls.
+
+> **Updated:** New `icon-sm` and `icon-lg` sizes join the existing `icon` option. Use them for tighter
+> toolbars or prominent icon buttons.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/button.js"></script>
+
+<wc-button variant="outline">Button</wc-button>
+<wc-button variant="outline" size="icon" aria-label="Submit">
+  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+    <path d="M12 5v14m7-7H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+  </svg>
+</wc-button>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | string | `"default"` | Visual style. Choose from `default`, `outline`, `ghost`, `destructive`, `secondary`, or `link`. |
+| `size` | string | `"default"` | Spacing preset. Supports `sm`, `default`, `lg`, `icon`, `icon-sm`, and `icon-lg`. |
+| `disabled` | boolean | `false` | Disables interaction, removes hover/active effects, and sets `aria-disabled` when rendering as a link. |
+| `href` | string | `""` | When provided the control renders as an anchor, keeping button visuals while navigating to the supplied URL. |
+| `target` | string | `""` | Optional anchor target such as `_blank`. Ignored when `href` is omitted. |
+| `rel` | string | `""` | Relationship metadata for linked buttons. Useful with external targets. |
+| `type` | string | `"button"` | Forwarded to the underlying `<button>` when no `href` is present. Accepts `button`, `submit`, or `reset`. |
+
+#### Slots
+
+- _(default)_ — Button label, icons, or spinner elements. Icons inherit the foreground colour
+  automatically; add `aria-label` when the button contains only an icon.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-button-font-family`, `--wc-button-font-weight`,
+  `--wc-button-font-size`, `--wc-button-letter-spacing`, `--wc-button-radius`, `--wc-button-gap`,
+  `--wc-button-border-width`, `--wc-button-padding-inline`, `--wc-button-padding-block`,
+  `--wc-button-min-inline-size`, `--wc-button-min-block-size`, `--wc-button-background`,
+  `--wc-button-background-hover`, `--wc-button-foreground`, `--wc-button-foreground-hover`,
+  `--wc-button-border-color`, `--wc-button-border-color-hover`, `--wc-button-focus-ring`,
+  `--wc-button-disabled-opacity`, `--wc-button-shadow`, `--wc-button-shadow-hover`.
+- Parts: `::part(control)` targets the interactive surface.
+
+#### Pointer cursor
+
+Tailwind CSS v4 switched the base button cursor to `default`. To keep pointer feedback for all button
+roles in your global styles, add:
+
+```css
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+```
+
+#### Accessibility
+
+- Supply an `aria-label` (or descriptive text) for icon-only buttons.
+- Disabled anchor buttons expose `aria-disabled="true"` and become unfocusable while preserving link
+  URLs for later re-enablement.
+
+#### Changelog
+
+- **2025-09-24:** Added `icon-sm` and `icon-lg` size presets to better match compact and spacious
+  toolbar layouts.
 
 ### `<wc-kbd>`
 

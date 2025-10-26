@@ -3996,6 +3996,73 @@ export const componentDocs = {
       "--wc-spinner-track-color"
     ]
   },
+  "wc-sonner": {
+    "title": "<wc-sonner>",
+    "tagline": "Documentation for <wc-sonner>",
+    "usage": {
+      "snippet": "<wc-sonner id=\"toaster\"></wc-sonner>\n<script type=\"module\">\n  const toaster = document.getElementById('toaster');\n  toaster.toast.success('Saved changes');\n</script>"
+    },
+    "attributes": [
+      {
+        "name": "`position` / `position`",
+        "type": "`'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right' | 'bottom-center'`",
+        "default": "`'top-right'`",
+        "description": "Anchors the toast viewport to a screen edge."
+      },
+      {
+        "name": "`duration` / `duration`",
+        "type": "`number`",
+        "default": "`4000`",
+        "description": "Default timeout for automatically dismissing toasts (ms)."
+      },
+      {
+        "name": "`close-on-click` / `closeOnClick`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Dismiss the toast when its surface is clicked."
+      }
+    ],
+    "events": [
+      {
+        "name": "`wc-sonner-open`",
+        "detail": "`{ id, record }`",
+        "description": "Fires when a toast is enqueued."
+      },
+      {
+        "name": "`wc-sonner-action`",
+        "detail": "`{ id, record }`",
+        "description": "Dispatched after an action button runs."
+      },
+      {
+        "name": "`wc-sonner-dismiss`",
+        "detail": "`{ id, record, reason }`",
+        "description": "Emitted when a toast leaves the viewport."
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--sonner-z-index",
+      "--sonner-gap",
+      "--sonner-max-width",
+      "--sonner-radius",
+      "--sonner-font-family",
+      "--sonner-color",
+      "--sonner-background",
+      "--sonner-border",
+      "--sonner-shadow",
+      "--sonner-success",
+      "--sonner-info",
+      "--sonner-warning",
+      "--sonner-error",
+      "--sonner-loading"
+    ],
+    "notes": [
+      "Provides Sonner-style helpers such as `toast.success`, `toast.error`, and `toast.promise`.",
+      "Supports imperative dismissal via `toast.dismiss(id?)`.",
+      "Action buttons emit `wc-sonner-action` events after running the provided callback.",
+      "Styling hooks exposed via ::part(viewport|toast|icon|body|title|description|actions|action-button|close-button)."
+    ]
+  },
   "wc-switch": {
     "title": "<wc-switch>",
     "tagline": "Documentation for <wc-switch>",

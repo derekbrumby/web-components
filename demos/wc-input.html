@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-input&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/input.js"></script>
+    <script type="module" src="../src/label.js"></script>
+    <script type="module" src="../src/button.js"></script>
+    <style>
+      .input-example {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .input-example h4 {
+        margin: 0;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #312e81;
+      }
+
+      .input-demo {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .input-field {
+        display: grid;
+        gap: 0.45rem;
+      }
+
+      .input-inline {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .input-inline wc-input {
+        flex: 1 1 auto;
+      }
+
+      .input-note {
+        margin: 0;
+        font-size: 0.9rem;
+        color: #475569;
+        line-height: 1.6;
+      }
+
+      .input-card {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .input-card .log {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-input"></section>
+      <section>
+        <header>
+          <h2>&lt;wc-input&gt;</h2>
+          <p>
+            A single-line form control that mirrors native input semantics, supports file uploads, and exposes CSS
+            variables for effortless theming.
+          </p>
+        </header>
+
+        <div class="example-grid two-column">
+          <div class="example-card input-card">
+            <div class="input-example">
+              <h4>Default</h4>
+              <div class="input-demo" data-code-example>
+                <wc-input type="email" placeholder="Email" aria-label="Email"></wc-input>
+              </div>
+            </div>
+
+            <div class="input-example">
+              <h4>With label</h4>
+              <div class="input-demo" data-code-example>
+                <wc-label for="input-with-label">Email</wc-label>
+                <wc-input id="input-with-label" type="email" placeholder="Email" autocomplete="email"></wc-input>
+              </div>
+            </div>
+
+            <div class="input-example">
+              <h4>With button</h4>
+              <form class="input-demo input-inline" id="input-subscribe" data-code-example>
+                <wc-input
+                  type="email"
+                  name="email"
+                  placeholder="Email address"
+                  aria-label="Email address"
+                  required
+                ></wc-input>
+                <wc-button type="submit" variant="outline">Subscribe</wc-button>
+              </form>
+              <pre class="log" id="input-log">Type an address and submit to see form behaviour.</pre>
+            </div>
+          </div>
+
+          <div class="example-card input-card">
+            <div class="input-example">
+              <h4>File picker</h4>
+              <div class="input-demo" data-code-example>
+                <wc-label for="input-file">Picture</wc-label>
+                <wc-input id="input-file" type="file" accept="image/*"></wc-input>
+              </div>
+              <p class="input-note">Selecting files toggles the <code>data-has-files</code> attribute for styling hooks.</p>
+            </div>
+
+            <div class="input-example">
+              <h4>Disabled</h4>
+              <div class="input-demo" data-code-example>
+                <wc-input disabled type="email" value="alex@example.com" placeholder="Email"></wc-input>
+              </div>
+            </div>
+
+            <div class="input-example">
+              <h4>Themed</h4>
+              <div class="input-demo" data-code-example>
+                <wc-input
+                  placeholder="Search components"
+                  type="search"
+                  style="
+                    --wc-input-inline-size: auto;
+                    --wc-input-background: rgba(22, 163, 74, 0.12);
+                    --wc-input-background-hover: rgba(22, 163, 74, 0.18);
+                    --wc-input-border: 1px solid rgba(21, 128, 61, 0.35);
+                    --wc-input-border-hover: 1px solid rgba(21, 128, 61, 0.55);
+                    --wc-input-border-focus: 2px solid rgba(22, 163, 74, 0.8);
+                    --wc-input-shadow-focus: 0 0 0 5px rgba(74, 222, 128, 0.32);
+                    --wc-input-color: #065f46;
+                    --wc-input-placeholder: rgba(5, 150, 105, 0.8);
+                  "
+                ></wc-input>
+              </div>
+              <p class="input-note">Custom properties unlock alternate palettes without touching the markup.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const form = document.getElementById('input-subscribe');
+      const log = document.getElementById('input-log');
+      const subscribeInput = form?.querySelector('wc-input');
+
+      if (form && log && subscribeInput) {
+        subscribeInput.addEventListener('input', () => {
+          log.textContent = `Current value: ${subscribeInput.value || '—'}`;
+        });
+
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const formData = new FormData(form);
+          const email = formData.get('email') || '—';
+          log.textContent = `Submitted email: ${email}`;
+          form.reset();
+        });
+      }
+    </script>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-input');
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

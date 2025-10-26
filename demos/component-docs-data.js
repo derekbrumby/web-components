@@ -1637,6 +1637,39 @@ export const componentDocs = {
       "--data-table-muted-color"
     ]
   },
+  "wc-table": {
+    "title": "<wc-table>",
+    "tagline": "Documentation for <wc-table>",
+    "usage": {
+      "snippet": "<wc-table>\n  <wc-table-caption>Recent invoices</wc-table-caption>\n  <wc-table-header>\n    <wc-table-row>\n      <wc-table-head style=\"width: 7.5rem;\">Invoice</wc-table-head>\n      <wc-table-head>Status</wc-table-head>\n      <wc-table-head>Method</wc-table-head>\n      <wc-table-head align=\"right\">Amount</wc-table-head>\n    </wc-table-row>\n  </wc-table-header>\n  <wc-table-body>\n    <wc-table-row>\n      <wc-table-cell>INV001</wc-table-cell>\n      <wc-table-cell>Paid</wc-table-cell>\n      <wc-table-cell>Credit Card</wc-table-cell>\n      <wc-table-cell align=\"right\">$250.00</wc-table-cell>\n    </wc-table-row>\n  </wc-table-body>\n</wc-table>",
+      "description": "Compose captions, headers, bodies, and footers declaratively."
+    },
+    "attributes": [],
+    "events": [],
+    "slots": [],
+    "css": [
+      "--table-background",
+      "--table-border-color",
+      "--table-radius",
+      "--table-shadow",
+      "--table-text-color",
+      "--table-muted-color",
+      "--table-header-background",
+      "--table-header-color",
+      "--table-footer-background",
+      "--table-row-border",
+      "--table-row-hover",
+      "--table-row-selected",
+      "--table-cell-padding-block",
+      "--table-cell-padding-inline",
+      "--table-caption-color"
+    ],
+    "notes": [
+      "Child elements such as <wc-table-header> are mirrored into a semantic <table> and stay hidden in light DOM.",
+      "Set data-state=\"selected\" on <wc-table-row> to highlight rows.",
+      "Use align or scope attributes on <wc-table-head> / <wc-table-cell> for alignment and semantics."
+    ]
+  },
   "wc-date-picker": {
     "title": "<wc-date-picker>",
     "tagline": "Documentation for <wc-date-picker>",
@@ -1830,6 +1863,95 @@ export const componentDocs = {
       "--drawer-z-index"
     ]
   },
+  "wc-sheet": {
+    "title": "<wc-sheet>",
+    "tagline": "Documentation for <wc-sheet>",
+    "usage": {
+      "snippet": "<wc-sheet side=\"right\">\n  <button slot=\"trigger\">Open sheet</button>\n  <span slot=\"title\">Edit profile</span>\n  <span slot=\"description\">Make changes to your profile here.</span>\n  <form>\n    <!-- sheet body -->\n  </form>\n  <div slot=\"footer\">\n    <button type=\"submit\">Save</button>\n    <button type=\"button\" data-sheet-close>Cancel</button>\n  </div>\n</wc-sheet>"
+    },
+    "attributes": [
+      {
+        "name": "`open` / `open`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Controls whether the sheet is visible."
+      },
+      {
+        "name": "`side` / `side`",
+        "type": "`\"top\" | \"right\" | \"bottom\" | \"left\"`",
+        "default": "`\"right\"`",
+        "description": "Chooses the viewport edge the sheet appears from."
+      }
+    ],
+    "properties": [
+      {
+        "name": "`show()`",
+        "type": "`() => void`",
+        "default": "—",
+        "description": "Opens the sheet programmatically."
+      },
+      {
+        "name": "`hide()`",
+        "type": "`() => void`",
+        "default": "—",
+        "description": "Closes the sheet programmatically."
+      },
+      {
+        "name": "`toggle(force?)`",
+        "type": "`(force?: boolean) => void`",
+        "default": "—",
+        "description": "Toggles the open state or forces a specific value."
+      }
+    ],
+    "events": [
+      {
+        "name": "`sheet-open`",
+        "detail": "`void`",
+        "description": "Fires after the sheet finishes opening."
+      },
+      {
+        "name": "`sheet-close`",
+        "detail": "`void`",
+        "description": "Fires after the sheet finishes closing."
+      }
+    ],
+    "slots": [
+      { "name": "`trigger`", "description": "Element that toggles the sheet." },
+      { "name": "`title`", "description": "Heading content announced by assistive technology." },
+      { "name": "`description`", "description": "Supplementary description for the sheet." },
+      { "name": "`close`", "description": "Optional close control rendered beside the title." },
+      { "name": "`footer`", "description": "Footer actions such as Save/Cancel buttons." },
+      { "name": "`default`", "description": "Main body content for the sheet." }
+    ],
+    "css": [
+      "--sheet-background",
+      "--sheet-body-gap",
+      "--sheet-color",
+      "--sheet-description-color",
+      "--sheet-description-size",
+      "--sheet-footer-gap",
+      "--sheet-header-gap",
+      "--sheet-max-height",
+      "--sheet-max-width",
+      "--sheet-overlay-backdrop-filter",
+      "--sheet-overlay-background",
+      "--sheet-padding",
+      "--sheet-radius",
+      "--sheet-section-gap",
+      "--sheet-shadow",
+      "--sheet-title-size",
+      "--sheet-title-tracking",
+      "--sheet-title-weight",
+      "--sheet-transition-duration",
+      "--sheet-transition-easing",
+      "--sheet-width",
+      "--sheet-z-index"
+    ],
+    "notes": [
+      "Slot elements with `[data-sheet-close]` close the sheet automatically when activated.",
+      "Trigger elements receive `aria-expanded` to mirror the open state."
+    ]
+  },
   "wc-dropdown-menu": {
     "title": "<wc-dropdown-menu>",
     "tagline": "Documentation for <wc-dropdown-menu>",
@@ -2016,6 +2138,43 @@ export const componentDocs = {
       "--wc-form-transition"
     ]
   },
+  "wc-field": {
+    "title": "<wc-field>",
+    "tagline": "Documentation for <wc-field>",
+    "usage": {
+      "imports": ["../src/field.js", "../src/switch.js"],
+      "snippet": "<wc-field-set>\n  <wc-field-legend>Profile</wc-field-legend>\n  <wc-field-group>\n    <wc-field>\n      <wc-field-label for=\"name\">Full name</wc-field-label>\n      <input id=\"name\" placeholder=\"Ada Lovelace\" />\n      <wc-field-description>Shown on invoices and receipts.</wc-field-description>\n    </wc-field>\n    <wc-field orientation=\"horizontal\">\n      <wc-switch id=\"announcements\"></wc-switch>\n      <wc-field-label for=\"announcements\">Product announcements</wc-field-label>\n    </wc-field>\n  </wc-field-group>\n</wc-field-set>"
+    },
+    "attributes": [
+      {
+        "name": "`orientation` / `orientation`",
+        "type": "`\"vertical\" | \"horizontal\" | \"responsive\"`",
+        "default": "`\"vertical\"`",
+        "description": "Switches the flex layout for slotted content. `responsive` promotes to columns when the container is at least 640px wide."
+      }
+    ],
+    "slots": [
+      {
+        "name": "`default`",
+        "description": "Labels, controls, helper text, and nested field primitives."
+      }
+    ],
+    "css": [
+      "--wc-field-gap",
+      "--wc-field-horizontal-gap",
+      "--wc-field-responsive-gap",
+      "--wc-field-min-label-width",
+      "--wc-field-border-width",
+      "--wc-field-border-inset",
+      "--wc-field-border-color",
+      "--wc-field-invalid-border"
+    ],
+    "notes": [
+      "Ships companion elements: <wc-field-group>, <wc-field-set>, <wc-field-legend>, <wc-field-label>, <wc-field-content>, <wc-field-description>, <wc-field-title>, <wc-field-separator>, and <wc-field-error>.",
+      "Set `data-invalid` on <wc-field> to toggle error highlighting and pair with <wc-field-error> for announced messages.",
+      "<wc-field-group> exposes container queries so fields with `orientation=\"responsive\"` adapt to the available width."
+    ]
+  },
   "wc-hover-card": {
     "title": "<wc-hover-card>",
     "tagline": "Documentation for <wc-hover-card>",
@@ -2116,6 +2275,196 @@ export const componentDocs = {
       "--radix-hover-card-content-transform-origin",
       "--radix-hover-card-trigger-height",
       "--radix-hover-card-trigger-width"
+    ]
+  },
+  "wc-input": {
+    "title": "<wc-input>",
+    "tagline": "Documentation for <wc-input>",
+    "usage": {
+      "snippet": "<wc-input type=\"email\" placeholder=\"Email\"></wc-input>"
+    },
+    "attributes": [
+      {
+        "name": "`value` / `value`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Current value of the control."
+      },
+      {
+        "name": "`type` / `type`",
+        "type": "`string`",
+        "default": "`\"text\"`",
+        "description": "Native input type passed through to the underlying control."
+      },
+      {
+        "name": "`placeholder` / `placeholder`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Hint text displayed when the field is empty."
+      },
+      {
+        "name": "`name` / `name`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Form field name used during submission."
+      },
+      {
+        "name": "`disabled` / `disabled`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Disables interaction and applies `data-disabled` styling hooks."
+      },
+      {
+        "name": "`readonly` / `readOnly`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Prevents user edits while keeping the value selectable."
+      },
+      {
+        "name": "`required` / `required`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Marks the field as required for native constraint validation."
+      },
+      {
+        "name": "`autocomplete` / `autocomplete`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Hints the browser about expected values such as `email` or `name`."
+      },
+      {
+        "name": "`inputmode` / `inputMode`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Suggests a virtual keyboard layout on touch devices."
+      },
+      {
+        "name": "`pattern` / `pattern`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Regular expression used for native validation."
+      },
+      {
+        "name": "`min` / `min`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Lower bound for numeric, date, or time inputs."
+      },
+      {
+        "name": "`max` / `max`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Upper bound for numeric, date, or time inputs."
+      },
+      {
+        "name": "`step` / `step`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Value granularity for numeric interfaces."
+      },
+      {
+        "name": "`minlength` / `minLength`",
+        "type": "`number | null`",
+        "default": "`null`",
+        "description": "Minimum number of characters required."
+      },
+      {
+        "name": "`maxlength` / `maxLength`",
+        "type": "`number | null`",
+        "default": "`null`",
+        "description": "Maximum number of characters accepted."
+      },
+      {
+        "name": "`enterkeyhint` / `enterKeyHint`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Sets the action hint for on-screen keyboards."
+      },
+      {
+        "name": "`autocapitalize` / `autocapitalize`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Controls automatic capitalisation on supporting devices."
+      },
+      {
+        "name": "`autocorrect` / `autocorrect`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Toggles platform autocorrect behaviour."
+      },
+      {
+        "name": "`spellcheck` / `spellcheck`",
+        "type": "`string`",
+        "default": "`\"\"`",
+        "description": "Controls spell checking for the field."
+      }
+    ],
+    "properties": [
+      {
+        "name": "`form`",
+        "type": "`HTMLFormElement | null`",
+        "default": "`null`",
+        "description": "Parent form when the input is associated."
+      },
+      {
+        "name": "`files`",
+        "type": "`FileList | null`",
+        "default": "`null`",
+        "description": "Selected files when `type` is set to `file`."
+      },
+      {
+        "name": "`inputElement`",
+        "type": "`HTMLInputElement`",
+        "default": "—",
+        "description": "Direct reference to the internal `<input>` element."
+      }
+    ],
+    "events": [
+      {
+        "name": "`input`",
+        "detail": "—",
+        "description": "Mirrors the native `input` event when the value changes."
+      },
+      {
+        "name": "`change`",
+        "detail": "—",
+        "description": "Dispatched when the underlying input emits `change`."
+      },
+      {
+        "name": "`invalid`",
+        "detail": "—",
+        "description": "Re-emitted when browser validation fails."
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--wc-input-inline-size",
+      "--wc-input-font-family",
+      "--wc-input-font-size",
+      "--wc-input-font-weight",
+      "--wc-input-letter-spacing",
+      "--wc-input-line-height",
+      "--wc-input-radius",
+      "--wc-input-padding-inline",
+      "--wc-input-padding-block",
+      "--wc-input-background",
+      "--wc-input-background-hover",
+      "--wc-input-background-disabled",
+      "--wc-input-border",
+      "--wc-input-border-hover",
+      "--wc-input-border-focus",
+      "--wc-input-shadow-focus",
+      "--wc-input-color",
+      "--wc-input-placeholder",
+      "--wc-input-caret-color",
+      "--wc-input-transition-duration",
+      "::part(container)",
+      "::part(input)"
+    ],
+    "notes": [
+      "Form-associated element that participates in native submission, reset, and state restoration.",
+      "Supports `type=\"file\"` with FileList form values and a `data-has-files` host attribute when files are selected.",
+      "Applies `data-empty` and `data-disabled` attributes so empty or disabled states are easy to style."
     ]
   },
   "wc-kbd": {
@@ -3944,6 +4293,73 @@ export const componentDocs = {
       "--wc-spinner-track-color"
     ]
   },
+  "wc-sonner": {
+    "title": "<wc-sonner>",
+    "tagline": "Documentation for <wc-sonner>",
+    "usage": {
+      "snippet": "<wc-sonner id=\"toaster\"></wc-sonner>\n<script type=\"module\">\n  const toaster = document.getElementById('toaster');\n  toaster.toast.success('Saved changes');\n</script>"
+    },
+    "attributes": [
+      {
+        "name": "`position` / `position`",
+        "type": "`'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right' | 'bottom-center'`",
+        "default": "`'top-right'`",
+        "description": "Anchors the toast viewport to a screen edge."
+      },
+      {
+        "name": "`duration` / `duration`",
+        "type": "`number`",
+        "default": "`4000`",
+        "description": "Default timeout for automatically dismissing toasts (ms)."
+      },
+      {
+        "name": "`close-on-click` / `closeOnClick`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Dismiss the toast when its surface is clicked."
+      }
+    ],
+    "events": [
+      {
+        "name": "`wc-sonner-open`",
+        "detail": "`{ id, record }`",
+        "description": "Fires when a toast is enqueued."
+      },
+      {
+        "name": "`wc-sonner-action`",
+        "detail": "`{ id, record }`",
+        "description": "Dispatched after an action button runs."
+      },
+      {
+        "name": "`wc-sonner-dismiss`",
+        "detail": "`{ id, record, reason }`",
+        "description": "Emitted when a toast leaves the viewport."
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--sonner-z-index",
+      "--sonner-gap",
+      "--sonner-max-width",
+      "--sonner-radius",
+      "--sonner-font-family",
+      "--sonner-color",
+      "--sonner-background",
+      "--sonner-border",
+      "--sonner-shadow",
+      "--sonner-success",
+      "--sonner-info",
+      "--sonner-warning",
+      "--sonner-error",
+      "--sonner-loading"
+    ],
+    "notes": [
+      "Provides Sonner-style helpers such as `toast.success`, `toast.error`, and `toast.promise`.",
+      "Supports imperative dismissal via `toast.dismiss(id?)`.",
+      "Action buttons emit `wc-sonner-action` events after running the provided callback.",
+      "Styling hooks exposed via ::part(viewport|toast|icon|body|title|description|actions|action-button|close-button)."
+    ]
+  },
   "wc-switch": {
     "title": "<wc-switch>",
     "tagline": "Documentation for <wc-switch>",
@@ -4335,6 +4751,109 @@ export const componentDocs = {
     ],
     "slots": [],
     "css": []
+  },
+  "wc-textarea": {
+    "title": "<wc-textarea>",
+    "tagline": "Documentation for <wc-textarea>",
+    "usage": {
+      "snippet": "<wc-textarea name=\"message\" placeholder=\"Type your message here.\"></wc-textarea>"
+    },
+    "attributes": [
+      {
+        "name": "`value` / `value`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Current textarea value. Updates whenever the user types or the property changes."
+      },
+      {
+        "name": "`name` / `name`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Name submitted with the form when the component is inside a form."
+      },
+      {
+        "name": "`placeholder` / `placeholder`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Hint text displayed while the field is empty."
+      },
+      {
+        "name": "`rows` / `rows`",
+        "type": "`number`",
+        "default": "`4`",
+        "description": "Preferred row count mirroring the native attribute."
+      },
+      {
+        "name": "`disabled` / `disabled`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Disables user input and dims the control."
+      },
+      {
+        "name": "`readonly` / `readOnly`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Prevents editing while keeping the value focusable."
+      },
+      {
+        "name": "`required` / `required`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Marks the field as required for native constraint validation."
+      },
+      {
+        "name": "`maxlength` / `maxLength`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Maximum character count allowed."
+      },
+      {
+        "name": "`minlength` / `minLength`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Minimum character count required."
+      },
+      {
+        "name": "`autocomplete` / `autocomplete`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Passes through to the inner textarea for autofill hints."
+      }
+    ],
+    "events": [
+      {
+        "name": "`input`",
+        "detail": "",
+        "description": "Emitted whenever the value changes."
+      },
+      {
+        "name": "`change`",
+        "detail": "",
+        "description": "Emitted when the value is committed (typically on blur)."
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--wc-textarea-color",
+      "--wc-textarea-min-block-size",
+      "--wc-textarea-padding",
+      "--wc-textarea-radius",
+      "--wc-textarea-border",
+      "--wc-textarea-border-hover",
+      "--wc-textarea-border-focus",
+      "--wc-textarea-background",
+      "--wc-textarea-background-hover",
+      "--wc-textarea-background-focus",
+      "--wc-textarea-resize",
+      "--wc-textarea-shadow",
+      "--wc-textarea-shadow-focus",
+      "--wc-textarea-placeholder"
+    ],
+    "notes": [
+      "Form-associated so it participates in native submissions and works with <label> elements.",
+      "Radix-inspired focus, hover, and disabled states customisable with CSS variables.",
+      "Supports pass-through attributes like rows, minlength, maxlength, autocomplete, and spellcheck."
+    ]
   },
   "wc-toggle": {
     "title": "<wc-toggle>",

@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-table&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/table.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .table-showcase {
+        display: grid;
+        gap: 2.5rem;
+      }
+
+      wc-table::part(surface) {
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .invoice-table wc-table {
+        --table-row-hover: rgba(79, 70, 229, 0.12);
+        --table-row-selected: rgba(129, 140, 248, 0.16);
+        --table-header-background: rgba(248, 250, 252, 0.92);
+        --table-shadow: 0 28px 54px -38px rgba(30, 41, 59, 0.45);
+      }
+
+      .analytics-table {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .analytics-table wc-table {
+        --table-background: rgba(15, 23, 42, 0.9);
+        --table-text-color: rgba(226, 232, 240, 0.98);
+        --table-header-background: rgba(30, 41, 59, 0.88);
+        --table-header-color: rgba(148, 163, 184, 0.95);
+        --table-footer-background: rgba(30, 41, 59, 0.88);
+        --table-row-hover: rgba(14, 116, 144, 0.18);
+        --table-row-selected: rgba(45, 212, 191, 0.22);
+        --table-border-color: rgba(148, 163, 184, 0.18);
+        --table-caption-color: rgba(148, 163, 184, 0.82);
+      }
+
+      .analytics-table wc-table::part(caption) {
+        text-align: right;
+      }
+
+      .legend {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        font-size: 0.9rem;
+        color: rgba(71, 85, 105, 0.85);
+      }
+
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .legend span::before {
+        content: '';
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 999px;
+        background: currentColor;
+        opacity: 0.35;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-table"></section>
+
+      <section class="table-showcase">
+        <div class="invoice-table">
+          <header>
+            <h2>Recent invoices</h2>
+            <p>
+              Recreate the shadcn/ui invoice example declaratively. Mark the active row with
+              <code>data-state="selected"</code> and align totals to the right using the <code>align</code> attribute.
+            </p>
+          </header>
+          <wc-table data-code-example>
+            <wc-table-caption>A list of your recent invoices.</wc-table-caption>
+            <wc-table-header>
+              <wc-table-row>
+                <wc-table-head style="width: 7.5rem;">Invoice</wc-table-head>
+                <wc-table-head>Status</wc-table-head>
+                <wc-table-head>Method</wc-table-head>
+                <wc-table-head align="right">Amount</wc-table-head>
+              </wc-table-row>
+            </wc-table-header>
+            <wc-table-body>
+              <wc-table-row data-state="selected">
+                <wc-table-cell>INV001</wc-table-cell>
+                <wc-table-cell>Paid</wc-table-cell>
+                <wc-table-cell>Credit Card</wc-table-cell>
+                <wc-table-cell align="right">$250.00</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-cell>INV002</wc-table-cell>
+                <wc-table-cell>Pending</wc-table-cell>
+                <wc-table-cell>PayPal</wc-table-cell>
+                <wc-table-cell align="right">$150.00</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-cell>INV003</wc-table-cell>
+                <wc-table-cell>Unpaid</wc-table-cell>
+                <wc-table-cell>Bank Transfer</wc-table-cell>
+                <wc-table-cell align="right">$350.00</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-cell>INV004</wc-table-cell>
+                <wc-table-cell>Paid</wc-table-cell>
+                <wc-table-cell>Credit Card</wc-table-cell>
+                <wc-table-cell align="right">$450.00</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-cell>INV005</wc-table-cell>
+                <wc-table-cell>Paid</wc-table-cell>
+                <wc-table-cell>PayPal</wc-table-cell>
+                <wc-table-cell align="right">$550.00</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-cell>INV006</wc-table-cell>
+                <wc-table-cell>Pending</wc-table-cell>
+                <wc-table-cell>Bank Transfer</wc-table-cell>
+                <wc-table-cell align="right">$200.00</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-cell>INV007</wc-table-cell>
+                <wc-table-cell>Unpaid</wc-table-cell>
+                <wc-table-cell>Credit Card</wc-table-cell>
+                <wc-table-cell align="right">$300.00</wc-table-cell>
+              </wc-table-row>
+            </wc-table-body>
+            <wc-table-footer>
+              <wc-table-row>
+                <wc-table-cell colspan="3">Total</wc-table-cell>
+                <wc-table-cell align="right">$2,550.00</wc-table-cell>
+              </wc-table-row>
+            </wc-table-footer>
+          </wc-table>
+        </div>
+
+        <div class="analytics-table">
+          <header>
+            <h2>Analytics snapshot</h2>
+            <p>
+              Demonstrates theming via CSS custom properties and row-level metadata. The <code>scope</code> attribute turns the
+              first column into row headers for assistive tech.
+            </p>
+          </header>
+          <wc-table>
+            <wc-table-caption>Metrics for the past four weeks.</wc-table-caption>
+            <wc-table-header>
+              <wc-table-row>
+                <wc-table-head>Week</wc-table-head>
+                <wc-table-head align="center">New users</wc-table-head>
+                <wc-table-head align="center">Churn</wc-table-head>
+                <wc-table-head align="right">MRR</wc-table-head>
+              </wc-table-row>
+            </wc-table-header>
+            <wc-table-body>
+              <wc-table-row>
+                <wc-table-head scope="row">Week 32</wc-table-head>
+                <wc-table-cell align="center">842</wc-table-cell>
+                <wc-table-cell align="center">2.1%</wc-table-cell>
+                <wc-table-cell align="right">$84,200</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-head scope="row">Week 33</wc-table-head>
+                <wc-table-cell align="center">905</wc-table-cell>
+                <wc-table-cell align="center">1.9%</wc-table-cell>
+                <wc-table-cell align="right">$86,540</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-head scope="row">Week 34</wc-table-head>
+                <wc-table-cell align="center">978</wc-table-cell>
+                <wc-table-cell align="center">1.8%</wc-table-cell>
+                <wc-table-cell align="right">$90,120</wc-table-cell>
+              </wc-table-row>
+              <wc-table-row>
+                <wc-table-head scope="row">Week 35</wc-table-head>
+                <wc-table-cell align="center">1,024</wc-table-cell>
+                <wc-table-cell align="center">1.7%</wc-table-cell>
+                <wc-table-cell align="right">$94,380</wc-table-cell>
+              </wc-table-row>
+            </wc-table-body>
+            <wc-table-footer>
+              <wc-table-row>
+                <wc-table-cell colspan="3">Change vs previous month</wc-table-cell>
+                <wc-table-cell align="right">+8.4%</wc-table-cell>
+              </wc-table-row>
+            </wc-table-footer>
+          </wc-table>
+          <div class="legend">
+            <span style="color: #facc15">Conversion goal</span>
+            <span style="color: #22d3ee">Retention target</span>
+            <span style="color: #34d399">Billing uplift</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-table');
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

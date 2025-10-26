@@ -29,6 +29,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/slider.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/carousel.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/mockup-phone.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/resizable.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
@@ -1636,6 +1637,45 @@ property setters for `src`, `alt`, `initials`, and `fallbackDelay` for imperativ
   `--avatar-transition`, `--avatar-fallback-background`, `--avatar-fallback-color`,
   `--avatar-fallback-font-size`, `--avatar-fallback-font-weight`, `--avatar-loading-opacity`.
 - Parts: `::part(root)`, `::part(image)`, `::part(fallback)`, `::part(fallback-text)` for precise theming.
+
+### `<wc-mockup-phone>`
+
+Frame screenshots or UI concepts inside an iPhone-inspired shell. Provide inline content for quick copy mockups or point the
+component at a wallpaper image to fill the display edge to edge.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/mockup-phone.js"></script>
+
+<wc-mockup-phone style="max-width: 18rem; color: white;">
+  <strong style="font-size: 1.35rem;">It's Glowtime.</strong>
+</wc-mockup-phone>
+
+<wc-mockup-phone
+  wallpaper="https://img.daisyui.com/images/stock/453966.webp?1"
+  alt="Abstract neon wallpaper"
+  style="--mockup-phone-border-color: #ff8938;"
+></wc-mockup-phone>
+```
+
+#### Attributes
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `wallpaper` | string | `""` | Source URL for the optional wallpaper image. When omitted the light DOM slot content remains visible. |
+| `alt` | string | `""` | Alternative text passed to the wallpaper `<img>`. Leave empty for decorative imagery. |
+
+#### Slots
+
+- _default_ — Content layered inside the phone display when no wallpaper is defined. Ideal for taglines or inline UI samples.
+
+#### Styling hooks
+
+- CSS custom properties: `--mockup-phone-aspect-ratio`, `--mockup-phone-background`, `--mockup-phone-border-color`,
+  `--mockup-phone-border-width`, `--mockup-phone-radius`, `--mockup-phone-radius-enhanced`, `--mockup-phone-padding`,
+  `--mockup-phone-max-width`,
+  `--mockup-phone-camera-background`, `--mockup-phone-camera-radius`, `--mockup-phone-camera-width`,
+  `--mockup-phone-camera-height`, `--mockup-phone-camera-offset`.
+- Parts: `::part(camera)`, `::part(display)`, `::part(wallpaper)`.
 
 ### `<wc-navigation-menu>`
 

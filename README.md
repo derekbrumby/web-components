@@ -867,7 +867,8 @@ attribute or nest the control inside the component.
 
 Transform any single-colour SVG path into playful ASCII art rendered inside a scalable SVG. Supply the
 `path` attribute with the `d` data from your icon set and the component will sample the silhouette into a
-character grid.
+character grid. By default the component renders a 32 × 32 matrix, and you can dial the resolution up or
+down with either plural (`columns`/`rows`) or singular (`column`/`row`) attributes.
 
 ```html
 <script type="module" src="https://cdn.example.com/web-components/ascii-icon.js"></script>
@@ -885,10 +886,13 @@ character grid.
 | --- | --- | --- | --- |
 | `path` | string | — | SVG path data (`d` attribute) that will be sampled into ASCII characters. |
 | `character` | string | `"█"` | Glyph used for filled cells; accepts any printable character(s). |
-| `columns` | number | auto | Preferred column count for the ASCII grid. |
-| `rows` | number | auto | Preferred row count for the ASCII grid. |
+| `columns` | number | `32` | Preferred column count for the ASCII grid (alias: `column`). |
+| `column` | number | `32` | Singular alias for `columns`, useful when mirroring JSX-style props. |
+| `rows` | number | `32` | Preferred row count for the ASCII grid (alias: `row`). |
+| `row` | number | `32` | Singular alias for `rows`. |
 | `cell-size` | number | `8` | Target pixel size for cells when `columns`/`rows` aren’t provided. |
 | `padding` | number | `0` | Expands the measured path bounds before sampling to add breathing room. |
+| `gap` | number | `0` | Shrinks each sampled cell to introduce spacing between characters. |
 
 #### Styling hooks
 

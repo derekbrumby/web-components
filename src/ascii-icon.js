@@ -1,6 +1,6 @@
 /**
  * @file ascii-icon.js
- * @version 1.0.0
+ * @version 1.1.0
  *
  * `<wc-ascii-icon>` renders a monochrome SVG path as ASCII art inside an SVG text grid.
  * Provide a `path` attribute with the SVG path data (`d` attribute) from a single-colour icon
@@ -44,9 +44,12 @@
         'path',
         'character',
         'columns',
+        'column',
         'rows',
+        'row',
         'cell-size',
         'padding',
+        'gap',
         'aria-label',
         'aria-labelledby',
         'aria-hidden',
@@ -149,9 +152,12 @@
       upgradeProperty(this, 'path');
       upgradeProperty(this, 'character');
       upgradeProperty(this, 'columns');
+      upgradeProperty(this, 'column');
       upgradeProperty(this, 'rows');
+      upgradeProperty(this, 'row');
       upgradeProperty(this, 'cellSize');
       upgradeProperty(this, 'padding');
+      upgradeProperty(this, 'gap');
       this.#syncAria();
       this.#render();
     }
@@ -171,6 +177,27 @@
       }
 
       this.#render();
+    }
+
+    /**
+     * Read the first valid positive integer attribute from the provided names.
+     * @param {...string} names
+     * @returns {number | null}
+     */
+    #readPositiveIntegerAttribute(...names) {
+      for (const name of names) {
+        const value = this.getAttribute(name);
+        if (value === null) {
+          continue;
+        }
+
+        const parsed = Number(value);
+        if (Number.isFinite(parsed) && parsed > 0) {
+          return Math.floor(parsed);
+        }
+      }
+
+      return null;
     }
 
     /**
@@ -209,12 +236,11 @@
 
     /**
      * Preferred number of columns in the ASCII grid.
-     * @type {number | null}
+     * @type {number}
      */
     get columns() {
-      const value = this.getAttribute('columns');
-      const parsed = value === null ? NaN : Number(value);
-      return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : null;
+      const value = this.#readPositiveIntegerAttribute('columns', 'column');
+      return value ?? 32;
     }
 
     set columns(value) {
@@ -226,13 +252,29 @@
     }
 
     /**
+     * Alias for `columns` allowing singular naming.
+     * @type {number}
+     */
+    get column() {
+      const value = this.#readPositiveIntegerAttribute('column', 'columns');
+      return value ?? 32;
+    }
+
+    set column(value) {
+      if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+        this.setAttribute('column', String(Math.floor(value)));
+      } else {
+        this.removeAttribute('column');
+      }
+    }
+
+    /**
      * Preferred number of rows in the ASCII grid.
-     * @type {number | null}
+     * @type {number}
      */
     get rows() {
-      const value = this.getAttribute('rows');
-      const parsed = value === null ? NaN : Number(value);
-      return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : null;
+      const value = this.#readPositiveIntegerAttribute('rows', 'row');
+      return value ?? 32;
     }
 
     set rows(value) {
@@ -240,6 +282,23 @@
         this.setAttribute('rows', String(Math.floor(value)));
       } else {
         this.removeAttribute('rows');
+      }
+    }
+
+    /**
+     * Alias for `rows` allowing singular naming.
+     * @type {number}
+     */
+    get row() {
+      const value = this.#readPositiveIntegerAttribute('row', 'rows');
+      return value ?? 32;
+    }
+
+    set row(value) {
+      if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+        this.setAttribute('row', String(Math.floor(value)));
+      } else {
+        this.removeAttribute('row');
       }
     }
 
@@ -276,6 +335,24 @@
         this.setAttribute('padding', String(value));
       } else {
         this.removeAttribute('padding');
+      }
+    }
+
+    /**
+     * Additional spacing (in SVG units) removed from each cell to create gutters between characters.
+     * @type {number}
+     */
+    get gap() {
+      const value = this.getAttribute('gap');
+      const parsed = value === null ? NaN : Number(value);
+      return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
+    }
+
+    set gap(value) {
+      if (typeof value === 'number' && Number.isFinite(value) && value >= 0) {
+        this.setAttribute('gap', String(value));
+      } else {
+        this.removeAttribute('gap');
       }
     }
 
@@ -344,16 +421,19 @@
       const width = Math.max(bbox.width + padding * 2, 1);
       const height = Math.max(bbox.height + padding * 2, 1);
 
-      const columnHint = this.columns;
-      const rowHint = this.rows;
+      const columnHint = this.#readPositiveIntegerAttribute('columns', 'column');
+      const rowHint = this.#readPositiveIntegerAttribute('rows', 'row');
       const cellSize = this.cellSize;
       const estimatedColumns = Math.max(2, Math.round(width / cellSize));
       const estimatedRows = Math.max(2, Math.round(height / cellSize));
-      const columns = clamp(columnHint ?? estimatedColumns, 2, 400);
-      const rows = clamp(rowHint ?? estimatedRows, 2, 400);
+      const defaultColumns = 32;
+      const defaultRows = 32;
+      const columns = clamp(columnHint ?? Math.max(defaultColumns, estimatedColumns), 2, 400);
+      const rows = clamp(rowHint ?? Math.max(defaultRows, estimatedRows), 2, 400);
 
       const cellWidth = width / columns;
       const cellHeight = height / rows;
+      const gap = clamp(this.gap, 0, Number.MAX_SAFE_INTEGER);
       const character = this.character;
       const fragment = document.createDocumentFragment();
 
@@ -383,7 +463,9 @@
           text.textContent = character;
           text.setAttribute('x', String((columnIndex + 0.5) * cellWidth));
           text.setAttribute('y', String((rowIndex + 0.5) * cellHeight));
-          text.setAttribute('font-size', String(Math.min(cellWidth, cellHeight) * 0.95));
+          const maxCellSize = Math.min(cellWidth, cellHeight);
+          const adjustedSize = Math.max(0, maxCellSize - gap);
+          text.setAttribute('font-size', String(adjustedSize * 0.95));
           fragment.append(text);
         }
       }

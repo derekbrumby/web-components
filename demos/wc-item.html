@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-item&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/item.js"></script>
+    <style>
+      main {
+        display: grid;
+        gap: 2.25rem;
+      }
+
+      .example-grid {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .example-grid > section {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .button-row {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .button {
+        appearance: none;
+        border: none;
+        border-radius: 999px;
+        padding: 0.45rem 0.85rem;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+        background: rgba(79, 70, 229, 0.12);
+        color: rgba(67, 56, 202, 0.95);
+        transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        background: rgba(79, 70, 229, 0.18);
+        color: rgba(49, 46, 129, 1);
+        transform: translateY(-1px);
+        outline: none;
+      }
+
+      .ghost-button {
+        background: rgba(15, 23, 42, 0.08);
+        color: rgba(30, 41, 59, 0.95);
+      }
+
+      .ghost-button:hover,
+      .ghost-button:focus-visible {
+        background: rgba(15, 23, 42, 0.14);
+        color: rgba(30, 41, 59, 1);
+      }
+
+      .icon-circle {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        color: rgba(79, 70, 229, 0.95);
+        background: rgba(79, 70, 229, 0.12);
+      }
+
+      .muted {
+        color: rgba(100, 116, 139, 0.95);
+      }
+
+      .compact-demo wc-item::part(surface) {
+        border-radius: 0.75rem;
+        background: rgba(248, 250, 252, 0.95);
+      }
+
+      .compact-demo wc-item[variant="outline"]::part(surface) {
+        background: transparent;
+      }
+
+      .group-demo wc-item::part(surface) {
+        border-radius: 0.75rem;
+      }
+
+      .group-demo wc-item-separator::part(separator) {
+        border-color: rgba(148, 163, 184, 0.25);
+      }
+
+      .header-grid {
+        display: grid;
+        gap: 1.25rem;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      }
+
+      .header-grid wc-item::part(surface) {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+      }
+
+      .header-grid img {
+        display: block;
+        width: 100%;
+        height: 10rem;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-item"></section>
+
+      <section class="example-grid">
+        <section>
+          <h3>Basic usage</h3>
+          <wc-item data-code-example>
+            <wc-item-content>
+              <wc-item-title>Basic item</wc-item-title>
+              <wc-item-description>
+                A flexible container for titles, descriptions, and actions.
+              </wc-item-description>
+            </wc-item-content>
+            <wc-item-actions>
+              <div class="button-row">
+                <button type="button" class="button">View</button>
+                <button type="button" class="button ghost-button">Remind me</button>
+              </div>
+            </wc-item-actions>
+          </wc-item>
+        </section>
+
+        <section>
+          <h3>Variants &amp; interactive state</h3>
+          <wc-item variant="outline" interactive data-code-example>
+            <wc-item-media variant="icon">
+              <span class="icon-circle">✓</span>
+            </wc-item-media>
+            <wc-item-content>
+              <wc-item-title>Profile verified</wc-item-title>
+              <wc-item-description>Your information is up to date.</wc-item-description>
+            </wc-item-content>
+            <wc-item-actions>
+              <span class="muted">Details</span>
+            </wc-item-actions>
+          </wc-item>
+
+          <wc-item variant="muted" data-code-example>
+            <wc-item-content>
+              <wc-item-title>Muted surface</wc-item-title>
+              <wc-item-description>
+                Use the muted variant to draw less attention to secondary content.
+              </wc-item-description>
+            </wc-item-content>
+          </wc-item>
+        </section>
+
+        <section class="compact-demo">
+          <h3>Compact layout</h3>
+          <wc-item size="sm" variant="outline" data-code-example>
+            <wc-item-media>
+              <span class="icon-circle" aria-hidden="true">B</span>
+            </wc-item-media>
+            <wc-item-content>
+              <wc-item-title>Billing update</wc-item-title>
+              <wc-item-description>Card ending in 4242 expires soon.</wc-item-description>
+            </wc-item-content>
+            <wc-item-actions>
+              <button type="button" class="button" style="padding-inline: 0.65rem;">Review</button>
+            </wc-item-actions>
+          </wc-item>
+
+          <wc-item size="sm" data-code-example>
+            <wc-item-content>
+              <wc-item-title>Invite pending</wc-item-title>
+            </wc-item-content>
+            <wc-item-actions>
+              <span class="muted">2 days ago</span>
+            </wc-item-actions>
+          </wc-item>
+        </section>
+
+        <section class="group-demo">
+          <h3>Grouped items with separators</h3>
+          <wc-item-group data-code-example>
+            <wc-item>
+              <wc-item-media variant="icon">
+                <span class="icon-circle" aria-hidden="true">JS</span>
+              </wc-item-media>
+              <wc-item-content>
+                <wc-item-title>JavaScript Weekly</wc-item-title>
+                <wc-item-description>Latest articles from the community.</wc-item-description>
+              </wc-item-content>
+              <wc-item-actions>
+                <span class="muted">Subscribe</span>
+              </wc-item-actions>
+            </wc-item>
+            <wc-item-separator></wc-item-separator>
+            <wc-item>
+              <wc-item-media variant="icon">
+                <span class="icon-circle" aria-hidden="true">UI</span>
+              </wc-item-media>
+              <wc-item-content>
+                <wc-item-title>Interface Design</wc-item-title>
+                <wc-item-description>Curated stories on product design.</wc-item-description>
+              </wc-item-content>
+              <wc-item-actions>
+                <span class="muted">Follow</span>
+              </wc-item-actions>
+            </wc-item>
+            <wc-item-separator></wc-item-separator>
+            <wc-item>
+              <wc-item-media variant="icon">
+                <span class="icon-circle" aria-hidden="true">AI</span>
+              </wc-item-media>
+              <wc-item-content>
+                <wc-item-title>Machine Learning</wc-item-title>
+                <wc-item-description>Applied AI use cases and tips.</wc-item-description>
+              </wc-item-content>
+              <wc-item-actions>
+                <span class="muted">Read</span>
+              </wc-item-actions>
+            </wc-item>
+          </wc-item-group>
+        </section>
+
+        <section>
+          <h3>Header &amp; footer slots</h3>
+          <div class="header-grid">
+            <wc-item variant="outline" data-code-example>
+              <wc-item-header>
+                <img
+                  src="https://images.unsplash.com/photo-1602146057681-08560aee8cde?q=80&w=640&auto=format&fit=crop"
+                  alt="Neon skyline"
+                  loading="lazy"
+                />
+              </wc-item-header>
+              <wc-item-content>
+                <wc-item-title>City nightscape pack</wc-item-title>
+                <wc-item-description>12 royalty-free photos for mood boards and hero imagery.</wc-item-description>
+              </wc-item-content>
+              <wc-item-footer>
+                <span class="muted">Updated 2 weeks ago</span>
+                <button type="button" class="button">Download</button>
+              </wc-item-footer>
+            </wc-item>
+
+            <wc-item variant="outline" data-code-example>
+              <wc-item-header>
+                <img
+                  src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=640&auto=format&fit=crop"
+                  alt="Team working together"
+                  loading="lazy"
+                />
+              </wc-item-header>
+              <wc-item-content>
+                <wc-item-title>Team onboarding</wc-item-title>
+                <wc-item-description>Track invite status and provisioning steps.</wc-item-description>
+              </wc-item-content>
+              <wc-item-footer>
+                <span class="muted">4 members pending</span>
+                <button type="button" class="button ghost-button">Manage</button>
+              </wc-item-footer>
+            </wc-item>
+          </div>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>

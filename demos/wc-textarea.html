@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-textarea&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/textarea.js"></script>
+    <script type="module" src="../src/label.js"></script>
+    <script type="module" src="../src/button.js"></script>
+    <style>
+      .textarea-examples {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .textarea-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .textarea-card p {
+        margin: 0;
+        color: rgba(15, 23, 42, 0.75);
+        line-height: 1.6;
+      }
+
+      .textarea-stack {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .textarea-with-button {
+        display: grid;
+        gap: 0.75rem;
+        max-inline-size: 420px;
+      }
+
+      .textarea-muted-text {
+        font-size: 0.9rem;
+        color: rgba(71, 85, 105, 0.95);
+        margin: 0;
+      }
+
+      wc-button {
+        justify-self: start;
+      }
+
+      @media (max-width: 720px) {
+        .textarea-with-button {
+          max-inline-size: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-textarea"></section>
+      <section class="textarea-examples">
+        <div class="example-card textarea-card">
+          <h3>Default</h3>
+          <div data-code-example>
+            <wc-textarea placeholder="Type your message here."></wc-textarea>
+          </div>
+        </div>
+
+        <div class="example-card textarea-card">
+          <h3>Disabled</h3>
+          <div data-code-example>
+            <wc-textarea placeholder="Type your message here." disabled></wc-textarea>
+          </div>
+        </div>
+
+        <div class="example-card textarea-card">
+          <h3>With label</h3>
+          <div class="textarea-stack" data-code-example>
+            <wc-label for="message-demo">Your message</wc-label>
+            <wc-textarea id="message-demo" placeholder="Type your message here."></wc-textarea>
+          </div>
+        </div>
+
+        <div class="example-card textarea-card">
+          <h3>With supporting text</h3>
+          <div class="textarea-stack" data-code-example>
+            <wc-label for="message-support">Your message</wc-label>
+            <wc-textarea id="message-support" placeholder="Type your message here."></wc-textarea>
+            <p class="textarea-muted-text">Your message will be copied to the support team.</p>
+          </div>
+        </div>
+
+        <div class="example-card textarea-card">
+          <h3>With button</h3>
+          <div class="textarea-with-button" data-code-example>
+            <wc-textarea placeholder="Type your message here."></wc-textarea>
+            <wc-button>Send message</wc-button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-textarea');
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

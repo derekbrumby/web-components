@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-sheet&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/sheet.js"></script>
+    <style>
+      .sheet-card {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .sheet-form {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .sheet-field {
+        display: grid;
+        gap: 0.4rem;
+      }
+
+      .sheet-field label {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+
+      .sheet-field input,
+      .sheet-field textarea,
+      .sheet-field select {
+        border-radius: 0.75rem;
+        border: 1px solid rgba(148, 163, 184, 0.45);
+        padding: 0.65rem 0.85rem;
+        font: inherit;
+        transition: border-color 160ms ease, box-shadow 160ms ease;
+      }
+
+      .sheet-field input:focus,
+      .sheet-field textarea:focus,
+      .sheet-field select:focus {
+        border-color: rgba(79, 70, 229, 0.6);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        outline: none;
+      }
+
+      .sheet-footer {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+      }
+
+      .sheet-footer button {
+        border-radius: 999px;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .sheet-footer button:active:not(:disabled) {
+        transform: translateY(1px);
+      }
+
+      .sheet-footer .ghost-button {
+        background: rgba(148, 163, 184, 0.16);
+        color: #1f2937;
+      }
+
+      .sheet-footer .primary-button {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: white;
+        box-shadow: 0 16px 30px -20px rgba(79, 70, 229, 0.6);
+      }
+
+      .sheet-status {
+        font-size: 0.95rem;
+        color: rgba(15, 23, 42, 0.75);
+      }
+
+      .sheet-quick-action {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .sheet-quick-action .quick-actions {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .quick-actions button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 0.85rem;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        padding: 0.75rem 1rem;
+        background: rgba(248, 250, 252, 0.65);
+        font: inherit;
+        cursor: pointer;
+        transition: border-color 150ms ease, background-color 150ms ease;
+      }
+
+      .quick-actions button:hover {
+        border-color: rgba(79, 70, 229, 0.5);
+        background: rgba(79, 70, 229, 0.08);
+      }
+
+      .quick-actions button.is-active {
+        border-color: rgba(79, 70, 229, 0.65);
+        background: rgba(79, 70, 229, 0.16);
+        box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.2);
+      }
+
+      .quick-actions button span:last-child {
+        font-size: 0.85rem;
+        color: rgba(15, 23, 42, 0.65);
+      }
+
+      .sheet-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .sheet-chip {
+        border-radius: 999px;
+        padding: 0.35rem 0.75rem;
+        background: rgba(79, 70, 229, 0.1);
+        color: rgba(79, 70, 229, 1);
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-sheet"></section>
+      <section>
+        <div class="example-grid two-column">
+          <div class="example-card sheet-card">
+            <h3>Profile management</h3>
+            <p class="sheet-status" id="sheet-profile-status">Profile last saved 4 minutes ago.</p>
+            <wc-sheet
+              id="sheet-profile"
+              style="
+                --sheet-width: min(420px, 94vw);
+                --sheet-padding: 2rem;
+                --sheet-radius: 1.5rem 0 0 1.5rem;
+                --sheet-background: rgba(248, 250, 252, 0.98);
+                --sheet-overlay-background: rgba(15, 23, 42, 0.45);
+                --sheet-section-gap: 1.75rem;
+              "
+              data-code-example
+            >
+              <button slot="trigger">Open sheet</button>
+              <span slot="title">Edit profile</span>
+              <span slot="description">
+                Make changes to your profile here. Click save when you are done.
+              </span>
+              <form class="sheet-form" id="sheet-profile-form">
+                <div class="sheet-field">
+                  <label for="sheet-profile-name">Name</label>
+                  <input id="sheet-profile-name" name="name" type="text" value="Pedro Duarte" autocomplete="name" />
+                </div>
+                <div class="sheet-field">
+                  <label for="sheet-profile-username">Username</label>
+                  <input
+                    id="sheet-profile-username"
+                    name="username"
+                    type="text"
+                    value="@peduarte"
+                    autocomplete="username"
+                  />
+                </div>
+                <div class="sheet-field">
+                  <label for="sheet-profile-bio">Bio</label>
+                  <textarea id="sheet-profile-bio" name="bio" rows="3" placeholder="Write a short introduction"></textarea>
+                </div>
+              </form>
+              <div slot="footer" class="sheet-footer">
+                <button type="button" class="ghost-button" data-sheet-close>Cancel</button>
+                <button type="submit" form="sheet-profile-form" class="primary-button">Save changes</button>
+              </div>
+            </wc-sheet>
+          </div>
+
+          <div class="example-card sheet-card">
+            <h3>Quick automations</h3>
+            <p>
+              Sheets can slide from any edge. This one uses <code>side="bottom"</code> to present quick actions without
+              leaving the current page.
+            </p>
+            <div class="sheet-chip-row" id="sheet-actions-summary">
+              <span class="sheet-chip">Notify design team</span>
+              <span class="sheet-chip">Archive assets</span>
+            </div>
+            <wc-sheet
+              id="sheet-automations"
+              side="bottom"
+              style="
+                --sheet-width: min(560px, 100vw);
+                --sheet-padding: 1.75rem;
+                --sheet-radius: 1.25rem 1.25rem 0 0;
+                --sheet-shadow: 0 28px 60px -32px rgba(15, 23, 42, 0.55);
+              "
+              data-code-example
+            >
+              <button slot="trigger" class="ghost-button">Manage automations</button>
+              <span slot="title">Automation presets</span>
+              <span slot="description">Enable the automations you want to run after publishing.</span>
+              <div class="sheet-quick-action" id="sheet-automation-form">
+                <div class="quick-actions">
+                  <button type="button" data-automation="design">
+                    <span>Notify design team</span>
+                    <span>Slack message</span>
+                  </button>
+                  <button type="button" data-automation="archive">
+                    <span>Archive assets</span>
+                    <span>Cloud storage</span>
+                  </button>
+                  <button type="button" data-automation="announce">
+                    <span>Post launch announcement</span>
+                    <span>Marketing email</span>
+                  </button>
+                </div>
+              </div>
+              <div slot="footer" class="sheet-footer">
+                <button type="button" class="ghost-button" data-sheet-close>Close</button>
+              </div>
+            </wc-sheet>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-sheet');
+
+      const sheetProfile = document.getElementById('sheet-profile');
+      const sheetProfileForm = document.getElementById('sheet-profile-form');
+      const sheetProfileStatus = document.getElementById('sheet-profile-status');
+
+      if (sheetProfile instanceof HTMLElement && sheetProfileForm instanceof HTMLFormElement && sheetProfileStatus) {
+        sheetProfileForm.addEventListener('submit', (event) => {
+          event.preventDefault();
+          const formData = new FormData(sheetProfileForm);
+          const name = String(formData.get('name') || '').trim() || 'Profile';
+          const username = String(formData.get('username') || '').trim();
+          sheetProfileStatus.textContent = `Saved ${name}${username ? ` (${username})` : ''} just now.`;
+          if (typeof sheetProfile.hide === 'function') {
+            sheetProfile.hide();
+          } else {
+            sheetProfile.removeAttribute('open');
+          }
+        });
+      }
+
+      const automationSheet = document.getElementById('sheet-automations');
+      const automationList = document.getElementById('sheet-actions-summary');
+      const automationForm = document.getElementById('sheet-automation-form');
+      const selected = new Set(['design', 'archive']);
+
+      const renderAutomationSummary = () => {
+        if (!(automationList instanceof HTMLElement)) {
+          return;
+        }
+        const labels = [];
+        if (selected.has('design')) {
+          labels.push('Notify design team');
+        }
+        if (selected.has('archive')) {
+          labels.push('Archive assets');
+        }
+        if (selected.has('announce')) {
+          labels.push('Post launch announcement');
+        }
+        automationList.innerHTML = labels
+          .map((label) => `<span class="sheet-chip">${label}</span>`)
+          .join('') || '<span class="sheet-chip">No automations enabled</span>';
+      };
+
+      if (automationForm instanceof HTMLElement) {
+        automationForm.addEventListener('click', (event) => {
+          const target = event.target instanceof HTMLElement ? event.target.closest('[data-automation]') : null;
+          if (!(target instanceof HTMLElement)) {
+            return;
+          }
+          const value = target.getAttribute('data-automation');
+          if (!value) {
+            return;
+          }
+          if (selected.has(value)) {
+            selected.delete(value);
+            target.classList.remove('is-active');
+          } else {
+            selected.add(value);
+            target.classList.add('is-active');
+          }
+          renderAutomationSummary();
+        });
+      }
+
+      if (automationSheet instanceof HTMLElement) {
+        automationSheet.addEventListener('sheet-open', () => {
+          const buttons = automationSheet.querySelectorAll('[data-automation]');
+          buttons.forEach((element) => {
+            if (!(element instanceof HTMLElement)) {
+              return;
+            }
+            const key = element.getAttribute('data-automation');
+            element.classList.toggle('is-active', !!key && selected.has(key));
+          });
+        });
+      }
+
+      renderAutomationSummary();
+    </script>
+  </body>
+</html>

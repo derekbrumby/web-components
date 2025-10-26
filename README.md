@@ -35,6 +35,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
 - [`<wc-chat-message>`](#wc-chat-message)
 - [`<wc-button>`](#wc-button)
 - [`<wc-input>`](#wc-input)
+- [`<wc-file-input>`](#wc-file-input)
 - [`<wc-alert>`](#wc-alert)
 - [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
 - [`<wc-label>`](#wc-label)
@@ -99,6 +100,7 @@ to the detailed reference for deeper usage notes.
 | --- | --- | --- |
 | `<wc-form>` | Drop-in contact form with validation helpers and error slots. | [Docs](#wc-form) |
 | `<wc-input>` | Single-line input with file support and shadcn-inspired styling. | [Docs](#wc-input) |
+| `<wc-file-input>` | Styled file picker with colour, size, and ghost variants. | [Docs](#wc-file-input) |
 | `<wc-checkbox>` | Tri-state checkbox with form association. | [Docs](#wc-checkbox) |
 | `<wc-radio-group>` | Accessible radio group mirroring Radix UI behaviour. | — |
 | `<wc-toggle-group>` | Single or multi-select toggle buttons. | — |
@@ -647,6 +649,70 @@ the majority of HTML input attributes.
 <script type="module" src="https://cdn.example.com/web-components/input.js"></script>
 
 <wc-input type="email" placeholder="Email address"></wc-input>
+```
+
+### `<wc-file-input>`
+
+File picker control with daisyUI-inspired styling, colour palettes, and ghost or solid variants. The
+component mirrors native file input semantics so it works in forms, supports keyboard activation, and
+exposes CSS hooks for deeper customisation.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/file-input.js"></script>
+
+<wc-file-input name="assets" accept=".pdf,.png" multiple color="primary"></wc-file-input>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` / `value` | string | `""` | Read the native value. Set to an empty string to clear the current selection. |
+| `name` / `name` | string | `""` | Field name submitted with a parent form. |
+| `accept` / `accept` | string | `""` | Comma-separated list of accepted MIME types or extensions. |
+| `capture` / `capture` | string | `null` | Hint for camera or microphone capture on supporting devices. |
+| `multiple` / `multiple` | boolean | `false` | Allows choosing more than one file. |
+| `disabled` / `disabled` | boolean | `false` | Disables interaction and applies a `data-disabled` attribute for styling. |
+| `required` / `required` | boolean | `false` | Marks the control as required for constraint validation. |
+| `variant` / `variant` | `"solid" \| "ghost"` | `"solid"` | Switches between filled and ghost chrome. |
+| `color` / `color` | string | `"neutral"` | Theme token for the button and focus accents (`primary`, `secondary`, `accent`, `info`, `success`, `warning`, `error`). |
+| `size` / `size` | string | `"md"` | Size presets (`xs`, `sm`, `md`, `lg`, `xl`) that update height and typography. |
+| `files` (readonly) | `FileList \| null` | `null` | Currently selected files. |
+| `form` (readonly) | `HTMLFormElement \| null` | `null` | Associated form when nested inside a `<form>`. |
+
+#### Methods
+
+- `clear()` — Programmatically remove the currently selected files.
+- `click()`, `focus()`, `blur()` — Proxy native input methods for imperative control.
+
+#### Events
+
+- `input` — Re-dispatched when the underlying control emits `input`.
+- `change` — Re-dispatched after the selected files change.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-file-input-font-family`, `--wc-file-input-font-size`,
+  `--wc-file-input-font-weight`, `--wc-file-input-letter-spacing`, `--wc-file-input-line-height`,
+  `--wc-file-input-radius`, `--wc-file-input-height`, `--wc-file-input-inline-size`,
+  `--wc-file-input-border-width`, `--wc-file-input-background`, `--wc-file-input-background-hover`,
+  `--wc-file-input-background-disabled`, `--wc-file-input-border-color`,
+  `--wc-file-input-border-color-hover`, `--wc-file-input-border-color-focus`, `--wc-file-input-shadow`,
+  `--wc-file-input-shadow-focus`, `--wc-file-input-color`, `--wc-file-input-placeholder`,
+  `--wc-file-input-disabled-color`, `--wc-file-input-button-background`,
+  `--wc-file-input-button-background-hover`, `--wc-file-input-button-border`,
+  `--wc-file-input-button-color`, `--wc-file-input-button-shadow`, `--wc-file-input-button-radius`,
+  `--wc-file-input-transition`.
+- Parts: `::part(container)`, `::part(input)`.
+- Data attributes: `[data-variant]`, `[data-color]`, `[data-size]`, `[data-disabled]`, `[data-has-files]`.
+
+#### Notes
+
+- Form-associated: participates in native submission, reset, and validation flows.
+- `data-has-files` toggles automatically, enabling contextual styling when files are selected.
+- Combine `variant="ghost"` and the colour presets to mirror daisyUI’s ghost, solid, and stateful
+  treatments without additional CSS.
+
 ### `<wc-field>`
 
 Composable form layout primitives for stacking labels, controls, helper text, and error messaging. The

@@ -36,6 +36,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/skeleton.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/scroll-area.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/popover.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/pagination.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/separator.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/toolbar.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/date-picker.js"></script>
@@ -1019,6 +1020,99 @@ thanks to the roving tabindex implementation.
   `--toolbar-hover-contrast`, `--toolbar-focus-ring`, `--toolbar-separator-color`, `--toolbar-font-family`.
 - Parts: `::part(toolbar)`, `::part(toggle-group)`, `::part(toggle)`, `::part(separator)`, `::part(metadata)`,
   `::part(share)`.
+
+### `<wc-pagination>`
+
+Compose accessible pagination controls with previous/next links, numbered buttons, and ellipsis separators.
+The primitives mirror the shadcn/ui pagination API so you can translate existing React examples into
+standalone web components without shipping a framework runtime.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/pagination.js"></script>
+
+<wc-pagination label="Invoices">
+  <wc-pagination-content>
+    <wc-pagination-item>
+      <wc-pagination-previous href="#prev"></wc-pagination-previous>
+    </wc-pagination-item>
+    <wc-pagination-item>
+      <wc-pagination-link href="#page-1">1</wc-pagination-link>
+    </wc-pagination-item>
+    <wc-pagination-item>
+      <wc-pagination-link href="#page-2" current value="2">2</wc-pagination-link>
+    </wc-pagination-item>
+    <wc-pagination-item>
+      <wc-pagination-link href="#page-3">3</wc-pagination-link>
+    </wc-pagination-item>
+    <wc-pagination-item>
+      <wc-pagination-ellipsis></wc-pagination-ellipsis>
+    </wc-pagination-item>
+    <wc-pagination-item>
+      <wc-pagination-next href="#next"></wc-pagination-next>
+    </wc-pagination-item>
+  </wc-pagination-content>
+</wc-pagination>
+```
+
+#### Elements
+
+| Element | Description |
+| --- | --- |
+| `<wc-pagination>` | Wrapper that renders a `<nav>` with an accessible label. |
+| `<wc-pagination-content>` | Flexbox list container for pagination items. |
+| `<wc-pagination-item>` | Semantic `<li>` wrapper that aligns its slotted child. |
+| `<wc-pagination-link>` | Numbered page link/button that can represent the current page or be disabled. |
+| `<wc-pagination-previous>` | Shortcut for the previous page link with sensible defaults. |
+| `<wc-pagination-next>` | Shortcut for the next page link with sensible defaults. |
+| `<wc-pagination-ellipsis>` | Visual ellipsis with a screen-reader label. |
+
+#### `<wc-pagination>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | string | `"Pagination"` | Accessible name applied to the underlying `<nav>` element. |
+
+#### `<wc-pagination-link>` (and derived elements)
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `href` | string | `""` | Optional URL for the internal anchor. When omitted the control behaves like a button. |
+| `target` | string | `""` | Forwarded to the anchor when `href` is set. |
+| `rel` | string | `""` | Forwarded to the anchor when `href` is set. Defaults to `"prev"`/`"next"` on the directional elements. |
+| `download` | string | `""` | Pass-through download attribute for anchor usage. |
+| `value` | string | `""` | Optional identifier surfaced via the activation event detail. |
+| `current` | boolean | `false` | Marks the control as the active page and sets `aria-current="page"`. |
+| `disabled` | boolean | `false` | Removes the link from the tab order and prevents activation. |
+| `aria-label` | string | — | Overrides the accessible name announced for the internal control. |
+| `label` | string | `"Previous"`/`"Next"` | (Directional elements only) Overrides the fallback text shown when no slot content is provided. |
+
+#### `<wc-pagination-ellipsis>`
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `label` | string | `"More pages"` | Screen reader text announced for the ellipsis indicator. |
+
+#### Events
+
+- `wc-pagination-activate` — Fired by `<wc-pagination-link>`, `<wc-pagination-previous>`, and
+  `<wc-pagination-next>` whenever they are triggered. `event.detail` exposes `{ source, value, href, current,
+  disabled, originalEvent }`.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-pagination-justify`, `--wc-pagination-wrap`, `--wc-pagination-gap`,
+  `--wc-pagination-link-gap`, `--wc-pagination-min-width`, `--wc-pagination-height`,
+  `--wc-pagination-padding-inline`, `--wc-pagination-padding-block`, `--wc-pagination-radius`,
+  `--wc-pagination-border-color`, `--wc-pagination-background`, `--wc-pagination-color`,
+  `--wc-pagination-font-size`, `--wc-pagination-font-weight`, `--wc-pagination-letter-spacing`,
+  `--wc-pagination-hover-background`, `--wc-pagination-hover-color`, `--wc-pagination-hover-border-color`,
+  `--wc-pagination-focus-ring`, `--wc-pagination-active-background`, `--wc-pagination-active-color`,
+  `--wc-pagination-active-border-color`, `--wc-pagination-disabled-background`,
+  `--wc-pagination-disabled-border-color`, `--wc-pagination-disabled-color`,
+  `--wc-pagination-disabled-opacity`, `--wc-pagination-ellipsis-background`,
+  `--wc-pagination-ellipsis-color`.
+- Parts: `::part(root)`, `::part(content)`, `::part(item)`, `::part(link)`, `::part(label)`,
+  `::part(ellipsis)`, `::part(sr-label)`.
 
 ### `<wc-otp-field>`
 

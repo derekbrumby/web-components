@@ -23,6 +23,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [Chart variants](#chart-variants)
   - [`<wc-data-table>`](#wc-data-table)
   - [`<wc-form>`](#wc-form)
+  - [`<wc-field>`](#wc-field)
   - [`<wc-checkbox>`](#wc-checkbox)
   - [`<wc-spinner>`](#wc-spinner)
   - [`<wc-skeleton>`](#wc-skeleton)
@@ -87,6 +88,7 @@ to the detailed reference for deeper usage notes.
 | Component | Summary | Reference |
 | --- | --- | --- |
 | `<wc-form>` | Drop-in contact form with validation helpers and error slots. | [Docs](#wc-form) |
+| `<wc-field>` | Layout primitives for grouping labels, inputs, and helper text. | [Docs](#wc-field) |
 | `<wc-checkbox>` | Tri-state checkbox with form association. | [Docs](#wc-checkbox) |
 | `<wc-radio-group>` | Accessible radio group mirroring Radix UI behaviour. | — |
 | `<wc-toggle-group>` | Single or multi-select toggle buttons. | — |
@@ -542,6 +544,88 @@ helpers for server-driven errors.
 - Parts: `::part(container)`, `::part(header)`, `::part(title)`, `::part(description)`, `::part(form)`,
   `::part(field)`, `::part(label)`, `::part(messages)`, `::part(message)`, `::part(control)`,
   `::part(submit)`.
+
+### `<wc-field>`
+
+Composable form layout primitives for stacking labels, controls, helper text, and error messaging. The
+suite mirrors the shadcn/ui `Field` API so you can port JSX examples to standards-based HTML while
+retaining semantic `<fieldset>` and `<legend>` structure.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/field.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
+
+<wc-field-set>
+  <wc-field-legend>Profile</wc-field-legend>
+  <wc-field-description>This information appears on invoices.</wc-field-description>
+  <wc-field-group>
+    <wc-field>
+      <wc-field-label for="full-name">Full name</wc-field-label>
+      <input id="full-name" autocomplete="name" placeholder="Avery Johnson" required />
+      <wc-field-description>Use your legal name.</wc-field-description>
+    </wc-field>
+    <wc-field orientation="horizontal">
+      <wc-switch id="newsletter"></wc-switch>
+      <wc-field-label for="newsletter">Subscribe to announcements</wc-field-label>
+    </wc-field>
+  </wc-field-group>
+</wc-field-set>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `"vertical" \| "horizontal" \| "responsive"` | `"vertical"` | Switches the layout for the slotted controls. `responsive` swaps to columns when the host crosses a `min-width: 640px` container query. |
+
+#### Slots
+
+- _(default)_ — Labels, controls, helper text, and nested field containers.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-field-gap`, `--wc-field-horizontal-gap`, `--wc-field-responsive-gap`,
+  `--wc-field-min-label-width`, `--wc-field-border-width`, `--wc-field-border-inset`,
+  `--wc-field-border-color`, `--wc-field-invalid-border`.
+- Parts: `::part(root)` styles the internal flex container.
+- Data attributes: `[data-orientation="vertical" | "horizontal" | "responsive"]`,
+  `[data-invalid]` for invalid styling states.
+
+#### Supporting elements
+
+- `<wc-field-group>` — Stacks related fields and exposes `::part(group)` for layout. Customise spacing
+  with `--wc-field-group-gap`. The host enables container queries so responsive fields adapt to the
+  available width.
+- `<wc-field-set>` — Renders a semantic `<fieldset>` wrapper. Style spacing with `--wc-field-set-gap`,
+  `--wc-field-set-padding`, `--wc-field-set-border`, `--wc-field-set-radius`, and
+  `--wc-field-set-background`.
+- `<wc-field-legend>` — Accessible legend element. Set `variant="label"` to reuse label sizing.
+  Shares CSS hooks `--wc-field-legend-size`, `--wc-field-legend-weight`, `--wc-field-legend-color` and
+  surfaces `::part(legend)`.
+- `<wc-field-label>` — Styled label that forwards the `for`/`htmlFor` property to the underlying
+  `<label>`. Adjust typography with `--wc-field-label-size`, `--wc-field-label-weight`, and
+  `--wc-field-label-color`. Exposes `::part(label)`.
+- `<wc-field-content>` — Flex column wrapper to group a label, title, and descriptions beside a
+  control. Tweak spacing with `--wc-field-content-gap`. Exposes `::part(content)` and adds a
+  `data-field-content` attribute for selector targeting from ancestor styles.
+- `<wc-field-description>` — Helper text component with `::part(description)` and tokens
+  `--wc-field-description-color`, `--wc-field-description-size`.
+- `<wc-field-title>` — Secondary heading for richer labels. Customise via `--wc-field-title-size`,
+  `--wc-field-title-weight`, and `::part(title)`.
+- `<wc-field-separator>` — Visual divider with optional inline text. Adjust with
+  `--wc-field-separator-color`, `--wc-field-separator-gap`, `--wc-field-separator-size`, and
+  `::part(separator)`.
+- `<wc-field-error>` — Accessible error container announcing changes with `role="alert"`. Bind an
+  array of validation issues via the `errors` property and customise styles with
+  `--wc-field-error-color`, `--wc-field-error-background`, `--wc-field-error-radius`,
+  `--wc-field-error-padding`, `--wc-field-error-font-size`, plus parts `::part(error)`,
+  `::part(error-message)`, and `::part(error-list)`.
+- `<wc-field-title>` and `<wc-field-description>` are often paired inside `<wc-field-content>` for
+  horizontal or responsive layouts.
+
+`<wc-field-error>` accepts either slotted content or an `errors` property containing objects with a
+`message` string. Multiple messages render as a list automatically, enabling interoperability with
+React Hook Form, TanStack Form, or any validator that outputs `[{ message: string }]` structures.
 
 ### `<wc-checkbox>`
 

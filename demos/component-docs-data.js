@@ -1979,6 +1979,43 @@ export const componentDocs = {
       "--wc-form-transition"
     ]
   },
+  "wc-field": {
+    "title": "<wc-field>",
+    "tagline": "Documentation for <wc-field>",
+    "usage": {
+      "imports": ["../src/field.js", "../src/switch.js"],
+      "snippet": "<wc-field-set>\n  <wc-field-legend>Profile</wc-field-legend>\n  <wc-field-group>\n    <wc-field>\n      <wc-field-label for=\"name\">Full name</wc-field-label>\n      <input id=\"name\" placeholder=\"Ada Lovelace\" />\n      <wc-field-description>Shown on invoices and receipts.</wc-field-description>\n    </wc-field>\n    <wc-field orientation=\"horizontal\">\n      <wc-switch id=\"announcements\"></wc-switch>\n      <wc-field-label for=\"announcements\">Product announcements</wc-field-label>\n    </wc-field>\n  </wc-field-group>\n</wc-field-set>"
+    },
+    "attributes": [
+      {
+        "name": "`orientation` / `orientation`",
+        "type": "`\"vertical\" | \"horizontal\" | \"responsive\"`",
+        "default": "`\"vertical\"`",
+        "description": "Switches the flex layout for slotted content. `responsive` promotes to columns when the container is at least 640px wide."
+      }
+    ],
+    "slots": [
+      {
+        "name": "`default`",
+        "description": "Labels, controls, helper text, and nested field primitives."
+      }
+    ],
+    "css": [
+      "--wc-field-gap",
+      "--wc-field-horizontal-gap",
+      "--wc-field-responsive-gap",
+      "--wc-field-min-label-width",
+      "--wc-field-border-width",
+      "--wc-field-border-inset",
+      "--wc-field-border-color",
+      "--wc-field-invalid-border"
+    ],
+    "notes": [
+      "Ships companion elements: <wc-field-group>, <wc-field-set>, <wc-field-legend>, <wc-field-label>, <wc-field-content>, <wc-field-description>, <wc-field-title>, <wc-field-separator>, and <wc-field-error>.",
+      "Set `data-invalid` on <wc-field> to toggle error highlighting and pair with <wc-field-error> for announced messages.",
+      "<wc-field-group> exposes container queries so fields with `orientation=\"responsive\"` adapt to the available width."
+    ]
+  },
   "wc-hover-card": {
     "title": "<wc-hover-card>",
     "tagline": "Documentation for <wc-hover-card>",

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-chat-message&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/chat.js"></script>
+    <style>
+      .chat-demo-thread {
+        display: grid;
+        gap: 1rem;
+        padding: 1.5rem;
+        border-radius: 1.25rem;
+        background: radial-gradient(circle at top left, rgba(79, 70, 229, 0.08), rgba(15, 23, 42, 0.05));
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+
+      .chat-demo-thread img[slot="avatar"] {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .chat-demo-thread time {
+        font-size: 0.7rem;
+        opacity: 0.6;
+      }
+
+      .chat-demo-thread strong {
+        font-weight: 600;
+      }
+
+      .chat-demo-colors {
+        display: grid;
+        gap: 1rem;
+        background: linear-gradient(145deg, rgba(56, 189, 248, 0.08), rgba(165, 180, 252, 0.1));
+        border: 1px solid rgba(59, 130, 246, 0.18);
+        border-radius: 1.25rem;
+        padding: 1.5rem;
+      }
+
+      .chat-demo-colors wc-chat-message {
+        --wc-chat-bubble-max-width: 20rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section data-docs="wc-chat-message"></section>
+      <section>
+        <div class="example-card">
+          <h3>Alignment presets</h3>
+          <p>
+            Use the <code>align</code> attribute to position the bubble on the left (<code>start</code>) or right
+            (<code>end</code>) side of the thread.
+          </p>
+          <div class="chat-demo-thread" data-code-example>
+            <wc-chat-message align="start">
+              It's over Anakin,<br />I have the high ground.
+            </wc-chat-message>
+            <wc-chat-message align="end">
+              You underestimate my power!
+            </wc-chat-message>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <h3>With avatar portraits</h3>
+          <p>
+            Drop any media or component into the <code>avatar</code> slot and it will be masked to the bubble's round
+            frame.
+          </p>
+          <div class="chat-demo-thread" data-code-example>
+            <wc-chat-message align="start">
+              <img
+                slot="avatar"
+                alt="Obi-Wan Kenobi"
+                src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                loading="lazy"
+              />
+              It was said that you would, destroy the Sith, not join them.
+            </wc-chat-message>
+            <wc-chat-message align="start">
+              <img
+                slot="avatar"
+                alt="Obi-Wan Kenobi"
+                src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                loading="lazy"
+              />
+              It was you who would bring balance to the Force
+            </wc-chat-message>
+            <wc-chat-message align="start">
+              <img
+                slot="avatar"
+                alt="Obi-Wan Kenobi"
+                src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                loading="lazy"
+              />
+              Not leave it in Darkness
+            </wc-chat-message>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <h3>Header and footer metadata</h3>
+          <p>
+            The dedicated <code>header</code> and <code>footer</code> slots are perfect for authors, timestamps, delivery
+            status, and other metadata.
+          </p>
+          <div class="chat-demo-thread" data-code-example>
+            <wc-chat-message align="start">
+              <img
+                slot="avatar"
+                alt="Obi-Wan Kenobi"
+                src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                loading="lazy"
+              />
+              <span slot="header"><strong>Obi-Wan Kenobi</strong> <time>12:45</time></span>
+              You were the Chosen One!
+              <span slot="footer">Delivered</span>
+            </wc-chat-message>
+            <wc-chat-message align="end">
+              <img
+                slot="avatar"
+                alt="Anakin Skywalker"
+                src="https://img.daisyui.com/images/profile/demo/anakeen@192.webp"
+                loading="lazy"
+              />
+              <span slot="header"><strong>Anakin</strong> <time>12:46</time></span>
+              I hate you!
+              <span slot="footer">Seen at 12:46</span>
+            </wc-chat-message>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <h3>Metadata without avatars</h3>
+          <p>Leave out the avatar slot for system messages or compact transcripts.</p>
+          <div class="chat-demo-thread" data-code-example>
+            <wc-chat-message align="start">
+              <span slot="header"><strong>Obi-Wan Kenobi</strong> <time>2 hours ago</time></span>
+              You were my brother, Anakin.
+              <span slot="footer">Seen</span>
+            </wc-chat-message>
+            <wc-chat-message align="start">
+              <span slot="header"><strong>Obi-Wan Kenobi</strong> <time>2 hours ago</time></span>
+              I loved you.
+              <span slot="footer">Delivered</span>
+            </wc-chat-message>
+          </div>
+        </div>
+
+        <div class="example-card">
+          <h3>Color variants</h3>
+          <p>
+            Choose from neutral, primary, secondary, accent, info, success, warning, or error variants to highlight
+            different speakers or message states.
+          </p>
+          <div class="chat-demo-colors" data-code-example>
+            <wc-chat-message align="start" variant="primary">What kind of nonsense is this</wc-chat-message>
+            <wc-chat-message align="start" variant="secondary"
+              >Put me on the Council and not make me a Master!??</wc-chat-message
+            >
+            <wc-chat-message align="start" variant="accent"
+              >That's never been done in the history of the Jedi.</wc-chat-message
+            >
+            <wc-chat-message align="start">It's insulting!</wc-chat-message>
+            <wc-chat-message align="end" variant="info">Calm down, Anakin.</wc-chat-message>
+            <wc-chat-message align="end" variant="success">You have been given a great honor.</wc-chat-message>
+            <wc-chat-message align="end" variant="warning">To be on the Council at your age.</wc-chat-message>
+            <wc-chat-message align="end" variant="error">It's never happened before.</wc-chat-message>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-chat-message');
+    </script>
+    <script type="module" src="./demo-code-blocks.js"></script>
+  </body>
+</html>

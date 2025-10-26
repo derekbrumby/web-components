@@ -9,6 +9,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-navigation-menu"></section>
       <section>
         <div class="example-card">
           <h3>Product navigation</h3>
@@ -20,6 +21,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-navigation-menu');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

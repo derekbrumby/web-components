@@ -70,6 +70,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-switch"></section>
       <section>
         <header>
           <h2>Binary preference toggles</h2>
@@ -186,6 +187,11 @@
 
         renderFormPreview();
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-switch');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

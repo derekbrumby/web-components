@@ -116,6 +116,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-carousel"></section>
       <section class="carousel-grid">
         <div class="example-card carousel-card">
           <h3>Looping cards</h3>
@@ -288,6 +289,11 @@
         api.on('select', updateIndicator);
         updateIndicator();
       };
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-carousel');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

@@ -55,6 +55,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-pie-chart"></section>
       <section class="example-grid two-column">
         <div class="example-card" data-code-example>
           <h3>Browser share</h3>
@@ -123,6 +124,11 @@
       };
 
       initPieCharts();
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-pie-chart');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

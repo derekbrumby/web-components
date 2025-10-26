@@ -44,6 +44,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-data-table"></section>
       <section class="table-demo">
         <header>
           <h2>&lt;wc-data-table&gt;</h2>
@@ -157,6 +158,11 @@
           append(`Action "${detail.action}" on ${detail.row.email}`);
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-data-table');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

@@ -44,6 +44,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-toast"></section>
       <section>
         <header>
           <h2>Calendar reminder toast</h2>
@@ -127,6 +128,11 @@
           log.textContent = `Toast resumed after ${source}.`;
         }
       });
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-toast');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

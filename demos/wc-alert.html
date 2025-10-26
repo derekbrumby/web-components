@@ -44,6 +44,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-alert"></section>
       <section class="alert-stack">
         <div class="example-card alert-card">
           <h3>Success confirmation</h3>
@@ -116,6 +117,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-alert');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

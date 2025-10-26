@@ -43,6 +43,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-slider"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card">
@@ -163,6 +164,11 @@
           priceLog.textContent = `Submitted with price=${entries.join(' & ')}.`;
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-slider');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

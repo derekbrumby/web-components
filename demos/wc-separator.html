@@ -98,6 +98,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-separator"></section>
       <section class="separator-demo">
         <div class="separator-card" data-code-example>
           <h3>Radix Primitives</h3>
@@ -154,6 +155,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-separator');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

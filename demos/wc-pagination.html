@@ -67,6 +67,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-pagination"></section>
       <section class="pagination-stack">
         <div class="example-card pagination-card">
           <h3>Basic pagination</h3>
@@ -176,6 +177,11 @@
 
         output.textContent = nextText || 'Activation fired.';
       });
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-pagination');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

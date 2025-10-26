@@ -59,6 +59,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-toolbar"></section>
       <section>
         <div class="example-card demo-canvas">
           <h3>Document editor toolbar</h3>
@@ -143,6 +144,11 @@
       } else {
         customElements.whenDefined('wc-toolbar').then(updatePreviewFormats);
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-toolbar');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

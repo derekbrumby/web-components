@@ -65,6 +65,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-select"></section>
       <section>
         <header>
           <h2>&lt;wc-select&gt;</h2>
@@ -175,6 +176,11 @@
 
         updateLog();
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-select');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

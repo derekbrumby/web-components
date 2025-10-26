@@ -86,6 +86,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-pricing-card"></section>
       <section class="pricing-grid">
         <div class="pricing-card" data-code-example>
           <div>
@@ -156,6 +157,11 @@
           toggleButtons.forEach((btn) => btn.classList.toggle('is-active', btn === button));
         });
       });
+    </script>
+  
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-pricing-card');
     </script>
   </body>
 </html>

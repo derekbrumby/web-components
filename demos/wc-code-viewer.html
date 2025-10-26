@@ -88,6 +88,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-code-viewer"></section>
       <section class="stack">
         <header>
           <h2>Inline snippets</h2>
@@ -159,6 +160,11 @@ jobs:
           });
         });
       });
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-code-viewer');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

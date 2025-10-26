@@ -53,6 +53,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-line-chart"></section>
       <section class="example-grid two-column">
         <div class="example-card" data-code-example>
           <h3>Device performance</h3>
@@ -145,6 +146,11 @@
       });
 
       initLineCharts();
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-line-chart');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

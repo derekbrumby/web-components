@@ -9,6 +9,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-accordion"></section>
       <section>
         <div class="example-grid">
           <div class="example-card">
@@ -97,6 +98,11 @@
           accordionMultiLog.textContent = `Open values: ${values.join(', ') || 'none'}`;
         });
       }
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-accordion');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

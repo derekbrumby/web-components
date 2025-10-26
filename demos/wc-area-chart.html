@@ -52,6 +52,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-area-chart"></section>
       <section class="example-grid two-column">
         <div class="example-card" data-code-example>
           <h3>Interactive traffic overview</h3>
@@ -170,6 +171,11 @@
       });
 
       initAreaCharts();
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-area-chart');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

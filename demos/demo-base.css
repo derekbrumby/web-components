@@ -195,6 +195,104 @@
         line-height: 1.55;
       }
 
+      .docs-section {
+        background: rgba(15, 23, 42, 0.03);
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 1.1rem;
+        padding: 2rem;
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .docs-section header {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .docs-section header h2 {
+        margin: 0;
+        font-size: clamp(1.85rem, 3vw, 2.2rem);
+        font-weight: 700;
+      }
+
+      .docs-section header p {
+        margin: 0;
+        color: rgba(15, 23, 42, 0.7);
+        line-height: 1.6;
+      }
+
+      .docs-subsection {
+        display: grid;
+        gap: 0.85rem;
+      }
+
+      .docs-subsection h3 {
+        margin: 0;
+        font-size: 1.05rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(15, 23, 42, 0.6);
+      }
+
+      .docs-muted {
+        margin: 0;
+        color: rgba(15, 23, 42, 0.6);
+        font-size: 0.9rem;
+      }
+
+      .docs-section pre {
+        margin: 0;
+        background: rgba(15, 23, 42, 0.9);
+        color: #f8fafc;
+        padding: 1rem 1.25rem;
+        border-radius: 0.85rem;
+        overflow-x: auto;
+        font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+
+      .docs-section table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 0.92rem;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(15, 23, 42, 0.12);
+      }
+
+      .docs-section th,
+      .docs-section td {
+        padding: 0.65rem 0.75rem;
+        vertical-align: top;
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+      }
+
+      .docs-section th {
+        text-align: left;
+        background: rgba(15, 23, 42, 0.04);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(15, 23, 42, 0.6);
+      }
+
+      .docs-section tr:last-child td {
+        border-bottom: none;
+      }
+
+      .docs-section ul {
+        margin: 0;
+        padding-inline-start: 1.1rem;
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .docs-section li {
+        color: rgba(15, 23, 42, 0.85);
+        line-height: 1.55;
+      }
+
       wc-label.label-primary {
         --label-font-size: 15px;
         --label-font-weight: 600;

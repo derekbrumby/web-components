@@ -60,6 +60,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-mockup-phone"></section>
       <section class="mockup-grid">
         <div class="example-card">
           <h3>Hero copy on dark glass</h3>
@@ -90,6 +91,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-mockup-phone');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

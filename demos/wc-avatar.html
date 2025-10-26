@@ -9,6 +9,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-avatar"></section>
       <section>
         <div class="example-card">
           <h3>Design crew roll call</h3>
@@ -77,6 +78,11 @@
         </div>
       </section>
     </main>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-avatar');
+    </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>
 </html>

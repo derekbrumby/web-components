@@ -85,6 +85,7 @@
   </head>
   <body>
     <main>
+      <section data-docs="wc-toggle"></section>
       <section>
         <div class="example-grid two-column">
           <div class="example-card">
@@ -209,6 +210,11 @@
       });
 
       renderNotificationsStatus();
+    </script>
+    
+    <script type="module">
+      import { renderComponentDocs } from './component-docs.js';
+      renderComponentDocs('wc-toggle');
     </script>
     <script type="module" src="./demo-code-blocks.js"></script>
   </body>

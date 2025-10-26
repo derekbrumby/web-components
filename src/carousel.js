@@ -114,6 +114,149 @@
     /** @type {HTMLSlotElement} */
     #slot;
 
+    /** @type {() => void} */
+    #handleSlotChange = () => {
+      const elements = filterElementNodes(this.#slot.assignedElements());
+      this.#slides = elements.filter((el) => el.tagName === 'WC-CAROUSEL-ITEM');
+      this.#slides.forEach((slide, index) => {
+        slide.setAttribute('role', 'option');
+        slide.setAttribute('aria-label', `Slide ${index + 1} of ${this.#slides.length}`);
+      });
+      this.#selectedIndex = clamp(this.#selectedIndex, 0, Math.max(0, this.#slides.length - 1));
+      this.#setupResizeObserver();
+      this.#updateSnapPoints();
+      this.dispatchEvent(
+        new CustomEvent('carousel-content-layout', {
+          bubbles: true,
+          composed: true,
+          detail: {
+            count: this.#slides.length,
+            snapPoints: this.snapPoints,
+            selectedIndex: this.#selectedIndex
+          }
+        })
+      );
+    };
+
+    /** @type {() => void} */
+    #handleScroll = () => {
+      if (this.#scrollAnimationFrame !== null) {
+        cancelAnimationFrame(this.#scrollAnimationFrame);
+      }
+      this.#scrollAnimationFrame = requestAnimationFrame(() => {
+        this.#scrollAnimationFrame = null;
+        const index = this.nearestSnapIndex();
+        if (index !== this.#selectedIndex) {
+          this.#selectedIndex = index;
+          this.dispatchEvent(
+            new CustomEvent('carousel-content-select', {
+              bubbles: true,
+              composed: true,
+              detail: { index }
+            })
+          );
+        }
+      });
+    };
+
+    /** @type {(event: PointerEvent) => void} */
+    #handlePointerDown = (event) => {
+      if (!event.isPrimary) {
+        return;
+      }
+      this.#isDragging = true;
+      this.#lastPointerId = event.pointerId;
+      this.#isPointerScrolling = true;
+      this.#startPointer = this.#orientation === 'vertical' ? event.clientY : event.clientX;
+      this.#startScroll = this.#orientation === 'vertical' ? this.#viewport.scrollTop : this.#viewport.scrollLeft;
+      if (this.#viewport.setPointerCapture) {
+        try {
+          this.#viewport.setPointerCapture(event.pointerId);
+        } catch (_) {
+          // Ignore capture errors when unsupported.
+        }
+      }
+      this.#viewport.style.scrollBehavior = 'auto';
+      this.dispatchEvent(
+        new CustomEvent('carousel-content-pointer-down', {
+          bubbles: true,
+          composed: true
+        })
+      );
+      this.#viewport.addEventListener('pointermove', this.#handlePointerMove);
+    };
+
+    /** @type {(event: PointerEvent) => void} */
+    #handlePointerMove = (event) => {
+      if (!this.#isDragging || this.#lastPointerId !== event.pointerId) {
+        return;
+      }
+      const currentPointer = this.#orientation === 'vertical' ? event.clientY : event.clientX;
+      const delta = currentPointer - this.#startPointer;
+      const target = this.#startScroll - delta;
+      if (this.#orientation === 'vertical') {
+        this.#viewport.scrollTop = target;
+      } else {
+        this.#viewport.scrollLeft = target;
+      }
+    };
+
+    /** @type {(event: PointerEvent) => void} */
+    #handlePointerUp = (event) => {
+      if (!this.#isDragging || (this.#lastPointerId !== null && event.pointerId !== this.#lastPointerId)) {
+        return;
+      }
+      this.#isDragging = false;
+      this.#isPointerScrolling = false;
+      if (this.#lastPointerId !== null && this.#viewport.hasPointerCapture?.(this.#lastPointerId)) {
+        try {
+          this.#viewport.releasePointerCapture(this.#lastPointerId);
+        } catch (_) {
+          // Ignore capture release errors on unsupported browsers.
+        }
+      }
+      this.#lastPointerId = null;
+      this.#viewport.style.scrollBehavior = 'smooth';
+      const index = this.nearestSnapIndex();
+      this.scrollToIndex(index, 'smooth');
+      this.dispatchEvent(
+        new CustomEvent('carousel-content-pointer-up', {
+          bubbles: true,
+          composed: true
+        })
+      );
+      this.dispatchEvent(
+        new CustomEvent('carousel-content-settle', {
+          bubbles: true,
+          composed: true,
+          detail: { index }
+        })
+      );
+      this.#viewport.removeEventListener('pointermove', this.#handlePointerMove);
+    };
+
+    /** @type {(event: KeyboardEvent) => void} */
+    #handleKeydown = (event) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+      const prevKeys = this.#orientation === 'vertical' ? ['ArrowUp', 'PageUp'] : ['ArrowLeft', 'PageUp'];
+      const nextKeys = this.#orientation === 'vertical' ? ['ArrowDown', 'PageDown'] : ['ArrowRight', 'PageDown'];
+      if (prevKeys.includes(event.key)) {
+        event.preventDefault();
+        this.scrollToIndex(this.#selectedIndex - 1);
+      } else if (nextKeys.includes(event.key)) {
+        event.preventDefault();
+        this.scrollToIndex(this.#selectedIndex + 1);
+      } else if (event.key === 'Home') {
+        event.preventDefault();
+        this.scrollToIndex(0);
+      } else if (event.key === 'End') {
+        event.preventDefault();
+        this.scrollToIndex(this.#slides.length - 1);
+      }
+    };
+
     constructor() {
       super();
       this.#root = this.attachShadow({ mode: 'open' });
@@ -170,13 +313,6 @@
       this.#viewport = /** @type {HTMLDivElement} */ (this.#root.querySelector('.viewport'));
       this.#track = /** @type {HTMLDivElement} */ (this.#root.querySelector('.track'));
       this.#slot = /** @type {HTMLSlotElement} */ (this.#root.querySelector('slot'));
-
-      this.#handleSlotChange = this.#handleSlotChange.bind(this);
-      this.#handleScroll = this.#handleScroll.bind(this);
-      this.#handlePointerDown = this.#handlePointerDown.bind(this);
-      this.#handlePointerMove = this.#handlePointerMove.bind(this);
-      this.#handlePointerUp = this.#handlePointerUp.bind(this);
-      this.#handleKeydown = this.#handleKeydown.bind(this);
     }
 
     connectedCallback() {
@@ -325,29 +461,6 @@
       }
     }
 
-    #handleSlotChange() {
-      const elements = filterElementNodes(this.#slot.assignedElements());
-      this.#slides = elements.filter((el) => el.tagName === 'WC-CAROUSEL-ITEM');
-      this.#slides.forEach((slide, index) => {
-        slide.setAttribute('role', 'option');
-        slide.setAttribute('aria-label', `Slide ${index + 1} of ${this.#slides.length}`);
-      });
-      this.#selectedIndex = clamp(this.#selectedIndex, 0, Math.max(0, this.#slides.length - 1));
-      this.#setupResizeObserver();
-      this.#updateSnapPoints();
-      this.dispatchEvent(
-        new CustomEvent('carousel-content-layout', {
-          bubbles: true,
-          composed: true,
-          detail: {
-            count: this.#slides.length,
-            snapPoints: this.snapPoints,
-            selectedIndex: this.#selectedIndex
-          }
-        })
-      );
-    }
-
     #disconnectResizeObserver() {
       if (this.#resizeObserver) {
         this.#resizeObserver.disconnect();
@@ -399,123 +512,7 @@
       }
     }
 
-    #handleScroll() {
-      if (this.#scrollAnimationFrame !== null) {
-        cancelAnimationFrame(this.#scrollAnimationFrame);
-      }
-      this.#scrollAnimationFrame = requestAnimationFrame(() => {
-        this.#scrollAnimationFrame = null;
-        const index = this.nearestSnapIndex();
-        if (index !== this.#selectedIndex) {
-          this.#selectedIndex = index;
-          this.dispatchEvent(
-            new CustomEvent('carousel-content-select', {
-              bubbles: true,
-              composed: true,
-              detail: { index }
-            })
-          );
-        }
-      });
-    }
-
-    /** @param {PointerEvent} event */
-    #handlePointerDown(event) {
-      if (!event.isPrimary) {
-        return;
-      }
-      this.#isDragging = true;
-      this.#lastPointerId = event.pointerId;
-      this.#isPointerScrolling = true;
-      this.#startPointer = this.#orientation === 'vertical' ? event.clientY : event.clientX;
-      this.#startScroll = this.#orientation === 'vertical' ? this.#viewport.scrollTop : this.#viewport.scrollLeft;
-      if (this.#viewport.setPointerCapture) {
-        try {
-          this.#viewport.setPointerCapture(event.pointerId);
-        } catch (_) {
-          // Ignore capture errors when unsupported.
-        }
-      }
-      this.#viewport.style.scrollBehavior = 'auto';
-      this.dispatchEvent(
-        new CustomEvent('carousel-content-pointer-down', {
-          bubbles: true,
-          composed: true
-        })
-      );
-      this.#viewport.addEventListener('pointermove', this.#handlePointerMove);
-    }
-
-    /** @param {PointerEvent} event */
-    #handlePointerMove(event) {
-      if (!this.#isDragging || this.#lastPointerId !== event.pointerId) {
-        return;
-      }
-      const currentPointer = this.#orientation === 'vertical' ? event.clientY : event.clientX;
-      const delta = currentPointer - this.#startPointer;
-      const target = this.#startScroll - delta;
-      if (this.#orientation === 'vertical') {
-        this.#viewport.scrollTop = target;
-      } else {
-        this.#viewport.scrollLeft = target;
-      }
-    }
-
-    /** @param {PointerEvent} event */
-    #handlePointerUp(event) {
-      if (!this.#isDragging || (this.#lastPointerId !== null && event.pointerId !== this.#lastPointerId)) {
-        return;
-      }
-      this.#isDragging = false;
-      this.#isPointerScrolling = false;
-      if (this.#lastPointerId !== null && this.#viewport.hasPointerCapture?.(this.#lastPointerId)) {
-        try {
-          this.#viewport.releasePointerCapture(this.#lastPointerId);
-        } catch (_) {
-          // Ignore capture release errors on unsupported browsers.
-        }
-      }
-      this.#lastPointerId = null;
-      this.#viewport.style.scrollBehavior = 'smooth';
-      const index = this.nearestSnapIndex();
-      this.scrollToIndex(index, 'smooth');
-      this.dispatchEvent(
-        new CustomEvent('carousel-content-pointer-up', {
-          bubbles: true,
-          composed: true
-        })
-      );
-      this.dispatchEvent(
-        new CustomEvent('carousel-content-settle', {
-          bubbles: true,
-          composed: true,
-          detail: { index }
-        })
-      );
-      this.#viewport.removeEventListener('pointermove', this.#handlePointerMove);
-    }
-
-    /** @param {KeyboardEvent} event */
-    #handleKeydown(event) {
-      if (event.defaultPrevented) {
-        return;
-      }
-      const prevKeys = this.#orientation === 'vertical' ? ['ArrowUp', 'PageUp'] : ['ArrowLeft', 'PageUp'];
-      const nextKeys = this.#orientation === 'vertical' ? ['ArrowDown', 'PageDown'] : ['ArrowRight', 'PageDown'];
-      if (prevKeys.includes(event.key)) {
-        event.preventDefault();
-        this.scrollToIndex(this.#selectedIndex - 1);
-      } else if (nextKeys.includes(event.key)) {
-        event.preventDefault();
-        this.scrollToIndex(this.#selectedIndex + 1);
-      } else if (event.key === 'Home') {
-        event.preventDefault();
-        this.scrollToIndex(0);
-      } else if (event.key === 'End') {
-        event.preventDefault();
-        this.scrollToIndex(this.#slides.length - 1);
-      }
-    }
+    
 
     /**
      * Programmatically force the viewport to the nearest snap point.
@@ -686,6 +683,78 @@
     /** @type {CarouselApi} */
     #api;
 
+    /** @type {(event: KeyboardEvent) => void} */
+    #handleKeydown = (event) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+      const horizontal = this.#options.orientation === 'horizontal';
+      const prevKeys = horizontal ? ['ArrowLeft', 'PageUp'] : ['ArrowUp', 'PageUp'];
+      const nextKeys = horizontal ? ['ArrowRight', 'PageDown'] : ['ArrowDown', 'PageDown'];
+      if (prevKeys.includes(event.key)) {
+        event.preventDefault();
+        this.scrollPrevious();
+      } else if (nextKeys.includes(event.key)) {
+        event.preventDefault();
+        this.scrollNext();
+      } else if (event.key === 'Home') {
+        event.preventDefault();
+        this.scrollTo(0);
+      } else if (event.key === 'End') {
+        event.preventDefault();
+        this.scrollTo(this.#slideCount - 1);
+      }
+    };
+
+    /** @type {(event: CustomEvent<{ index: number }>) => void} */
+    #handleContentSelect = (event) => {
+      const { index } = event.detail;
+      if (index === this.#selectedIndex) {
+        return;
+      }
+      this.#selectedIndex = index;
+      if (this.#slideCount > 0) {
+        this.setAttribute('aria-label', `Slide ${index + 1} of ${this.#slideCount}`);
+      }
+      this.#emit('select', { index });
+      this.dispatchEvent(
+        new CustomEvent('carousel-select', {
+          detail: { index },
+          bubbles: true,
+          composed: true
+        })
+      );
+      this.#updateControls();
+    };
+
+    /** @type {(event: CustomEvent<{ count: number }>) => void} */
+    #handleContentLayout = (event) => {
+      const { count } = event.detail;
+      this.#slideCount = count;
+      if (count > 0) {
+        this.setAttribute('aria-label', `Slide ${this.#selectedIndex + 1} of ${count}`);
+      } else {
+        this.removeAttribute('aria-label');
+      }
+      this.#emit('resize', { count });
+      this.#updateControls();
+    };
+
+    /** @type {() => void} */
+    #handleContentPointerDown = () => {
+      this.#emit('pointerDown', undefined);
+    };
+
+    /** @type {() => void} */
+    #handleContentPointerUp = () => {
+      this.#emit('pointerUp', undefined);
+    };
+
+    /** @type {(event: CustomEvent<{ index: number }>) => void} */
+    #handleContentSettle = (event) => {
+      this.#emit('settle', { index: event.detail.index });
+    };
+
     constructor() {
       super();
       this.#root = this.attachShadow({ mode: 'open' });
@@ -722,12 +791,6 @@
       `;
 
       this.#api = this.#createApi();
-
-      this.#handleContentSelect = this.#handleContentSelect.bind(this);
-      this.#handleContentLayout = this.#handleContentLayout.bind(this);
-      this.#handleContentPointerDown = this.#handleContentPointerDown.bind(this);
-      this.#handleContentPointerUp = this.#handleContentPointerUp.bind(this);
-      this.#handleContentSettle = this.#handleContentSettle.bind(this);
     }
 
     connectedCallback() {
@@ -982,68 +1045,6 @@
       this.#content.removeEventListener('carousel-content-pointer-up', this.#handleContentPointerUp);
       this.#content.removeEventListener('carousel-content-settle', this.#handleContentSettle);
       this.#content = null;
-    }
-
-    /** @param {CustomEvent<{ index: number }>} event */
-    #handleContentSelect(event) {
-      const { index } = event.detail;
-      if (index === this.#selectedIndex) {
-        return;
-      }
-      this.#selectedIndex = index;
-      if (this.#slideCount > 0) {
-        this.setAttribute('aria-label', `Slide ${index + 1} of ${this.#slideCount}`);
-      }
-      this.#emit('select', { index });
-      this.dispatchEvent(
-        new CustomEvent('carousel-select', {
-          detail: { index },
-          bubbles: true,
-          composed: true
-        })
-      );
-      this.#updateControls();
-    }
-
-    /** @param {CustomEvent<{ count: number }>} event */
-    #handleContentLayout(event) {
-      const { count } = event.detail;
-      this.#slideCount = count;
-      if (count > 0) {
-        this.setAttribute('aria-label', `Slide ${this.#selectedIndex + 1} of ${count}`);
-      } else {
-        this.removeAttribute('aria-label');
-      }
-      this.#emit('resize', { count });
-      this.#updateControls();
-    }
-
-    #handleContentPointerDown() {
-      this.#emit('pointerDown', undefined);
-    }
-
-    #handleContentPointerUp() {
-      this.#emit('pointerUp', undefined);
-    }
-
-    /** @param {CustomEvent<{ index: number }>} event */
-    #handleContentSettle(event) {
-      this.#emit('settle', { index: event.detail.index });
-    }
-
-    /** @param {KeyboardEvent} event */
-    #handleKeydown(event) {
-      if (event.defaultPrevented) {
-        return;
-      }
-      const horizontal = this.#options.orientation === 'horizontal';
-      if ((horizontal && event.key === 'ArrowLeft') || (!horizontal && event.key === 'ArrowUp')) {
-        event.preventDefault();
-        this.scrollPrevious();
-      } else if ((horizontal && event.key === 'ArrowRight') || (!horizontal && event.key === 'ArrowDown')) {
-        event.preventDefault();
-        this.scrollNext();
-      }
     }
 
     #applyOptions() {

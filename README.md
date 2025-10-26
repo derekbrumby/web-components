@@ -19,31 +19,34 @@ and ships in a format that works out of the box from a CDN or your preferred bun
 - [Detailed reference](#detailed-reference)
   - [`<wc-markdown-viewer>`](#wc-markdown-viewer)
   - [`<wc-code-viewer>`](#wc-code-viewer)
+  - [`<qr-code>`](#qr-code)
   - [`<wc-chart>`](#wc-chart)
   - [Chart variants](#chart-variants)
   - [`<wc-data-table>`](#wc-data-table)
   - [`<wc-table>`](#wc-table)
   - [`<wc-form>`](#wc-form)
+  - [`<wc-input>`](#wc-input)
+  - [`<wc-file-input>`](#wc-file-input)
   - [`<wc-field>`](#wc-field)
   - [`<wc-checkbox>`](#wc-checkbox)
   - [`<wc-input-group>`](#wc-input-group)
+  - [`<wc-rating>`](#wc-rating)
   - [`<wc-spinner>`](#wc-spinner)
+  - [`<wc-sonner>`](#wc-sonner)
   - [`<wc-skeleton>`](#wc-skeleton)
   - [`<wc-countdown>`](#wc-countdown)
+  - [`<wc-item>`](#wc-item)
+  - [`<wc-badge>`](#wc-badge)
+  - [`<wc-chat-message>`](#wc-chat-message)
+  - [`<wc-button>`](#wc-button)
+  - [`<wc-alert>`](#wc-alert)
+  - [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
+  - [`<wc-label>`](#wc-label)
+  - [`<wc-textarea>`](#wc-textarea)
+  - [`<wc-ascii-icon>`](#wc-ascii-icon)
+  - [`<wc-separator>`](#wc-separator)
+  - [`<wc-sheet>`](#wc-sheet)
   - [`<wc-diff>`](#wc-diff)
-- [`<wc-badge>`](#wc-badge)
-- [`<wc-chat-message>`](#wc-chat-message)
-- [`<wc-button>`](#wc-button)
-- [`<wc-input>`](#wc-input)
-- [`<wc-file-input>`](#wc-file-input)
-- [`<wc-alert>`](#wc-alert)
-- [`<wc-kbd>` & `<wc-kbd-group>`](#wc-kbd--wc-kbd-group)
-- [`<wc-label>`](#wc-label)
-- [`<wc-textarea>`](#wc-textarea)
-- [`<wc-rating>`](#wc-rating)
-- [`<wc-ascii-icon>`](#wc-ascii-icon)
-- [`<wc-separator>`](#wc-separator)
-- [`<qr-code>`](#qr-code)
 
 ## Getting started
 
@@ -85,79 +88,82 @@ to the detailed reference for deeper usage notes.
 | `<wc-area-chart>` / `<wc-line-chart>` / `<wc-pie-chart>` / `<wc-radar-chart>` / `<wc-radial-chart>` | SVG chart variants that reuse the base chart API. | [Docs](#chart-variants) |
 | `<wc-data-table>` | Headless data grid with sorting, filters, pagination, and row actions. | [Docs](#wc-data-table) |
 | `<wc-table>` | Responsive table surface with caption, header, body, and footer primitives. | [Docs](#wc-table) |
-| `<wc-card>` | Flexible content container mirroring shadcn/ui card styling. | — |
-| `<wc-pricing-card>` | Pricing layout with highlighted tiers and call-to-action slots. | — |
-| `<wc-carousel>` | Accessible carousel with autoplay controls and pagination dots. | — |
-| `<wc-progress>` | Determinate and indeterminate progress indicator with ARIA semantics. | — |
-| `<wc-diff>` | Before/after comparison slider for images or text. | — |
-| `<wc-skeleton>` | Shimmering skeleton placeholder for loading states. | [Docs](#wc-skeleton) |
-| `<wc-spinner>` | Polite loading spinner with customisable stroke and messaging. | [Docs](#wc-spinner) |
-| `<wc-countdown>` | Animated numeric ticker for timers and stat transitions. | [Docs](#wc-countdown) |
-| `<wc-ascii-icon>` | Converts single-colour SVG paths into scalable ASCII art glyphs. | [Docs](#wc-ascii-icon) |
+| `<wc-diff>` | Before/after comparison slider for images or text. | [Docs](#wc-diff) |
 
 ### Inputs & forms
 
 | Component | Summary | Reference |
 | --- | --- | --- |
-| `<wc-form>` | Drop-in contact form with validation helpers and error slots. | [Docs](#wc-form) |
+| `<wc-form>` | Drop-in form wrapper with validation helpers and error slots. | [Docs](#wc-form) |
+| `<wc-field>` suite | Layout primitives for fieldsets, legends, labels, and descriptions. | [Docs](#wc-field) |
 | `<wc-input>` | Single-line input with file support and shadcn-inspired styling. | [Docs](#wc-input) |
-| `<wc-file-input>` | Styled file picker with colour, size, and ghost variants. | [Docs](#wc-file-input) |
-| `<wc-checkbox>` | Tri-state checkbox with form association. | [Docs](#wc-checkbox) |
+| `<wc-textarea>` | Auto-resizing textarea with form association and styling hooks. | [Docs](#wc-textarea) |
+| `<wc-checkbox>` | Tri-state checkbox with native form integration. | [Docs](#wc-checkbox) |
 | `<wc-radio-group>` | Accessible radio group mirroring Radix UI behaviour. | — |
-| `<wc-toggle-group>` | Single or multi-select toggle buttons. | — |
-| `<wc-button-group>` | Toolbar-aligned button group with roving tabindex. | — |
+| `<wc-switch>` | Toggle switch with form association and ARIA roles. | — |
+| `<wc-toggle>` | Single toggle button with pressed state styling. | — |
+| `<wc-toggle-group>` | Single- or multi-select toggle buttons with roving tabindex. | — |
+| `<wc-button-group>` | Toolbar-aligned button group for segmented controls. | — |
+| `<wc-button>` | Styled action button or anchor element with variant support. | [Docs](#wc-button) |
+| `<wc-input-group>` suite | Compose inputs, text, and buttons with shared focus and styling. | [Docs](#wc-input-group) |
+| `<wc-file-input>` | Styled file picker with colour, size, and ghost variants. | [Docs](#wc-file-input) |
 | `<wc-combobox>` | Filterable combo box backed by native listbox semantics. | — |
 | `<wc-select>` | Custom select with searchable list and keyboard support. | — |
 | `<wc-slider>` | Single or range slider with custom styling. | — |
-| `<wc-rating>` | Star rating input with fractional values and colour palettes. | — |
-| `<wc-switch>` | Toggle switch with form integration and ARIA roles. | — |
+| `<wc-rating>` | Star rating input with fractional values and colour palettes. | [Docs](#wc-rating) |
 | `<wc-otp-field>` | Multi-input one-time passcode entry with auto-focus handling. | — |
 | `<wc-password-toggle-field>` | Password input that exposes a reveal button. | — |
-| `<wc-input-group>` suite | Compose inputs, text, and buttons with shared focus and styling. | [Docs](#wc-input-group) |
 
 ### Navigation
 
-| Component | Summary |
-| --- | --- |
-| `<wc-navigation-menu>` | Top-level navigation with animated submenus. |
-| `<wc-sidebar>` | Collapsible sidebar scaffold with resize handle integration. |
-| `<wc-breadcrumb>` | Breadcrumb trail with separator slots. |
-| `<wc-menubar>` | Horizontal menu bar with keyboard navigation. |
-| `<wc-dropdown-menu>` / `<wc-context-menu>` | Menu primitives driven by the same API. |
-| `<wc-tabs>` | Roving tabindex tabs with animation hooks. |
-| `<wc-toolbar>` | Toolbar container with roving focus management. |
-| `<wc-pagination>` | Paginates collections with summary text and ellipsis handling. |
-| `<wc-tooltip>` | Tooltip primitive for hover and focus affordances. |
-| `<wc-popover>` / `<wc-hover-card>` | Rich overlays for contextual content. |
+| Component | Summary | Reference |
+| --- | --- | --- |
+| `<wc-navigation-menu>` | Top-level navigation with animated submenus. | — |
+| `<wc-sidebar>` | Collapsible sidebar scaffold with resize handle integration. | — |
+| `<wc-breadcrumb>` | Breadcrumb trail with separator slots. | — |
+| `<wc-menubar>` | Horizontal menu bar with keyboard navigation. | — |
+| `<wc-dropdown-menu>` | Menu primitive for contextual actions. | — |
+| `<wc-context-menu>` | Context menu surface sharing the dropdown menu API. | — |
+| `<wc-tabs>` | Roving tabindex tabs with animation hooks. | — |
+| `<wc-toolbar>` | Toolbar container with roving focus management. | — |
+| `<wc-pagination>` | Pagination controls with summary text and ellipsis handling. | — |
 
 ### Layout & structure
 
-| Component | Summary |
-| --- | --- |
-| `<wc-separator>` | Semantic divider with vertical orientation support. |
-| `<wc-item>` | Flex-based item rows with media, titles, descriptions, and actions. |
-| `<wc-resizable>` | Wrapper that turns any element into a draggable resizable panel. |
-| `<wc-drawer>` | Sliding panel with trap-focus behaviour. |
-| `<wc-sheet>` | Dialog-inspired sheet for supplementary workflows. |
-| `<wc-dialog>` / `<wc-alert-dialog>` | Modal primitives with configurable titles, descriptions, and actions. |
-| `<wc-aspect-ratio>` | Enforces intrinsic ratios for responsive media. |
-| `<wc-avatar>` | Avatar component with fallbacks and status badges. |
-| `<wc-chat-message>` | Chat bubble line item with avatar, metadata, and colour variants. |
-| `<wc-mockup-phone>` | Presentation frame for screenshot marketing. |
-| `<wc-calendar>` / `<wc-date-picker>` | Calendar grid and date picker built on the same foundation. |
-| `<wc-accordion>` / `<wc-collapsible>` | Disclosure widgets for stacked or inline content. |
+| Component | Summary | Reference |
+| --- | --- | --- |
+| `<wc-separator>` | Semantic divider with vertical orientation support. | [Docs](#wc-separator) |
+| `<wc-card>` | Flexible content container mirroring shadcn/ui card styling. | — |
+| `<wc-pricing-card>` | Pricing layout with highlighted tiers and call-to-action slots. | — |
+| `<wc-carousel>` | Accessible carousel with autoplay controls and pagination dots. | — |
+| `<wc-item>` | Flex-based item rows with media, titles, descriptions, and actions. | [Docs](#wc-item) |
+| `<wc-avatar>` | Avatar component with fallbacks and status badges. | — |
+| `<wc-chat-message>` | Chat bubble line item with avatar, metadata, and colour variants. | [Docs](#wc-chat-message) |
+| `<wc-mockup-phone>` | Presentation frame for screenshot marketing. | — |
+| `<wc-aspect-ratio>` | Enforces intrinsic ratios for responsive media. | — |
+| `<wc-resizable>` | Wrapper that turns any element into a draggable resizable panel. | — |
+| `<wc-drawer>` | Sliding panel with trap-focus behaviour. | — |
+| `<wc-sheet>` | Dialog-inspired sheet for supplementary workflows. | [Docs](#wc-sheet) |
+| `<wc-dialog>` / `<wc-alert-dialog>` | Modal primitives with configurable titles, descriptions, and actions. | — |
+| `<wc-calendar>` / `<wc-date-picker>` | Calendar grid and date picker built on the same foundation. | — |
+| `<wc-accordion>` / `<wc-collapsible>` | Disclosure widgets for stacked or inline content. | — |
+| `<wc-scroll-area>` | Scrollable viewport with styled scrollbar track. | — |
 
 ### Feedback & overlays
 
-| Component | Summary |
-| --- | --- |
-| `<wc-alert>` | Inline callouts for success, info, or destructive messaging. |
-| `<wc-toast>` | Toast notifications with queueing support. |
-| `<wc-sonner>` | Opinionated multi-type toaster with promise helpers. [Docs](#wc-sonner) |
-| `<wc-audio-player>` | Minimal audio player with timeline and volume controls. |
-| `<wc-progress>` | Visualises task completion. |
-| `<wc-spinner>` | Loading spinner with accessible announcements. |
-| `<wc-skeleton>` | Loading placeholder that maintains layout structure. |
+| Component | Summary | Reference |
+| --- | --- | --- |
+| `<wc-alert>` | Inline callouts for success, info, or destructive messaging. | [Docs](#wc-alert) |
+| `<wc-toast>` | Toast notifications with queueing support. | — |
+| `<wc-sonner>` | Opinionated multi-type toaster with promise helpers. | [Docs](#wc-sonner) |
+| `<wc-audio-player>` | Minimal audio player with timeline and volume controls. | — |
+| `<wc-progress>` | Determinate and indeterminate progress indicator with ARIA semantics. | — |
+| `<wc-spinner>` | Polite loading spinner with customisable stroke and messaging. | [Docs](#wc-spinner) |
+| `<wc-skeleton>` | Shimmering skeleton placeholder for loading states. | [Docs](#wc-skeleton) |
+| `<wc-countdown>` | Animated numeric ticker for timers and stat transitions. | [Docs](#wc-countdown) |
+| `<wc-tooltip>` | Tooltip primitive for hover and focus affordances. | — |
+| `<wc-popover>` | Popover surface for contextual interactions. | — |
+| `<wc-hover-card>` | Delayed hover/focus card for supplementary information. | — |
 
 ### Utilities
 
@@ -169,10 +175,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-label>` | Accessible label helper that mirrors native `<label>` semantics. | [Docs](#wc-label) |
 | `<wc-kbd>` / `<wc-kbd-group>` | Inline keyboard hints styled like keycaps. | [Docs](#wc-kbd--wc-kbd-group) |
 | `<wc-badge>` | Pill-style badges and status chips. | [Docs](#wc-badge) |
-| `<wc-button>` | Styled action button or anchor element with variant support. | [Docs](#wc-button) |
-| `<wc-toolbar>` | Toolbar container with roving tabindex. | — |
-| `<wc-scroll-area>` | Scrollable viewport with styled scrollbar track. | — |
-
+| `<wc-ascii-icon>` | Converts single-colour SVG paths into scalable ASCII art glyphs. | [Docs](#wc-ascii-icon) |
 ## Detailed reference
 
 ### `<wc-markdown-viewer>`

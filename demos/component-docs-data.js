@@ -4299,6 +4299,109 @@ export const componentDocs = {
     "slots": [],
     "css": []
   },
+  "wc-textarea": {
+    "title": "<wc-textarea>",
+    "tagline": "Documentation for <wc-textarea>",
+    "usage": {
+      "snippet": "<wc-textarea name=\"message\" placeholder=\"Type your message here.\"></wc-textarea>"
+    },
+    "attributes": [
+      {
+        "name": "`value` / `value`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Current textarea value. Updates whenever the user types or the property changes."
+      },
+      {
+        "name": "`name` / `name`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Name submitted with the form when the component is inside a form."
+      },
+      {
+        "name": "`placeholder` / `placeholder`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Hint text displayed while the field is empty."
+      },
+      {
+        "name": "`rows` / `rows`",
+        "type": "`number`",
+        "default": "`4`",
+        "description": "Preferred row count mirroring the native attribute."
+      },
+      {
+        "name": "`disabled` / `disabled`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Disables user input and dims the control."
+      },
+      {
+        "name": "`readonly` / `readOnly`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Prevents editing while keeping the value focusable."
+      },
+      {
+        "name": "`required` / `required`",
+        "type": "`boolean`",
+        "default": "`false`",
+        "description": "Marks the field as required for native constraint validation."
+      },
+      {
+        "name": "`maxlength` / `maxLength`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Maximum character count allowed."
+      },
+      {
+        "name": "`minlength` / `minLength`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Minimum character count required."
+      },
+      {
+        "name": "`autocomplete` / `autocomplete`",
+        "type": "`string`",
+        "default": "``",
+        "description": "Passes through to the inner textarea for autofill hints."
+      }
+    ],
+    "events": [
+      {
+        "name": "`input`",
+        "detail": "",
+        "description": "Emitted whenever the value changes."
+      },
+      {
+        "name": "`change`",
+        "detail": "",
+        "description": "Emitted when the value is committed (typically on blur)."
+      }
+    ],
+    "slots": [],
+    "css": [
+      "--wc-textarea-color",
+      "--wc-textarea-min-block-size",
+      "--wc-textarea-padding",
+      "--wc-textarea-radius",
+      "--wc-textarea-border",
+      "--wc-textarea-border-hover",
+      "--wc-textarea-border-focus",
+      "--wc-textarea-background",
+      "--wc-textarea-background-hover",
+      "--wc-textarea-background-focus",
+      "--wc-textarea-resize",
+      "--wc-textarea-shadow",
+      "--wc-textarea-shadow-focus",
+      "--wc-textarea-placeholder"
+    ],
+    "notes": [
+      "Form-associated so it participates in native submissions and works with <label> elements.",
+      "Radix-inspired focus, hover, and disabled states customisable with CSS variables.",
+      "Supports pass-through attributes like rows, minlength, maxlength, autocomplete, and spellcheck."
+    ]
+  },
   "wc-toggle": {
     "title": "<wc-toggle>",
     "tagline": "Documentation for <wc-toggle>",

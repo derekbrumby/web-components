@@ -29,6 +29,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-input-group>`](#wc-input-group)
   - [`<wc-spinner>`](#wc-spinner)
   - [`<wc-skeleton>`](#wc-skeleton)
+- [`<wc-item>`](#wc-item)
 - [`<wc-badge>`](#wc-badge)
 - [`<wc-button>`](#wc-button)
 - [`<wc-input>`](#wc-input)
@@ -126,6 +127,7 @@ to the detailed reference for deeper usage notes.
 | Component | Summary |
 | --- | --- |
 | `<wc-separator>` | Semantic divider with vertical orientation support. |
+| `<wc-item>` | Flex-based item rows with media, titles, descriptions, and actions. |
 | `<wc-resizable>` | Wrapper that turns any element into a draggable resizable panel. |
 | `<wc-drawer>` | Sliding panel with trap-focus behaviour. |
 | `<wc-sheet>` | Dialog-inspired sheet for supplementary workflows. |
@@ -1021,6 +1023,71 @@ host styles.
   `--wc-skeleton-base-color`, `--wc-skeleton-highlight-color`,
   `--wc-skeleton-animation-duration`.
 - Parts: `::part(base)` exposes the animated surface for advanced overrides.
+
+### `<wc-item>`
+
+Compose flexible content rows with optional media, descriptions, and actions. The suite mirrors the
+shadcn/ui Item primitives while remaining framework agnostic and themable through CSS variables and
+parts.
+
+```html
+<script type="module" src="https://cdn.example.com/web-components/item.js"></script>
+
+<wc-item variant="outline">
+  <wc-item-media variant="icon">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="m5 13 4 4 10-10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  </wc-item-media>
+  <wc-item-content>
+    <wc-item-title>Workspace created</wc-item-title>
+    <wc-item-description>Invite your team to collaborate and assign tasks.</wc-item-description>
+  </wc-item-content>
+  <wc-item-actions>
+    <button type="button">Open</button>
+  </wc-item-actions>
+</wc-item>
+```
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | string | `"default"` | Switch between `default`, `outline`, or `muted` visual treatments. |
+| `size` | string | `"default"` | Adjust spacing presets. Supports `default` or compact `sm`. |
+| `interactive` | boolean | `false` | When present the item receives `tabindex="0"`, pointer cursor, and focus ring styling. |
+
+#### Slots
+
+- _(default)_ — Compose the row using the companion primitives below, or inline content for simple
+  layouts.
+- Place `<wc-item-header>` before other children to span imagery above the row.
+- Append `<wc-item-footer>` for supporting details or actions that should stretch full width.
+
+#### Related elements
+
+- `<wc-item-media>` — Leading visual container. Accepts `variant="icon"` (padded icon badge) or
+  `variant="image"` (cropped square/rectangular media).
+- `<wc-item-content>` — Vertical stack for `<wc-item-title>` and `<wc-item-description>`.
+- `<wc-item-title>` — Semibold title text rendered as a paragraph for flexible semantics.
+- `<wc-item-description>` — Muted description copy that inherits the item colour scheme.
+- `<wc-item-actions>` — Right-aligned flex container for buttons, icons, or supporting metadata.
+- `<wc-item-header>` / `<wc-item-footer>` — Optional regions that span the full width above or below
+  the main row.
+- `<wc-item-group>` — Wrap multiple items to maintain consistent spacing.
+- `<wc-item-separator>` — Divider element intended for use between grouped items.
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-item-background`, `--wc-item-foreground`,
+  `--wc-item-muted-foreground`, `--wc-item-border-color`, `--wc-item-hover-border-color`,
+  `--wc-item-hover-shadow`, `--wc-item-radius`, `--wc-item-padding-inline`,
+  `--wc-item-padding-block`, `--wc-item-gap`, `--wc-item-actions-gap`, `--wc-item-content-gap`,
+  `--wc-item-footer-gap`, `--wc-item-footer-padding`, `--wc-item-group-gap`,
+  `--wc-item-media-radius`, `--wc-item-media-background`.
+- Parts: `::part(surface)`, `::part(content)`, `::part(media)`, `::part(title)`,
+  `::part(description)`, `::part(actions)`, `::part(header)`, `::part(footer)`, `::part(group)`,
+  `::part(separator)`.
 
 ### `<wc-badge>`
 

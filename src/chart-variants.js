@@ -313,6 +313,10 @@
       if (!this.hasAttribute('role')) {
         this.setAttribute('role', 'group');
       }
+      this.#upgradeProperty('data');
+      this.#upgradeProperty('config');
+      this.#upgradeProperty('categoryKey');
+      this.#upgradeProperty('legend');
       this.#render();
     }
 
@@ -569,6 +573,18 @@
         this.resetTooltip();
         this.renderChart();
       });
+    }
+
+    /**
+     * Ensure pre-upgrade property assignments trigger the component setters.
+     * @param {keyof this} property
+     */
+    #upgradeProperty(property) {
+      if (Object.prototype.hasOwnProperty.call(this, property)) {
+        const value = /** @type {any} */ (this)[property];
+        delete /** @type {any} */ (this)[property];
+        /** @type {any} */ (this)[property] = value;
+      }
     }
 
     #render() {

@@ -94,6 +94,18 @@
     #pointerId = null;
     /** @type {boolean} */
     #reflectingValue = false;
+    /** @type {(event: PointerEvent) => void} */
+    #boundOnPointerDown;
+    /** @type {(event: PointerEvent) => void} */
+    #boundOnPointerMove;
+    /** @type {(event: PointerEvent) => void} */
+    #boundOnPointerUp;
+    /** @type {(event: PointerEvent) => void} */
+    #boundOnPointerCancel;
+    /** @type {(event: PointerEvent) => void} */
+    #boundOnContainerPointerDown;
+    /** @type {(event: KeyboardEvent) => void} */
+    #boundOnKeyDown;
 
     constructor() {
       super();
@@ -238,12 +250,12 @@
       this.#container = /** @type {HTMLElement} */ (this.#root.querySelector('.container'));
       this.#handle = /** @type {HTMLElement} */ (this.#root.querySelector('.handle'));
 
-      this.#onPointerDown = this.#onPointerDown.bind(this);
-      this.#onPointerMove = this.#onPointerMove.bind(this);
-      this.#onPointerUp = this.#onPointerUp.bind(this);
-      this.#onPointerCancel = this.#onPointerCancel.bind(this);
-      this.#onKeyDown = this.#onKeyDown.bind(this);
-      this.#onContainerPointerDown = this.#onContainerPointerDown.bind(this);
+      this.#boundOnPointerDown = this.#onPointerDown.bind(this);
+      this.#boundOnPointerMove = this.#onPointerMove.bind(this);
+      this.#boundOnPointerUp = this.#onPointerUp.bind(this);
+      this.#boundOnPointerCancel = this.#onPointerCancel.bind(this);
+      this.#boundOnContainerPointerDown = this.#onContainerPointerDown.bind(this);
+      this.#boundOnKeyDown = this.#onKeyDown.bind(this);
     }
 
     connectedCallback() {
@@ -253,9 +265,9 @@
       upgradeProperty(this, 'step');
       upgradeProperty(this, 'disabled');
 
-      this.#handle.addEventListener('pointerdown', this.#onPointerDown);
-      this.#handle.addEventListener('keydown', this.#onKeyDown);
-      this.#container.addEventListener('pointerdown', this.#onContainerPointerDown);
+      this.#handle.addEventListener('pointerdown', this.#boundOnPointerDown);
+      this.#handle.addEventListener('keydown', this.#boundOnKeyDown);
+      this.#container.addEventListener('pointerdown', this.#boundOnContainerPointerDown);
 
       this.#applyMin(this.getAttribute('min'));
       this.#applyMax(this.getAttribute('max'));
@@ -265,12 +277,12 @@
     }
 
     disconnectedCallback() {
-      this.#handle.removeEventListener('pointerdown', this.#onPointerDown);
-      this.#handle.removeEventListener('keydown', this.#onKeyDown);
-      this.#container.removeEventListener('pointerdown', this.#onContainerPointerDown);
-      window.removeEventListener('pointermove', this.#onPointerMove);
-      window.removeEventListener('pointerup', this.#onPointerUp);
-      window.removeEventListener('pointercancel', this.#onPointerCancel);
+      this.#handle.removeEventListener('pointerdown', this.#boundOnPointerDown);
+      this.#handle.removeEventListener('keydown', this.#boundOnKeyDown);
+      this.#container.removeEventListener('pointerdown', this.#boundOnContainerPointerDown);
+      window.removeEventListener('pointermove', this.#boundOnPointerMove);
+      window.removeEventListener('pointerup', this.#boundOnPointerUp);
+      window.removeEventListener('pointercancel', this.#boundOnPointerCancel);
     }
 
     attributeChangedCallback(name, _oldValue, newValue) {
@@ -498,9 +510,9 @@
       event.preventDefault();
       this.#dragging = true;
       this.#pointerId = event.pointerId;
-      window.addEventListener('pointermove', this.#onPointerMove);
-      window.addEventListener('pointerup', this.#onPointerUp);
-      window.addEventListener('pointercancel', this.#onPointerCancel);
+      window.addEventListener('pointermove', this.#boundOnPointerMove);
+      window.addEventListener('pointerup', this.#boundOnPointerUp);
+      window.addEventListener('pointercancel', this.#boundOnPointerCancel);
       this.#updateFromPointer(event, { emit: true });
     }
 
@@ -517,9 +529,9 @@
       event.preventDefault();
       this.#dragging = true;
       this.#pointerId = event.pointerId;
-      window.addEventListener('pointermove', this.#onPointerMove);
-      window.addEventListener('pointerup', this.#onPointerUp);
-      window.addEventListener('pointercancel', this.#onPointerCancel);
+      window.addEventListener('pointermove', this.#boundOnPointerMove);
+      window.addEventListener('pointerup', this.#boundOnPointerUp);
+      window.addEventListener('pointercancel', this.#boundOnPointerCancel);
       this.#updateFromPointer(event, { emit: true });
     }
 
@@ -539,9 +551,9 @@
       }
       this.#dragging = false;
       this.#pointerId = null;
-      window.removeEventListener('pointermove', this.#onPointerMove);
-      window.removeEventListener('pointerup', this.#onPointerUp);
-      window.removeEventListener('pointercancel', this.#onPointerCancel);
+      window.removeEventListener('pointermove', this.#boundOnPointerMove);
+      window.removeEventListener('pointerup', this.#boundOnPointerUp);
+      window.removeEventListener('pointercancel', this.#boundOnPointerCancel);
       this.#emitChange();
     }
 
@@ -552,9 +564,9 @@
       }
       this.#dragging = false;
       this.#pointerId = null;
-      window.removeEventListener('pointermove', this.#onPointerMove);
-      window.removeEventListener('pointerup', this.#onPointerUp);
-      window.removeEventListener('pointercancel', this.#onPointerCancel);
+      window.removeEventListener('pointermove', this.#boundOnPointerMove);
+      window.removeEventListener('pointerup', this.#boundOnPointerUp);
+      window.removeEventListener('pointercancel', this.#boundOnPointerCancel);
     }
 
     /**

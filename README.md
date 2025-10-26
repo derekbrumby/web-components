@@ -27,6 +27,7 @@ Include the scripts in any HTML page. The files expose ES modules so they can be
 <script type="module" src="https://cdn.example.com/web-components/select.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/password-toggle-field.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/slider.js"></script>
+<script type="module" src="https://cdn.example.com/web-components/carousel.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/resizable.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/switch.js"></script>
 <script type="module" src="https://cdn.example.com/web-components/tabs.js"></script>
@@ -1819,6 +1820,191 @@ month/year dropdowns. It mirrors the shadcn/ui Calendar component while remainin
   `::part(table)`, `::part(table-head)`, `::part(weekday-row)`, `::part(grid)`, `::part(week-row)`, `::part(day-cell)`,
   `::part(day-button)`.
 - Data attributes: `[data-selected]`, `[data-outside]`, `[data-today]`, `[aria-disabled]` offer state-based theming.
+
+### `<wc-carousel>`
+
+An Embla-inspired carousel with smooth motion, pointer/touch dragging, and a familiar API for plugins. The element
+mirrors the shadcn/ui Carousel but ships as a single, dependency-free module.
+
+```html
+<wc-carousel class="hero-carousel">
+  <wc-carousel-content>
+    <wc-carousel-item>
+      <figure class="slide-card">1</figure>
+    </wc-carousel-item>
+    <wc-carousel-item>
+      <figure class="slide-card">2</figure>
+    </wc-carousel-item>
+    <wc-carousel-item>
+      <figure class="slide-card">3</figure>
+    </wc-carousel-item>
+  </wc-carousel-content>
+  <wc-carousel-previous></wc-carousel-previous>
+  <wc-carousel-next></wc-carousel-next>
+</wc-carousel>
+
+<script type="module" src="https://cdn.example.com/web-components/carousel.js"></script>
+```
+
+Use utility classes (e.g. `basis-1/3`, `pl-4`) on `<wc-carousel-item>` for sizing and spacing just like in the
+React example. Apply matching negative margins to `<wc-carousel-content>` when you need gutters.
+
+#### Attributes & properties
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| `loop` | boolean | `false` | When present the carousel wraps from the last slide to the first (and vice versa). |
+| `orientation` | `"horizontal" \| "vertical"` | `"horizontal"` | Toggles between horizontal swiping and a vertical rail. |
+| `align` | `"start" \| "center" \| "end"` | `"center"` | Controls how the active slide aligns within the viewport when snapping. |
+| `opts` property | `CarouselOptions` | `{ align: "center", loop: false, orientation: "horizontal" }` | Programmatic shortcut that mirrors the attributes above. |
+| `setApi` property | `(api: CarouselApi) => void` | `undefined` | Receives the Embla-compatible API instance when the carousel initialises. |
+| `plugins` property | `Array<{ init?(api: CarouselApi): void; destroy?(): void; }>` | `[]` | Register Embla-style plugins. Each plugin receives the API in its `init` hook and can tear down via `destroy`. |
+
+`<wc-carousel-content>` hosts the slides and accepts sizing/spacing classes. Each `<wc-carousel-item>` renders as a
+flex item with `scroll-snap-align` so utility classes like `md:basis-1/2` or `pl-2` behave exactly like their React
+counterparts.
+
+#### Methods
+
+- `scrollNext()` / `scrollPrevious()` — Move the viewport by one slide respecting the current orientation and `loop`.
+- `scrollTo(index: number)` — Snap to a specific slide programmatically.
+- `reInit()` — Recalculate measurements and re-apply snapping (useful after dynamic content changes).
+
+#### Events
+
+- `carousel-select` — Bubbles from the host whenever the active slide changes. `event.detail` includes `{ index }`.
+
+#### API helpers
+
+The API delivered to `setApi` mirrors Embla so existing integrations port easily:
+
+| Method | Description |
+| --- | --- |
+| `scrollNext()` / `scrollPrev()` | Navigate relative to the current index. |
+| `scrollTo(index)` | Snap to a slide by index. |
+| `selectedScrollSnap()` | Returns the current slide index. |
+| `scrollSnapList()` | Array of snap offsets (pixels). |
+| `slides()` | Array of slide elements. |
+| `slidesInView()` | Indices currently visible inside the viewport. |
+| `rootNode()` | Returns the `<wc-carousel>` element. |
+| `containerNode()` | Returns the scrollable viewport element. |
+| `options()` | Current options hash. |
+| `reInit()` | Re-run layout measurement and snapping. |
+| `on(event, handler)` / `off(event, handler)` | Subscribe to internal events: `ready`, `select`, `pointerDown`, `pointerUp`, `settle`, and `resize`. |
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-carousel-width`, `--wc-carousel-radius`, `--wc-carousel-background`,
+  `--wc-carousel-gap`, `--wc-carousel-item-width`, `--wc-carousel-control-size`, `--wc-carousel-control-radius`,
+  `--wc-carousel-control-background`, `--wc-carousel-control-color`, `--wc-carousel-control-shadow`,
+  `--wc-carousel-control-backdrop`, `--wc-carousel-control-offset`, `--wc-carousel-focus-outline`,
+  `--wc-carousel-accent`.
+- Parts: `::part(container)`, `::part(viewport)`, `::part(track)`, `::part(content)` (from `<wc-carousel-item>`),
+  `::part(button)` on the previous/next controls.
+
+#### Example: tracking slides with the API
+
+```html
+<wc-carousel id="stats-carousel" loop></wc-carousel>
+<div id="slide-indicator"></div>
+
+<script type="module">
+  import './src/carousel.js';
+
+  const carousel = document.querySelector('#stats-carousel');
+  const indicator = document.querySelector('#slide-indicator');
+
+  carousel.innerHTML = `
+    <wc-carousel-content>
+      ${Array.from({ length: 5 })
+        .map((_, index) => `<wc-carousel-item><div class="slide">${index + 1}</div></wc-carousel-item>`)
+        .join('')}
+    </wc-carousel-content>
+    <wc-carousel-previous></wc-carousel-previous>
+    <wc-carousel-next></wc-carousel-next>
+  `;
+
+  carousel.setApi = (api) => {
+    const updateIndicator = () => {
+      indicator.textContent = `Slide ${api.selectedScrollSnap() + 1} of ${api.scrollSnapList().length}`;
+    };
+
+    api.on('select', updateIndicator);
+    updateIndicator();
+  };
+</script>
+```
+
+#### Example: autoplay plugin
+
+```js
+// autoplay-plugin.js
+export const createAutoplay = ({ delay = 4000, stopOnInteraction = true } = {}) => {
+  let timer;
+  let carousel;
+
+  const start = () => {
+    clearInterval(timer);
+    if (!carousel) return;
+    timer = setInterval(() => carousel.scrollNext(), delay);
+  };
+
+  const stop = () => clearInterval(timer);
+  const pointerDownHandler = () => stopOnInteraction && stop();
+  const pointerUpHandler = () => stopOnInteraction && start();
+
+  return {
+    init(api) {
+      carousel = api;
+      api.on('ready', start);
+      api.on('select', start);
+      api.on('pointerDown', pointerDownHandler);
+      api.on('pointerUp', pointerUpHandler);
+      start();
+    },
+    destroy() {
+      clearInterval(timer);
+      if (!carousel) return;
+      carousel.off('ready', start);
+      carousel.off('select', start);
+      carousel.off('pointerDown', pointerDownHandler);
+      carousel.off('pointerUp', pointerUpHandler);
+      carousel = undefined;
+    },
+    stop() {
+      clearInterval(timer);
+    },
+    reset() {
+      stop();
+      start();
+    }
+  };
+};
+```
+
+```html
+<wc-carousel id="autoplay-carousel"></wc-carousel>
+
+<script type="module">
+  import './src/carousel.js';
+  import { createAutoplay } from './autoplay-plugin.js';
+
+  const carousel = document.querySelector('#autoplay-carousel');
+  const autoplay = createAutoplay({ delay: 2500 });
+  carousel.plugins = [autoplay];
+  carousel.innerHTML = `
+    <wc-carousel-content>
+      ${['One', 'Two', 'Three']
+        .map((label) => `<wc-carousel-item><div class="slide">${label}</div></wc-carousel-item>`)
+        .join('')}
+    </wc-carousel-content>
+    <wc-carousel-previous></wc-carousel-previous>
+    <wc-carousel-next></wc-carousel-next>
+  `;
+  carousel.addEventListener('mouseenter', () => autoplay.stop());
+  carousel.addEventListener('mouseleave', () => autoplay.reset());
+</script>
+```
 
 ### `<wc-date-picker>`
 

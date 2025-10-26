@@ -1307,6 +1307,43 @@ export const componentDocs = {
       "Provides CSS custom properties and parts for custom theming."
     ]
   },
+  "wc-countdown": {
+    "title": "<wc-countdown>",
+    "tagline": "Rolling digit countdown for timers and stat transitions.",
+    "usage": {
+      "snippet": "<wc-countdown value=\"59\"></wc-countdown>",
+      "description": "Update the value property to animate the digits."
+    },
+    "attributes": [
+      {
+        "name": "`value` / `value`",
+        "type": "`number`",
+        "default": "`0`",
+        "description": "Current numeric value, clamped between 0 and 999 and reflected to the attribute."
+      },
+      {
+        "name": "`digits` / `digits`",
+        "type": "`number`",
+        "default": "—",
+        "description": "Hint for the minimum digits to display (1–3). Mirrors the property and respects the `--digits` CSS override."
+      }
+    ],
+    "events": [],
+    "slots": [],
+    "css": [
+      "--digits",
+      "--wc-countdown-transition-duration",
+      "--wc-countdown-transition-easing",
+      "--wc-countdown-width-delay",
+      "--wc-countdown-width-duration",
+      "--wc-countdown-width-easing"
+    ],
+    "notes": [
+      "Sets `role=\"timer\"`, `aria-live=\"polite\"`, and `aria-atomic=\"true\"` for assistive technology updates.",
+      "Automatically syncs the `--value` CSS variable and text content whenever the value changes.",
+      "Use `digits` or the `--digits` CSS custom property to zero-pad the display when required."
+    ]
+  },
   "wc-collapsible": {
     "title": "<wc-collapsible>",
     "tagline": "Documentation for <wc-collapsible>",

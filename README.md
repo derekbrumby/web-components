@@ -29,7 +29,7 @@ and ships in a format that works out of the box from a CDN or your preferred bun
   - [`<wc-input-group>`](#wc-input-group)
   - [`<wc-spinner>`](#wc-spinner)
   - [`<wc-skeleton>`](#wc-skeleton)
-- [`<wc-item>`](#wc-item)
+  - [`<wc-countdown>`](#wc-countdown)
 - [`<wc-badge>`](#wc-badge)
 - [`<wc-button>`](#wc-button)
 - [`<wc-input>`](#wc-input)
@@ -87,6 +87,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-progress>` | Determinate and indeterminate progress indicator with ARIA semantics. | — |
 | `<wc-skeleton>` | Shimmering skeleton placeholder for loading states. | [Docs](#wc-skeleton) |
 | `<wc-spinner>` | Polite loading spinner with customisable stroke and messaging. | [Docs](#wc-spinner) |
+| `<wc-countdown>` | Animated numeric ticker for timers and stat transitions. | [Docs](#wc-countdown) |
 | `<wc-ascii-icon>` | Converts single-colour SVG paths into scalable ASCII art glyphs. | [Docs](#wc-ascii-icon) |
 
 ### Inputs & forms
@@ -1024,6 +1025,23 @@ host styles.
   `--wc-skeleton-animation-duration`.
 - Parts: `::part(base)` exposes the animated surface for advanced overrides.
 
+### `<wc-countdown>`
+
+Animate numeric transitions between 0 and 999 with a rolling digit effect. The element mirrors the
+structure of daisyUI’s countdown utility, automatically updating the `--value` CSS variable and text
+content whenever the `value` property changes.
+
+```html
+<wc-countdown value="59"></wc-countdown>
+
+<script>
+  const timer = document.querySelector('wc-countdown');
+  let value = 59;
+  setInterval(() => {
+    value = value === 0 ? 59 : value - 1;
+    timer.value = value;
+  }, 1000);
+</script>
 ### `<wc-item>`
 
 Compose flexible content rows with optional media, descriptions, and actions. The suite mirrors the
@@ -1053,6 +1071,19 @@ parts.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
+| `value` | number | `0` | Current numeric value. Clamped between 0 and 999 and reflected back to the attribute. |
+| `digits` | number | — | Optional hint (1–3) for the minimum digits to display. Mirrors the `digits` property. |
+
+#### Accessibility
+
+- Sets `role="timer"`, `aria-live="polite"`, and `aria-atomic="true"` so updates announce without stealing focus.
+- Provide a custom `aria-label` when the countdown should include context such as units or labels.
+
+#### Styling hooks
+
+- CSS custom properties: `--digits`, `--wc-countdown-transition-duration`, `--wc-countdown-transition-easing`,
+  `--wc-countdown-width-delay`, `--wc-countdown-width-duration`, `--wc-countdown-width-easing`.
+- Parts: `::part(value)` exposes the animated digit container, `::part(sr-label)` exposes the live region.
 | `variant` | string | `"default"` | Switch between `default`, `outline`, or `muted` visual treatments. |
 | `size` | string | `"default"` | Adjust spacing presets. Supports `default` or compact `sm`. |
 | `interactive` | boolean | `false` | When present the item receives `tabindex="0"`, pointer cursor, and focus ring styling. |

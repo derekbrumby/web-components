@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>&lt;wc-email-builder&gt; demo</title>
+    <link rel="stylesheet" href="./demo-base.css" />
+    <script type="module" src="../src/email-builder.js"></script>
+    <style>
+      body {
+        margin: 0;
+        background: radial-gradient(circle at top, rgba(124, 58, 237, 0.12), transparent 55%),
+          radial-gradient(circle at bottom, rgba(14, 165, 233, 0.14), transparent 50%),
+          var(--demo-background, #f8fafc);
+      }
+
+      main {
+        padding: 3rem min(3rem, 6vw);
+        display: grid;
+        gap: 2rem;
+      }
+
+      header {
+        display: grid;
+        gap: 0.65rem;
+        text-align: center;
+        color: color-mix(in srgb, var(--demo-foreground, #0f172a) 85%, transparent);
+      }
+
+      header h1 {
+        font-size: clamp(1.75rem, 2vw + 1.1rem, 2.5rem);
+        margin: 0;
+      }
+
+      header p {
+        margin: 0 auto;
+        max-width: 42rem;
+        line-height: 1.6;
+        color: color-mix(in srgb, currentColor 72%, transparent);
+      }
+
+      wc-email-builder {
+        max-width: 1100px;
+        margin: 0 auto;
+        --wc-email-builder-accent: #7c3aed;
+        --wc-email-builder-accent-soft: rgba(124, 58, 237, 0.15);
+        --wc-email-builder-surface: rgba(255, 255, 255, 0.88);
+        --wc-email-builder-border: 1px solid rgba(148, 163, 184, 0.35);
+      }
+
+      .event-log {
+        margin: 0 auto;
+        max-width: 28rem;
+        padding: 0.75rem 1rem;
+        border-radius: 0.85rem;
+        background: color-mix(in srgb, var(--demo-accent, rgba(124, 58, 237, 0.2)) 45%, transparent);
+        color: color-mix(in srgb, var(--demo-foreground, #0f172a) 80%, transparent);
+        font-size: 0.85rem;
+        box-shadow: 0 16px 40px -30px rgba(15, 23, 42, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Assemble campaigns in minutes</h1>
+        <p>
+          Drag blocks from the palette, reorder sections inline, and tweak typography or colours in the contextual
+          settings panel. The demo seeds a sample layout so you can explore interactions immediately.
+        </p>
+      </header>
+
+      <wc-email-builder id="builder"></wc-email-builder>
+      <p id="event-log" class="event-log" aria-live="polite">Waiting for changes…</p>
+    </main>
+
+    <script type="module">
+      const builder = document.querySelector('#builder');
+      const presetBlocks = [
+        {
+          type: 'paragraph',
+          content: '👋 Welcome to the Autumn spotlight. Discover fresh product drops, curated tutorials, and invite-only events.',
+          align: 'center',
+          color: '#1f2937',
+        },
+        {
+          type: 'image',
+          url: 'https://images.unsplash.com/photo-1523475472560-d2df97ec485c?auto=format&fit=crop&w=960&q=80',
+          alt: 'Laptop with email campaign preview',
+          align: 'center',
+          borderRadius: '18px',
+        },
+        {
+          type: 'paragraph',
+          content:
+            "We craft resources that help makers learn faster. Mix and match layout blocks to share updates, feature releases, or highlight community wins. Everything here is editable, responsive, and export ready.",
+          align: 'left',
+          color: '#334155',
+        },
+        {
+          type: 'button',
+          label: 'Explore new templates',
+          url: 'https://example.com/templates',
+          background: '#7c3aed',
+          color: '#ffffff',
+          align: 'center',
+          borderRadius: '999px',
+        },
+        {
+          type: 'social',
+          items: [
+            { label: 'Twitter', url: 'https://twitter.com/webcomponents', icon: 'twitter' },
+            { label: 'LinkedIn', url: 'https://linkedin.com/company/webcomponents', icon: 'linkedin' },
+            { label: 'Instagram', url: 'https://instagram.com/webcomponents', icon: 'instagram' },
+          ],
+          align: 'center',
+        },
+      ];
+
+      const presetSettings = {
+        width: 620,
+        align: 'center',
+        background: '#f3f4f6',
+        canvasBackground: '#ffffff',
+      };
+
+      if (builder) {
+        customElements
+          .whenDefined('wc-email-builder')
+          .then(() => {
+            builder.blocks = presetBlocks;
+            builder.settings = presetSettings;
+          })
+          .catch(() => {
+            builder.blocks = presetBlocks;
+            builder.settings = presetSettings;
+          });
+
+        const log = document.querySelector('#event-log');
+        builder.addEventListener('change', (event) => {
+          if (!log) return;
+          const time = new Date().toLocaleTimeString();
+          log.textContent = `${time}: ${event.detail.type}`;
+        });
+      }
+    </script>
+  </body>
+</html>

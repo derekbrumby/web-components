@@ -142,6 +142,7 @@ to the detailed reference for deeper usage notes.
 | `<wc-mockup-phone>` | Presentation frame for screenshot marketing. | — |
 | `<wc-aspect-ratio>` | Enforces intrinsic ratios for responsive media. | — |
 | `<wc-resizable>` | Wrapper that turns any element into a draggable resizable panel. | — |
+| `<wc-email-builder>` | Drag-and-drop email layout builder with contextual settings. | [Docs](#wc-email-builder) |
 | `<wc-drawer>` | Sliding panel with trap-focus behaviour. | — |
 | `<wc-sheet>` | Dialog-inspired sheet for supplementary workflows. | [Docs](#wc-sheet) |
 | `<wc-dialog>` / `<wc-alert-dialog>` | Modal primitives with configurable titles, descriptions, and actions. | — |
@@ -1785,3 +1786,57 @@ panes.
   `--wc-diff-focus-ring`, `--wc-diff-handle-hit-area`, `--wc-diff-object-fit`.
 - Parts: `::part(container)`, `::part(first)`, `::part(second)`, `::part(handle)`.
 
+### `<wc-email-builder>`
+
+A drag-and-drop campaign designer inspired by modern ESP tooling. The builder
+ships with a content canvas, a palette of reusable blocks, and a contextual
+panel that switches between block-specific and global design settings. It is a
+great starting point for rapid prototyping or embedding a lightweight marketing
+email experience inside dashboards.
+
+#### Features
+
+- Palette-driven block creation (paragraph, image, button, social links).
+- Reorderable blocks with pointer drag-and-drop support and keyboard focus
+  outlines.
+- Contextual settings that swap between block configuration and global design
+  controls (width, alignment, workspace colours).
+- Workspace toolbar with export/preview affordances ready for wiring into your
+  application.
+
+#### Usage
+
+```html
+<script type="module" src="./src/email-builder.js"></script>
+
+<wc-email-builder style="max-width: 1080px; margin: 0 auto;"></wc-email-builder>
+```
+
+#### Properties & events
+
+| Name | Type | Description |
+| --- | --- | --- |
+| `blocks` (property) | `BlockConfig[]` | Read or replace the block stack programmatically. Setter normalises the shape and re-renders. |
+| `settings` (property) | `{ width: number; align: "left" \| "center" \| "right"; background: string; canvasBackground: string }` | Access or update global design defaults such as canvas width and workspace colours. |
+| `change` (event) | `CustomEvent<{ type: string; blocks: BlockConfig[]; settings: { width: number; align: "left" \| "center" \| "right"; background: string; canvasBackground: string } }>` | Fires whenever blocks or settings mutate. `event.detail.type` outlines the origin (`block:update`, `settings:update`, etc.). |
+
+_`BlockConfig` maps to the block shapes listed in the table below._
+
+#### Available blocks
+
+| Block | Purpose | Tunable settings |
+| --- | --- | --- |
+| Paragraph | Drop in body copy or dividers between sections. | Text content, text colour, alignment. |
+| Image | Showcase campaign artwork hosted remotely. | Image URL, alt text, border radius, alignment. |
+| Button | Add call-to-action buttons to drive clicks. | Label, destination URL, colours, border radius, alignment. |
+| Social | Present a row of social icons that link to your profiles. | Platform icon, label tooltip, destination URL, alignment. |
+
+#### Styling hooks
+
+- CSS custom properties: `--wc-email-builder-border`, `--wc-email-builder-radius`,
+  `--wc-email-builder-accent`, `--wc-email-builder-accent-soft`,
+  `--wc-email-builder-text`, `--wc-email-builder-muted`,
+  `--wc-email-builder-surface`, `--wc-email-builder-control-bg`,
+  `--wc-email-builder-outline`.
+- Parts: _(not exposed)_ — style via CSS custom properties or wrap the element in
+  layout containers.

@@ -183,7 +183,11 @@
     /** @type {HTMLElement} */
     #canvas;
     /** @type {HTMLElement} */
+    #palettePanel;
+    /** @type {HTMLElement} */
     #palette;
+    /** @type {HTMLElement} */
+    #paletteHelper;
     /** @type {HTMLElement} */
     #panel;
     /** @type {HTMLElement} */
@@ -272,9 +276,51 @@
 
         .workspace {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem);
+          grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr) minmax(18rem, 22rem);
           gap: 1rem;
           align-items: start;
+        }
+
+        .palette-panel {
+          border: var(--wc-email-builder-border);
+          border-radius: var(--wc-email-builder-radius);
+          background: var(--wc-email-builder-surface);
+          backdrop-filter: blur(18px);
+          display: grid;
+          grid-template-rows: auto 1fr;
+          min-height: 28rem;
+        }
+
+        .palette-header {
+          padding: 1.1rem 1.25rem 0.5rem;
+          display: grid;
+          gap: 0.35rem;
+        }
+
+        .palette-header h2 {
+          margin: 0;
+          font-size: 0.95rem;
+          font-weight: 600;
+        }
+
+        .palette-header p {
+          margin: 0;
+          color: var(--wc-email-builder-muted);
+          font-size: 0.8rem;
+        }
+
+        .palette-body {
+          padding: 0 1.25rem 1.25rem;
+          display: grid;
+          gap: 1rem;
+          overflow: auto;
+          align-content: start;
+        }
+
+        .palette-helper {
+          margin: 0;
+          font-size: 0.8rem;
+          color: var(--wc-email-builder-muted);
         }
 
         .canvas-wrapper {
@@ -608,6 +654,30 @@
       const workspace = document.createElement('div');
       workspace.className = 'workspace';
 
+      this.#palettePanel = document.createElement('aside');
+      this.#palettePanel.className = 'palette-panel';
+
+      const paletteHeader = document.createElement('div');
+      paletteHeader.className = 'palette-header';
+      const paletteTitle = document.createElement('h2');
+      paletteTitle.textContent = 'Blocks';
+      const paletteDescription = document.createElement('p');
+      paletteDescription.textContent = 'Drag blocks into the canvas or click to insert them.';
+      paletteHeader.append(paletteTitle, paletteDescription);
+
+      const paletteBody = document.createElement('div');
+      paletteBody.className = 'palette-body';
+
+      this.#palette = document.createElement('div');
+      this.#palette.className = 'palette';
+
+      this.#paletteHelper = document.createElement('p');
+      this.#paletteHelper.className = 'palette-helper';
+      this.#paletteHelper.textContent = 'Drag or click a block to start composing your email.';
+
+      paletteBody.append(this.#palette, this.#paletteHelper);
+      this.#palettePanel.append(paletteHeader, paletteBody);
+
       const canvasWrapper = document.createElement('section');
       canvasWrapper.className = 'canvas-wrapper';
 
@@ -673,7 +743,7 @@
       dropHint.className = 'canvas-drop-hint';
       dropHint.innerHTML = `
         <strong>Drop blocks here</strong>
-        <span>Drag blocks from the right to start designing your email layout.</span>
+        <span>Use the Blocks panel to start designing your email layout.</span>
       `;
       this.#canvas.append(dropHint);
 
@@ -703,11 +773,12 @@
 
       this.#panel.append(tabs, this.#panelContent);
 
-      workspace.append(canvasWrapper, this.#panel);
+      workspace.append(this.#palettePanel, canvasWrapper, this.#panel);
       app.append(toolbar, workspace);
 
       this.#root.append(style, app);
 
+      this.#renderPalette();
       this.#renderPanel('content');
     }
 
@@ -833,7 +904,7 @@
       if (this.#state.selected) {
         this.#renderBlockSettings();
       } else {
-        this.#renderPalette();
+        this.#renderContentOverview();
       }
     }
 
@@ -928,15 +999,10 @@
 
     /** Render the block palette list. */
     #renderPalette() {
-      const section = document.createElement('section');
-      section.className = 'panel-section';
-      const heading = document.createElement('h3');
-      heading.textContent = 'Blocks';
-      section.append(heading);
-
-      this.#palette = document.createElement('div');
-      this.#palette.className = 'palette';
-
+      if (!this.#palette) {
+        return;
+      }
+      this.#palette.innerHTML = '';
       (/** @type {BlockType[]} */ (Object.keys(BLOCK_DEFS))).forEach((type) => {
         const def = BLOCK_DEFS[type];
         const button = document.createElement('button');
@@ -964,15 +1030,25 @@
         this.#palette.append(button);
       });
 
-      section.append(this.#palette);
-      this.#panelContent.append(section);
-
-      if (this.#state.blocks.length === 0) {
-        const helper = document.createElement('p');
-        helper.className = 'field-description';
-        helper.textContent = 'Drag or click a block to start composing your email.';
-        section.append(helper);
+      if (this.#paletteHelper) {
+        this.#paletteHelper.hidden = this.#state.blocks.length > 0;
       }
+    }
+
+    /** Render placeholder guidance when no block is selected. */
+    #renderContentOverview() {
+      const section = document.createElement('section');
+      section.className = 'panel-section';
+      const heading = document.createElement('h3');
+      heading.textContent = 'Content';
+      section.append(heading);
+
+      const helper = document.createElement('p');
+      helper.className = 'field-description';
+      helper.textContent = 'Select a block on the canvas to edit its properties. Use the Blocks panel to add more content.';
+      section.append(helper);
+
+      this.#panelContent.append(section);
     }
 
     /** Render the block-specific settings for the selected block. */
@@ -1360,7 +1436,7 @@
         hint.className = 'canvas-drop-hint';
         hint.innerHTML = `
           <strong>Drop blocks here</strong>
-          <span>Drag blocks from the right to start designing your email layout.</span>
+          <span>Use the Blocks panel to start designing your email layout.</span>
         `;
         this.#canvas.append(hint);
         return;
@@ -1480,6 +1556,7 @@
     /** Trigger a full rerender. */
     #render() {
       this.#renderBlocks();
+      this.#renderPalette();
       const activeTab = this.#tabButtons.find((btn) => btn.classList.contains('is-active'))?.textContent?.toLowerCase() ?? 'content';
       this.#renderPanel(/** @type {"content" | "rows" | "settings"} */ (activeTab));
     }

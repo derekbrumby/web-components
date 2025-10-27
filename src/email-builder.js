@@ -695,7 +695,8 @@
 
       this.#canvas.addEventListener('drop', (event) => {
         event.preventDefault();
-        const data = event.dataTransfer?.getData('text/plain');
+        const dataTransfer = event.dataTransfer;
+        const data = dataTransfer ? dataTransfer.getData('text/plain') : '';
         if (!data) return;
         const blocks = this.#state.blocks.slice();
         const dropIndex = this.#getDropIndex(event);
@@ -951,11 +952,16 @@
           };
         case 'social': {
           const items = Array.isArray(candidate.items) && candidate.items.length
-            ? candidate.items.map((item) => ({
-                label: typeof item?.label === 'string' ? item.label : 'Social',
-                url: typeof item?.url === 'string' ? item.url : '#',
-                icon: ICON_PATHS[/** @type {keyof typeof ICON_PATHS} */ (item?.icon)] ? item.icon : 'twitter',
-              }))
+            ? candidate.items.map((item) => {
+                const source = item && typeof item === 'object' ? item : {};
+                const iconKey = typeof source.icon === 'string' ? source.icon : undefined;
+                const icon = iconKey && ICON_PATHS[iconKey] ? iconKey : 'twitter';
+                return {
+                  label: typeof source.label === 'string' ? source.label : 'Social',
+                  url: typeof source.url === 'string' ? source.url : '#',
+                  icon,
+                };
+              })
             : SOCIAL_TEMPLATE.map((item) => ({ ...item }));
           return {
             type: 'social',
@@ -1015,17 +1021,21 @@
           <span class="description">${def.description}</span>
         `;
         button.addEventListener('dragstart', (event) => {
-          event.dataTransfer?.setData('text/plain', `palette:${type}`);
-          event.dataTransfer?.setDragImage(button, 32, 32);
+          const dataTransfer = event.dataTransfer;
+          if (dataTransfer) {
+            dataTransfer.setData('text/plain', `palette:${type}`);
+            dataTransfer.setDragImage(button, 32, 32);
+          }
         });
         button.addEventListener('click', () => {
           const block = def.create();
           this.#state.blocks = [...this.#state.blocks, block];
           this.#state.selected = block.id;
           this.#render();
-          this.#tabButtons.forEach((btn) =>
-            btn.classList.toggle('is-active', btn.textContent?.toLowerCase() === 'content')
-          );
+          this.#tabButtons.forEach((btn) => {
+            const text = btn.textContent ? btn.textContent.toLowerCase() : '';
+            btn.classList.toggle('is-active', text === 'content');
+          });
           this.#renderPanel('content');
           this.#emitChange('block:add', { id: block.id, type: block.type, source: 'click' });
         });
@@ -1362,7 +1372,10 @@
         const iconPreview = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         iconPreview.setAttribute('viewBox', '0 0 24 24');
         iconPreview.setAttribute('aria-hidden', 'true');
-        iconPreview.innerHTML = `<path fill="currentColor" d="${ICON_PATHS[item.icon] ?? ICON_PATHS.twitter}" />`;
+        {
+          const initialIcon = ICON_PATHS[item.icon] ? ICON_PATHS[item.icon] : ICON_PATHS.twitter;
+          iconPreview.innerHTML = `<path fill="currentColor" d="${initialIcon}" />`;
+        }
         iconPreview.style.color = 'var(--wc-email-builder-accent)';
 
         const select = document.createElement('select');
@@ -1377,7 +1390,8 @@
         });
         select.addEventListener('change', () => {
           item.icon = select.value;
-          iconPreview.innerHTML = `<path fill="currentColor" d="${ICON_PATHS[item.icon]}" />`;
+          const path = ICON_PATHS[item.icon] ? ICON_PATHS[item.icon] : ICON_PATHS.twitter;
+          iconPreview.innerHTML = `<path fill="currentColor" d="${path}" />`;
           this.#renderBlocks();
           this.#emitChange('block:update', { id: block.id, property: `items[${index}].icon` });
         });
@@ -1458,8 +1472,11 @@
         blockEl.setAttribute('aria-selected', String(this.#state.selected === block.id));
 
         blockEl.addEventListener('dragstart', (event) => {
-          event.dataTransfer?.setData('text/plain', `block:${block.id}`);
-          event.dataTransfer?.setDragImage(blockEl, 32, 32);
+          const dataTransfer = event.dataTransfer;
+          if (dataTransfer) {
+            dataTransfer.setData('text/plain', `block:${block.id}`);
+            dataTransfer.setDragImage(blockEl, 32, 32);
+          }
         });
 
         const actions = document.createElement('div');
@@ -1543,7 +1560,8 @@
             const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             icon.setAttribute('viewBox', '0 0 24 24');
             icon.setAttribute('aria-hidden', 'true');
-            icon.innerHTML = `<path fill="currentColor" d="${ICON_PATHS[item.icon] ?? ICON_PATHS.twitter}" />`;
+            const iconPath = ICON_PATHS[item.icon] ? ICON_PATHS[item.icon] : ICON_PATHS.twitter;
+            icon.innerHTML = `<path fill="currentColor" d="${iconPath}" />`;
             link.append(icon);
             list.append(link);
           });
@@ -1559,7 +1577,11 @@
     #render() {
       this.#renderBlocks();
       this.#renderPalette();
-      const activeTab = this.#tabButtons.find((btn) => btn.classList.contains('is-active'))?.textContent?.toLowerCase() ?? 'content';
+      const activeButton = this.#tabButtons.find((btn) => btn.classList.contains('is-active'));
+      const activeTab =
+        activeButton && activeButton.textContent
+          ? activeButton.textContent.toLowerCase()
+          : 'content';
       this.#renderPanel(/** @type {"content" | "rows" | "settings"} */ (activeTab));
     }
   }

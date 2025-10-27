@@ -688,7 +688,9 @@
 
       this.#canvas.addEventListener('dragover', (event) => {
         event.preventDefault();
-        event.dataTransfer?.dropEffect = 'move';
+        if (event.dataTransfer) {
+          event.dataTransfer.dropEffect = 'move';
+        }
       });
 
       this.#canvas.addEventListener('drop', (event) => {

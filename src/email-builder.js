@@ -18,51 +18,152 @@
 
 (() => {
   /**
-   * @typedef {"paragraph" | "image" | "button" | "social"} BlockType
+   * @typedef {"title" | "paragraph" | "list" | "image" | "button" | "table" | "divider" | "spacer" | "social" | "html" | "video" | "icons" | "menu" | "sticker" | "gif"} BlockType
    */
 
   /**
-   * @typedef ParagraphBlock
-   * @property {"paragraph"} type
+   * @typedef BaseBlock
    * @property {string} id
-   * @property {string} content
-   * @property {"left" | "center" | "right"} align
-   * @property {string} color
+   * @property {string} padding
+   * @property {string} margin
+   * @property {string} width
    */
 
   /**
-   * @typedef ImageBlock
-   * @property {"image"} type
-   * @property {string} id
-   * @property {string} url
-   * @property {string} alt
-   * @property {"left" | "center" | "right"} align
-   * @property {boolean} autoWidth
-   * @property {string} borderRadius
+   * @typedef {BaseBlock & {
+   *   type: "title";
+   *   text: string;
+   *   align: "left" | "center" | "right";
+   *   level: "h1" | "h2" | "h3";
+   *   color: string;
+   * }} TitleBlock
    */
 
   /**
-   * @typedef ButtonBlock
-   * @property {"button"} type
-   * @property {string} id
-   * @property {string} label
-   * @property {string} url
-   * @property {string} background
-   * @property {string} color
-   * @property {string} borderRadius
-   * @property {"left" | "center" | "right"} align
+   * @typedef {BaseBlock & {
+   *   type: "paragraph";
+   *   content: string;
+   *   align: "left" | "center" | "right";
+   *   color: string;
+   * }} ParagraphBlock
    */
 
   /**
-   * @typedef SocialBlock
-   * @property {"social"} type
-   * @property {string} id
-   * @property {{ label: string; url: string; icon: string }[]} items
-   * @property {"left" | "center" | "right"} align
+   * @typedef {BaseBlock & {
+   *   type: "list";
+   *   items: string[];
+   *   ordered: boolean;
+   *   align: "left" | "center" | "right";
+   * }} ListBlock
    */
 
   /**
-   * @typedef {ParagraphBlock | ImageBlock | ButtonBlock | SocialBlock} BlockConfig
+   * @typedef {BaseBlock & {
+   *   type: "image";
+   *   url: string;
+   *   alt: string;
+   *   align: "left" | "center" | "right";
+   *   autoWidth: boolean;
+   *   borderRadius: string;
+   * }} ImageBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "button";
+   *   label: string;
+   *   url: string;
+   *   background: string;
+   *   color: string;
+   *   borderRadius: string;
+   *   align: "left" | "center" | "right";
+   * }} ButtonBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "table";
+   *   rows: string[][];
+   *   header: boolean;
+   *   align: "left" | "center" | "right";
+   * }} TableBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "divider";
+   *   color: string;
+   *   thickness: string;
+   *   style: "solid" | "dashed" | "dotted";
+   * }} DividerBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "spacer";
+   *   height: string;
+   * }} SpacerBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "social";
+   *   items: { label: string; url: string; icon: string }[];
+   *   align: "left" | "center" | "right";
+   * }} SocialBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "html";
+   *   markup: string;
+   * }} HtmlBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "video";
+   *   url: string;
+   *   thumbnail: string;
+   *   caption: string;
+   * }} VideoBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "icons";
+   *   items: { label: string; icon: string; url: string }[];
+   *   align: "left" | "center" | "right";
+   * }} IconsBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "menu";
+   *   items: { label: string; url: string }[];
+   *   align: "left" | "center" | "right";
+   * }} MenuBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "sticker";
+   *   text: string;
+   *   background: string;
+   *   color: string;
+   * }} StickerBlock
+   */
+
+  /**
+   * @typedef {BaseBlock & {
+   *   type: "gif";
+   *   url: string;
+   *   alt: string;
+   * }} GifBlock
+   */
+
+  /**
+   * @typedef {TitleBlock | ParagraphBlock | ListBlock | ImageBlock | ButtonBlock | TableBlock | DividerBlock | SpacerBlock | SocialBlock | HtmlBlock | VideoBlock | IconsBlock | MenuBlock | StickerBlock | GifBlock} BlockConfig
    */
 
   const createId = () => (typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : Math.random().toString(36).slice(2));
@@ -75,6 +176,24 @@
   ]);
 
   const BLOCK_DEFS = /** @type {const} */ ({
+    title: {
+      label: 'Title',
+      description: 'Introduce a new section with a headline.',
+      icon: '🅣',
+      create() {
+        return /** @type {TitleBlock} */ ({
+          type: 'title',
+          id: createId(),
+          text: 'Add a headline for this section',
+          align: 'center',
+          level: 'h1',
+          color: '#0f172a',
+          padding: '1.5rem 1.5rem 1rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
     paragraph: {
       label: 'Paragraph',
       description: 'Add text content to your email.',
@@ -86,6 +205,26 @@
           content: "I'm a new paragraph block.",
           align: 'left',
           color: '#1f2937',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    list: {
+      label: 'List',
+      description: 'Highlight multiple bullet points.',
+      icon: '☰',
+      create() {
+        return /** @type {ListBlock} */ ({
+          type: 'list',
+          id: createId(),
+          items: ['First benefit', 'Second benefit', 'Third benefit'],
+          ordered: false,
+          align: 'left',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
         });
       },
     },
@@ -102,6 +241,9 @@
           align: 'center',
           autoWidth: true,
           borderRadius: '12px',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
         });
       },
     },
@@ -119,6 +261,62 @@
           color: '#ffffff',
           borderRadius: '999px',
           align: 'center',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    table: {
+      label: 'Table',
+      description: 'Organise data in rows and columns.',
+      icon: '📊',
+      create() {
+        return /** @type {TableBlock} */ ({
+          type: 'table',
+          id: createId(),
+          rows: [
+            ['Feature', 'Status'],
+            ['Email automation', 'Enabled'],
+            ['Customer journey', 'Draft'],
+          ],
+          header: true,
+          align: 'center',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    divider: {
+      label: 'Divider',
+      description: 'Visually separate sections of content.',
+      icon: '➖',
+      create() {
+        return /** @type {DividerBlock} */ ({
+          type: 'divider',
+          id: createId(),
+          color: 'rgba(148, 163, 184, 0.75)',
+          thickness: '2px',
+          style: 'solid',
+          padding: '0.5rem 1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    spacer: {
+      label: 'Spacer',
+      description: 'Add breathing room between blocks.',
+      icon: '⬛',
+      create() {
+        return /** @type {SpacerBlock} */ ({
+          type: 'spacer',
+          id: createId(),
+          height: '32px',
+          padding: '0',
+          margin: '0',
+          width: '100%',
         });
       },
     },
@@ -132,6 +330,114 @@
           id: createId(),
           align: 'center',
           items: SOCIAL_TEMPLATE.map((item) => ({ ...item })),
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    html: {
+      label: 'HTML',
+      description: 'Inject custom HTML snippets.',
+      icon: '</>',
+      create() {
+        return /** @type {HtmlBlock} */ ({
+          type: 'html',
+          id: createId(),
+          markup: '<p style="margin:0;">Add custom HTML content.</p>',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    video: {
+      label: 'Video',
+      description: 'Link to hosted video content.',
+      icon: '🎬',
+      create() {
+        return /** @type {VideoBlock} */ ({
+          type: 'video',
+          id: createId(),
+          url: 'https://example.com/watch',
+          thumbnail: '',
+          caption: 'Watch the latest demo',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    icons: {
+      label: 'Icons',
+      description: 'Feature compact icon callouts.',
+      icon: '⭐',
+      create() {
+        return /** @type {IconsBlock} */ ({
+          type: 'icons',
+          id: createId(),
+          items: [
+            { label: 'Fast setup', icon: '⚡', url: '#' },
+            { label: 'Secure', icon: '🔒', url: '#' },
+            { label: 'Support', icon: '💬', url: '#' },
+          ],
+          align: 'center',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    menu: {
+      label: 'Menu',
+      description: 'Build a simple navigation menu.',
+      icon: '📑',
+      create() {
+        return /** @type {MenuBlock} */ ({
+          type: 'menu',
+          id: createId(),
+          items: [
+            { label: 'About', url: '#' },
+            { label: 'Features', url: '#' },
+            { label: 'Pricing', url: '#' },
+          ],
+          align: 'center',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    sticker: {
+      label: 'Sticker',
+      description: 'Draw attention with a fun sticker.',
+      icon: '🏷️',
+      create() {
+        return /** @type {StickerBlock} */ ({
+          type: 'sticker',
+          id: createId(),
+          text: 'New arrival',
+          background: '#fef08a',
+          color: '#92400e',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
+        });
+      },
+    },
+    gif: {
+      label: 'GIF',
+      description: 'Embed an animated GIF.',
+      icon: '🎞️',
+      create() {
+        return /** @type {GifBlock} */ ({
+          type: 'gif',
+          id: createId(),
+          url: '',
+          alt: 'Animated moment',
+          padding: '1.25rem',
+          margin: '0',
+          width: '100%',
         });
       },
     },
@@ -192,6 +498,8 @@
     #panel;
     /** @type {HTMLElement} */
     #panelContent;
+    /** @type {HTMLElement} */
+    #dropIndicator;
     /** @type {HTMLButtonElement[]} */
     #tabButtons;
     /** @type {{ blocks: BlockConfig[]; selected: string | null; settings: typeof DEFAULT_SETTINGS }} */
@@ -217,10 +525,14 @@
           --wc-email-builder-muted: #475569;
           --wc-email-builder-surface: rgba(255, 255, 255, 0.9);
           --wc-email-builder-control-bg: rgba(148, 163, 184, 0.12);
+          --wc-email-builder-card-bg: rgba(255, 255, 255, 0.98);
+          --wc-email-builder-input-bg: rgba(248, 250, 252, 0.95);
           --wc-email-builder-outline: 2px solid rgba(124, 58, 237, 0.32);
+          color-scheme: light dark;
           display: block;
           font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
           color: var(--wc-email-builder-text);
+          line-height: 1.5;
         }
 
         * {
@@ -362,13 +674,18 @@
 
         .canvas-block {
           border-radius: 0.75rem;
-          padding: 1.25rem;
           border: 1px solid transparent;
-          background: #ffffff;
+          background: var(--wc-email-builder-card-bg);
           box-shadow: 0 18px 40px -36px rgba(15, 23, 42, 0.45);
           cursor: grab;
           position: relative;
           outline: none;
+        }
+
+        .canvas-drop-indicator {
+          border-top: 2px dashed var(--wc-email-builder-accent);
+          margin: 0.5rem 0;
+          pointer-events: none;
         }
 
         .canvas-block[aria-selected="true"] {
@@ -412,11 +729,37 @@
           outline-offset: 2px;
         }
 
+        .title-block {
+          text-align: var(--block-align, center);
+        }
+
+        .title-block-heading {
+          margin: 0;
+          font-size: clamp(1.8rem, 3vw, 2.4rem);
+          line-height: 1.2;
+        }
+
         .paragraph-block {
           color: var(--block-color, #1f2937);
           text-align: var(--block-align, left);
           line-height: 1.6;
           font-size: 1rem;
+        }
+
+        .list-block {
+          text-align: var(--block-align, left);
+        }
+
+        .list-block ul,
+        .list-block ol {
+          margin: 0;
+          padding-inline-start: 1.25rem;
+          display: inline-block;
+          text-align: left;
+        }
+
+        .list-block li {
+          margin-bottom: 0.35rem;
         }
 
         .image-block {
@@ -428,6 +771,14 @@
         .image-block img {
           max-width: 100%;
           border-radius: var(--block-radius, 12px);
+        }
+
+        .image-placeholder {
+          border: 2px dashed rgba(148, 163, 184, 0.5);
+          padding: 1.5rem;
+          border-radius: inherit;
+          text-align: center;
+          color: var(--wc-email-builder-muted);
         }
 
         .button-block {
@@ -446,6 +797,135 @@
           font-size: 0.95rem;
           background: var(--block-background, #6d28d9);
           color: var(--block-color, #fff);
+        }
+
+        .table-block {
+          display: grid;
+          justify-items: var(--block-align, center);
+        }
+
+        .table-block table {
+          border-collapse: collapse;
+          min-width: min(100%, 520px);
+          width: 100%;
+          background: rgba(148, 163, 184, 0.08);
+          border-radius: 0.75rem;
+          overflow: hidden;
+        }
+
+        .table-block th,
+        .table-block td {
+          padding: 0.75rem 1rem;
+          border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+          text-align: left;
+        }
+
+        .table-block tr:last-child td {
+          border-bottom: none;
+        }
+
+        .divider-block {
+          width: 100%;
+          border-top: var(--divider-thickness, 2px) var(--divider-style, solid)
+            var(--divider-color, rgba(148, 163, 184, 0.75));
+        }
+
+        .spacer-block {
+          width: 100%;
+          background: repeating-linear-gradient(
+            90deg,
+            rgba(148, 163, 184, 0.12),
+            rgba(148, 163, 184, 0.12) 8px,
+            transparent 8px,
+            transparent 16px
+          );
+          border-radius: 0.75rem;
+        }
+
+        .html-block {
+          display: block;
+          color: inherit;
+        }
+
+        .video-block {
+          display: grid;
+          gap: 0.5rem;
+        }
+
+        .video-block-link {
+          display: block;
+          border-radius: 0.75rem;
+          overflow: hidden;
+          position: relative;
+          text-decoration: none;
+          border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .video-block-link img,
+        .video-placeholder {
+          width: 100%;
+          display: block;
+          aspect-ratio: 16 / 9;
+          object-fit: cover;
+        }
+
+        .video-placeholder {
+          background: rgba(124, 58, 237, 0.08);
+          color: var(--wc-email-builder-muted);
+          display: grid;
+          place-items: center;
+          font-weight: 600;
+        }
+
+        .video-caption {
+          margin: 0;
+          font-size: 0.85rem;
+          color: var(--wc-email-builder-muted);
+        }
+
+        .icons-block {
+          display: grid;
+          justify-items: var(--block-align, center);
+        }
+
+        .icons-list {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+          gap: 0.75rem;
+          width: 100%;
+        }
+
+        .icons-item {
+          display: grid;
+          gap: 0.35rem;
+          padding: 0.85rem;
+          border-radius: 0.75rem;
+          background: rgba(124, 58, 237, 0.08);
+          color: inherit;
+          text-decoration: none;
+          border: 1px solid rgba(124, 58, 237, 0.2);
+        }
+
+        .icons-symbol {
+          font-size: 1.5rem;
+        }
+
+        .icons-label {
+          font-weight: 600;
+          font-size: 0.85rem;
+        }
+
+        .menu-block {
+          display: flex;
+          justify-content: var(--block-align, center);
+          gap: 1.25rem;
+          flex-wrap: wrap;
+        }
+
+        .menu-block a {
+          text-decoration: none;
+          font-weight: 600;
+          color: inherit;
         }
 
         .social-block {
@@ -467,6 +947,68 @@
           display: grid;
           place-items: center;
           text-decoration: none;
+        }
+
+        .sticker-block {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.35rem 0.85rem;
+          border-radius: 999px;
+          background: var(--sticker-bg, #fef08a);
+          color: var(--sticker-color, #92400e);
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-size: 0.7rem;
+        }
+
+        .gif-block {
+          display: grid;
+          justify-items: center;
+          gap: 0.5rem;
+        }
+
+        .gif-block img {
+          max-width: 100%;
+          border-radius: 0.75rem;
+        }
+
+        .gif-placeholder {
+          width: 100%;
+          padding: 1.25rem;
+          text-align: center;
+          border: 2px dashed rgba(148, 163, 184, 0.5);
+          border-radius: 0.75rem;
+          color: var(--wc-email-builder-muted);
+        }
+
+        @media (prefers-color-scheme: dark) {
+          :host {
+            --wc-email-builder-text: #e2e8f0;
+            --wc-email-builder-muted: #94a3b8;
+            --wc-email-builder-surface: rgba(15, 23, 42, 0.82);
+            --wc-email-builder-control-bg: rgba(148, 163, 184, 0.22);
+            --wc-email-builder-card-bg: rgba(15, 23, 42, 0.92);
+            --wc-email-builder-input-bg: rgba(30, 41, 59, 0.9);
+          }
+
+          .canvas-block {
+            box-shadow: 0 24px 48px -30px rgba(15, 23, 42, 0.85);
+          }
+
+          .palette button {
+            background: rgba(30, 41, 59, 0.92);
+          }
+
+          .video-placeholder {
+            background: rgba(124, 58, 237, 0.22);
+          }
+
+          .icons-item {
+            background: rgba(124, 58, 237, 0.22);
+            border-color: rgba(124, 58, 237, 0.4);
+          }
         }
 
         .panel {
@@ -532,7 +1074,7 @@
           appearance: none;
           border: var(--wc-email-builder-border);
           border-radius: 0.9rem;
-          background: rgba(255, 255, 255, 0.9);
+          background: var(--wc-email-builder-card-bg);
           padding: 0.85rem;
           display: grid;
           gap: 0.35rem;
@@ -587,8 +1129,9 @@
           padding: 0.55rem 0.65rem;
           border-radius: 0.6rem;
           border: 1px solid rgba(148, 163, 184, 0.6);
-          background: rgba(255, 255, 255, 0.85);
+          background: var(--wc-email-builder-input-bg);
           font: inherit;
+          color: var(--wc-email-builder-text);
         }
 
         .field textarea {
@@ -651,6 +1194,11 @@
         </div>
       `;
 
+      const exportButton = toolbar.querySelector('.toolbar-actions .primary');
+      if (exportButton instanceof HTMLButtonElement) {
+        exportButton.addEventListener('click', () => this.#exportHtml());
+      }
+
       const workspace = document.createElement('div');
       workspace.className = 'workspace';
 
@@ -686,15 +1234,22 @@
       this.#canvas.setAttribute('role', 'list');
       this.#canvas.setAttribute('aria-label', 'Email content');
 
+      this.#dropIndicator = document.createElement('div');
+      this.#dropIndicator.className = 'canvas-drop-indicator';
+      this.#dropIndicator.hidden = true;
+
       this.#canvas.addEventListener('dragover', (event) => {
         event.preventDefault();
         if (event.dataTransfer) {
           event.dataTransfer.dropEffect = 'move';
         }
+        const dropIndex = this.#getDropIndex(event);
+        this.#showDropIndicator(dropIndex);
       });
 
       this.#canvas.addEventListener('drop', (event) => {
         event.preventDefault();
+        this.#hideDropIndicator();
         const dataTransfer = event.dataTransfer;
         const data = dataTransfer ? dataTransfer.getData('text/plain') : '';
         if (!data) return;
@@ -724,6 +1279,17 @@
           this.#renderBlocks();
           this.#emitChange('block:reorder', { id, to: targetIndex });
         }
+      });
+
+      this.#canvas.addEventListener('dragleave', (event) => {
+        const related = /** @type {Node | null} */ (event.relatedTarget);
+        if (!related || !this.#canvas.contains(related)) {
+          this.#hideDropIndicator();
+        }
+      });
+
+      this.addEventListener('dragend', () => {
+        this.#hideDropIndicator();
       });
 
       this.#canvas.addEventListener('click', (event) => {
@@ -870,6 +1436,38 @@
     }
 
     /**
+     * Show a visual indicator for the current drop target.
+     * @param {number} index
+     */
+    #showDropIndicator(index) {
+      if (!this.#dropIndicator) {
+        return;
+      }
+      const indicator = this.#dropIndicator;
+      const children = Array.from(this.#canvas.children).filter(
+        (child) => child !== indicator
+      );
+      const beforeNode = children[index] ?? null;
+      indicator.hidden = false;
+      if (beforeNode) {
+        this.#canvas.insertBefore(indicator, beforeNode);
+      } else {
+        this.#canvas.append(indicator);
+      }
+    }
+
+    /** Hide the drop indicator. */
+    #hideDropIndicator() {
+      if (!this.#dropIndicator) {
+        return;
+      }
+      this.#dropIndicator.hidden = true;
+      if (this.#dropIndicator.parentElement) {
+        this.#dropIndicator.parentElement.removeChild(this.#dropIndicator);
+      }
+    }
+
+    /**
      * Remove a block from the state.
      * @param {string} id
      */
@@ -921,6 +1519,24 @@
       const id = typeof candidate.id === 'string' && candidate.id ? candidate.id : createId();
       const type = candidate.type;
       switch (type) {
+        case 'title': {
+          const box = this.#normaliseBoxModel(candidate, {
+            padding: '1.5rem 1.5rem 1rem',
+            margin: '0',
+            width: '100%',
+          });
+          const level = candidate.level;
+          const resolvedLevel = level === 'h1' || level === 'h2' || level === 'h3' ? level : 'h1';
+          return {
+            type: 'title',
+            id,
+            text: typeof candidate.text === 'string' ? candidate.text : 'Add a headline for this section',
+            align: this.#normaliseAlign(candidate.align, 'center'),
+            level: resolvedLevel,
+            color: typeof candidate.color === 'string' ? candidate.color : '#0f172a',
+            ...box,
+          };
+        }
         case 'paragraph':
           return {
             type: 'paragraph',
@@ -928,7 +1544,29 @@
             content: typeof candidate.content === 'string' ? candidate.content : "I'm a new paragraph block.",
             align: this.#normaliseAlign(candidate.align, 'left'),
             color: typeof candidate.color === 'string' ? candidate.color : '#1f2937',
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
           };
+        case 'list': {
+          const items = Array.isArray(candidate.items)
+            ? candidate.items.map((item) => (typeof item === 'string' ? item : String(item)))
+            : ['First benefit', 'Second benefit', 'Third benefit'];
+          return {
+            type: 'list',
+            id,
+            items,
+            ordered: Boolean(candidate.ordered),
+            align: this.#normaliseAlign(candidate.align, 'left'),
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
+        }
         case 'image':
           return {
             type: 'image',
@@ -938,6 +1576,11 @@
             align: this.#normaliseAlign(candidate.align, 'center'),
             autoWidth: typeof candidate.autoWidth === 'boolean' ? candidate.autoWidth : true,
             borderRadius: typeof candidate.borderRadius === 'string' ? candidate.borderRadius : '12px',
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
           };
         case 'button':
           return {
@@ -949,6 +1592,62 @@
             color: typeof candidate.color === 'string' ? candidate.color : '#ffffff',
             borderRadius: typeof candidate.borderRadius === 'string' ? candidate.borderRadius : '999px',
             align: this.#normaliseAlign(candidate.align, 'center'),
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
+        case 'table': {
+          const rows = Array.isArray(candidate.rows) && candidate.rows.length
+            ? candidate.rows
+                .filter((row) => Array.isArray(row) && row.length)
+                .map((row) => row.map((cell) => (typeof cell === 'string' ? cell : String(cell))))
+            : [
+                ['Feature', 'Status'],
+                ['Email automation', 'Enabled'],
+                ['Customer journey', 'Draft'],
+              ];
+          const box = this.#normaliseBoxModel(candidate, {
+            padding: '1.25rem',
+            margin: '0',
+            width: '100%',
+          });
+          return {
+            type: 'table',
+            id,
+            rows,
+            header: Boolean(candidate.header),
+            align: this.#normaliseAlign(candidate.align, 'center'),
+            ...box,
+          };
+        }
+        case 'divider':
+          return {
+            type: 'divider',
+            id,
+            color: typeof candidate.color === 'string' ? candidate.color : 'rgba(148, 163, 184, 0.75)',
+            thickness: typeof candidate.thickness === 'string' ? candidate.thickness : '2px',
+            style:
+              candidate.style === 'dashed' || candidate.style === 'dotted' || candidate.style === 'solid'
+                ? candidate.style
+                : 'solid',
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '0.5rem 1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
+        case 'spacer':
+          return {
+            type: 'spacer',
+            id,
+            height: typeof candidate.height === 'string' ? candidate.height : '32px',
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '0',
+              margin: '0',
+              width: '100%',
+            }),
           };
         case 'social': {
           const items = Array.isArray(candidate.items) && candidate.items.length
@@ -968,8 +1667,118 @@
             id,
             items,
             align: this.#normaliseAlign(candidate.align, 'center'),
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
           };
         }
+        case 'html':
+          return {
+            type: 'html',
+            id,
+            markup:
+              typeof candidate.markup === 'string'
+                ? candidate.markup
+                : '<p style="margin:0;">Add custom HTML content.</p>',
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
+        case 'video':
+          return {
+            type: 'video',
+            id,
+            url: typeof candidate.url === 'string' ? candidate.url : 'https://example.com/watch',
+            thumbnail: typeof candidate.thumbnail === 'string' ? candidate.thumbnail : '',
+            caption: typeof candidate.caption === 'string' ? candidate.caption : 'Watch the latest demo',
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
+        case 'icons': {
+          const items = Array.isArray(candidate.items) && candidate.items.length
+            ? candidate.items.map((item) => {
+                const payload = item && typeof item === 'object' ? item : {};
+                return {
+                  label: typeof payload.label === 'string' ? payload.label : 'Feature',
+                  icon: typeof payload.icon === 'string' ? payload.icon : '⭐',
+                  url: typeof payload.url === 'string' ? payload.url : '#',
+                };
+              })
+            : [
+                { label: 'Fast setup', icon: '⚡', url: '#' },
+                { label: 'Secure', icon: '🔒', url: '#' },
+                { label: 'Support', icon: '💬', url: '#' },
+              ];
+          return {
+            type: 'icons',
+            id,
+            items,
+            align: this.#normaliseAlign(candidate.align, 'center'),
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
+        }
+        case 'menu': {
+          const items = Array.isArray(candidate.items) && candidate.items.length
+            ? candidate.items.map((item) => {
+                const payload = item && typeof item === 'object' ? item : {};
+                return {
+                  label: typeof payload.label === 'string' ? payload.label : 'Menu item',
+                  url: typeof payload.url === 'string' ? payload.url : '#',
+                };
+              })
+            : [
+                { label: 'About', url: '#' },
+                { label: 'Features', url: '#' },
+                { label: 'Pricing', url: '#' },
+              ];
+          return {
+            type: 'menu',
+            id,
+            items,
+            align: this.#normaliseAlign(candidate.align, 'center'),
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
+        }
+        case 'sticker':
+          return {
+            type: 'sticker',
+            id,
+            text: typeof candidate.text === 'string' ? candidate.text : 'New arrival',
+            background: typeof candidate.background === 'string' ? candidate.background : '#fef08a',
+            color: typeof candidate.color === 'string' ? candidate.color : '#92400e',
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
+        case 'gif':
+          return {
+            type: 'gif',
+            id,
+            url: typeof candidate.url === 'string' ? candidate.url : '',
+            alt: typeof candidate.alt === 'string' ? candidate.alt : 'Animated moment',
+            ...this.#normaliseBoxModel(candidate, {
+              padding: '1.25rem',
+              margin: '0',
+              width: '100%',
+            }),
+          };
         default:
           const fallback = BLOCK_DEFS.paragraph.create();
           return { ...fallback, id };
@@ -984,6 +1793,27 @@
      */
     #normaliseAlign(value, fallback) {
       return value === 'left' || value === 'center' || value === 'right' ? value : fallback;
+    }
+
+    /**
+     * Normalise box model values for a block.
+     * @param {any} candidate
+     * @param {{ padding: string; margin: string; width: string }} defaults
+     */
+    #normaliseBoxModel(candidate, defaults) {
+      const padding =
+        candidate && typeof candidate.padding === 'string' && candidate.padding.trim().length
+          ? candidate.padding
+          : defaults.padding;
+      const margin =
+        candidate && typeof candidate.margin === 'string'
+          ? candidate.margin
+          : defaults.margin;
+      const width =
+        candidate && typeof candidate.width === 'string' && candidate.width.trim().length
+          ? candidate.width
+          : defaults.width;
+      return { padding, margin, width };
     }
 
     /**
@@ -1078,8 +1908,14 @@
       section.append(heading);
 
       switch (block.type) {
+        case 'title':
+          this.#renderTitleSettings(section, block);
+          break;
         case 'paragraph':
           this.#renderParagraphSettings(section, block);
+          break;
+        case 'list':
+          this.#renderListSettings(section, block);
           break;
         case 'image':
           this.#renderImageSettings(section, block);
@@ -1087,8 +1923,35 @@
         case 'button':
           this.#renderButtonSettings(section, block);
           break;
+        case 'table':
+          this.#renderTableSettings(section, block);
+          break;
+        case 'divider':
+          this.#renderDividerSettings(section, block);
+          break;
+        case 'spacer':
+          this.#renderSpacerSettings(section, block);
+          break;
         case 'social':
           this.#renderSocialSettings(section, block);
+          break;
+        case 'html':
+          this.#renderHtmlSettings(section, block);
+          break;
+        case 'video':
+          this.#renderVideoSettings(section, block);
+          break;
+        case 'icons':
+          this.#renderIconsSettings(section, block);
+          break;
+        case 'menu':
+          this.#renderMenuSettings(section, block);
+          break;
+        case 'sticker':
+          this.#renderStickerSettings(section, block);
+          break;
+        case 'gif':
+          this.#renderGifSettings(section, block);
           break;
         default:
           break;
@@ -1194,6 +2057,57 @@
 
     /**
      * @param {HTMLElement} section
+     * @param {TitleBlock} block
+     */
+    #renderTitleSettings(section, block) {
+      const textInput = document.createElement('textarea');
+      textInput.value = block.text;
+      textInput.rows = 2;
+      textInput.addEventListener('input', () => {
+        block.text = textInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'text' });
+      });
+      section.append(makeField('Heading text', textInput, 'Displayed as the section headline.'));
+
+      const levelSelect = document.createElement('select');
+      ['h1', 'h2', 'h3'].forEach((value) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value.toUpperCase();
+        if (block.level === value) {
+          option.selected = true;
+        }
+        levelSelect.append(option);
+      });
+      levelSelect.addEventListener('change', () => {
+        block.level = /** @type {"h1" | "h2" | "h3"} */ (levelSelect.value);
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'level' });
+      });
+      section.append(makeField('Heading level', levelSelect, 'Choose the semantic heading size.'));
+
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.value = block.color;
+      colorInput.addEventListener('input', () => {
+        block.color = colorInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'color' });
+      });
+      section.append(makeField('Text colour', colorInput, 'Applies to this heading only.'));
+
+      section.append(this.#makeAlignField(block, (value) => {
+        block.align = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'align' });
+      }));
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
      * @param {ParagraphBlock} block
      */
     #renderParagraphSettings(section, block) {
@@ -1221,6 +2135,60 @@
         this.#renderBlocks();
         this.#emitChange('block:update', { id: block.id, property: 'align' });
       }));
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {ListBlock} block
+     */
+    #renderListSettings(section, block) {
+      const itemsInput = document.createElement('textarea');
+      itemsInput.value = block.items.join('\n');
+      itemsInput.rows = Math.max(3, block.items.length + 1);
+      itemsInput.addEventListener('change', () => {
+        const next = itemsInput.value
+          .split('\n')
+          .map((item) => item.trim())
+          .filter((item) => item.length > 0);
+        block.items = next.length ? next : ['List item'];
+        itemsInput.value = block.items.join('\n');
+        itemsInput.rows = Math.max(3, block.items.length + 1);
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'items' });
+      });
+      section.append(
+        makeField(
+          'List items',
+          itemsInput,
+          'One entry per line. Empty lines are ignored.'
+        )
+      );
+
+      const orderedToggle = document.createElement('input');
+      orderedToggle.type = 'checkbox';
+      orderedToggle.checked = block.ordered;
+      orderedToggle.addEventListener('change', () => {
+        block.ordered = orderedToggle.checked;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'ordered' });
+      });
+      const orderedField = document.createElement('label');
+      orderedField.className = 'field';
+      orderedField.style.alignItems = 'center';
+      orderedField.style.display = 'flex';
+      orderedField.style.gap = '0.5rem';
+      orderedField.append(orderedToggle, document.createTextNode('Numbered list'));
+      section.append(orderedField);
+
+      section.append(this.#makeAlignField(block, (value) => {
+        block.align = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'align' });
+      }));
+
+      this.#renderBoxModelControls(section, block);
     }
 
     /**
@@ -1264,6 +2232,8 @@
         this.#renderBlocks();
         this.#emitChange('block:update', { id: block.id, property: 'align' });
       }));
+
+      this.#renderBoxModelControls(section, block);
     }
 
     /**
@@ -1327,6 +2297,133 @@
         this.#renderBlocks();
         this.#emitChange('block:update', { id: block.id, property: 'align' });
       }));
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {TableBlock} block
+     */
+    #renderTableSettings(section, block) {
+      const tableInput = document.createElement('textarea');
+      tableInput.value = block.rows.map((row) => row.join(' | ')).join('\n');
+      tableInput.rows = Math.max(3, block.rows.length + 1);
+      tableInput.addEventListener('change', () => {
+        const lines = tableInput.value
+          .split('\n')
+          .map((line) => line.trim())
+          .filter((line) => line.length > 0);
+        const nextRows = lines.map((line) => line.split('|').map((cell) => cell.trim()).filter(Boolean));
+        block.rows = nextRows.length ? nextRows : [['Column 1', 'Column 2']];
+        tableInput.value = block.rows.map((row) => row.join(' | ')).join('\n');
+        tableInput.rows = Math.max(3, block.rows.length + 1);
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'rows' });
+      });
+      section.append(
+        makeField(
+          'Table rows',
+          tableInput,
+          'Use the format "Cell 1 | Cell 2" per line to define each row.'
+        )
+      );
+
+      const headerToggle = document.createElement('input');
+      headerToggle.type = 'checkbox';
+      headerToggle.checked = block.header;
+      headerToggle.addEventListener('change', () => {
+        block.header = headerToggle.checked;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'header' });
+      });
+      const headerField = document.createElement('label');
+      headerField.className = 'field';
+      headerField.style.display = 'flex';
+      headerField.style.alignItems = 'center';
+      headerField.style.gap = '0.5rem';
+      headerField.append(headerToggle, document.createTextNode('Treat first row as header'));
+      section.append(headerField);
+
+      section.append(this.#makeAlignField(block, (value) => {
+        block.align = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'align' });
+      }));
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {DividerBlock} block
+     */
+    #renderDividerSettings(section, block) {
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.value = block.color;
+      colorInput.addEventListener('input', () => {
+        block.color = colorInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'color' });
+      });
+      section.append(makeField('Divider colour', colorInput, 'Line colour.'));
+
+      const thicknessInput = document.createElement('input');
+      thicknessInput.type = 'text';
+      thicknessInput.value = block.thickness;
+      thicknessInput.placeholder = '2px';
+      thicknessInput.addEventListener('change', () => {
+        const value = thicknessInput.value.trim() || '1px';
+        block.thickness = value;
+        thicknessInput.value = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'thickness' });
+      });
+      section.append(makeField('Thickness', thicknessInput, 'CSS border width for the divider.'));
+
+      const styleSelect = document.createElement('select');
+      ['solid', 'dashed', 'dotted'].forEach((value) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value.charAt(0).toUpperCase() + value.slice(1);
+        if (block.style === value) {
+          option.selected = true;
+        }
+        styleSelect.append(option);
+      });
+      styleSelect.addEventListener('change', () => {
+        block.style = /** @type {"solid" | "dashed" | "dotted"} */ (styleSelect.value);
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'style' });
+      });
+      section.append(makeField('Line style', styleSelect, 'Choose the divider appearance.'));
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {SpacerBlock} block
+     */
+    #renderSpacerSettings(section, block) {
+      const slider = document.createElement('input');
+      slider.type = 'range';
+      slider.min = '0';
+      slider.max = '160';
+      const parsed = parseInt(block.height, 10);
+      slider.value = Number.isFinite(parsed) ? String(parsed) : '32';
+      const field = makeField('Spacer height', slider, `${slider.value}px tall gap.`);
+      slider.addEventListener('input', () => {
+        const value = `${slider.value}px`;
+        block.height = value;
+        field.querySelector('.field-description').textContent = `${slider.value}px tall gap.`;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'height' });
+      });
+      section.append(field);
+
+      this.#renderBoxModelControls(section, block);
     }
 
     /**
@@ -1400,6 +2497,293 @@
         wrapper.append(row, makeField('Label', labelInput, 'Shown as a tooltip.'), makeField('URL', urlInput, 'Destination link.'));
         section.append(wrapper);
       });
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {HtmlBlock} block
+     */
+    #renderHtmlSettings(section, block) {
+      const markupInput = document.createElement('textarea');
+      markupInput.value = block.markup;
+      markupInput.rows = 6;
+      markupInput.addEventListener('change', () => {
+        block.markup = markupInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'markup' });
+      });
+      section.append(
+        makeField(
+          'HTML markup',
+          markupInput,
+          'Paste inline HTML. Scripts are stripped when rendered.'
+        )
+      );
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {VideoBlock} block
+     */
+    #renderVideoSettings(section, block) {
+      const urlInput = document.createElement('input');
+      urlInput.type = 'url';
+      urlInput.placeholder = 'https://example.com/watch';
+      urlInput.value = block.url;
+      urlInput.addEventListener('change', () => {
+        block.url = urlInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'url' });
+      });
+      section.append(makeField('Video URL', urlInput, 'Links out to the hosted video.'));
+
+      const thumbnailInput = document.createElement('input');
+      thumbnailInput.type = 'url';
+      thumbnailInput.placeholder = 'https://example.com/preview.jpg';
+      thumbnailInput.value = block.thumbnail;
+      thumbnailInput.addEventListener('change', () => {
+        block.thumbnail = thumbnailInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'thumbnail' });
+      });
+      section.append(makeField('Thumbnail URL', thumbnailInput, 'Optional image preview.'));
+
+      const captionInput = document.createElement('input');
+      captionInput.type = 'text';
+      captionInput.value = block.caption;
+      captionInput.addEventListener('input', () => {
+        block.caption = captionInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'caption' });
+      });
+      section.append(makeField('Caption', captionInput, 'Shown below the video preview.'));
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {IconsBlock} block
+     */
+    #renderIconsSettings(section, block) {
+      section.append(this.#makeAlignField(block, (value) => {
+        block.align = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'align' });
+      }));
+
+      block.items.forEach((item, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'field';
+        const legend = document.createElement('span');
+        legend.className = 'field-label';
+        legend.textContent = `Icon ${index + 1}`;
+        wrapper.append(legend);
+
+        const iconRow = document.createElement('div');
+        iconRow.style.display = 'grid';
+        iconRow.style.gridTemplateColumns = 'minmax(0,1fr) minmax(0,1fr)';
+        iconRow.style.gap = '0.5rem';
+
+        const iconInput = document.createElement('input');
+        iconInput.type = 'text';
+        iconInput.maxLength = 2;
+        iconInput.value = item.icon;
+        iconInput.addEventListener('input', () => {
+          item.icon = iconInput.value || '⭐';
+          this.#renderBlocks();
+          this.#emitChange('block:update', { id: block.id, property: `items[${index}].icon` });
+        });
+
+        const labelInput = document.createElement('input');
+        labelInput.type = 'text';
+        labelInput.value = item.label;
+        labelInput.addEventListener('input', () => {
+          item.label = labelInput.value;
+          this.#renderBlocks();
+          this.#emitChange('block:update', { id: block.id, property: `items[${index}].label` });
+        });
+
+        iconRow.append(iconInput, labelInput);
+
+        const urlInput = document.createElement('input');
+        urlInput.type = 'url';
+        urlInput.value = item.url;
+        urlInput.addEventListener('change', () => {
+          item.url = urlInput.value;
+          this.#renderBlocks();
+          this.#emitChange('block:update', { id: block.id, property: `items[${index}].url` });
+        });
+
+        wrapper.append(iconRow, makeField('Link URL', urlInput, 'Optional link target.'));
+        section.append(wrapper);
+      });
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {MenuBlock} block
+     */
+    #renderMenuSettings(section, block) {
+      section.append(this.#makeAlignField(block, (value) => {
+        block.align = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'align' });
+      }));
+
+      block.items.forEach((item, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'field';
+        const legend = document.createElement('span');
+        legend.className = 'field-label';
+        legend.textContent = `Menu item ${index + 1}`;
+        wrapper.append(legend);
+
+        const labelInput = document.createElement('input');
+        labelInput.type = 'text';
+        labelInput.value = item.label;
+        labelInput.addEventListener('input', () => {
+          item.label = labelInput.value;
+          this.#renderBlocks();
+          this.#emitChange('block:update', { id: block.id, property: `items[${index}].label` });
+        });
+
+        const urlInput = document.createElement('input');
+        urlInput.type = 'url';
+        urlInput.value = item.url;
+        urlInput.addEventListener('change', () => {
+          item.url = urlInput.value;
+          this.#renderBlocks();
+          this.#emitChange('block:update', { id: block.id, property: `items[${index}].url` });
+        });
+
+        wrapper.append(makeField('Label', labelInput, 'Visible navigation label.'), makeField('URL', urlInput, 'Destination link.'));
+        section.append(wrapper);
+      });
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {StickerBlock} block
+     */
+    #renderStickerSettings(section, block) {
+      const textInput = document.createElement('input');
+      textInput.type = 'text';
+      textInput.value = block.text;
+      textInput.addEventListener('input', () => {
+        block.text = textInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'text' });
+      });
+      section.append(makeField('Sticker text', textInput, 'Short attention-grabbing label.'));
+
+      const bgInput = document.createElement('input');
+      bgInput.type = 'color';
+      bgInput.value = block.background;
+      bgInput.addEventListener('input', () => {
+        block.background = bgInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'background' });
+      });
+      section.append(makeField('Background colour', bgInput, 'Sticker fill colour.'));
+
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.value = block.color;
+      colorInput.addEventListener('input', () => {
+        block.color = colorInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'color' });
+      });
+      section.append(makeField('Text colour', colorInput, 'Sticker text colour.'));
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * @param {HTMLElement} section
+     * @param {GifBlock} block
+     */
+    #renderGifSettings(section, block) {
+      const urlInput = document.createElement('input');
+      urlInput.type = 'url';
+      urlInput.placeholder = 'https://example.com/animated.gif';
+      urlInput.value = block.url;
+      urlInput.addEventListener('change', () => {
+        block.url = urlInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'url' });
+      });
+      section.append(makeField('GIF URL', urlInput, 'Link to the hosted GIF.'));
+
+      const altInput = document.createElement('input');
+      altInput.type = 'text';
+      altInput.value = block.alt;
+      altInput.addEventListener('input', () => {
+        block.alt = altInput.value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'alt' });
+      });
+      section.append(makeField('Alt text', altInput, 'Accessibility description for the animation.'));
+
+      this.#renderBoxModelControls(section, block);
+    }
+
+    /**
+     * Render shared box model controls for a block.
+     * @param {HTMLElement} section
+     * @param {BlockConfig} block
+     */
+    #renderBoxModelControls(section, block) {
+      const widthInput = document.createElement('input');
+      widthInput.type = 'text';
+      widthInput.value = block.width;
+      widthInput.placeholder = '100%';
+      widthInput.addEventListener('change', () => {
+        const value = widthInput.value.trim() || '100%';
+        block.width = value;
+        widthInput.value = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'width' });
+      });
+
+      const paddingInput = document.createElement('input');
+      paddingInput.type = 'text';
+      paddingInput.value = block.padding;
+      paddingInput.placeholder = '1.25rem';
+      paddingInput.addEventListener('change', () => {
+        const value = paddingInput.value.trim() || '0';
+        block.padding = value;
+        paddingInput.value = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'padding' });
+      });
+
+      const marginInput = document.createElement('input');
+      marginInput.type = 'text';
+      marginInput.value = block.margin;
+      marginInput.placeholder = '0';
+      marginInput.addEventListener('change', () => {
+        const value = marginInput.value.trim() || '0';
+        block.margin = value;
+        marginInput.value = value;
+        this.#renderBlocks();
+        this.#emitChange('block:update', { id: block.id, property: 'margin' });
+      });
+
+      section.append(
+        makeField('Width', widthInput, 'CSS width value (e.g. 100%, 480px).'),
+        makeField('Padding', paddingInput, 'CSS padding applied to the block container.'),
+        makeField('Margin', marginInput, 'CSS margin applied to the block container.')
+      );
     }
 
     /**
@@ -1438,6 +2822,7 @@
 
     /** Render canvas blocks. */
     #renderBlocks() {
+      this.#hideDropIndicator();
       this.style.setProperty('--canvas-background', this.#state.settings.canvasBackground);
       const wrapper = this.#canvas.parentElement;
       if (wrapper instanceof HTMLElement) {
@@ -1471,6 +2856,10 @@
         blockEl.setAttribute('aria-label', `${block.type} block`);
         blockEl.setAttribute('aria-selected', String(this.#state.selected === block.id));
 
+        blockEl.style.padding = block.padding || '0';
+        blockEl.style.margin = block.margin || '0';
+        blockEl.style.width = block.width || '100%';
+
         blockEl.addEventListener('dragstart', (event) => {
           const dataTransfer = event.dataTransfer;
           if (dataTransfer) {
@@ -1501,6 +2890,17 @@
      */
     #renderBlock(block) {
       switch (block.type) {
+        case 'title': {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'title-block';
+          wrapper.style.setProperty('--block-align', block.align);
+          const heading = document.createElement(block.level);
+          heading.textContent = block.text;
+          heading.className = 'title-block-heading';
+          heading.style.color = block.color;
+          wrapper.append(heading);
+          return wrapper;
+        }
         case 'paragraph': {
           const paragraph = document.createElement('div');
           paragraph.className = 'paragraph-block';
@@ -1508,6 +2908,19 @@
           paragraph.style.setProperty('--block-color', block.color);
           paragraph.textContent = block.content;
           return paragraph;
+        }
+        case 'list': {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'list-block';
+          wrapper.style.setProperty('--block-align', block.align);
+          const list = document.createElement(block.ordered ? 'ol' : 'ul');
+          block.items.forEach((item) => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            list.append(li);
+          });
+          wrapper.append(list);
+          return wrapper;
         }
         case 'image': {
           const wrapper = document.createElement('div');
@@ -1522,11 +2935,7 @@
             wrapper.append(img);
           } else {
             const placeholder = document.createElement('div');
-            placeholder.style.border = '2px dashed rgba(148,163,184,0.5)';
-            placeholder.style.padding = '1.5rem';
-            placeholder.style.borderRadius = 'inherit';
-            placeholder.style.textAlign = 'center';
-            placeholder.style.color = 'var(--wc-email-builder-muted)';
+            placeholder.className = 'image-placeholder';
             placeholder.innerHTML = '<strong>Drop an image</strong><br /><small>Paste a URL to display it.</small>';
             wrapper.append(placeholder);
           }
@@ -1545,6 +2954,39 @@
           anchor.setAttribute('role', 'button');
           wrapper.append(anchor);
           return wrapper;
+        }
+        case 'table': {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'table-block';
+          wrapper.style.setProperty('--block-align', block.align);
+          const table = document.createElement('table');
+          if (block.rows.length) {
+            block.rows.forEach((row, index) => {
+              const tr = document.createElement('tr');
+              row.forEach((cell) => {
+                const cellEl = document.createElement(index === 0 && block.header ? 'th' : 'td');
+                cellEl.textContent = cell;
+                tr.append(cellEl);
+              });
+              table.append(tr);
+            });
+          }
+          wrapper.append(table);
+          return wrapper;
+        }
+        case 'divider': {
+          const divider = document.createElement('div');
+          divider.className = 'divider-block';
+          divider.style.setProperty('--divider-color', block.color);
+          divider.style.setProperty('--divider-thickness', block.thickness);
+          divider.style.setProperty('--divider-style', block.style);
+          return divider;
+        }
+        case 'spacer': {
+          const spacer = document.createElement('div');
+          spacer.className = 'spacer-block';
+          spacer.style.height = block.height;
+          return spacer;
         }
         case 'social': {
           const wrapper = document.createElement('div');
@@ -1568,9 +3010,365 @@
           wrapper.append(list);
           return wrapper;
         }
+        case 'html': {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'html-block';
+          wrapper.innerHTML = this.#sanitiseHtml(block.markup);
+          return wrapper;
+        }
+        case 'video': {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'video-block';
+          const anchor = document.createElement('a');
+          anchor.href = block.url || '#';
+          anchor.target = '_blank';
+          anchor.rel = 'noopener noreferrer';
+          anchor.className = 'video-block-link';
+          if (block.thumbnail) {
+            const img = document.createElement('img');
+            img.src = block.thumbnail;
+            img.alt = block.caption || 'Video preview';
+            anchor.append(img);
+          } else {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'video-placeholder';
+            placeholder.textContent = 'Video preview';
+            anchor.append(placeholder);
+          }
+          wrapper.append(anchor);
+          if (block.caption) {
+            const caption = document.createElement('p');
+            caption.className = 'video-caption';
+            caption.textContent = block.caption;
+            wrapper.append(caption);
+          }
+          return wrapper;
+        }
+        case 'icons': {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'icons-block';
+          wrapper.style.setProperty('--block-align', block.align);
+          const list = document.createElement('div');
+          list.className = 'icons-list';
+          block.items.forEach((item) => {
+            const card = document.createElement('a');
+            card.href = item.url || '#';
+            card.className = 'icons-item';
+            const symbol = document.createElement('span');
+            symbol.className = 'icons-symbol';
+            symbol.textContent = item.icon;
+            const label = document.createElement('span');
+            label.className = 'icons-label';
+            label.textContent = item.label;
+            card.append(symbol, label);
+            list.append(card);
+          });
+          wrapper.append(list);
+          return wrapper;
+        }
+        case 'menu': {
+          const wrapper = document.createElement('nav');
+          wrapper.className = 'menu-block';
+          wrapper.style.setProperty('--block-align', block.align);
+          block.items.forEach((item) => {
+            const link = document.createElement('a');
+            link.href = item.url || '#';
+            link.textContent = item.label;
+            wrapper.append(link);
+          });
+          return wrapper;
+        }
+        case 'sticker': {
+          const sticker = document.createElement('div');
+          sticker.className = 'sticker-block';
+          sticker.style.setProperty('--sticker-bg', block.background);
+          sticker.style.setProperty('--sticker-color', block.color);
+          sticker.textContent = block.text;
+          return sticker;
+        }
+        case 'gif': {
+          const wrapper = document.createElement('div');
+          wrapper.className = 'gif-block';
+          if (block.url) {
+            const img = document.createElement('img');
+            img.src = block.url;
+            img.alt = block.alt;
+            img.loading = 'lazy';
+            wrapper.append(img);
+          } else {
+            const placeholder = document.createElement('div');
+            placeholder.className = 'gif-placeholder';
+            placeholder.textContent = 'Paste a GIF URL to display it.';
+            wrapper.append(placeholder);
+          }
+          return wrapper;
+        }
         default:
           return document.createElement('div');
       }
+    }
+
+    /**
+     * Remove unsafe tags and event handlers from custom HTML snippets.
+     * @param {string} markup
+     */
+    #sanitiseHtml(markup) {
+      const template = document.createElement('template');
+      template.innerHTML = markup;
+      template.content.querySelectorAll('script').forEach((node) => node.remove());
+      template.content.querySelectorAll('*').forEach((element) => {
+        Array.from(element.attributes).forEach((attr) => {
+          if (attr.name.toLowerCase().startsWith('on')) {
+            element.removeAttribute(attr.name);
+          }
+        });
+      });
+      return template.innerHTML;
+    }
+
+    /**
+     * Escape HTML special characters within a text node.
+     * @param {string} value
+     */
+    #escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    /** Escape attribute values. */
+    #escapeAttr(value) {
+      return this.#escapeHtml(value);
+    }
+
+    /**
+     * Format margin/padding/width styles for export.
+     * @param {BaseBlock} block
+     */
+    #formatBoxStyles(block) {
+      const styles = [];
+      if (block.margin) {
+        styles.push(`margin:${block.margin}`);
+      }
+      if (block.padding) {
+        styles.push(`padding:${block.padding}`);
+      }
+      if (block.width) {
+        styles.push(`width:${block.width}`);
+      }
+      return styles.join(';');
+    }
+
+    /**
+     * Convert a block configuration into HTML markup for export.
+     * @param {BlockConfig} block
+     */
+    #blockToHtml(block) {
+      const style = this.#formatBoxStyles(block);
+      const styleAttr = style ? ` style="${this.#escapeAttr(style)}"` : '';
+      const wrap = (content) => `<div${styleAttr}>${content}</div>`;
+      switch (block.type) {
+        case 'title': {
+          const heading = `<${block.level} style="margin:0;text-align:${block.align};color:${this.#escapeAttr(
+            block.color
+          )};font-family:inherit;">${this.#escapeHtml(block.text)}</${block.level}>`;
+          return wrap(heading);
+        }
+        case 'paragraph': {
+          const paragraph = `<p style="margin:0;text-align:${block.align};color:${this.#escapeAttr(
+            block.color
+          )};line-height:1.6;">${this.#escapeHtml(block.content)}</p>`;
+          return wrap(paragraph);
+        }
+        case 'list': {
+          const tag = block.ordered ? 'ol' : 'ul';
+          const items = block.items
+            .map((item) => `<li style="margin-bottom:0.35rem;">${this.#escapeHtml(item)}</li>`)
+            .join('');
+          const list = `<${tag} style="margin:0;padding-left:1.25rem;">${items}</${tag}>`;
+          const inner = `<div style="text-align:${block.align};">${list}</div>`;
+          return wrap(inner);
+        }
+        case 'image': {
+          if (!block.url) {
+            return wrap(
+              '<div style="color:#94a3b8;font-style:italic;text-align:center;">Image placeholder</div>'
+            );
+          }
+          const styles = [`max-width:100%`, `border-radius:${this.#escapeAttr(block.borderRadius)}`];
+          if (block.autoWidth) {
+            styles.push('width:100%');
+          }
+          const img = `<img src="${this.#escapeAttr(block.url)}" alt="${this.#escapeAttr(
+            block.alt
+          )}" style="${this.#escapeAttr(styles.join(';'))}" />`;
+          const inner = `<div style="text-align:${block.align};">${img}</div>`;
+          return wrap(inner);
+        }
+        case 'button': {
+          const buttonStyles = [
+            'display:inline-block',
+            'padding:0.85rem 1.75rem',
+            `background:${this.#escapeAttr(block.background)}`,
+            `color:${this.#escapeAttr(block.color)}`,
+            `border-radius:${this.#escapeAttr(block.borderRadius)}`,
+            'text-decoration:none',
+            'font-weight:600'
+          ].join(';');
+          const anchor = `<a href="${this.#escapeAttr(block.url || '#')}" style="${this.#escapeAttr(
+            buttonStyles
+          )}">${this.#escapeHtml(block.label)}</a>`;
+          const inner = `<div style="text-align:${block.align};">${anchor}</div>`;
+          return wrap(inner);
+        }
+        case 'table': {
+          const rows = block.rows
+            .map((row, rowIndex) => {
+              const cellTag = rowIndex === 0 && block.header ? 'th' : 'td';
+              const cells = row
+                .map(
+                  (cell) =>
+                    `<${cellTag} style="padding:0.75rem 1rem;border-bottom:1px solid #e2e8f0;text-align:left;">${this.#escapeHtml(
+                      cell
+                    )}</${cellTag}>`
+                )
+                .join('');
+              return `<tr>${cells}</tr>`;
+            })
+            .join('');
+          const table = `<table style="border-collapse:collapse;width:100%;">${rows}</table>`;
+          const inner = `<div style="text-align:${block.align};">${table}</div>`;
+          return wrap(inner);
+        }
+        case 'divider': {
+          const divider = `<hr style="border:none;border-top:${this.#escapeAttr(
+            block.thickness
+          )} ${this.#escapeAttr(block.style)} ${this.#escapeAttr(block.color)};margin:0;" />`;
+          return wrap(divider);
+        }
+        case 'spacer':
+          return wrap(`<div style="height:${this.#escapeAttr(block.height)};"></div>`);
+        case 'social': {
+          const links = block.items
+            .map((item) => {
+              const text = item.label || item.icon || 'Social';
+              return `<a href="${this.#escapeAttr(item.url || '#')}" style="display:inline-block;margin-right:12px;padding:0.5rem 0.75rem;border-radius:999px;background:#ede9fe;color:#6d28d9;text-decoration:none;font-weight:600;">${this.#escapeHtml(
+                text
+              )}</a>`;
+            })
+            .join('');
+          const inner = `<div style="text-align:${block.align};">${links}</div>`;
+          return wrap(inner);
+        }
+        case 'html':
+          return wrap(this.#sanitiseHtml(block.markup));
+        case 'video': {
+          const preview = block.thumbnail
+            ? `<img src="${this.#escapeAttr(block.thumbnail)}" alt="${this.#escapeAttr(
+                block.caption || 'Video preview'
+              )}" style="max-width:100%;border-radius:0.75rem;" />`
+            : '<span style="display:inline-block;padding:1rem 1.5rem;border-radius:0.75rem;background:#f3f4f6;">Video preview</span>';
+          const caption = block.caption
+            ? `<p style="margin:0.5rem 0 0;color:#475569;font-size:0.85rem;">${this.#escapeHtml(block.caption)}</p>`
+            : '';
+          const anchor = `<a href="${this.#escapeAttr(block.url || '#')}" style="text-decoration:none;color:inherit;">${preview}</a>`;
+          return wrap(`${anchor}${caption}`);
+        }
+        case 'icons': {
+          const cards = block.items
+            .map(
+              (item) =>
+                `<a href="${this.#escapeAttr(item.url || '#')}" style="display:inline-block;padding:0.75rem 1rem;border-radius:0.75rem;border:1px solid #e5e7eb;margin:0.25rem;text-decoration:none;color:inherit;">` +
+                `<span style="font-size:1.5rem;">${this.#escapeHtml(item.icon)}</span>` +
+                `<span style="display:block;font-weight:600;margin-top:0.25rem;">${this.#escapeHtml(item.label)}</span>` +
+                `</a>`
+            )
+            .join('');
+          const inner = `<div style="text-align:${block.align};">${cards}</div>`;
+          return wrap(inner);
+        }
+        case 'menu': {
+          const items = block.items
+            .map(
+              (item) =>
+                `<a href="${this.#escapeAttr(item.url || '#')}" style="margin-right:1.25rem;text-decoration:none;color:inherit;font-weight:600;">${this.#escapeHtml(
+                  item.label
+                )}</a>`
+            )
+            .join('');
+          const inner = `<nav style="text-align:${block.align};">${items}</nav>`;
+          return wrap(inner);
+        }
+        case 'sticker': {
+          const sticker = `<span style="display:inline-block;padding:0.35rem 0.85rem;border-radius:999px;background:${this.#escapeAttr(
+            block.background
+          )};color:${this.#escapeAttr(block.color)};font-weight:700;text-transform:uppercase;letter-spacing:0.08em;font-size:0.7rem;">${this.#escapeHtml(
+            block.text
+          )}</span>`;
+          return wrap(sticker);
+        }
+        case 'gif': {
+          if (!block.url) {
+            return wrap(
+              '<div style="color:#94a3b8;font-style:italic;text-align:center;">GIF placeholder</div>'
+            );
+          }
+          const img = `<img src="${this.#escapeAttr(block.url)}" alt="${this.#escapeAttr(
+            block.alt
+          )}" style="max-width:100%;border-radius:0.75rem;" />`;
+          return wrap(img);
+        }
+        default:
+          return '';
+      }
+    }
+
+    /** Trigger an HTML file download of the current layout. */
+    #exportHtml() {
+      const blockMarkup = this.#state.blocks.map((block) => this.#blockToHtml(block)).join('\n');
+      const workspaceStyle = [
+        'margin:0',
+        `padding:32px`,
+        `background:${this.#state.settings.background}`,
+        'font-family:Arial,Helvetica,sans-serif',
+        'color:#0f172a'
+      ].join(';');
+      const canvasStyle = [
+        'margin:0 auto',
+        `max-width:${this.#state.settings.width}px`,
+        `background:${this.#state.settings.canvasBackground}`,
+        'padding:32px',
+        'border-radius:12px',
+        'display:grid',
+        'gap:24px',
+        `justify-items:${this.#state.settings.align}`
+      ].join(';');
+      const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email export</title>
+</head>
+<body style="${this.#escapeAttr(workspaceStyle)}">
+  <div style="${this.#escapeAttr(canvasStyle)}">
+    ${blockMarkup || '<p style="margin:0;">Add content to your email.</p>'}
+  </div>
+</body>
+</html>`;
+
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'email.html';
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+      URL.revokeObjectURL(url);
     }
 
     /** Trigger a full rerender. */

@@ -1789,7 +1789,8 @@ panes.
 ### `<wc-email-builder>`
 
 A drag-and-drop campaign designer inspired by modern ESP tooling. The builder
-ships with a content canvas, a palette of reusable blocks, and a contextual
+ships with a content canvas, a dedicated Blocks side panel packed with reusable
+blocks, and a contextual
 panel that switches between block-specific and global design settings. It is a
 great starting point for rapid prototyping or embedding a lightweight marketing
 email experience inside dashboards.
@@ -1797,6 +1798,8 @@ email experience inside dashboards.
 #### Features
 
 - Palette-driven block creation (paragraph, image, button, social links).
+- Blocks panel that stays pinned beside the canvas for quick drag-and-drop
+  placement.
 - Reorderable blocks with pointer drag-and-drop support and keyboard focus
   outlines.
 - Contextual settings that swap between block configuration and global design
